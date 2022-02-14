@@ -1,0 +1,29 @@
+		</main>
+
+		<footer class="footer">
+			<div id="footerContainer" class="container">
+				<hr>
+				<p id="appVersion" class="text-right text-muted small">
+					{{appName}} {{appVersion}} &copy; {{currentYear}}
+				</p>
+				<div id="logos" class="text-center">
+					<img src="{{req.contextPath}}/assets/img/OCTRI_logo.png" class="img-fluid">
+				</div>
+			</div>
+		</footer>
+				{{>authlib_fragments/assets}}
+		
+		<script type="text/javascript" src="{{req.contextPath}}/webjars/jquery-ui/jquery-ui.min.js"></script>
+		{{#pageWebjars}}
+			{{! Webjars needed by page-specific scripts can be specified in the view model }}
+			<script type="text/javascript" src="{{req.contextPath}}/webjars/{{.}}"></script>
+		{{/pageWebjars}}
+
+		{{#pageScripts}}
+		  {{! Page-specific scripts can be specified in the view model }}
+		  <script type="text/javascript" src="{{req.contextPath}}/assets/js/{{.}}"></script>
+		{{/pageScripts}}
+		
+		<script type="text/javascript" src="{{req.contextPath}}/assets/js/datepicker.js"></script>
+	</body>
+</html>

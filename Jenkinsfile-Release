@@ -1,0 +1,45 @@
+pipeline {
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '3'))
+  }
+  environment {
+    GIT_URL = 'https://source.ohsu.edu/OCTRI-Apps/omop-annotator.git'
+  }
+  parameters {
+    string(name: 'VERSION', description: 'The version to release.')
+  }
+  tools {
+    maven '3.5.0'
+    jdk 'JDK11'
+  }
+  stages {
+    stage('Check Parameters') {
+      steps {
+        deleteDir()
+        checkParams(params)
+      }
+    }
+    stage('Release') {
+      steps {
+        checkoutMaster(env.GIT_URL)
+        artifactoryReleasePrep(env.VERSION)
+        octriArtifactoryBuild('master')
+      }
+    }
+    stage('Build Docker Image') {
+      steps {
+        mavenDockerMetadata(env)
+        buildProjectDockerImage(env.IMAGE_NAME, env.VERSION)
+        bumpKubernetesManifests(env.IMAGE_NAME, env.VERSION)
+      }
+    }
+    stage('Next Version') {
+      steps {
+        nextDevelopmentVersion()
+        octriArtifactoryBuild('master')
+        buildProjectDockerImage(env.IMAGE_NAME)
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# ConfigMap for omop_annotator-dev
+#
+# k8s documentation:
+# - https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap
+#
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: omop-annotator-dev
+data:
+  EXTRA_JAVA_OPTS: -XX:MaxRAMPercentage=75.0
+  SERVER_SERVLET_CONTEXTPATH: /omop_annotator
+  TZ: America/Los_Angeles

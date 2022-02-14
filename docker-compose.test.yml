@@ -1,0 +1,14 @@
+# MySQL service for unit tests
+version: "2"
+services:
+  mysql_test:
+    image: mysql:5.7
+    volumes:
+      - ./docker_data/mysql_test:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=omop_annotator
+      - MYSQL_USER=omop_annotator
+      - MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD

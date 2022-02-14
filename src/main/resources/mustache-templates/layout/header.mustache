@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>{{displayName}}</title>
+<meta charset="utf-8">
+<meta name="ctx" content="{{req.contextPath}}/">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{{>authlib_fragments/css}} 
+<link rel="stylesheet" href="{{req.contextPath}}/webjars/datatables/css/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="{{req.contextPath}}/assets/css/datepicker.css">
+<link rel="stylesheet" href="{{req.contextPath}}/assets/css/main.css">
+</head>
+<body>
+	<header>
+	
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<a class="navbar-brand" href="#">{{displayName}}</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarCollapse" aria-controls="navbarCollapse"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"><a class="nav-link"
+						href="{{req.contextPath}}/">Home</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#"
+						id="dataMenu" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Data</a>
+						<div class="dropdown-menu"
+							aria-labelledby="dataMenu">
+							{{>components/data_items}}
+						</div>
+					</li>
+										{{#isAdminOrSuper}}
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#"
+						id="adminMenu" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Admin</a>
+						<div class="dropdown-menu"
+							aria-labelledby="adminMenu">
+							{{! admin routes can go here }}
+						</div></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#"
+						id="userManagementMenu" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Users</a>
+						<div class="dropdown-menu"
+							aria-labelledby="userManagementMenu">
+							<a class="dropdown-item" href="{{req.contextPath}}/admin/user/form"><span class="fa fa-user-plus"></span> New User</a>
+							<a class="dropdown-item" href="{{req.contextPath}}/admin/user/list"><span class="fa fa-list"></span> List of Users</a>
+						</div></li>
+					{{/isAdminOrSuper}}
+									</ul>
+				
+									<ul class="navbar-nav">
+					{{#isLoggedIn}}
+					<li class="nav-item">
+						<a class="nav-link" href="{{req.contextPath}}/logout"><span class="fa fa-power-off"></span> Log Out ({{username}})</a>
+					</li>
+					{{/isLoggedIn}}
+					{{^isLoggedIn}}
+					<li class="nav-item">
+						<a class="nav-link" href="{{req.contextPath}}/login"><span class="fa fa-power-off"></span> Log In</a>
+					</li>
+					{{/isLoggedIn}}
+				</ul>
+							</div>
+		</nav>
+
+	</header>
+
+	<main role="main" class="container">

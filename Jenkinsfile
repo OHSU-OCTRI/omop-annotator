@@ -5,6 +5,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '3'))
   }
   environment {
+    DEFAULT_BRANCH = 'main'
     DEPLOYMENT_FILE = 'k8s/dev/'
   }
   triggers {
@@ -23,12 +24,12 @@ pipeline {
     }
     stage('Build') {
       steps {
-        octriArtifactoryBuild(env.BRANCH_NAME)
+        octriMavenBuild(deployArtifacts: env.BRANCH_NAME == env.DEFAULT_BRANCH)
       }
     }
     stage('Build Docker image') {
       when {
-        branch 'master'
+        branch env.DEFAULT_BRANCH
       }
       steps {
         mavenDockerMetadata(env)
@@ -37,7 +38,7 @@ pipeline {
     }
     stage('Deploy latest build') {
       when {
-        branch 'master'
+        branch env.DEFAULT_BRANCH
       }
       steps {
         deployLatestBuild(env.DEPLOYMENT_FILE)

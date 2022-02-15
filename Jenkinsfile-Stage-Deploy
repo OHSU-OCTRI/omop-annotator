@@ -11,7 +11,7 @@ pipeline {
     stage('Prepare') {
       steps {
         deleteDir()
-        checkoutMaster(env.GIT_URL)
+        checkoutMain(env.GIT_URL)
       }
     }
     stage('Deploy to Kubernetes') {

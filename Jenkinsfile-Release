@@ -5,6 +5,8 @@ pipeline {
   }
   environment {
     GIT_URL = 'https://source.ohsu.edu/OCTRI-Apps/omop-annotator.git'
+    GIT_CREDENTIALS = 'gcrcicore-ghe-token'
+    DEFAULT_BRANCH = 'main'
   }
   parameters {
     string(name: 'VERSION', description: 'The version to release.')
@@ -22,22 +24,23 @@ pipeline {
     }
     stage('Release') {
       steps {
-        checkoutMaster(env.GIT_URL)
-        artifactoryReleasePrep(env.VERSION)
-        octriArtifactoryBuild('master')
+        checkoutBranch(env.GIT_URL, env.GIT_CREDENTIALS, env.DEFAULT_BRANCH)
+        octriMavenReleasePrep(env.VERSION, env.DEFAULT_BRANCH)
+        octriMavenBuild()
       }
     }
     stage('Build Docker Image') {
       steps {
         mavenDockerMetadata(env)
         buildProjectDockerImage(env.IMAGE_NAME, env.VERSION)
-        bumpKubernetesManifests(env.IMAGE_NAME, env.VERSION)
+        bumpKubernetesManifests(env.IMAGE_NAME, env.VERSION, env.DEFAULT_BRANCH)
       }
     }
     stage('Next Version') {
       steps {
-        nextDevelopmentVersion()
-        octriArtifactoryBuild('master')
+        // blank string calculates next version from pom.xml
+        nextDevelopmentVersion('', env.DEFAULT_BRANCH)
+        octriMavenBuild()
         buildProjectDockerImage(env.IMAGE_NAME)
       }
     }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class ErrorHandlingController {
-	
+
 	/**
 	 * Fill in the model and forward to the standard error page.
 	 * 
@@ -19,12 +19,12 @@ public class ErrorHandlingController {
 	 * @return
 	 */
 	@GetMapping("/notFound")
-    public String getNotFound(Model model) {
+	public String getNotFound(Model model) {
 		model.addAttribute("status", 404);
 		model.addAttribute("error", "Not Found");
 		model.addAttribute("message", "The page you requested was not found.");
 		model.addAttribute("timestamp", new Date());
-        return "error";
-    }
+		return "error";
+	}
 
 }

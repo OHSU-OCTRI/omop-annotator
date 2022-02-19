@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @param <U>
  */
 public abstract class AbstractEntityController<T extends AbstractEntity, U extends PagingAndSortingRepository<T, Long>>
-extends AbstractBaseEntityController<T, U> {
+		extends AbstractBaseEntityController<T, U> {
 
 	@GetMapping("/")
 	@Override

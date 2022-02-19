@@ -9,7 +9,6 @@ import org.octri.authentication.server.security.entity.User;
 @Entity
 public class Judgment extends AbstractEntity {
 
-
 	private static final long serialVersionUID = -7918768470025483600L;
 
 	@ManyToOne

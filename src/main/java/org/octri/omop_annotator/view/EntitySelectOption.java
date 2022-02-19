@@ -2,7 +2,6 @@ package org.octri.omop_annotator.view;
 
 import java.util.Collection;
 
-
 /**
  * Used for UI select inputs. Wraps the choice along with its selected status.
  * 

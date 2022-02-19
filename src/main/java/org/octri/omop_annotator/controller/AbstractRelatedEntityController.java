@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.octri.authentication.server.view.Labelled;
 import org.octri.omop_annotator.domain.AbstractEntity;
-import org.octri.omop_annotator.view.Labelled;
 import org.octri.omop_annotator.view.ViewUtils;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.validation.BindingResult;

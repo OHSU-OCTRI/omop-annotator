@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.octri.omop_annotator.view.Labelled;
+
 @Entity
-public class Topic extends AbstractEntity {
+public class Topic extends AbstractEntity implements Labelled {
 
 	private static final long serialVersionUID = 7416157520852431199L;
 
@@ -43,4 +45,10 @@ public class Topic extends AbstractEntity {
 	public void setNarrative(String narrative) {
 		this.narrative = narrative;
 	}
+
+	@Override
+	public String getLabel() {
+		return getTopicSet().getLabel() + ": " + getTopicNumber();
+	}
+
 }

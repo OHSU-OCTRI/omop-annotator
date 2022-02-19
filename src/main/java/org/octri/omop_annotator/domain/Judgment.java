@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.octri.authentication.server.security.entity.User;
 
 @Entity
-public class Judgement extends AbstractEntity {
+public class Judgment extends AbstractEntity {
 
 
 	private static final long serialVersionUID = -7918768470025483600L;

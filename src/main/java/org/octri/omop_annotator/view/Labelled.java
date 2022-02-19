@@ -1,9 +1,9 @@
 package org.octri.omop_annotator.view;
 
 /**
- * Interface used for labelling an object in the UI.
+ * Interface used for labeling an object in the UI.
  * 
- * @author lawhead
+ *
  */
 public interface Labelled {
 

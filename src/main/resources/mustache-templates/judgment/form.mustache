@@ -1,0 +1,36 @@
+{{>components/form_start}}
+{{#entity}}
+<div class="form-group">
+    <label for="user"class=" required-field">User</label>
+    <select class="form-control" id="user" name="user" value="{{#user}}{{.}}{{/user}}" required>
+        <option value="">-- Please Select --</option>
+        {{#userOptions}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/userOptions}}
+    </select>
+    <div class="invalid-feedback">Value must be present</div>
+</div>
+
+<div class="form-group">
+    <label for="poolEntry"class=" required-field">Pool entry</label>
+    <select class="form-control" id="poolEntry" name="poolEntry" value="{{#poolEntry}}{{.}}{{/poolEntry}}" required>
+        <option value="">-- Please Select --</option>
+        {{#poolEntryOptions}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/poolEntryOptions}}
+    </select>
+    <div class="invalid-feedback">Value must be present</div>
+</div>
+
+<div class="form-group">
+    <label for="annotationLabel">Annotation label</label>
+    <select class="form-control" id="annotationLabel" name="annotationLabel" value="{{#annotationLabel}}{{.}}{{/annotationLabel}}" >
+        <option value="">-- Please Select --</option>
+        {{#annotationLabelOptions}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/annotationLabelOptions}}
+    </select>
+</div>
+
+{{/entity}}
+{{>components/form_end}}

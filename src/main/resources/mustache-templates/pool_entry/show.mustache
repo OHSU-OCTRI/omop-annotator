@@ -1,0 +1,36 @@
+{{>layout/header}}
+<div class="container">
+    <h1>{{entityName}}</h1>
+    {{>components/messages}}
+    <div>
+        {{#entity}}
+        <h5>Pool</h5>
+        <p>
+            {{#pool}}{{pool.label}}{{/pool}}
+            {{^pool}}<span class="text-muted">None</span>{{/pool}}
+        </p>
+        <h5>Topic</h5>
+        <p>
+            {{#topic}}{{topic.label}}{{/topic}}
+            {{^topic}}<span class="text-muted">None</span>{{/topic}}
+        </p>
+        <h5>Sort order</h5>
+        <p>
+            {{#sortOrder}}{{.}}{{/sortOrder}}
+            {{^sortOrder}}<span class="text-muted">None</span>{{/sortOrder}}
+        </p>
+        <h5>Document id</h5>
+        <p>
+            {{#documentId}}{{.}}{{/documentId}}
+            {{^documentId}}<span class="text-muted">None</span>{{/documentId}}
+        </p>
+        <h5>Frequency</h5>
+        <p>
+            {{#frequency}}{{.}}{{/frequency}}
+            {{^frequency}}<span class="text-muted">None</span>{{/frequency}}
+        </p>
+        {{>components/show_links}}
+        {{/entity}}
+    </div>
+</div>
+{{>layout/footer}}

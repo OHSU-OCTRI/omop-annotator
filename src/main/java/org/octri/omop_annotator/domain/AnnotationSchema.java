@@ -11,7 +11,7 @@ public class AnnotationSchema extends AbstractEntity implements Labelled {
 	private static final long serialVersionUID = 7887594025584093096L;
 
 	@NotNull
-	String name;
+	private String name;
 
 	public String getName() {
 		return name;

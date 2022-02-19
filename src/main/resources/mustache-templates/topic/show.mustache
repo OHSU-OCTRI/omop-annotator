@@ -1,0 +1,26 @@
+{{>layout/header}}
+<div class="container">
+    <h1>{{entityName}}</h1>
+    {{>components/messages}}
+    <div>
+        {{#entity}}
+        <h5>Topic set</h5>
+        <p>
+            {{#topicSet}}{{topicSet.label}}{{/topicSet}}
+            {{^topicSet}}<span class="text-muted">None</span>{{/topicSet}}
+        </p>
+        <h5>Topic number</h5>
+        <p>
+            {{#topicNumber}}{{.}}{{/topicNumber}}
+            {{^topicNumber}}<span class="text-muted">None</span>{{/topicNumber}}
+        </p>
+        <h5>Narrative</h5>
+        <p>
+            {{#narrative}}{{.}}{{/narrative}}
+            {{^narrative}}<span class="text-muted">None</span>{{/narrative}}
+        </p>
+        {{>components/show_links}}
+        {{/entity}}
+    </div>
+</div>
+{{>layout/footer}}

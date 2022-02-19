@@ -2,7 +2,6 @@ package org.octri.omop_annotator.view;
 
 import java.util.Collection;
 
-import org.octri.omop_annotator.domain.AbstractEntity;
 
 /**
  * Used for UI select inputs. Wraps the choice along with its selected status.
@@ -11,7 +10,7 @@ import org.octri.omop_annotator.domain.AbstractEntity;
  *
  * @param <T>
  */
-public class EntitySelectOption<T extends AbstractEntity & Labelled> extends SelectOption<T> {
+public class EntitySelectOption<T extends Identified & Labelled> extends SelectOption<T> {
 
 	/**
 	 * Constructor

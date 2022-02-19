@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.octri.omop_annotator.view.Labelled;
+
 @Entity
-public class PoolEntry extends AbstractEntity {
+public class PoolEntry extends AbstractEntity implements Labelled {
 
 	private static final long serialVersionUID = 720834163855020712L;
 
@@ -62,6 +64,12 @@ public class PoolEntry extends AbstractEntity {
 
 	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
+	}
+
+	@Override
+	public String getLabel() {
+		// TODO: what is a good label for this entity?
+		return toString();
 	}
 
 }

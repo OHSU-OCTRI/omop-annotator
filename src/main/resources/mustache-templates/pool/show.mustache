@@ -1,0 +1,31 @@
+{{>layout/header}}
+<div class="container">
+    <h1>{{entityName}}</h1>
+    {{>components/messages}}
+    <div>
+        {{#entity}}
+        <h5>Topic set</h5>
+        <p>
+            {{#topicSet}}{{topicSet.label}}{{/topicSet}}
+            {{^topicSet}}<span class="text-muted">None</span>{{/topicSet}}
+        </p>
+        <h5>Annotation schema</h5>
+        <p>
+            {{#annotationSchema}}{{annotationSchema.label}}{{/annotationSchema}}
+            {{^annotationSchema}}<span class="text-muted">None</span>{{/annotationSchema}}
+        </p>
+        <h5>Name</h5>
+        <p>
+            {{#name}}{{.}}{{/name}}
+            {{^name}}<span class="text-muted">None</span>{{/name}}
+        </p>
+        <h5>Comments</h5>
+        <p>
+            {{#comments}}{{.}}{{/comments}}
+            {{^comments}}<span class="text-muted">None</span>{{/comments}}
+        </p>
+        {{>components/show_links}}
+        {{/entity}}
+    </div>
+</div>
+{{>layout/footer}}

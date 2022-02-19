@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.octri.omop_annotator.view.Labelled;
+
 @Entity
-public class AnnotationLabel extends AbstractEntity {
+public class AnnotationLabel extends AbstractEntity implements Labelled {
 
 	private static final long serialVersionUID = -7698547499917439272L;
 
@@ -15,6 +17,8 @@ public class AnnotationLabel extends AbstractEntity {
 
 	private Integer displayOrder;
 	private String accentColor;
+
+	@NotNull
 	private String displayLabel;
 	private String outputLabel;
 
@@ -56,6 +60,11 @@ public class AnnotationLabel extends AbstractEntity {
 
 	public void setOutputLabel(String outputLabel) {
 		this.outputLabel = outputLabel;
+	}
+
+	@Override
+	public String getLabel() {
+		return getDisplayLabel();
 	}
 
 }

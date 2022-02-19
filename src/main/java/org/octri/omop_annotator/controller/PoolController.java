@@ -1,14 +1,15 @@
 package org.octri.omop_annotator.controller;
 
+import java.util.Map;
+
 import org.octri.omop_annotator.domain.Pool;
-import org.octri.omop_annotator.repository.PoolRepository;
 import org.octri.omop_annotator.repository.AnnotationSchemaRepository;
+import org.octri.omop_annotator.repository.PoolRepository;
 import org.octri.omop_annotator.repository.TopicSetRepository;
 import org.octri.omop_annotator.view.OptionList;
-import java.util.Map;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**

@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * Represents a collection of annotation labels used when judging entries.
+ */
 @Entity
 public class AnnotationSchema extends AbstractEntity implements Labelled {
 

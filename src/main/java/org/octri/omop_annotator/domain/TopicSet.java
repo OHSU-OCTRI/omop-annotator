@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * Represents a collection of {@link Topic}s.
+ */
 @Entity
 public class TopicSet extends AbstractEntity implements Labelled {
 

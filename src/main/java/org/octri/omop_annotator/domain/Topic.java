@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * Criteria against which a User judges an entry.
+ * Ex. 'Women age 50-74 years who have had breast cancer screening with mammogram.'
+ */
 @Entity
 public class Topic extends AbstractEntity implements Labelled {
 

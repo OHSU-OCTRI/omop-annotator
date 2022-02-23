@@ -7,6 +7,11 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * A collection of entries for judgment. Entries will be labelled with one of the annotations in the given
+ * {@link AnnotationSchema}.
+ *
+ */
 @Entity
 public class Pool extends AbstractEntity implements Labelled {
 

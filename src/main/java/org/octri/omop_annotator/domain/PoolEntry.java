@@ -6,6 +6,11 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * Item in a {@link Pool} to be judged/annotated. Each entry has a given {@link Topic}, as well as an ordering for
+ * display.
+ *
+ */
 @Entity
 public class PoolEntry extends AbstractEntity implements Labelled {
 

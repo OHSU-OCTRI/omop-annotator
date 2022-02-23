@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.authentication.server.security.entity.User;
 
+/**
+ * Represents a User's judgment of a {@link PoolEntry}. The entry annotated by the User with an {@link AnnotationLabel}.
+ *
+ */
 @Entity
 public class Judgment extends AbstractEntity {
 

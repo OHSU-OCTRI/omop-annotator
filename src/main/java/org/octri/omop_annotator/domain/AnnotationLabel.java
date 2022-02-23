@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 
 import org.octri.omop_annotator.view.Labelled;
 
+/**
+ * Label assigned to a {@link PoolEntry} through a {@link Judgment}.
+ *
+ */
 @Entity
 public class AnnotationLabel extends AbstractEntity implements Labelled {
 

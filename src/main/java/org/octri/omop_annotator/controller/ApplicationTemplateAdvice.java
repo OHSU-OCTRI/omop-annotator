@@ -29,6 +29,6 @@ public class ApplicationTemplateAdvice {
 	@ExceptionHandler(value = EntityNotFoundException.class)
 	public void defaultErrorHandler(HttpServletRequest request, HttpServletResponse response,
 			EntityNotFoundException e) throws IOException, ServletException {
-	    response.sendRedirect(request.getContextPath() + "/notFound");
+		response.sendRedirect(request.getContextPath() + "/notFound");
 	}
 }

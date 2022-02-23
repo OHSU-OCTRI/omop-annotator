@@ -1,0 +1,26 @@
+{{>layout/header}}
+<div class="container">
+    <h1>{{entityName}}</h1>
+    {{>components/messages}}
+    <div>
+        {{#entity}}
+        <h5>User</h5>
+        <p>
+            {{#user}}{{user.label}}{{/user}}
+            {{^user}}<span class="text-muted">None</span>{{/user}}
+        </p>
+        <h5>Pool entry</h5>
+        <p>
+            {{#poolEntry}}{{poolEntry.label}}{{/poolEntry}}
+            {{^poolEntry}}<span class="text-muted">None</span>{{/poolEntry}}
+        </p>
+        <h5>Annotation label</h5>
+        <p>
+            {{#annotationLabel}}{{annotationLabel.label}}{{/annotationLabel}}
+            {{^annotationLabel}}<span class="text-muted">None</span>{{/annotationLabel}}
+        </p>
+        {{>components/show_links}}
+        {{/entity}}
+    </div>
+</div>
+{{>layout/footer}}

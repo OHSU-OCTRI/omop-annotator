@@ -13,13 +13,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import org.octri.omop_annotator.view.Identified;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntity implements Serializable, Identified {
 
 	private static final long serialVersionUID = 1L;
 

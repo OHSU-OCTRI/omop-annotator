@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
-import org.octri.omop_annotator.domain.AbstractEntity;
-
 /**
  * Used for rendering mustache templates. Helper functions for creating a list of select input options.
  * 
@@ -25,7 +23,7 @@ public class OptionList<T> {
 	 * @param selected
 	 * @return
 	 */
-	public static <T extends AbstractEntity & Labelled> List<EntitySelectOption<T>> fromSearch(Iterable<T> iter,
+	public static <T extends Identified & Labelled> List<EntitySelectOption<T>> fromSearch(Iterable<T> iter,
 			T selected) {
 		return StreamSupport.stream(iter.spliterator(), false)
 				.map(area -> new EntitySelectOption<T>(area, selected))
@@ -40,7 +38,7 @@ public class OptionList<T> {
 	 * @param selected
 	 * @return
 	 */
-	public static <T extends AbstractEntity & Labelled> List<EntitySelectOption<T>> multiFromSearch(Iterable<T> iter,
+	public static <T extends Identified & Labelled> List<EntitySelectOption<T>> multiFromSearch(Iterable<T> iter,
 			Collection<T> selected) {
 		return StreamSupport.stream(iter.spliterator(), false)
 				.map(area -> new EntitySelectOption<T>(area, selected))

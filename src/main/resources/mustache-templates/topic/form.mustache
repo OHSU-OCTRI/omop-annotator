@@ -1,0 +1,26 @@
+{{>components/form_start}}
+{{#entity}}
+<div class="form-group">
+    <label for="topicSet"class=" required-field">Topic set</label>
+    <select class="form-control" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>
+        <option value="">-- Please Select --</option>
+        {{#topicSetOptions}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+        {{/topicSetOptions}}
+    </select>
+    <div class="invalid-feedback">Value must be present</div>
+</div>
+
+<div class="form-group">
+    <label for="topicNumber"class=" required-field">Topic number</label>
+    <input type="number" class="form-control" id="topicNumber" name="topicNumber" value="{{#topicNumber}}{{.}}{{/topicNumber}}" required>
+    <div class="invalid-feedback">Value must be present</div>
+</div>
+
+<div class="form-group">
+    <label for="narrative">Narrative</label>
+    <input type="text" class="form-control" id="narrative" name="narrative" value="{{#narrative}}{{.}}{{/narrative}}" >
+</div>
+
+{{/entity}}
+{{>components/form_end}}

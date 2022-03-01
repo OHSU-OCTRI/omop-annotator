@@ -3,4 +3,4 @@
  * extend {@link AbstractEntity}. Additionally, a database migration defining the table should be created and placed
  * in the src/main/resources/db/migration directory.
  */
-package org.octri.omop_annotator.domain;
+package org.octri.omop_annotator.domain.app;

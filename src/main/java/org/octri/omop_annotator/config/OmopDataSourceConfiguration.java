@@ -20,12 +20,12 @@ import org.springframework.transaction.PlatformTransactionManager;
  * Configuration for the data source that stores OMOP domain entities.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "org.octri.omop_annotator.omop", entityManagerFactoryRef = "omopEntityManagerFactory", transactionManagerRef = "omopTransactionManager")
+@EnableJpaRepositories(basePackages = "org.octri.omop_annotator.repository.omop", entityManagerFactoryRef = "omopEntityManagerFactory", transactionManagerRef = "omopTransactionManager")
 public class OmopDataSourceConfiguration {
 
 	private static final Log log = LogFactory.getLog(OmopDataSourceConfiguration.class);
 
-	public static final String OMOP_DOMAIN_PACKAGE = "org.octri.omop_annotator.omop.domain";
+	public static final String OMOP_DOMAIN_PACKAGE = "org.octri.omop_annotator.domain.omop";
 
 	@Bean(name = "omopDataSourceProperties")
 	@ConfigurationProperties(prefix = "omop.datasource")

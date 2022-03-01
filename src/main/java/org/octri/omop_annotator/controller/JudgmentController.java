@@ -3,10 +3,10 @@ package org.octri.omop_annotator.controller;
 import java.util.Map;
 
 import org.octri.authentication.server.security.repository.UserRepository;
-import org.octri.omop_annotator.domain.Judgment;
-import org.octri.omop_annotator.repository.AnnotationLabelRepository;
-import org.octri.omop_annotator.repository.JudgmentRepository;
-import org.octri.omop_annotator.repository.PoolEntryRepository;
+import org.octri.omop_annotator.domain.app.Judgment;
+import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
+import org.octri.omop_annotator.repository.app.JudgmentRepository;
+import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -2,10 +2,10 @@ package org.octri.omop_annotator.controller;
 
 import java.util.Map;
 
-import org.octri.omop_annotator.domain.PoolEntry;
-import org.octri.omop_annotator.repository.PoolEntryRepository;
-import org.octri.omop_annotator.repository.PoolRepository;
-import org.octri.omop_annotator.repository.TopicRepository;
+import org.octri.omop_annotator.domain.app.PoolEntry;
+import org.octri.omop_annotator.repository.app.PoolEntryRepository;
+import org.octri.omop_annotator.repository.app.PoolRepository;
+import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

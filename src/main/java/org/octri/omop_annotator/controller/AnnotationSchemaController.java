@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.controller;
 
-import org.octri.omop_annotator.domain.AnnotationSchema;
-import org.octri.omop_annotator.repository.AnnotationSchemaRepository;
+import org.octri.omop_annotator.domain.app.AnnotationSchema;
+import org.octri.omop_annotator.repository.app.AnnotationSchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

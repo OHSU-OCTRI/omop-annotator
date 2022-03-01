@@ -1,4 +1,4 @@
-package org.octri.omop_annotator;
+package org.octri.omop_annotator.config;
 
 import org.octri.authentication.FormSecurityConfiguration;
 import org.springframework.context.annotation.Configuration;

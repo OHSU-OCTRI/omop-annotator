@@ -7,7 +7,7 @@ services:
     depends_on:
       - mysql
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql/omop_annotator?serverTimezone=America/Los_Angeles
+      - APP_DATASOURCE_URL=jdbc:mysql://mysql/omop_annotator?serverTimezone=America/Los_Angeles
   mysql:
     image: mysql:5.7
     volumes:

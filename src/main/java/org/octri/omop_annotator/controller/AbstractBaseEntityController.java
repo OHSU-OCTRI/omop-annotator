@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.octri.omop_annotator.domain.AbstractEntity;
+import org.octri.omop_annotator.domain.app.AbstractEntity;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.dao.DataIntegrityViolationException;

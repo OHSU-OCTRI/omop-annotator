@@ -2,7 +2,7 @@ package org.octri.omop_annotator.controller;
 
 import java.util.Map;
 
-import org.octri.omop_annotator.domain.AbstractEntity;
+import org.octri.omop_annotator.domain.app.AbstractEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

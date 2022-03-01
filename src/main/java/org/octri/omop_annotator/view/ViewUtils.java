@@ -3,7 +3,7 @@ package org.octri.omop_annotator.view;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.octri.omop_annotator.domain.AbstractEntity;
+import org.octri.omop_annotator.domain.app.AbstractEntity;
 
 /**
  * Utility methods for generating view-related code.

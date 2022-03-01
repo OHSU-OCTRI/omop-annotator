@@ -1,4 +1,4 @@
-package org.octri.omop_annotator.domain;
+package org.octri.omop_annotator.domain.app;
 
 import java.io.Serializable;
 import java.util.Date;

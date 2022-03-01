@@ -2,9 +2,9 @@ package org.octri.omop_annotator.controller;
 
 import java.util.Map;
 
-import org.octri.omop_annotator.domain.AnnotationLabel;
-import org.octri.omop_annotator.repository.AnnotationLabelRepository;
-import org.octri.omop_annotator.repository.AnnotationSchemaRepository;
+import org.octri.omop_annotator.domain.app.AnnotationLabel;
+import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
+import org.octri.omop_annotator.repository.app.AnnotationSchemaRepository;
 import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

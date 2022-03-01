@@ -14,9 +14,13 @@ Setup
 Configuration
 -------------
 
-Copy `env.sample` to `.env` and update as needed.
+Copy `env.sample` to `.env` and update as needed. At a minimum, you should update `.env` to set the RDW connection parameters.
 
-In .env, fill in your LDAP credentials at `YOUR_USERNAME` and `YOUR_PASSWORD`.
+* `OMOP_DATASOURCE_URL`
+* `OMOP_DATASOURCE_USERNAME`
+* `OMOP_DATASOURCE_PASSWORD`
+
+You should also fill in your LDAP credentials at `YOUR_USERNAME` and `YOUR_PASSWORD`.
 
 LDAP_CONTEXTSOURCE_USERDN=cn=YOUR_USERNAME,ou=User Accounts,dc=ohsum01,dc=ohsu,dc=edu
 LDAP_CONTEXTSOURCE_PASSWORD=YOUR_PASSWORD

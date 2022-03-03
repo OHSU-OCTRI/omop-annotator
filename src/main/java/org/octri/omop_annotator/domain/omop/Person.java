@@ -6,6 +6,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * OMOP 5.3 Definition of a Person 
+ * 
+ * The following columns have been excluded:
+ * 
+ * gender_concept_id
+ * year_of_birth
+ * month_of_birth
+ * day_of_birth
+ * race_concept_id
+ * ethnicity_concept_id
+ * location_id
+ * provider_id
+ * care_site_id
+ * person_source_value
+ * gender_source_concept_id
+ * race_source_concept_id
+ * ethnicity_source_concept_id
+ */
 @Entity
 public class Person {
 	

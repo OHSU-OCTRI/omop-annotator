@@ -1,13 +1,15 @@
 package org.octri.omop_annotator.domain.omop;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -41,7 +43,8 @@ public class ProcedureOccurrence {
 	private Concept procedure;
 	
 	@Column(name="procedure_datetime")
-	private Timestamp procedureDatetime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date procedureDatetime;
 	
 	@ManyToOne
 	@JoinColumn(name="procedure_type_concept_id")
@@ -78,11 +81,11 @@ public class ProcedureOccurrence {
 		this.procedure = procedure;
 	}
 
-	public Timestamp getProcedureDatetime() {
+	public Date getProcedureDatetime() {
 		return procedureDatetime;
 	}
 
-	public void setProcedureDatetime(Timestamp procedureDatetime) {
+	public void setProcedureDatetime(Date procedureDatetime) {
 		this.procedureDatetime = procedureDatetime;
 	}
 

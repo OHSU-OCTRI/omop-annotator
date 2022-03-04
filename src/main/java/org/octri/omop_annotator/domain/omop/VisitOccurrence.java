@@ -1,12 +1,14 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -44,10 +46,12 @@ public class VisitOccurrence {
 	Concept visitType;
 	
 	@Column(name = "visit_start_datetime")
-	private Timestamp visitStart;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date visitStart;
 
 	@Column(name = "visit_end_datetime")
-	private Timestamp visitEnd;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date visitEnd;
 	
 	@Column(name = "visit_source_value")
 	private String visitSource;
@@ -82,19 +86,19 @@ public class VisitOccurrence {
 		this.visitType = visitType;
 	}
 
-	public Timestamp getVisitStart() {
+	public Date getVisitStart() {
 		return visitStart;
 	}
 
-	public void setVisitStart(Timestamp visitStart) {
+	public void setVisitStart(Date visitStart) {
 		this.visitStart = visitStart;
 	}
 
-	public Timestamp getVisitEnd() {
+	public Date getVisitEnd() {
 		return visitEnd;
 	}
 
-	public void setVisitEnd(Timestamp visitEnd) {
+	public void setVisitEnd(Date visitEnd) {
 		this.visitEnd = visitEnd;
 	}
 

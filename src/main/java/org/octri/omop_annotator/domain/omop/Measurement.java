@@ -1,12 +1,14 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -43,7 +45,8 @@ public class Measurement {
 	private Concept measurement;
 	
 	@Column(name="measurement_datetime")
-	private Timestamp measurementDatetime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date measurementDatetime;
 	
 	@ManyToOne
 	@JoinColumn(name="measurement_type_concept_id")
@@ -92,11 +95,11 @@ public class Measurement {
 		this.measurement = measurement;
 	}
 
-	public Timestamp getMeasurementDatetime() {
+	public Date getMeasurementDatetime() {
 		return measurementDatetime;
 	}
 
-	public void setMeasurementDatetime(Timestamp measurementDatetime) {
+	public void setMeasurementDatetime(Date measurementDatetime) {
 		this.measurementDatetime = measurementDatetime;
 	}
 

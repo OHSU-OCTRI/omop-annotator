@@ -1,10 +1,12 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * OMOP 5.3 Definition of a Person 
@@ -33,7 +35,8 @@ public class Person {
 	public Long id;
 	
 	@Column(name = "birth_datetime")
-	private Timestamp birthDatetime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date birthDatetime;
 	
 	@Column(name="gender_source_value")
 	private String gender;
@@ -52,11 +55,11 @@ public class Person {
 		this.id = id;
 	}
 
-	public Timestamp getBirthDatetime() {
+	public Date getBirthDatetime() {
 		return birthDatetime;
 	}
 
-	public void setBirthDatetime(Timestamp birthDatetime) {
+	public void setBirthDatetime(Date birthDatetime) {
 		this.birthDatetime = birthDatetime;
 	}
 

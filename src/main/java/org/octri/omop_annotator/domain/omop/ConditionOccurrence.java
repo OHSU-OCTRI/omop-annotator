@@ -1,12 +1,14 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -41,10 +43,12 @@ public class ConditionOccurrence {
 	private Concept condition;
 	
 	@Column(name="condition_start_datetime")
-	private Timestamp conditionStart;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date conditionStart;
 	
 	@Column(name="condition_end_datetime")
-	private Timestamp conditionEnd;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date conditionEnd;
 	
 	@ManyToOne
 	@JoinColumn(name="condition_type_concept_id")
@@ -78,19 +82,19 @@ public class ConditionOccurrence {
 		this.condition = condition;
 	}
 
-	public Timestamp getConditionStart() {
+	public Date getConditionStart() {
 		return conditionStart;
 	}
 
-	public void setConditionStart(Timestamp conditionStart) {
+	public void setConditionStart(Date conditionStart) {
 		this.conditionStart = conditionStart;
 	}
 
-	public Timestamp getConditionEnd() {
+	public Date getConditionEnd() {
 		return conditionEnd;
 	}
 
-	public void setConditionEnd(Timestamp conditionEnd) {
+	public void setConditionEnd(Date conditionEnd) {
 		this.conditionEnd = conditionEnd;
 	}
 

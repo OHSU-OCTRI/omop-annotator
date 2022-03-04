@@ -1,12 +1,14 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -44,10 +46,12 @@ public class DrugExposure {
 	private Concept drug;
 	
 	@Column(name="drug_exposure_start_datetime")
-	private Timestamp drugStart;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date drugStart;
 	
 	@Column(name="drug_exposure_end_datetime")
-	private Timestamp drugEnd;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date drugEnd;
 	
 	@Column(name="stop_reason")
 	private String stopReason;
@@ -93,19 +97,19 @@ public class DrugExposure {
 		this.drug = drug;
 	}
 
-	public Timestamp getDrugStart() {
+	public Date getDrugStart() {
 		return drugStart;
 	}
 
-	public void setDrugStart(Timestamp drugStart) {
+	public void setDrugStart(Date drugStart) {
 		this.drugStart = drugStart;
 	}
 
-	public Timestamp getDrugEnd() {
+	public Date getDrugEnd() {
 		return drugEnd;
 	}
 
-	public void setDrugEnd(Timestamp drugEnd) {
+	public void setDrugEnd(Date drugEnd) {
 		this.drugEnd = drugEnd;
 	}
 

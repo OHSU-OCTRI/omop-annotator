@@ -15,6 +15,7 @@ public class HomeController {
 	@GetMapping("/")
 	public ModelAndView welcome(Map<String, Object> model) {
 
+		model.put("pageScripts", new String[] { "judgment.js" });
 		model.put("page_title", "OMOP Annotator");
 		return new ModelAndView("home", model);
 	}

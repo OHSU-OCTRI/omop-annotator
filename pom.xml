@@ -21,7 +21,26 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
+		<node.version>v14.19.0</node.version>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>production</id>
+			<properties>
+				<webpack.args>--mode=production</webpack.args>
+			</properties>
+		</profile>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<webpack.args>--mode=development</webpack.args>
+			</properties>
+		</profile>	
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -115,6 +134,11 @@
 			<version>1.11.3</version>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>vue</artifactId>
+			<version>2.6.11</version>
+		</dependency>
+		<dependency>
 			<groupId>org.octri.authentication</groupId>
 			<artifactId>authentication_lib</artifactId>
 			<version>0.5.5</version>
@@ -128,6 +152,38 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.12.1</version>
+				<executions>
+					<execution>
+						<id>install-node-and-npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm-install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>webpack</id>
+						<goals>
+							<goal>webpack</goal>
+						</goals>
+						<configuration>
+							<arguments>${webpack.args}</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<nodeVersion>${node.version}</nodeVersion>
+					<installDirectory>target</installDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

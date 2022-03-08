@@ -26,7 +26,7 @@ pipeline {
       steps {
         checkoutBranch(env.GIT_URL, env.GIT_CREDENTIALS, env.DEFAULT_BRANCH)
         octriMavenReleasePrep(env.VERSION, env.DEFAULT_BRANCH)
-        octriMavenBuild()
+        octriMavenBuild(options: '-DskipTests -Dmaven.repo.local=.repository -Pproduction')
       }
     }
     stage('Build Docker Image') {

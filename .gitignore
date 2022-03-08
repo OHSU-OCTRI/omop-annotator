@@ -1,6 +1,7 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+# STS
 .apt_generated
 .classpath
 .factorypath
@@ -9,21 +10,16 @@
 .springBeans
 .sts4-cache
 
-.idea
-*.iws
-*.iml
-*.ipr
-
-/nbproject/private/
-/build/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-
 .env
 docker_data/
 .mvn/
 mvnw
 mvnw.cmd
+
+# Node
+node_modules/
+bundle-stats.json
+
+# Jenv
+.java-version
+

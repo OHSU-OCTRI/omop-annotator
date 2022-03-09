@@ -1,0 +1,63 @@
+{
+    "name": "omop-annotator",
+    "version": "2.0.0",
+    "description": "User interface for OMOP Annotator",
+    "main": "index.js",
+    "scripts": {
+        "analyze": "webpack --mode=production; webpack --profile --json > bundle-stats.json; webpack-bundle-analyzer bundle-stats.json ./target/classes/static/assets",
+        "build": "webpack --mode=production",
+        "build:dev": "webpack --mode=development",
+        "lint:js": "eslint ./*.js src/main/resources/**/*.{js,vue}",
+        "start": "webpack --mode=development --progress --colors --watch",
+        "test": "karma start --single-run",
+        "test-jenkins": "karma start karma.conf.js --single-run --reporters junit --browsers Chrome_Headless"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@source.ohsu.edu:OCTRI-Apps/omop-annotator.git"
+    },
+    "author": "Oregon Clinical & Translational Research Institute (OCTRI) <octrihlp@ohsu.edu> (https://github.com/OCTRI)",
+    "license": "BSD-2-Clause",
+    "devDependencies": {
+        "@babel/core": "^7.10.4",
+        "@babel/plugin-transform-runtime": "^7.10.4",
+        "@babel/preset-env": "^7.10.4",
+        "@babel/runtime": "^7.10.4",
+        "@vue/test-utils": "^1.0.3",
+        "babel-eslint": "^10.1.0",
+        "babel-loader": "^8.1.0",
+        "css-loader": "^3.6.0",
+        "eslint": "^7.4.0",
+        "eslint-plugin-vue": "^6.2.2",
+        "flush-promises": "^1.0.2",
+        "jasmine": "^3.5.0",
+        "jquery": "^3.5.1",
+        "karma": "^6.3.4",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-jasmine": "^3.3.1",
+        "karma-junit-reporter": "2.0.1",
+        "karma-sourcemap-loader": "^0.3.7",
+        "karma-spec-reporter": "^0.0.32",
+        "karma-webpack": "^4.0.2",
+        "mini-css-extract-plugin": "^0.9.0",
+        "prettier": "^1.19.1",
+        "style-loader": "^1.2.1",
+        "vue-loader": "^15.9.3",
+        "vue-template-compiler": "^2.6.12",
+        "webpack": "^4.43.0",
+        "webpack-bundle-analyzer": "^3.8.0",
+        "webpack-cli": "^3.3.12"
+    },
+    "dependencies": {
+        "assert": "^2.0.0",
+        "core-js": "^3.11.0",
+        "date-fns": "^2.21.0",
+        "lodash": "^4.17.21",
+        "tippy.js": "^6.3.1",
+        "uuid": "^8.3.2",
+        "vue": "^2.6.12",
+        "vuejs-datepicker": "^1.6.2",
+        "vuelidate": "^0.7.6",
+        "whatwg-fetch": "^3.6.2"
+    }
+}

@@ -1,12 +1,6 @@
-import $ from 'jquery';
-import Vue from 'vue';
+import { createApp } from 'vue';
 import Counter from './components/Counter';
 
-new Vue({
-	el: '#counter',
-	  
-	render(createElement) {
-		return createElement(Counter);
-	}
-});
+const app = createApp(Counter);
+app.mount('#counter');
 

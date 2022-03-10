@@ -2,6 +2,7 @@ const path = require('path');
 
 const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const buildEnv = process.argv.includes('--mode=production') ? 'production' : 'development';
 const devMode = buildEnv === 'development';
@@ -59,12 +60,10 @@ module.exports = {
   devtool: 'cheap-source-map',
   plugins: [
     new VueLoaderPlugin(),
-    //    new MiniCssExtractPlugin({
-    //      filename: 'assets/css/mdcapture.css',
-    //      chunkFilename: '[id].css'
-    //    }),
-    // exclude unused moment locales
-    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: JSON.stringify(true),
+      __VUE_PROD_DEVTOOLS__: JSON.stringify(devMode)
+    })
   ],
   optimization: {
     splitChunks: {

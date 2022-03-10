@@ -4,7 +4,9 @@ const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
-const buildEnv = process.argv.includes('--mode=production') ? 'production' : 'development';
+const buildEnv = process.argv.includes('--mode=production')
+  ? 'production'
+  : 'development';
 const devMode = buildEnv === 'development';
 const jsPrefix = 'src/main/resources/frontend';
 

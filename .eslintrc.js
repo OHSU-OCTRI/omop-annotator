@@ -30,6 +30,7 @@ module.exports = {
     {
       files: [
         '.eslintrc.js',
+        '.prettierrc.js',
         'karma.conf.js',
         'webpack.config.js'
       ],

@@ -13,10 +13,7 @@ module.exports = function (config) {
   config.set({
     frameworks: ['jasmine', 'webpack'],
 
-    files: [
-      'node_modules/jquery/dist/jquery.js',
-      specPath
-    ],
+    files: ['node_modules/jquery/dist/jquery.js', specPath],
 
     preprocessors: {
       '**/*.spec.js': ['webpack', 'sourcemap']

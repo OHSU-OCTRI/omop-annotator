@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="user"class=" required-field">User</label>
+    <label for="user" class="form-label required-field">User</label>
     <select class="form-control" id="user" name="user" value="{{#user}}{{.}}{{/user}}" required>
         <option value="">-- Please Select --</option>
         {{#userOptions}}
@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <label for="poolEntry"class=" required-field">Pool entry</label>
+    <label for="poolEntry" class="form-label required-field">Pool entry</label>
     <select class="form-control" id="poolEntry" name="poolEntry" value="{{#poolEntry}}{{.}}{{/poolEntry}}" required>
         <option value="">-- Please Select --</option>
         {{#poolEntryOptions}}
@@ -23,7 +23,7 @@
 </div>
 
 <div class="form-group">
-    <label for="annotationLabel">Annotation label</label>
+    <label for="annotationLabel" class="form-label">Annotation label</label>
     <select class="form-control" id="annotationLabel" name="annotationLabel" value="{{#annotationLabel}}{{.}}{{/annotationLabel}}" >
         <option value="">-- Please Select --</option>
         {{#annotationLabelOptions}}

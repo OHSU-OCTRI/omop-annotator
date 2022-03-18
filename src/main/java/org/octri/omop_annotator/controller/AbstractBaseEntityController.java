@@ -63,7 +63,7 @@ public abstract class AbstractBaseEntityController<T extends AbstractEntity, U e
 	public String list(Map<String, Object> model) {
 		addTemplateAttributes(model);
 		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-				"datatables/js/dataTables.bootstrap4.min.js" });
+				"datatables/js/dataTables.bootstrap5.min.js" });
 		model.put("pageScripts", new String[] { "table-sorting.js" });
 		model.put("entity_list", getRepository().findAll());
 		return template("list");

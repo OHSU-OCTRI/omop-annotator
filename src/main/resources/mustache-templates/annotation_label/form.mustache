@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="annotationSchema"class="form-label required-field">Annotation schema</label>
+    <label for="annotationSchema" class="form-label required-field">Annotation schema</label>
     <select class="form-control" id="annotationSchema" name="annotationSchema" value="{{#annotationSchema}}{{.}}{{/annotationSchema}}" required>
         <option value="">-- Please Select --</option>
         {{#annotationSchemaOptions}}

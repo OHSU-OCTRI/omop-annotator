@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="topicSet"class="form-label required-field">Topic set</label>
+    <label for="topicSet" class="form-label required-field">Topic set</label>
     <select class="form-control" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>
         <option value="">-- Please Select --</option>
         {{#topicSetOptions}}
@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <label for="annotationSchema"class="form-label required-field">Annotation schema</label>
+    <label for="annotationSchema" class="form-label required-field">Annotation schema</label>
     <select class="form-control" id="annotationSchema" name="annotationSchema" value="{{#annotationSchema}}{{.}}{{/annotationSchema}}" required>
         <option value="">-- Please Select --</option>
         {{#annotationSchemaOptions}}
@@ -23,7 +23,7 @@
 </div>
 
 <div class="form-group">
-    <label for="name"class="form-label required-field">Name</label>
+    <label for="name" class="form-label required-field">Name</label>
     <input type="text" class="form-control" id="name" name="name" value="{{#name}}{{.}}{{/name}}" required>
     <div class="invalid-feedback">Value must be present</div>
 </div>

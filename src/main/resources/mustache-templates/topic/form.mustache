@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="topicSet"class="form-label required-field">Topic set</label>
+    <label for="topicSet" class="form-label required-field">Topic set</label>
     <select class="form-control" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>
         <option value="">-- Please Select --</option>
         {{#topicSetOptions}}
@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <label for="topicNumber"class="form-label required-field">Topic number</label>
+    <label for="topicNumber" class="form-label required-field">Topic number</label>
     <input type="number" class="form-control" id="topicNumber" name="topicNumber" value="{{#topicNumber}}{{.}}{{/topicNumber}}" required>
     <div class="invalid-feedback">Value must be present</div>
 </div>

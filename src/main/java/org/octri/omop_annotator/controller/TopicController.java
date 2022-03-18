@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Controller for {@link Topic} objects.
  */
 @Controller
-@RequestMapping("/data/topic")
+@RequestMapping("/admin/topic")
 public class TopicController extends AbstractEntityController<Topic, TopicRepository> {
 
 	@Autowired

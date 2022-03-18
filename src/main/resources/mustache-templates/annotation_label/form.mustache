@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="annotationSchema"class=" required-field">Annotation schema</label>
+    <label for="annotationSchema"class="form-label required-field">Annotation schema</label>
     <select class="form-control" id="annotationSchema" name="annotationSchema" value="{{#annotationSchema}}{{.}}{{/annotationSchema}}" required>
         <option value="">-- Please Select --</option>
         {{#annotationSchemaOptions}}
@@ -12,22 +12,22 @@
 </div>
 
 <div class="form-group">
-    <label for="displayOrder">Display order</label>
+    <label for="displayOrder" class="form-label">Display order</label>
     <input type="number" class="form-control" id="displayOrder" name="displayOrder" value="{{#displayOrder}}{{.}}{{/displayOrder}}" >
 </div>
 
 <div class="form-group">
-    <label for="accentColor">Accent color</label>
+    <label for="accentColor" class="form-label">Accent color</label>
     <input type="text" class="form-control" id="accentColor" name="accentColor" value="{{#accentColor}}{{.}}{{/accentColor}}" >
 </div>
 
 <div class="form-group">
-    <label for="displayLabel">Display label</label>
+    <label for="displayLabel" class="form-label">Display label</label>
     <input type="text" class="form-control" id="displayLabel" name="displayLabel" value="{{#displayLabel}}{{.}}{{/displayLabel}}" >
 </div>
 
 <div class="form-group">
-    <label for="outputLabel">Output label</label>
+    <label for="outputLabel" class="form-label">Output label</label>
     <input type="text" class="form-control" id="outputLabel" name="outputLabel" value="{{#outputLabel}}{{.}}{{/outputLabel}}" >
 </div>
 

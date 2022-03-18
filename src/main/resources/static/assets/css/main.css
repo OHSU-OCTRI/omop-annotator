@@ -68,3 +68,7 @@ div.parent-summary strong {
 	font-size: 1.2rem;
 }
 
+/** Bootstrap 5 **/
+.form-group {
+	margin-bottom: 1rem;
+}

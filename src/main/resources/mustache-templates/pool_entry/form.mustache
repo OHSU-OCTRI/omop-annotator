@@ -1,7 +1,7 @@
 {{>components/form_start}}
 {{#entity}}
 <div class="form-group">
-    <label for="pool"class=" required-field">Pool</label>
+    <label for="pool"class="form-label required-field">Pool</label>
     <select class="form-control" id="pool" name="pool" value="{{#pool}}{{.}}{{/pool}}" required>
         <option value="">-- Please Select --</option>
         {{#poolOptions}}
@@ -12,7 +12,7 @@
 </div>
 
 <div class="form-group">
-    <label for="topic"class=" required-field">Topic</label>
+    <label for="topic"class="form-label required-field">Topic</label>
     <select class="form-control" id="topic" name="topic" value="{{#topic}}{{.}}{{/topic}}" required>
         <option value="">-- Please Select --</option>
         {{#topicOptions}}
@@ -23,17 +23,17 @@
 </div>
 
 <div class="form-group">
-    <label for="sortOrder">Sort order</label>
+    <label for="sortOrder" class="form-label">Sort order</label>
     <input type="number" class="form-control" id="sortOrder" name="sortOrder" value="{{#sortOrder}}{{.}}{{/sortOrder}}" >
 </div>
 
 <div class="form-group">
-    <label for="documentId">Document id</label>
+    <label for="documentId" class="form-label">Document id</label>
     <input type="number" class="form-control" id="documentId" name="documentId" value="{{#documentId}}{{.}}{{/documentId}}" >
 </div>
 
 <div class="form-group">
-    <label for="frequency">Frequency</label>
+    <label for="frequency" class="form-label">Frequency</label>
     <input type="number" class="form-control" id="frequency" name="frequency" value="{{#frequency}}{{.}}{{/frequency}}" >
 </div>
 

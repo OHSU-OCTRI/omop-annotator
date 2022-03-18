@@ -3,7 +3,7 @@
 		<footer class="footer">
 			<div id="footerContainer" class="container">
 				<hr>
-				<p id="appVersion" class="text-right text-muted small">
+				<p id="appVersion" class="text-end text-muted small">
 					{{appName}} {{appVersion}} &copy; {{currentYear}}
 				</p>
 				<div id="logos" class="text-center">
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 		</footer>
-				{{>authlib_fragments/assets}}
+		{{>authlib_fragments/assets}}
 		
 		<script type="text/javascript" src="{{req.contextPath}}/webjars/jquery-ui/jquery-ui.min.js"></script>
 		{{#pageWebjars}}

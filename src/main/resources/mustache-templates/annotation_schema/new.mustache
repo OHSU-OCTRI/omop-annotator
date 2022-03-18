@@ -1,0 +1,16 @@
+{{>layout/header}}
+
+<h1>New Annotation Schema</h1>
+
+<div>
+	<form name="annotation_schema_form" method="POST" action="{{req.contextPath}}{{baseRoute}}/new_combined" class="needs-validation" novalidate>
+		{{>authlib_fragments/forms/csrf_input}}
+
+		{{>annotation_schema/combined_form}}
+
+		{{>components/form_controls}}
+	</form>
+	<script type="text/javascript" src="{{req.contextPath}}/assets/js/validate.js"></script>
+</div>
+
+{{>layout/footer}}

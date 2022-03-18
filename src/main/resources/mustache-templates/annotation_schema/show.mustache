@@ -9,8 +9,26 @@
             {{#name}}{{.}}{{/name}}
             {{^name}}<span class="text-muted">None</span>{{/name}}
         </p>
-        {{>components/show_links}}
-        {{/entity}}
-    </div>
+		<h3>Annotation Labels</h3>
+		<table class="table table-striped table-bordered sorted">
+			<tr>
+				<th>Display Order</th>
+				<th>Display Name</th>
+				<th>Output Value</th>
+				<th>Accent Color</th>
+			</tr>
+			{{#labels}}
+			<tr>
+				<td>{{#displayOrder}}{{.}}{{/displayOrder}}</td>
+				<td>{{#displayLabel}}{{.}}{{/displayLabel}}</td>
+				<td>{{#outputLabel}}{{.}}{{/outputLabel}}</td>
+				<td>{{#accentColor}}{{.}}{{/accentColor}}</td>
+			</tr>
+			{{/labels}}
+		</table>
+		{{>components/show_links}} 
+		{{/entity}}
+	</div>
+    
 </div>
 {{>layout/footer}}

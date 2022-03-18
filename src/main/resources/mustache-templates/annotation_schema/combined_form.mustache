@@ -1,0 +1,24 @@
+{{#schema.id}}
+	<div class="form-group">
+		<label for="id">ID</label>
+		<input id="id" class="form-control" name="schema.id" value="{{.}}" disabled>
+	</div>
+	<input type="hidden" name="schema.id" value="{{.}}">
+{{/schema.id}}
+
+{{#schema.version}}
+<input type="hidden" name="schema.version" value="{{.}}">
+{{/schema.version}}
+
+<div class="form-group">
+	<label for="name" class="required-field">Name</label>
+	<input id="name" class="form-control" type="text" name="schema.name" value="{{#schema.name}}{{.}}{{/schema.name}}" required>
+	<div class="invalid-feedback">Value must be present</div>
+</div>
+
+{{#schema.id}}
+<div id="annotation_labels" data-context-path="{{req.contextPath}}" data-schema-id="{{.}}"></div>
+{{/schema.id}}
+{{^schema.id}}
+<div id="annotation_labels"></div>
+{{/schema.id}}

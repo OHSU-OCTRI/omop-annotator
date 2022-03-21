@@ -1,0 +1,76 @@
+{{>layout/header}}
+<div class="container-fluid authlib-user-list">
+	<h3>Uploaded Pool Entries</h3>
+	<div class='upload-results-actions'>
+		<a class="new-entity btn btn-outline-success"
+			href="{{req.contextPath}}/admin/pool_entry/"><i
+			class="fas fa-list"></i> All Pool Entries</a> {{#error}} <a
+			class='new-entity btn btn-outline-success'
+			href="{{req.contextPath}}/admin/pool_entry/upload"><i
+			class="fas fa-file-upload"></i> Bulk Upload</a> {{/error}}
+	</div>
+
+	{{#error}}
+	<div class='alert alert-danger' role='alert'>
+		Upload errors occurred and pool entries were not created. Please
+		correct the errors and re-upload the file. {{^hasResults}}
+		<ul>
+			<li>No pool entries were provided.</li>
+		</ul>
+		{{/hasResults}}
+	</div>
+	{{/error}} 
+	{{^error}} 
+	{{#newPoolEntries}} 
+	{{#-first}} 
+	{{#poolEntry.pool}}
+		<h3>New Pool Created</h3>
+		<h5>Topic set</h5>
+		<p>
+			{{#topicSet}}{{topicSet.label}}{{/topicSet}} {{^topicSet}}<span
+				class="text-muted">None</span>{{/topicSet}}
+		</p>
+		<h5>Annotation schema</h5>
+		<p>
+			{{#annotationSchema}}{{annotationSchema.label}}{{/annotationSchema}}
+			{{^annotationSchema}}<span class="text-muted">None</span>{{/annotationSchema}}
+		</p>
+		<h5>Name</h5>
+		<p>
+			{{#name}}{{.}}{{/name}} {{^name}}<span class="text-muted">None</span>{{/name}}
+		</p>
+		<h5>Comments</h5>
+		<p>
+			{{#comments}}{{.}}{{/comments}} {{^comments}}<span class="text-muted">None</span>{{/comments}}
+		</p>
+	{{/poolEntry.pool}}
+	{{/-first}}
+	{{/newPoolEntries}}
+	{{/error}}
+
+	{{#hasResults}}
+	<table
+		class="table table-striped table-bordered users-table center-all display responsive no-wrap">
+		<thead>
+			<tr>
+				<th>Topic Number</th>
+				<th>Person Id</th> {{#error}}
+				<th>Errors</th>{{/error}}
+			</tr>
+		</thead>
+		<tbody>
+			{{#newPoolEntries}}
+			<tr>
+				<td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
+				<td>{{#personId}}{{.}}{{/personId}}</td> {{#error}}
+				<td><span class='text-danger'>{{errorDescription}}</span></td>
+				{{/error}}
+			</tr>
+			{{/newPoolEntries}}
+		</tbody>
+	</table>
+	{{/hasResults}}
+
+</div>
+
+{{>layout/footer}}

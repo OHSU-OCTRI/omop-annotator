@@ -68,6 +68,11 @@ div.parent-summary strong {
 	font-size: 1.2rem;
 }
 
+/** Bootstrap 5 **/
+.form-group {
+	margin-bottom: 1rem;
+}
+
 .annotation-labels input.disabled {
 	border:none;
 }
@@ -75,4 +80,3 @@ div.parent-summary strong {
 .annotation-labels input.disabled:focus {
     outline: none;
 }
-

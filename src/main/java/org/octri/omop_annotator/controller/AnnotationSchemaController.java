@@ -2,9 +2,11 @@ package org.octri.omop_annotator.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
@@ -132,7 +134,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 		AnnotationSchema savedSchema = repository.save(annotationSchemaForm.getSchema());
 
-		List<AnnotationLabel> labels = annotationSchemaForm.getAnnotationLabels();
+		List<AnnotationLabel> labels = annotationSchemaForm.getAnnotationLabels().stream().filter(label -> !StringUtils.isAllBlank(label.getDisplayLabel())).collect(Collectors.toList());
 		if (labels != null && labels.size() > 0) {
 			saveAnnotationLabels(savedSchema, labels);
 		}
@@ -147,7 +149,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 		AnnotationSchema schema = repository.save(annotationSchemaForm.getSchema());
 		annotationLabelRepository.deleteByAnnotationSchema(schema);
 		
-		List<AnnotationLabel> annotationLabels = annotationSchemaForm.getAnnotationLabels();
+		List<AnnotationLabel> annotationLabels = annotationSchemaForm.getAnnotationLabels().stream().filter(label -> !StringUtils.isAllBlank(label.getDisplayLabel())).collect(Collectors.toList());
 		if (annotationLabels != null && annotationLabels.size() > 0) {
 			saveAnnotationLabels(schema, annotationLabels);
 		}

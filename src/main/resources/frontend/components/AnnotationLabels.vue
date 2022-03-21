@@ -1,7 +1,7 @@
 <template>
   <div class="annotation-labels">
     <h2>Annotation Labels</h2>
-    <a v-if="this.rowToEdit == null" @click="addRow" class="new-entity btn btn-success">
+    <a @click="addRow" class="new-entity btn btn-success">
       <i class="fas fa-plus-circle"></i> New
     </a>
     <div id="annotationLabels">
@@ -12,7 +12,6 @@
           <th>Output Value</th>
           <th>Accent Color</th>
           <th></th>
-          <th></th>
         </tr>
         <tr v-if="labels.length == 0">
           <td colspan="6">None</td>
@@ -20,49 +19,27 @@
         <tr v-for="(label, index) in labels" :key="index">
           <td>
             <input
-              :class="index !== this.rowToEdit ? 'disabled' : ''"
-              :readonly="index !== this.rowToEdit"
               :name="`annotationLabels[${index}].displayOrder`"
               v-model="labels[index].displayOrder"
             />
           </td>
           <td>
             <input
-              :class="index !== this.rowToEdit ? 'disabled' : ''"
-              :readonly="index !== this.rowToEdit"
               :name="`annotationLabels[${index}].displayLabel`"
               v-model="labels[index].displayLabel"
             />
           </td>
           <td>
             <input
-              :class="index !== this.rowToEdit ? 'disabled' : ''"
-              :readonly="index !== this.rowToEdit"
               :name="`annotationLabels[${index}].outputLabel`"
               v-model="labels[index].outputLabel"
             />
           </td>
           <td>
             <input
-              :class="index !== this.rowToEdit ? 'disabled' : ''"
-              :readonly="index !== this.rowToEdit"
               :name="`annotationLabels[${index}].accentColor`"
               v-model="labels[index].accentColor"
             />
-          </td>
-          <td>
-            <span
-              v-if="this.rowToEdit == null"
-              @click="editLabel(index)"
-              class="btn btn-link text-primary"
-              ><i class="fas fa-pencil-alt"></i> Edit</span
-            >
-            <span
-              v-if="this.rowToEdit !== null && index == this.rowToEdit"
-              @click="saveLabel(index)"
-              class="btn btn-link text-primary"
-              ><i class="fas fa-save"></i> Save</span
-            >
           </td>
           <td>
             <span
@@ -92,7 +69,6 @@ export default {
   data() {
     return {
       labels: [],
-      rowToEdit: null
     };
   },
   mounted() {
@@ -113,17 +89,10 @@ export default {
         displayOrder: '',
         accentColor: ''
       });
-      this.rowToEdit = this.labels.length - 1;
     },
     deleteLabel(key) {
       this.labels = this.labels.filter(label => label.displayLabel !== key);
     },
-    editLabel(index) {
-      this.rowToEdit = index;
-    },
-    saveLabel(index) {
-      this.rowToEdit = null;
-    }
   },
   computed: {
     isNew() {

@@ -134,7 +134,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 		AnnotationSchema savedSchema = repository.save(annotationSchemaForm.getSchema());
 
-		List<AnnotationLabel> labels = annotationSchemaForm.getAnnotationLabels().stream().filter(label -> !StringUtils.isAllBlank(label.getDisplayLabel())).collect(Collectors.toList());
+		List<AnnotationLabel> labels = annotationSchemaForm.getAnnotationLabels();
 		if (labels != null && labels.size() > 0) {
 			saveAnnotationLabels(savedSchema, labels);
 		}
@@ -149,7 +149,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 		AnnotationSchema schema = repository.save(annotationSchemaForm.getSchema());
 		annotationLabelRepository.deleteByAnnotationSchema(schema);
 		
-		List<AnnotationLabel> annotationLabels = annotationSchemaForm.getAnnotationLabels().stream().filter(label -> !StringUtils.isAllBlank(label.getDisplayLabel())).collect(Collectors.toList());
+		List<AnnotationLabel> annotationLabels = annotationSchemaForm.getAnnotationLabels();
 		if (annotationLabels != null && annotationLabels.size() > 0) {
 			saveAnnotationLabels(schema, annotationLabels);
 		}

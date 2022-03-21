@@ -28,7 +28,9 @@
               <input
                 :name="`annotationLabels[${index}].displayLabel`"
                 v-model="labels[index].displayLabel"
+                required
               />
+              <div class="invalid-feedback">Value must be present</div>
             </td>
             <td>
               <input

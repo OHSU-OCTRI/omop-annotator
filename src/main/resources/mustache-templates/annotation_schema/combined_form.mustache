@@ -1,6 +1,6 @@
 {{#schema.id}}
 	<div class="form-group">
-		<label for="id">ID</label>
+		<label for="id" class="form-label">ID</label>
 		<input id="id" class="form-control" name="schema.id" value="{{.}}" disabled>
 	</div>
 	<input type="hidden" name="schema.id" value="{{.}}">
@@ -11,7 +11,7 @@
 {{/schema.version}}
 
 <div class="form-group">
-	<label for="name" class="required-field">Name</label>
+	<label for="name" class="form-label required-field">Name</label>
 	<input id="name" class="form-control" type="text" name="schema.name" value="{{#schema.name}}{{.}}{{/schema.name}}" required>
 	<div class="invalid-feedback">Value must be present</div>
 </div>

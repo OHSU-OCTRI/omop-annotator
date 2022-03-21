@@ -42,8 +42,8 @@
             />
           </td>
           <td>
-            <span
-              @click="deleteLabel(label.displayLabel)"
+            <span :name="`delete${index}`"
+              @click="deleteLabel(index)"
               class="btn btn-link text-danger"
               ><i class="fas fa-minus-square"></i> Delete</span
             >
@@ -90,8 +90,8 @@ export default {
         accentColor: ''
       });
     },
-    deleteLabel(key) {
-      this.labels = this.labels.filter(label => label.displayLabel !== key);
+    deleteLabel(index) {
+      this.labels.splice(index, 1);
     },
   },
   computed: {

@@ -9,7 +9,7 @@ describe('AnnotationLabels.vue', () => {
 
   it('creates a table row when Add is clicked', async () => {
     const wrapper = mount(AnnotationLabels);
-    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"').exists()).toBe(false);
+    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"]').exists()).toBe(false);
     await wrapper.find('.new-entity').trigger('click');
     expect(wrapper.find('input[name="annotationLabels[0].displayOrder"').exists()).toBe(true);
   });

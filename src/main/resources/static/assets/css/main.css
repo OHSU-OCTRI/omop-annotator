@@ -72,3 +72,11 @@ div.parent-summary strong {
 .form-group {
 	margin-bottom: 1rem;
 }
+
+.annotation-labels input.disabled {
+	border:none;
+}
+
+.annotation-labels input.disabled:focus {
+    outline: none;
+}

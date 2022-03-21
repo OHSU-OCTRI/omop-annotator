@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Controller for {@link TopicSet} objects.
  */
 @Controller
-@RequestMapping("/data/topic_set")
+@RequestMapping("/admin/topic_set")
 public class TopicSetController extends AbstractEntityController<TopicSet, TopicSetRepository> {
 
 	@Autowired

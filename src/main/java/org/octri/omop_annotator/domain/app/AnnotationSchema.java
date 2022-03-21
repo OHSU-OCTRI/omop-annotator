@@ -15,7 +15,7 @@ public class AnnotationSchema extends AbstractEntity implements Labelled {
 
 	@NotNull
 	private String name;
-
+	
 	public String getName() {
 		return name;
 	}

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Controller for {@link PoolEntry} objects.
  */
 @Controller
-@RequestMapping("/data/pool_entry")
+@RequestMapping("/admin/pool_entry")
 public class PoolEntryController extends AbstractEntityController<PoolEntry, PoolEntryRepository> {
 
 	@Autowired

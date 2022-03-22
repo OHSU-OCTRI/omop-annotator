@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.domain.app.Pool;
@@ -105,6 +107,7 @@ public class PoolEntryUploadService {
 		}
 	}
 
+	@Transactional
 	private void saveAll(List<UploadResult> results, TopicSet topicSet, String poolName, String poolComments, AnnotationSchema annotationSchema) {
 		// First create the pool
 		Pool pool = new Pool();

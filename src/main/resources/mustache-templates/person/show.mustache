@@ -4,27 +4,8 @@
     {{>components/messages}}
     <div>
         {{#entity}}
-        <h5>Birthdate</h5>
-        <p>
-            {{#birthDatetime}}{{birthDatetime}}{{/birthDatetime}}
-            {{^birthDatetime}}<span class="text-muted">None</span>{{/birthDatetime}}
-        </p>
-        <h5>Gender</h5>
-        <p>
-            {{#gender}}{{gender}}{{/gender}}
-            {{^gender}}<span class="text-muted">None</span>{{/gender}}
-        </p>
-        <h5>Race</h5>
-        <p>
-            {{#race}}{{race}}{{/race}}
-            {{^race}}<span class="text-muted">None</span>{{/race}}
-        </p>
-        <h5>Ethnicity</h5>
-        <p>
-            {{#ethnicity}}{{ethnicity}}{{/ethnicity}}
-            {{^ethnicity}}<span class="text-muted">None</span>{{/ethnicity}}
-        </p>
-        <div id="judgment" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
+        <div id="person_summary" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
+        <div id="visit-list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
         {{/entity}}
-</div>
+    </div>
 {{>layout/footer}}

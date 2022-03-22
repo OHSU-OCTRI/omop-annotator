@@ -1,5 +1,9 @@
 package org.octri.omop_annotator.domain.omop;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * OMOP 5.3 Definition of a Person 
+ * OMOP 5.3 Definition of a Person
  * 
  * The following columns have been excluded:
  * 
@@ -29,22 +33,28 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Person {
-	
+
 	@Id
 	@Column(name = "person_id")
 	public Long id;
-	
+
 	@Column(name = "birth_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthDatetime;
-	
-	@Column(name="gender_source_value")
+
+	@Column(name = "year_of_birth")
+	private Integer yearOfBirth;
+
+	@Column(name = "month_of_birth")
+	private Integer monthOfBirth;
+
+	@Column(name = "gender_source_value")
 	private String gender;
 
-	@Column(name="race_source_value")
+	@Column(name = "race_source_value")
 	private String race;
 
-	@Column(name="ethnicity_source_value")
+	@Column(name = "ethnicity_source_value")
 	private String ethnicity;
 
 	public Long getId() {
@@ -85,6 +95,32 @@ public class Person {
 
 	public void setEthnicity(String ethnicity) {
 		this.ethnicity = ethnicity;
+	}
+
+	public Integer getYearOfBirth() {
+		return yearOfBirth;
+	}
+
+	public void setYearOfBirth(Integer yearOfBirth) {
+		this.yearOfBirth = yearOfBirth;
+	}
+
+	public Integer getMonthOfBirth() {
+		return monthOfBirth;
+	}
+
+	public void setMonthOfBirth(Integer monthOfBirth) {
+		this.monthOfBirth = monthOfBirth;
+	}
+
+	public Integer getAge() {
+		if (this.getBirthDatetime() == null) {
+			return null;
+		}
+		LocalDate birthDate = Instant.ofEpochMilli(this.getBirthDatetime().getTime())
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate();
+		return Period.between(birthDate, LocalDate.now()).getYears();
 	}
 
 	@Override

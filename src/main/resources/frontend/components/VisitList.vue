@@ -12,6 +12,9 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="loading">
+          <td>Loading...</td>
+        </tr>
         <tr v-for="visit in visits" :key="visit.id">
           <td>{{ visit.visitType.name }}</td>
           <td>{{ visit.visitStart }}</td>
@@ -39,7 +42,8 @@ export default {
   },
   data() {
     return {
-      visits: []
+      visits: [],
+      loading: true
     };
   },
   mounted() {
@@ -48,11 +52,12 @@ export default {
       .then(response => response.json())
       .then(jsonObj => {
         this.visits = jsonObj;
-    });
+        this.loading = false;
+      });
   },
   computed: {
     url() {
-      return `${this.contextPath}/rest/person/${this.personId}/visits`;
+      return `${this.contextPath}/data/person/summary/${this.personId}/visits`;
     }
   }
 };

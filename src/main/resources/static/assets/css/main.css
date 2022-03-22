@@ -76,7 +76,7 @@ div.parent-summary strong {
 /** Vertically scrollable table with fixed header **/
 .tableFixHead { 
 	overflow: auto; 
-	height: 250px;
+	height: 16rem;
 }
 
 .tableFixHead thead th {

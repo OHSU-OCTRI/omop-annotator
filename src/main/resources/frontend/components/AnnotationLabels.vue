@@ -39,7 +39,7 @@
               />
             </td>
             <td>
-              <input
+              <input type="color" class="form-control form-control-color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"
               />

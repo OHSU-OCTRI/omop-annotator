@@ -73,8 +73,8 @@ public class PoolEntry extends AbstractEntity implements Labelled {
 
 	@Override
 	public String getLabel() {
-		// TODO: what is a good label for this entity?
-		return toString();
+		return getPool().getTopicSet().getLabel() + "/" +  getPool().getLabel() + 
+				"/Topic " + getTopic().getTopicNumber() + "/" + getDocumentId();
 	}
 
 }

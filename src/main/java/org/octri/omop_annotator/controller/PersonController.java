@@ -67,9 +67,9 @@ public class PersonController {
 		log.info(observationRepository.findById(6335046L).get());
 		log.info(procedureOccurrenceRepository.findById(245585L).get());
 
-		model.put("pageScripts", new String[] { "vendor.js", "person-summary.js" });
+		model.put("pageScripts", new String[] { "vendor.js", "person-summary.js", "visit-list.js" });
 		model.put("entity", personRepository.findById(id).get());
-		model.put("visits", visitOccurrenceRepository.findByPersonId(id));
+	
 		return "person/show";
 	}
 
@@ -77,6 +77,12 @@ public class PersonController {
 	@ResponseBody
 	public String getPerson(@PathVariable Long personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(personRepository.findById(personId).get());
+	}
+
+	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
+	@ResponseBody
+	public String getVisits(@PathVariable Long personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
 	}
 
 }

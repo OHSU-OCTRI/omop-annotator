@@ -2,11 +2,9 @@ package org.octri.omop_annotator.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;

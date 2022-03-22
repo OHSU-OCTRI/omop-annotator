@@ -1,3 +1,4 @@
+{{>layout/header}}
 <div class="container">
     <h1>Person</h1>
     {{>components/messages}}
@@ -23,30 +24,7 @@
             {{#ethnicity}}{{ethnicity}}{{/ethnicity}}
             {{^ethnicity}}<span class="text-muted">None</span>{{/ethnicity}}
         </p>
+        <div id="judgment" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
         {{/entity}}
-    <table class="table table-striped table-bordered sorted">
-        <thead>
-        <tr>
-            <th>Visit Type</th>
-            <th>Visit Start</th>
-            <th>Visit End</th>
-            <th>Visit Source</th>
-            <th>Admitting Source</th>
-            <th>Discharged To</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#visits}}
-        <tr>
-            <td>{{#visitType}}{{visitType.name}}{{/visitType}}</td>
-            <td>{{#visitStart}}{{visitStart}}{{/visitStart}}</td>
-            <td>{{#visitEnd}}{{visitEnd}}{{/visitEnd}}</td>
-            <td>{{#visitSource}}{{visitSource}}{{/visitSource}}</td>
-            <td>{{#admittingSource}}{{admittingSource}}{{/admittingSource}}</td>
-            <td>{{#dischargedTo}}{{dischargedTo}}{{/dischargedTo}}</td>
-        </tr>
-        {{/visits}}
-        </tbody>
-    </table>
-    </div>
 </div>
+{{>layout/footer}}

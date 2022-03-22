@@ -60,7 +60,8 @@ public class PersonController {
 		log.info(procedureOccurrenceRepository.findById(245585L).get());
 		
 		model.put("entity", personRepository.findById(id).get());
-		model.put("visits", visitOccurrenceRepository.findByPersonId(id));
+		model.put("pageScripts", new String[] { "vendor.js", "judgment.js" });
+	
 		return "person/show";
 	}	
 }

@@ -73,10 +73,15 @@ div.parent-summary strong {
 	margin-bottom: 1rem;
 }
 
-.annotation-labels input.disabled {
-	border:none;
+.tableFixHead { 
+	overflow: auto; 
+	height: 250px;
 }
 
-.annotation-labels input.disabled:focus {
-    outline: none;
+.tableFixHead thead th {
+	position: sticky; 
+	top: 0; 
+	z-index: 1;
+	background:#eee;
 }
+

@@ -20,7 +20,8 @@ module.exports = {
     jquery: 'jQuery'
   },
   entry: {
-    'annotation-admin': entrypointPath('annotation-admin.js')
+    'annotation-admin': entrypointPath('annotation-admin.js'),
+    'judgment': entrypointPath('judgment.js')
   },
   resolve: {
     alias: {

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.repository.omop.ConceptRepository;
 import org.octri.omop_annotator.repository.omop.ConditionOccurrenceRepository;
 import org.octri.omop_annotator.repository.omop.DrugExposureRepository;
@@ -17,13 +18,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-// TODO: This controller is for demo purposes only.
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * Controller for {@link Person} objects
+ */
 @Controller
 @RequestMapping("/data/person")
 public class PersonController {
 	
 	private static final Log log = LogFactory.getLog(PersonController.class);
+	private ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
 	PersonRepository personRepository;
@@ -58,9 +66,17 @@ public class PersonController {
 		log.info(measurementRepository.findById(286707884L).get());
 		log.info(observationRepository.findById(6335046L).get());
 		log.info(procedureOccurrenceRepository.findById(245585L).get());
-		
+
+		model.put("pageScripts", new String[] { "vendor.js", "person-summary.js" });
 		model.put("entity", personRepository.findById(id).get());
 		model.put("visits", visitOccurrenceRepository.findByPersonId(id));
 		return "person/show";
-	}	
+	}
+
+	@GetMapping(value = "/summary/{personId}", produces = "application/json")
+	@ResponseBody
+	public String getPerson(@PathVariable Long personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(personRepository.findById(personId).get());
+	}
+
 }

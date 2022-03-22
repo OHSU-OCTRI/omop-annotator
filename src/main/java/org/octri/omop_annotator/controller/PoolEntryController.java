@@ -40,6 +40,9 @@ import com.opencsv.exceptions.CsvValidationException;
 @RequestMapping("/admin/pool_entry")
 public class PoolEntryController extends AbstractEntityController<PoolEntry, PoolEntryRepository> {
 
+	private final String templateFilename = "pool_entry_upload.csv";
+	private final String[] templateColumns = new String[] { "topic_number", "person_id" };
+
 	@Autowired
 	private PoolEntryRepository repository;
 
@@ -114,14 +117,11 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 	public void bulkUploadTemplate(HttpServletRequest request, HttpServletResponse response, ModelMap model)
 			throws IOException {
 
-		// set file name and content type
-		String filename = "pool_entry_upload.csv";
-
 		response.setContentType("text/csv");
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + filename + "\"");
+				"attachment; filename=\"" + templateFilename + "\"");
 		CSVWriter writer = new CSVWriter(response.getWriter());
-		writer.writeNext(new String[] { "topic_number", "person_id" });
+		writer.writeNext(templateColumns);
 		writer.close();
 	}
 

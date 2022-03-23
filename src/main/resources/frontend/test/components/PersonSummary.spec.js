@@ -3,16 +3,16 @@ import PersonSummary from '@/components/PersonSummary';
 
 describe('PersonSummary.vue', () => {
 	it('renders summary fields', () => {
-		const wrapper = mount(PersonSummary, { "props": { "personId": 12345 }, "data": function() {
+		const wrapper = mount(PersonSummary, { props: { personId: 12345 }, data: function() {
 			return {
-				"person": {
-					"id": 12345,
-					"monthOfBirth": 1,
-					"yearOfBirth": 1990,
-					"age": 22,
-					"gender": "Male",
-					"race": "White",
-					"ethnicity": "Non-Hispanic"
+				person: {
+					id: 12345,
+					monthOfBirth: 1,
+					yearOfBirth: 1990,
+					age: 22,
+					gender: "Male",
+					race: "White",
+					ethnicity: "Non-Hispanic"
 				}
 			}
 		}});

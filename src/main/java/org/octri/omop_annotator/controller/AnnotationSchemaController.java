@@ -86,7 +86,9 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 		model.put("entity", annotationSchema);
 		model.put("labels", getLabelsForSchema(id));
-
+		Long numRelatedPools = poolRepository.countByAnnotationSchemaId(id);
+		model.put("noRelatedPools",numRelatedPools==0);
+		
 		return template("show");
 	}
 
@@ -144,6 +146,16 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 	@PostMapping("/edit_combined/{id}")
 	public String updateCombined(@PathVariable Long id, RedirectAttributes redirectAttributes,
 			@Valid @ModelAttribute("annotation_schema_form") AnnotationSchemaForm annotationSchemaForm, BindingResult annotationSchemaBinding) {
+
+		Long schemaId = annotationSchemaForm.getSchema().getId();
+		if (schemaId != null) {
+			Long numRelatedPools = poolRepository.countByAnnotationSchemaId(schemaId);
+			if (numRelatedPools != 0) {
+				redirectAttributes.addFlashAttribute("errorMessage", "This schema has related pools and cannot be edited.");
+				return "redirect:/admin/annotation_schema/" + schemaId;			
+			}
+		}
+		
 		AnnotationSchema schema = repository.save(annotationSchemaForm.getSchema());
 		annotationLabelRepository.deleteByAnnotationSchema(schema);
 		

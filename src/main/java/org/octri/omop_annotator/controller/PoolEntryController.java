@@ -141,7 +141,7 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 	 */
 	@PostMapping("/upload")
 	public String uploadFile(@RequestPart(value = "file") MultipartFile multiPartFile, @RequestParam TopicSet topicSet, 
-			@RequestParam String poolName, @RequestParam String poolComments, @RequestParam AnnotationSchema annotationSchema, 
+			@RequestParam String poolName, @RequestParam(required=false) String poolComments, @RequestParam AnnotationSchema annotationSchema, 
 			HttpServletRequest request, final ModelMap model) throws IOException, CsvValidationException {
 		
 		List<UploadResult> results = poolEntryUploadService.uploadPoolEntries(multiPartFile, topicSet, poolName, poolComments, annotationSchema);

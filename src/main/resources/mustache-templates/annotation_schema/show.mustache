@@ -26,9 +26,15 @@
 			</tr>
 			{{/labels}}
 		</table>
-		{{>components/show_links}} 
-		{{/entity}}
+    <a href="{{req.contextPath}}{{baseRoute}}/" class="btn btn-link"><i class="fas fa-list"></i> List</a>
+    {{#noRelatedPools}}
+      <a href="{{req.contextPath}}{{baseRoute}}/{{id}}/edit" class="btn btn-link"><i class="fas fa-edit"></i> Edit</a>
+      <a href="{{req.contextPath}}{{baseRoute}}/{{id}}/delete" onclick="return confirm('Delete this item?');"
+    	 class="btn btn-link text-danger"><i class="fas fa-minus-square"></i> Delete</a>
+    {{/noRelatedPools}}
+
+    {{/entity}}
 	</div>
-    
+
 </div>
 {{>layout/footer}}

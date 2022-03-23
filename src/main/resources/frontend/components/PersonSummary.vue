@@ -46,7 +46,7 @@ export default {
     };
   },
   mounted() {
-    if (Object.keys(this.person).length === 0) {
+    if (this.personIsEmpty) {
       fetch(this.url, { credentials: 'same-origin' })
         .then(response => response.json())
         .then(jsonObj => {
@@ -58,6 +58,9 @@ export default {
   computed: {
     url() {
       return this.contextPath + '/data/person/summary/' + this.personId;
+    },
+    personIsEmpty() {
+      return Object.keys(this.person).length === 0;
     }
   }
 };

@@ -31,11 +31,13 @@ export default {
       }
   },
   mounted() {
-    fetch(this.url, { credentials: 'same-origin' })
-    .then(response => response.json())
-    .then(jsonObj => {
-        this.person = jsonObj;
-    });
+    if (Object.keys(this.person).length === 0) {
+      fetch(this.url, { credentials: 'same-origin' })
+      .then(response => response.json())
+      .then(jsonObj => {
+          this.person = jsonObj;
+      });
+	  }
   },
   methods: {
   },

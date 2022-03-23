@@ -9,9 +9,13 @@ describe('AnnotationLabels.vue', () => {
 
   it('creates a table row when Add is clicked', async () => {
     const wrapper = mount(AnnotationLabels);
-    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"]').exists()).toBe(false);
+    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"]').exists()).toBe(
+      false
+    );
     await wrapper.find('.new-entity').trigger('click');
-    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"').exists()).toBe(true);
+    expect(wrapper.find('input[name="annotationLabels[0].displayOrder"').exists()).toBe(
+      true
+    );
   });
 
   it('deletes a table row when Delete is clicked', async () => {
@@ -23,8 +27,6 @@ describe('AnnotationLabels.vue', () => {
     expect(wrapper.vm.labels.length).toEqual(2);
     await wrapper.find('[name=delete0').trigger('click');
     expect(wrapper.vm.labels.length).toEqual(1);
-    expect(wrapper.vm.labels[0].displayLabel).toEqual("Label 2");
+    expect(wrapper.vm.labels[0].displayLabel).toEqual('Label 2');
   });
-
 });
-

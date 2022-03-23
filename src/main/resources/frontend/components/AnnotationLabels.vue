@@ -39,13 +39,16 @@
               />
             </td>
             <td>
-              <input type="color" class="form-control form-control-color"
+              <input
+                type="color"
+                class="form-control form-control-color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"
               />
             </td>
             <td>
-              <span :name="`delete${index}`"
+              <span
+                :name="`delete${index}`"
                 @click="deleteLabel(index)"
                 class="btn btn-link text-danger"
                 ><i class="fas fa-minus-square"></i> Delete</span
@@ -72,7 +75,7 @@ export default {
   },
   data() {
     return {
-      labels: [],
+      labels: []
     };
   },
   mounted() {
@@ -96,7 +99,7 @@ export default {
     },
     deleteLabel(index) {
       this.labels.splice(index, 1);
-    },
+    }
   },
   computed: {
     isNew() {

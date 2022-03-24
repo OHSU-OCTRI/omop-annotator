@@ -19,31 +19,37 @@
           </tr>
           <tr v-for="(label, index) in labels" :key="index">
             <td>
-              <input class="form-control"
+              <input :class="`form-control ${checkInvalid(index, 'displayOrder')}`"
+                type="number"
                 :name="`annotationLabels[${index}].displayOrder`"
                 v-model="labels[index].displayOrder"
+                required
               />
+              <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input class="form-control"
+              <input :class="`form-control ${checkInvalid(index, 'displayLabel')}`"
                 :name="`annotationLabels[${index}].displayLabel`"
                 v-model="labels[index].displayLabel"
                 required
               />
-              <div class="invalid-feedback">Value must be present</div>
+              <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input class="form-control"
+              <input :class="`form-control ${checkInvalid(index, 'outputLabel')}`"
                 :name="`annotationLabels[${index}].outputLabel`"
                 v-model="labels[index].outputLabel"
+                required
               />
+              <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input class="form-control form-control-color w-100"
+              <input :class="`form-control form-control-color w-100 ${checkInvalid(index, 'accentColor')}`"
                 type="color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"
               />
+              <div class="invalid-feedback">Value must be unique</div>
             </td>
             <td>
               <span
@@ -93,11 +99,16 @@ export default {
         displayLabel: '',
         outputLabel: '',
         displayOrder: '',
-        accentColor: ''
+        accentColor: '#000000'
       });
     },
     deleteLabel(index) {
       this.labels.splice(index, 1);
+    },
+    checkInvalid(index, propName) {
+      const val = this.labels[index][propName];
+      const matches = this.labels.filter(label => label[propName] === val);
+      return matches.length > 1 ? "is-invalid": "";
     }
   },
   computed: {

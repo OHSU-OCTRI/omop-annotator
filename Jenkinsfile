@@ -27,6 +27,19 @@ pipeline {
         octriMavenBuild(deployArtifacts: env.BRANCH_NAME == env.DEFAULT_BRANCH)
       }
     }
+    stage('Test JS') {
+      steps {
+        script {
+          def args = "-e TZ=America/Los_Angeles -v ${WORKSPACE}:/app"
+          def cmd = "npm run test-jenkins"
+          docker.image("octri.ohsu.edu/node_test_chrome:latest").withRun(args, cmd) {c ->
+            timeout(time: 600, unit: 'SECONDS') {
+              sh "docker wait ${c.id}"
+            }
+          }
+        }
+      }
+    }
     stage('Build Docker image') {
       when {
         branch env.DEFAULT_BRANCH
@@ -46,10 +59,11 @@ pipeline {
     }
   }
   post {
-    // TODO: Uncomment when there are tests
-    // always {
-    //   junit 'target/surefire-reports/**/*.xml'
-    // }
+    always {
+      // TODO: uncomment when there are Java tests
+      // junit 'target/surefire-reports/**/*.xml'
+      junit 'target/karma/**/*.xml'
+    }
     unsuccessful {
       emailStatusChange()
     }

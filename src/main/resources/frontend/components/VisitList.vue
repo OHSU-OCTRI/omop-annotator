@@ -47,13 +47,14 @@ export default {
     };
   },
   mounted() {
-    // Specify same-origin credentials for compatibility with older browsers
-    fetch(this.url, { credentials: 'same-origin' })
-      .then(response => response.json())
-      .then(jsonObj => {
-        this.visits = jsonObj;
-        this.loading = false;
-      });
+    if (this.visits.length === 0) {
+      fetch(this.url, { credentials: 'same-origin' })
+        .then(response => response.json())
+        .then(jsonObj => {
+          this.visits = jsonObj;
+          this.loading = false;
+        });
+    }
   },
   computed: {
     url() {

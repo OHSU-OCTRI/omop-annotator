@@ -2,7 +2,7 @@
 {{#entity}}
 <div class="form-group">
     <label for="topicSet" class="form-label required-field">Topic set</label>
-    <select class="form-control" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>
+    <select class="form-select" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>
         <option value="">-- Please Select --</option>
         {{#topicSetOptions}}
         <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>

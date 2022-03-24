@@ -1,5 +1,5 @@
 <template>
-  <div class="tableFixHead">
+  <div class="visit-list tableFixHead">
     <table class="table table-striped table-bordered sorted">
       <thead>
         <tr>
@@ -15,13 +15,13 @@
         <tr v-if="loading">
           <td>Loading...</td>
         </tr>
-        <tr v-for="visit in visits" :key="visit.id">
-          <td>{{ visit.visitType.name }}</td>
-          <td>{{ visit.visitStart }}</td>
-          <td>{{ visit.visitEnd }}</td>
-          <td>{{ visit.visitSource }}</td>
-          <td>{{ visit.admittingSource }}</td>
-          <td>{{ visit.dischargedTo }}</td>
+        <tr v-for="(visit, index) in visits" :key="visit.id">
+          <td :data-field="`visitType${index}`">{{ visit.visitType.name }}</td>
+          <td :data-field="`visitStart${index}`">{{ visit.visitStart }}</td>
+          <td :data-field="`visitEnd${index}`">{{ visit.visitEnd }}</td>
+          <td :data-field="`visitSource${index}`">{{ visit.visitSource }}</td>
+          <td :data-field="`admittingSource${index}`">{{ visit.admittingSource }}</td>
+          <td :data-field="`dischargedTo${index}`">{{ visit.dischargedTo }}</td>
         </tr>
       </tbody>
     </table>
@@ -33,11 +33,11 @@ export default {
   props: {
     contextPath: {
       type: String,
-      default: null
+      default: ''
     },
     personId: {
       type: Number,
-      default: null
+      required: true
     }
   },
   data() {

@@ -23,3 +23,6 @@ bundle-stats.json
 # Jenv
 .java-version
 
+# Visual Studio Code
+.vscode
+

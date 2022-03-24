@@ -19,13 +19,13 @@
           </tr>
           <tr v-for="(label, index) in labels" :key="index">
             <td>
-              <input
+              <input class="form-control"
                 :name="`annotationLabels[${index}].displayOrder`"
                 v-model="labels[index].displayOrder"
               />
             </td>
             <td>
-              <input
+              <input class="form-control"
                 :name="`annotationLabels[${index}].displayLabel`"
                 v-model="labels[index].displayLabel"
                 required
@@ -33,15 +33,14 @@
               <div class="invalid-feedback">Value must be present</div>
             </td>
             <td>
-              <input
+              <input class="form-control"
                 :name="`annotationLabels[${index}].outputLabel`"
                 v-model="labels[index].outputLabel"
               />
             </td>
             <td>
-              <input
+              <input class="form-control form-control-color w-100"
                 type="color"
-                class="form-control form-control-color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"
               />

@@ -1,0 +1,59 @@
+{{>layout/header}}
+<div class="container-fluid authlib-user-list">
+	<h3>Uploaded Topics</h3>
+	<div class='upload-results-actions'>
+		<a class="new-entity btn btn-outline-success"
+			href="{{req.contextPath}}/admin/topic/"><i
+			class="fas fa-list"></i> All Topics</a> {{#error}} <a
+			class='new-entity btn btn-outline-success'
+			href="{{req.contextPath}}/admin/topic/upload"><i
+			class="fas fa-file-upload"></i> Bulk Upload</a> {{/error}}
+	</div>
+
+	{{#error}}
+	<div class='alert alert-danger' role='alert'>
+		Upload errors occurred and topics were not created. Please
+		correct the errors and re-upload the file. {{^hasResults}}
+		<ul>
+			<li>No topics were provided.</li>
+		</ul>
+		{{/hasResults}}
+	</div>
+	{{/error}}
+	{{^error}}
+	<div class='alert alert-success' role='alert'>
+		Upload successful
+	</div>
+	{{/error}}
+
+	{{#hasResults}}
+	<table
+		class="table table-striped table-bordered users-table center-all display responsive no-wrap">
+		<thead>
+			<tr>
+				<th>Topic Set</th>
+				<th>Topic Number</th>
+				<th>Narrative</th>
+				{{#error}}
+				<th>Errors</th>
+				{{/error}}
+			</tr>
+		</thead>
+		<tbody>
+			{{#newTopics}}
+			<tr>
+				<td>{{#topicSet}}{{label}}{{/topicSet}}</td>
+				<td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
+				<td>{{#topicNarrative}}{{.}}{{/topicNarrative}}</td> 
+				{{#error}}
+				<td><span class='text-danger'>{{errorDescription}}</span></td>
+				{{/error}}
+			</tr>
+			{{/newTopics}}
+		</tbody>
+	</table>
+	{{/hasResults}}
+
+</div>
+
+{{>layout/footer}}

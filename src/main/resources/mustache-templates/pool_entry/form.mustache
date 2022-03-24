@@ -2,7 +2,7 @@
 {{#entity}}
 <div class="form-group">
     <label for="pool" class="form-label required-field">Pool</label>
-    <select class="form-control" id="pool" name="pool" value="{{#pool}}{{.}}{{/pool}}" required>
+    <select class="form-select" id="pool" name="pool" value="{{#pool}}{{.}}{{/pool}}" required>
         <option value="">-- Please Select --</option>
         {{#poolOptions}}
         <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
@@ -13,7 +13,7 @@
 
 <div class="form-group">
     <label for="topic" class="form-label required-field">Topic</label>
-    <select class="form-control" id="topic" name="topic" value="{{#topic}}{{.}}{{/topic}}" required>
+    <select class="form-select" id="topic" name="topic" value="{{#topic}}{{.}}{{/topic}}" required>
         <option value="">-- Please Select --</option>
         {{#topicOptions}}
         <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>

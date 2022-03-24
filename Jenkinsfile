@@ -60,7 +60,9 @@ pipeline {
   }
   post {
     always {
-      junit 'target/surefire-reports/**/*.xml'
+      // TODO: uncomment when there are Java tests
+      // junit 'target/surefire-reports/**/*.xml'
+      junit 'target/karma/**/*.xml'
     }
     unsuccessful {
       emailStatusChange()

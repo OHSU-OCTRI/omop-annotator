@@ -54,15 +54,20 @@
 		<thead>
 			<tr>
 				<th>Topic Number</th>
-				<th>Person Id</th> {{#error}}
-				<th>Errors</th>{{/error}}
+				<th>Person Id</th>
+				<th>Sort Order</th>
+				{{#error}}
+				<th>Errors</th>
+				{{/error}}
 			</tr>
 		</thead>
 		<tbody>
 			{{#newPoolEntries}}
 			<tr>
 				<td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
-				<td>{{#personId}}{{.}}{{/personId}}</td> {{#error}}
+				<td>{{#personId}}{{.}}{{/personId}}</td> 
+				<td>{{#poolEntry}}{{#sortOrder}}{{.}}{{/sortOrder}}{{/poolEntry}}</td>
+				{{#error}}
 				<td><span class='text-danger'>{{errorDescription}}</span></td>
 				{{/error}}
 			</tr>

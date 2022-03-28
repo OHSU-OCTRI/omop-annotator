@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,6 +71,7 @@ public class PoolEntryUploadService {
 		CSVReader reader = new CSVReader(new InputStreamReader(multipartFile.getInputStream()));
 		reader.skip(1);
 		Set<Pair<String, String>> topicPersonPairs = new HashSet<>();
+		Map<Integer, Integer> topicNumberSortOrder = new LinkedHashMap<>();
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
@@ -97,9 +100,16 @@ public class PoolEntryUploadService {
 
 			PoolEntry poolEntry = null;
 			if (errors.isEmpty()) {
+				Integer topicNum = topicNumber.get();
 				poolEntry = new PoolEntry();
 				poolEntry.setDocumentId(personId.get());
-				poolEntry.setTopic(validTopics.stream().filter(topic -> topic.getTopicNumber() == topicNumber.get()).findFirst().get());
+				poolEntry.setTopic(validTopics.stream().filter(topic -> topic.getTopicNumber() == topicNum).findFirst().get());
+				if (!topicNumberSortOrder.containsKey(topicNum)) {
+					topicNumberSortOrder.put(topicNum, 1);
+				}
+				Integer sortOrderNumber = topicNumberSortOrder.get(topicNum);
+				poolEntry.setSortOrder(sortOrderNumber++);
+				topicNumberSortOrder.put(topicNum, sortOrderNumber);
 			} else {
 				noErrors = false;
 			}

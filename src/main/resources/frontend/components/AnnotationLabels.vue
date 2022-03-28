@@ -19,7 +19,7 @@
           </tr>
           <tr v-for="(label, index) in labels" :key="index">
             <td>
-              <input :class="`form-control ${checkInvalid(index, 'displayOrder')}`"
+              <input @change="setValidity(index, 'displayOrder', $event)" class="form-control"
                 type="number"
                 :name="`annotationLabels[${index}].displayOrder`"
                 v-model="labels[index].displayOrder"
@@ -28,15 +28,14 @@
               <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input :class="`form-control ${checkInvalid(index, 'displayLabel')}`"
+              <input @change="setValidity(index, 'displayLabel', $event)" class="form-control"
                 :name="`annotationLabels[${index}].displayLabel`"
                 v-model="labels[index].displayLabel"
                 required
               />
-              <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input :class="`form-control ${checkInvalid(index, 'outputLabel')}`"
+              <input @change="setValidity(index, 'outputLabel', $event)" class="form-control"
                 :name="`annotationLabels[${index}].outputLabel`"
                 v-model="labels[index].outputLabel"
                 required
@@ -44,7 +43,7 @@
               <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input :class="`form-control form-control-color w-100 ${checkInvalid(index, 'accentColor')}`"
+              <input @change="setValidity(index, 'accentColor', $event)" class="form-control form-control-color w-100"
                 type="color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"
@@ -105,10 +104,16 @@ export default {
     deleteLabel(index) {
       this.labels.splice(index, 1);
     },
-    checkInvalid(index, propName) {
+    setValidity(index, propName, event) {
       const val = this.labels[index][propName];
       const matches = this.labels.filter(label => label[propName] === val);
-      return matches.length > 1 ? "is-invalid": "";
+      if (matches.length > 1) {
+        event.target.classList.add('is-invalid');
+        event.target.setCustomValidity('Invalid');
+      } else {
+        event.target.classList.remove('is-invalid');
+        event.target.setCustomValidity('');
+      }
     }
   },
   computed: {

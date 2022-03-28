@@ -17,8 +17,8 @@
         </tr>
         <tr v-for="(visit, index) in visits" :key="visit.id">
           <td :data-field="`visitType${index}`">{{ visit.visitType.name }}</td>
-          <td :data-field="`visitStart${index}`">{{ visit.visitStart }}</td>
-          <td :data-field="`visitEnd${index}`">{{ visit.visitEnd }}</td>
+          <td :data-field="`visitStart${index}`">{{ visit.formattedVisitStart }}</td>
+          <td :data-field="`visitEnd${index}`">{{ visit.formattedVisitEnd }}</td>
           <td :data-field="`visitSource${index}`">{{ visit.visitSource }}</td>
           <td :data-field="`admittingSource${index}`">{{ visit.admittingSource }}</td>
           <td :data-field="`dischargedTo${index}`">{{ visit.dischargedTo }}</td>

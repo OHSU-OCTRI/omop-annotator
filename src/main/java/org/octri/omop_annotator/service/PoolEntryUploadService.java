@@ -3,21 +3,26 @@ package org.octri.omop_annotator.service;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.domain.app.Topic;
 import org.octri.omop_annotator.domain.app.TopicSet;
+import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicRepository;
+import org.octri.omop_annotator.repository.omop.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +42,9 @@ public class PoolEntryUploadService {
 	@Autowired
 	private TopicRepository topicRepository;
 
+	@Autowired
+	private PersonRepository personRepository;
+	
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
 	 * 
@@ -55,13 +63,12 @@ public class PoolEntryUploadService {
 		// Get the valid topics for the topic set
 		List<Topic> validTopics = topicRepository.findByTopicSetId(topicSet.getId());
 		List<Integer> validTopicNumbers = validTopics.stream().map(topic -> topic.getTopicNumber()).collect(Collectors.toList());
-		// TODO: Validate person id in omop?
-		// TODO: Check for duplicate patients with same topic number?
 		
 		List<UploadResult> results = new ArrayList<>();
 		Boolean noErrors = true;
 		CSVReader reader = new CSVReader(new InputStreamReader(multipartFile.getInputStream()));
 		reader.skip(1);
+		Set<Pair<String, String>> topicPersonPairs = new HashSet<>();
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
@@ -74,9 +81,20 @@ public class PoolEntryUploadService {
 				errors.add("Topic " + topicAsString + " is not in the topic set.");
 			}
 			Optional<Integer> personId = parseInteger(personAsString);
-			if (topicNumber.isEmpty()) {
+			if (personId.isEmpty()) {
 				errors.add("Person " + personAsString + " is not a number");
-			} 
+			} else {
+				Optional<Person> person = personRepository.findById(Long.valueOf(personId.get()));
+				if (person.isEmpty()) {
+					errors.add("Person " + personAsString + " is not in the OMOP database.");
+				}
+			}
+			if (topicPersonPairs.contains(Pair.of(topicAsString, personAsString))) {
+				errors.add("Duplicate topic-person combination " + topicAsString + "-" + personAsString);
+			} else {
+				topicPersonPairs.add(Pair.of(topicAsString, personAsString));
+			}
+
 			PoolEntry poolEntry = null;
 			if (errors.isEmpty()) {
 				poolEntry = new PoolEntry();

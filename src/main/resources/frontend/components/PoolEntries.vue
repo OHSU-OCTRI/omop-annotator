@@ -17,17 +17,17 @@
         </tr>
       </thead>
       <tbody v-if="showUnjudged">
-        <tr v-for="entry in unjudgedEntries" :key="entry.poolEntryId">
-          <td>{{ entry.sortOrder }}</td>
-          <td>{{ entry.documentId }}</td>
-          <td><a :href="judgmentLink(entry.poolEntryId)">Judge</a></td>
+        <tr v-for="(entry, index) in unjudgedEntries" :key="entry.poolEntryId">
+          <td :data-field="`poolEntryId${index}`">{{ entry.sortOrder }}</td>
+          <td :data-field="`documentId${index}`">{{ entry.documentId }}</td>
+          <td :data-field="`judgment${index}`"><a :href="judgmentLink(entry.poolEntryId)">Judge</a></td>
         </tr>
       </tbody>
       <tbody v-if="showJudged">
-        <tr v-for="entry in judgedEntries" :key="entry.poolEntryId">
-          <td>{{ entry.sortOrder }}</td>
-          <td>{{ entry.documentId }}</td>
-          <td>{{ entry.annotation }}</td>
+        <tr v-for="(entry, index) in judgedEntries" :key="entry.poolEntryId">
+          <td :data-field="`poolEntryId${index}`">{{ entry.sortOrder }}</td>
+          <td :data-field="`documentId${index}`">{{ entry.documentId }}</td>
+          <td :data-field="`judgment${index}`">{{ entry.annotation }}</td>
         </tr>
       </tbody>
     </table>

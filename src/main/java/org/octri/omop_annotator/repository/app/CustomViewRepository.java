@@ -31,15 +31,23 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 			+ " where pe.pool = ?1 and pe.topic = ?2";
 
 	/**
-	 * Provide a count of judgments by the user on topics for the given poolId
+	 * Return a summary of the topics for the given pool and count of judgments by the user
 	 * 
 	 * @param poolId the pool to get topics for
 	 * @param userId the user to summarize judgments for
-	 * @return a summary of the topics in the pool including count of pool entries and judgments by the user
+	 * @return
 	 */
 	@Query(value = topicJudgmentQuery, nativeQuery = true)
 	List<TopicJudgmentSummary> summarizeTopicJudgments(Long poolId, Long userId);
 
+	/**
+	 * Return a summary of the pool entries for the given pool and topics and judgments by the user
+	 * 
+	 * @param poolId
+	 * @param topicId
+	 * @param userId
+	 * @return
+	 */
 	@Query(value = poolEntryJudgmentQuery, nativeQuery = true)
 	List<PoolEntryJudgmentSummary> summarizePoolEntryJudgments(Long poolId, Long topicId, Long userId);
 

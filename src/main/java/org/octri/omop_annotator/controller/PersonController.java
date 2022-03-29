@@ -1,9 +1,11 @@
 package org.octri.omop_annotator.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.repository.omop.ConceptRepository;
 import org.octri.omop_annotator.repository.omop.ConditionOccurrenceRepository;
@@ -33,29 +35,36 @@ public class PersonController {
 	private static final Log log = LogFactory.getLog(PersonController.class);
 	private ObjectMapper mapper = new ObjectMapper();
 
-	@Autowired
-	PersonRepository personRepository;
-	
-	@Autowired
-	VisitOccurrenceRepository visitOccurrenceRepository;
-	
-	@Autowired
-	ConceptRepository conceptRepository;
+	private OmopDataConfiguration omopDataConfig;
+	private PersonRepository personRepository;
+	private VisitOccurrenceRepository visitOccurrenceRepository;
+	private ConceptRepository conceptRepository;
+	private ConditionOccurrenceRepository conditionOccurrenceRepository;
+	private DrugExposureRepository drugExposureRepository;
+	private MeasurementRepository measurementRepository;
+	private ObservationRepository observationRepository;
+
+	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
 
 	@Autowired
-	ConditionOccurrenceRepository conditionOccurrenceRepository;
+	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
+			VisitOccurrenceRepository visitOccurrenceRepository, ConceptRepository conceptRepository,
+			ConditionOccurrenceRepository conditionOccurrenceRepository, DrugExposureRepository drugExposureRepository,
+			MeasurementRepository measurementRepository, ObservationRepository observationRepository,
+			ProcedureOccurrenceRepository procedureOccurrenceRepository) {
+		super();
+		this.omopDataConfig = omopDataConfig;
+		this.personRepository = personRepository;
+		this.visitOccurrenceRepository = visitOccurrenceRepository;
+		this.conceptRepository = conceptRepository;
+		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
+		this.drugExposureRepository = drugExposureRepository;
+		this.measurementRepository = measurementRepository;
+		this.observationRepository = observationRepository;
+		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
 
-	@Autowired
-	DrugExposureRepository drugExposureRepository;
-
-	@Autowired
-	MeasurementRepository measurementRepository;
-
-	@Autowired
-	ObservationRepository observationRepository;
-
-	@Autowired
-	ProcedureOccurrenceRepository procedureOccurrenceRepository;
+		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
+	}
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
@@ -73,10 +82,13 @@ public class PersonController {
 		return "person/show";
 	}
 
+
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")
 	@ResponseBody
 	public String getPerson(@PathVariable Long personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(personRepository.findById(personId).get());
+		Person person = personRepository.findById(personId).get();
+		person.setAgeCalculationDate(omopDataConfig.getRefreshDate());
+		return mapper.writeValueAsString(person);
 	}
 
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")

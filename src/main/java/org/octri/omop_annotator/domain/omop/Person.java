@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * OMOP 5.3 Definition of a Person
@@ -34,19 +38,17 @@ import javax.persistence.TemporalType;
 @Entity
 public class Person {
 
+	@Transient
+	private LocalDate ageCalculationDate = LocalDate.now();
+
 	@Id
 	@Column(name = "person_id")
 	public Long id;
 
 	@Column(name = "birth_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date birthDatetime;
-
-	@Column(name = "year_of_birth")
-	private Integer yearOfBirth;
-
-	@Column(name = "month_of_birth")
-	private Integer monthOfBirth;
 
 	@Column(name = "gender_source_value")
 	private String gender;
@@ -97,22 +99,11 @@ public class Person {
 		this.ethnicity = ethnicity;
 	}
 
-	public Integer getYearOfBirth() {
-		return yearOfBirth;
-	}
-
-	public void setYearOfBirth(Integer yearOfBirth) {
-		this.yearOfBirth = yearOfBirth;
-	}
-
-	public Integer getMonthOfBirth() {
-		return monthOfBirth;
-	}
-
-	public void setMonthOfBirth(Integer monthOfBirth) {
-		this.monthOfBirth = monthOfBirth;
-	}
-
+	/**
+	 * Get the patient's age as of the ageCalculationDate.
+	 * 
+	 * @return age in years
+	 */
 	public Integer getAge() {
 		if (this.getBirthDatetime() == null) {
 			return null;
@@ -120,7 +111,21 @@ public class Person {
 		LocalDate birthDate = Instant.ofEpochMilli(this.getBirthDatetime().getTime())
 				.atZone(ZoneId.systemDefault())
 				.toLocalDate();
-		return Period.between(birthDate, LocalDate.now()).getYears();
+
+		return Period.between(birthDate, this.ageCalculationDate).getYears();
+	}
+
+	/**
+	 * Date at which the patient's age should be calculated. Result is a string that can be serialized to JSON.
+	 * 
+	 * @return
+	 */
+	public String getAgeCalculationDate() {
+		return DateTimeFormatter.ISO_LOCAL_DATE.format(this.ageCalculationDate);
+	}
+
+	public void setAgeCalculationDate(LocalDate ageCalculationDate) {
+		this.ageCalculationDate = ageCalculationDate;
 	}
 
 	@Override

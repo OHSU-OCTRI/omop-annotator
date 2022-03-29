@@ -1,6 +1,5 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -32,8 +31,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 public class VisitOccurrence {
-
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	@Id
 	@Column(name = "visit_occurrence_id")
@@ -93,26 +90,12 @@ public class VisitOccurrence {
 		return visitStart;
 	}
 
-	public String getFormattedVisitStart() {
-		if (visitStart != null) {
-			return DATE_FORMAT.format(visitStart);
-		}
-		return null;
-	}
-
 	public void setVisitStart(Date visitStart) {
 		this.visitStart = visitStart;
 	}
 
 	public Date getVisitEnd() {
 		return visitEnd;
-	}
-
-	public String getFormattedVisitEnd() {
-		if (visitEnd != null) {
-			return DATE_FORMAT.format(visitEnd);
-		}
-		return null;
 	}
 
 	public void setVisitEnd(Date visitEnd) {

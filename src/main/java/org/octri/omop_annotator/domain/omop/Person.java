@@ -50,12 +50,6 @@ public class Person {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date birthDatetime;
 
-	@Column(name = "year_of_birth")
-	private Integer yearOfBirth;
-
-	@Column(name = "month_of_birth")
-	private Integer monthOfBirth;
-
 	@Column(name = "gender_source_value")
 	private String gender;
 
@@ -103,22 +97,6 @@ public class Person {
 
 	public void setEthnicity(String ethnicity) {
 		this.ethnicity = ethnicity;
-	}
-
-	public Integer getYearOfBirth() {
-		return yearOfBirth;
-	}
-
-	public void setYearOfBirth(Integer yearOfBirth) {
-		this.yearOfBirth = yearOfBirth;
-	}
-
-	public Integer getMonthOfBirth() {
-		return monthOfBirth;
-	}
-
-	public void setMonthOfBirth(Integer monthOfBirth) {
-		this.monthOfBirth = monthOfBirth;
 	}
 
 	/**

@@ -96,15 +96,18 @@ export default {
     addRow() {
       // Assign default color of black or a random color if black is in use
       let color = '#000000';
-      if (this.labels.filter(label => label.accentColor === color).length > 0) {
-        color = '#' + Math.floor(Math.random()*16777215).toString(16);
-      }
       this.labels.push({
         displayLabel: '',
         outputLabel: '',
         displayOrder: '',
-        accentColor: color
+        accentColor: this.colorTaken(color) ? this.randomColor() : color
       });
+    },
+    colorTaken(color) {
+      return this.labels.filter(label => label.accentColor === color).length > 0;
+    },
+    randomColor() {
+      return '#' + Math.floor(Math.random()*16777215).toString(16);
     },
     deleteLabel(index) {
       this.labels.splice(index, 1);

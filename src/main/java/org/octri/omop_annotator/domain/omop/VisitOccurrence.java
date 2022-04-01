@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-public class VisitOccurrence {
+public class VisitOccurrence extends OmopEntity {
 
 	@Id
 	@Column(name = "visit_occurrence_id")

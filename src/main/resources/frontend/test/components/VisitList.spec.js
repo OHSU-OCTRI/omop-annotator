@@ -23,13 +23,14 @@ describe('VisitList.vue', () => {
       }
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Emergency'));
-    expect(wrapper.find('[data-field="visitStart0"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Visit Source'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Admitting Source'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Discharged To'));
-    expect(wrapper.find('[data-field="visitType1"]').exists()).toBe(false);
+    expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
+    expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
+    expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
+    expect(wrapper.find('[data-field="visitSource"]').text().includes('Visit Source'));
+    expect(
+      wrapper.find('[data-field="admittingSource"]').text().includes('Admitting Source')
+    );
+    expect(wrapper.find('[data-field="dischargedTo"]').text().includes('Discharged To'));
   });
 
   it('loads data', async () => {
@@ -51,18 +52,19 @@ describe('VisitList.vue', () => {
     spyOn(window, 'fetch').and.resolveTo(okResponse);
 
     const wrapper = mount(VisitList, { props: { personId: 123456 } });
+    await flushPromises();
     expect(window.fetch).toHaveBeenCalledWith('/data/person/summary/123456/visits', {
       credentials: 'same-origin'
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
-    await flushPromises();
-    expect(wrapper.find('[data-field="visitType0"]').exists()).toBe(true);
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Emergency'));
-    expect(wrapper.find('[data-field="visitStart0"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Visit Source'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Admitting Source'));
-    expect(wrapper.find('[data-field="visitType0"]').text().includes('Discharged To'));
-    expect(wrapper.find('[data-field="visitType1"]').exists()).toBe(false);
+    expect(wrapper.find('[data-field="visitType"]').exists()).toBe(true);
+    expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
+    expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
+    expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
+    expect(wrapper.find('[data-field="visitSource"]').text().includes('Visit Source'));
+    expect(
+      wrapper.find('[data-field="admittingSource"]').text().includes('Admitting Source')
+    );
+    expect(wrapper.find('[data-field="dischargedTo"]').text().includes('Discharged To'));
   });
 });

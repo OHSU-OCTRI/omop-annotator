@@ -19,7 +19,9 @@
           </tr>
           <tr v-for="(label, index) in labels" :key="index">
             <td>
-              <input @change="setValidity(index, 'displayOrder', $event)" class="form-control"
+              <input
+                @change="setValidity(index, 'displayOrder', $event)"
+                class="form-control"
                 type="number"
                 :name="`annotationLabels[${index}].displayOrder`"
                 v-model="labels[index].displayOrder"
@@ -28,14 +30,18 @@
               <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input @change="setValidity(index, 'displayLabel', $event)" class="form-control"
+              <input
+                @change="setValidity(index, 'displayLabel', $event)"
+                class="form-control"
                 :name="`annotationLabels[${index}].displayLabel`"
                 v-model="labels[index].displayLabel"
                 required
               />
             </td>
             <td>
-              <input @change="setValidity(index, 'outputLabel', $event)" class="form-control"
+              <input
+                @change="setValidity(index, 'outputLabel', $event)"
+                class="form-control"
                 :name="`annotationLabels[${index}].outputLabel`"
                 v-model="labels[index].outputLabel"
                 required
@@ -43,7 +49,9 @@
               <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
-              <input @change="setValidity(index, 'accentColor', $event)" class="form-control form-control-color w-100"
+              <input
+                @change="setValidity(index, 'accentColor', $event)"
+                class="form-control form-control-color w-100"
                 type="color"
                 :name="`annotationLabels[${index}].accentColor`"
                 v-model="labels[index].accentColor"

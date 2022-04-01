@@ -22,16 +22,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping("/judge")
 public class JudgeController {
-	
+
 	@Autowired
 	PoolRepository poolRepository;
 
 	@Autowired
 	CustomViewRepository customViewRepository;
-	
+
 	@Autowired
 	TopicRepository topicRepository;
-	
+
 	@Autowired
 	PoolEntryRepository poolEntryRepository;
 
@@ -40,31 +40,35 @@ public class JudgeController {
 
 	@GetMapping("/pool/{id}")
 	public String showTopicsForPool(Map<String, Object> model, @PathVariable Long id) {
-		
+
 		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-		
+
 		model.put("pool", poolRepository.findById(id).get());
-		model.put("topicJudgments", customViewRepository.summarizeTopicJudgments(id, securityHelper.authenticationUserDetails().getUserId()));
+		model.put("topicJudgments", customViewRepository.summarizeTopicJudgments(id,
+				securityHelper.authenticationUserDetails().getUserId()));
 		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-		"datatables/js/dataTables.bootstrap5.min.js" });
+				"datatables/js/dataTables.bootstrap5.min.js" });
 		model.put("pageScripts", new String[] { "table-sorting.js" });
-		return "/judge/show_topics";		
+		return "/judge/show_topics";
 	}
-	
+
 	@GetMapping("/pool/{poolId}/topic/{topicId}")
-	public String showPoolEntriesForTopic(Map<String, Object> model, @PathVariable Long poolId, @PathVariable Long topicId) {
+	public String showPoolEntriesForTopic(Map<String, Object> model, @PathVariable Long poolId,
+			@PathVariable Long topicId) {
 		model.put("pool", poolRepository.findById(poolId).get());
 		model.put("topic", topicRepository.findById(topicId).get());
-		model.put("pageScripts", new String[] { "vendor.js", "pool-entries.js"});
+		model.put("pageScripts", new String[] { "vendor.js", "pool-entries.js" });
 		return "judge/show_pool_entries";
 	}
-	
+
 	@GetMapping(value = "/pool/{poolId}/topic/{topicId}/pool_entry_judgments", produces = "application/json")
 	@ResponseBody
-	public String getPoolEntryJudgments(@PathVariable Long poolId, @PathVariable Long topicId) throws JsonProcessingException {
+	public String getPoolEntryJudgments(@PathVariable Long poolId, @PathVariable Long topicId)
+			throws JsonProcessingException {
 		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(customViewRepository.summarizePoolEntryJudgments(poolId, topicId, securityHelper.authenticationUserDetails().getUserId()));
+		return mapper.writeValueAsString(customViewRepository.summarizePoolEntryJudgments(poolId, topicId,
+				securityHelper.authenticationUserDetails().getUserId()));
 	}
-	
+
 }

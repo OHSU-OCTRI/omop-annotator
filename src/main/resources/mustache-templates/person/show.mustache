@@ -5,7 +5,8 @@
     <div>
         {{#entity}}
         <div id="person_summary" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
-        <div id="visit-list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
+        <div id="visit-list" class="mb-4" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
+        <div id="condition_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
         {{/entity}}
     </div>
 {{>layout/footer}}

@@ -11,6 +11,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.octri.omop_annotator.view.IdSerializer;
+import org.octri.omop_annotator.view.NameSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * OMOP 5.3 Definition of a Condition Occurrence
  * 
@@ -36,10 +41,12 @@ public class ConditionOccurrence {
 	@ManyToOne
 	@NotNull
 	@JoinColumn(name="person_id")
+	@JsonSerialize(using = IdSerializer.class)
 	private Person person;
 	
 	@ManyToOne
 	@JoinColumn(name="condition_concept_id")
+	@JsonSerialize(using = NameSerializer.class)
 	private Concept condition;
 	
 	@Column(name="condition_start_datetime")
@@ -52,10 +59,12 @@ public class ConditionOccurrence {
 	
 	@ManyToOne
 	@JoinColumn(name="condition_type_concept_id")
+	@JsonSerialize(using = NameSerializer.class)
 	private Concept conditionType;
 	
 	@ManyToOne
 	@JoinColumn(name="visit_occurrence_id")
+	@JsonSerialize(using = IdSerializer.class)
 	VisitOccurrence visitOccurrence;
 
 	public Long getId() {

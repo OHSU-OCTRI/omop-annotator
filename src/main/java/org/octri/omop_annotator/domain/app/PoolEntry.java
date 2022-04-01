@@ -26,7 +26,7 @@ public class PoolEntry extends AbstractEntity implements Labelled {
 
 	private Integer sortOrder;
 
-	// TODO: related entity? does not appear in the prototype.
+	@NotNull
 	private Integer documentId;
 
 	private Integer frequency;

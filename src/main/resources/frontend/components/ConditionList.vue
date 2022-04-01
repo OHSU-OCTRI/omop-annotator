@@ -1,6 +1,6 @@
 <template>
   <div class="condition-list">
-    <h2>{{ header }}</h2>
+    <h2 v-if="showHeader">{{ header }}</h2>
     <div v-if="loading">
       <span class="ms-2"></span>
       <span
@@ -72,6 +72,10 @@ export default {
     sortOrder: {
       type: String,
       default: 'asc'
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

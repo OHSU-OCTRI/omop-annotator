@@ -115,7 +115,7 @@ export default {
       return this.labels.filter(label => label.accentColor === color).length > 0;
     },
     randomColor() {
-      return '#' + Math.floor(Math.random()*16777215).toString(16);
+      return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
     deleteLabel(index) {
       this.labels.splice(index, 1);

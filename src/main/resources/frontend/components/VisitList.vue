@@ -87,7 +87,8 @@ export default {
   },
   methods: {
     drawDataTable() {
-      if ($(`#${this.tableId}`).DataTable) {
+      // Format with the the datatables library if it is available.
+      if (typeof $.fn.DataTable === 'function') {
         $(`#${this.tableId}`).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,

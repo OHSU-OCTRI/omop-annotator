@@ -3,6 +3,7 @@ package org.octri.omop_annotator.domain.app;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.octri.omop_annotator.view.Labelled;
 
@@ -22,6 +23,7 @@ public class AnnotationLabel extends AbstractEntity implements Labelled {
 	@NotNull
 	private Integer displayOrder;
 	
+	@Size(max = 7)
 	@NotNull
 	private String accentColor;
 

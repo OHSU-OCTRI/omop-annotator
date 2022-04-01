@@ -31,20 +31,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping("/data/person")
 public class PersonController {
-	
+
 	private static final Log log = LogFactory.getLog(PersonController.class);
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private OmopDataConfiguration omopDataConfig;
 	private PersonRepository personRepository;
 	private VisitOccurrenceRepository visitOccurrenceRepository;
-	private ConceptRepository conceptRepository;
 	private ConditionOccurrenceRepository conditionOccurrenceRepository;
-	private DrugExposureRepository drugExposureRepository;
-	private MeasurementRepository measurementRepository;
-	private ObservationRepository observationRepository;
-
-	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
@@ -56,32 +50,21 @@ public class PersonController {
 		this.omopDataConfig = omopDataConfig;
 		this.personRepository = personRepository;
 		this.visitOccurrenceRepository = visitOccurrenceRepository;
-		this.conceptRepository = conceptRepository;
 		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
-		this.drugExposureRepository = drugExposureRepository;
-		this.measurementRepository = measurementRepository;
-		this.observationRepository = observationRepository;
-		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
-
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
-		// Test each repo
-		log.info(conceptRepository.findById(32020L).get());
-		log.info(conditionOccurrenceRepository.findById(51331L).get());
-		log.info(drugExposureRepository.findById(130747452L).get());
-		log.info(measurementRepository.findById(286707884L).get());
-		log.info(observationRepository.findById(6335046L).get());
-		log.info(procedureOccurrenceRepository.findById(245585L).get());
-
-		model.put("pageScripts", new String[] { "vendor.js", "person-summary.js", "visit-list.js" });
+		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
+				"datatables/js/dataTables.bootstrap5.min.js" });
+		model.put("pageScripts",
+				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js",
+				});
 		model.put("entity", personRepository.findById(id).get());
-	
+
 		return "person/show";
 	}
-
 
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")
 	@ResponseBody
@@ -97,4 +80,11 @@ public class PersonController {
 		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
 	}
 
+	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
+	@ResponseBody
+	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
+		// TODO: The following query also works but is (currently) slow.
+		// return mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(conditionOccurrenceRepository.conditionOccurrenceRows(personId));
+	}
 }

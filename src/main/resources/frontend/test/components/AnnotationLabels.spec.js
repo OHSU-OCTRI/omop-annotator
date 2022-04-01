@@ -85,5 +85,4 @@ describe('AnnotationLabels.vue', () => {
     input2.setValue('#000000');
     expect(input2.classes('is-invalid')).toBe(false);
   });
-
 });

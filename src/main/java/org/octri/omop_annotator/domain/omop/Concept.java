@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.octri.omop_annotator.view.Named;
+
 /**
  * OMOP 5.3 Definition of a Concept 
  * 
@@ -18,7 +20,7 @@ import javax.persistence.Id;
  * invalid_reason
  */
 @Entity
-public class Concept {
+public class Concept extends OmopEntity implements Named {
 	
 	@Id
 	@Column(name = "concept_id")

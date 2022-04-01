@@ -9,7 +9,11 @@
         <li data-field="dob" class="list-group-item py-0 border-0">
           <label class="text-muted fw-light">DOB:</label> {{ person.birthDatetime }}
         </li>
-        <li data-field="age" :title="`Age as of ${this.person.ageCalculationDate}`" class="list-group-item py-0 border-0">
+        <li
+          data-field="age"
+          :title="`Age as of ${this.person.ageCalculationDate}`"
+          class="list-group-item py-0 border-0"
+        >
           <label class="text-muted fw-light">Age:</label> {{ person.age }}
         </li>
         <li data-field="gender" class="list-group-item py-0 border-0">

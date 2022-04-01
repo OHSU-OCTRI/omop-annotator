@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * ethnicity_source_concept_id
  */
 @Entity
-public class Person {
+public class Person extends OmopEntity {
 
 	@Transient
 	private LocalDate ageCalculationDate = LocalDate.now();

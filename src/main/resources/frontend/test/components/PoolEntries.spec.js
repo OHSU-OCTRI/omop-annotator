@@ -69,9 +69,12 @@ describe('PoolEntries.vue', () => {
     spyOn(window, 'fetch').and.resolveTo(okResponse);
 
     const wrapper = mount(PoolEntries, { props: { poolId: 1, topicId: 1 } });
-    expect(window.fetch).toHaveBeenCalledWith('/judge/pool/1/topic/1/pool_entry_judgments', {
-      credentials: 'same-origin'
-    });
+    expect(window.fetch).toHaveBeenCalledWith(
+      '/judge/pool/1/topic/1/pool_entry_judgments',
+      {
+        credentials: 'same-origin'
+      }
+    );
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
     await flushPromises();
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
@@ -81,7 +84,7 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('[data-field="poolEntryId1"]').exists()).toBe(false);
   });
 
-  it('renders only unjudged entries by default', async() => {
+  it('renders only unjudged entries by default', async () => {
     const wrapper = mount(PoolEntries, {
       props: { poolId: 1, topicId: 1 },
       data: function () {
@@ -95,7 +98,7 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('button').text().includes('Unjudged')).toBe(false);
   });
 
-  it('toggles between judged and unjudged entries', async() => {
+  it('toggles between judged and unjudged entries', async () => {
     const wrapper = mount(PoolEntries, {
       props: { poolId: 1, topicId: 1 },
       data: function () {
@@ -114,7 +117,7 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('button').text().includes('Unjudged')).toBe(false);
   });
 
-  it('displays the count of judged and unjudged entries', async() => {
+  it('displays the count of judged and unjudged entries', async () => {
     const wrapper = mount(PoolEntries, {
       props: { poolId: 1, topicId: 1 },
       data: function () {
@@ -126,5 +129,4 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('h3').text().includes('2'));
     expect(wrapper.find('button').text().includes('1'));
   });
-
 });

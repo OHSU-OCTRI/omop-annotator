@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.domain.omop.Person;
-import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.omop.ConceptRepository;
 import org.octri.omop_annotator.repository.omop.ConditionOccurrenceRepository;
 import org.octri.omop_annotator.repository.omop.DrugExposureRepository;
@@ -40,7 +39,6 @@ public class PersonController {
 	private PersonRepository personRepository;
 	private VisitOccurrenceRepository visitOccurrenceRepository;
 	private ConditionOccurrenceRepository conditionOccurrenceRepository;
-	private CustomViewRepository customViewRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,

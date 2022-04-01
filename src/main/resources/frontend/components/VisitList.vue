@@ -1,6 +1,6 @@
 <template>
   <div class="visit-list">
-    <h2>Visits</h2>
+    <h2 v-if="showHeader">Visits</h2>
     <div v-if="loading">
       <span class="ms-2"></span>
       <span
@@ -61,6 +61,10 @@ export default {
     sortOrder: {
       type: String,
       default: 'asc'
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

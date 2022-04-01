@@ -19,11 +19,16 @@ public class AnnotationLabel extends AbstractEntity implements Labelled {
 	@NotNull
 	private AnnotationSchema annotationSchema;
 
+	@NotNull
 	private Integer displayOrder;
+	
+	@NotNull
 	private String accentColor;
 
 	@NotNull
 	private String displayLabel;
+	
+	@NotNull
 	private String outputLabel;
 
 	public AnnotationSchema getAnnotationSchema() {

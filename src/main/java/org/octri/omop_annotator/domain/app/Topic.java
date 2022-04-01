@@ -24,6 +24,7 @@ public class Topic extends AbstractEntity implements Labelled {
 	private Integer topicNumber;
 
 	@Column(columnDefinition = "TEXT")
+	@NotNull
 	private String narrative;
 
 	public TopicSet getTopicSet() {

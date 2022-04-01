@@ -40,7 +40,6 @@ public class JudgeController {
 
 	@GetMapping("/pool/{id}")
 	public String showTopicsForPool(Map<String, Object> model, @PathVariable Long id) {
-
 		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
 
 		model.put("pool", poolRepository.findById(id).get());
@@ -49,7 +48,7 @@ public class JudgeController {
 		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
 				"datatables/js/dataTables.bootstrap5.min.js" });
 		model.put("pageScripts", new String[] { "table-sorting.js" });
-		return "/judge/show_topics";
+		return "judge/show_topics";
 	}
 
 	@GetMapping("/pool/{poolId}/topic/{topicId}")

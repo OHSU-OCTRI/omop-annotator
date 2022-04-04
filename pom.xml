@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.9</version>
+		<version>2.5.12</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -22,6 +22,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<node.version>v16.14.0</node.version>
+		<authlib.version>0.6.0</authlib.version>
 	</properties>
 	
 	<profiles>
@@ -141,7 +142,12 @@
 		<dependency>
 			<groupId>org.octri.authentication</groupId>
 			<artifactId>authentication_lib</artifactId>
-			<version>0.5.5</version>
+			<version>${authlib.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.octri.authentication</groupId>
+			<artifactId>authentication_ui_bootstrap5</artifactId>
+			<version>${authlib.version}</version>
 		</dependency>
 	</dependencies>
 

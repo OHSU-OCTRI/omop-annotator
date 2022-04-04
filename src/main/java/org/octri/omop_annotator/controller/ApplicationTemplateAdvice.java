@@ -1,13 +1,14 @@
 package org.octri.omop_annotator.controller;
 
-import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.octri.authentication.server.controller.TemplateAdvice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -18,17 +19,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ApplicationTemplateAdvice {
 
-	/**
-	 * Redirect any {@link EntityNotFoundException} to the controller method that handles it
-	 *
-	 * @param request
-	 * @param response
-	 * @param runtimeException
-	 * @throws Exception
-	 */
-	@ExceptionHandler(value = EntityNotFoundException.class)
-	public void defaultErrorHandler(HttpServletRequest request, HttpServletResponse response,
-			EntityNotFoundException e) throws IOException, ServletException {
-		response.sendRedirect(request.getContextPath() + "/notFound");
+	@Autowired
+	TemplateAdvice templateAdvice;
+
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public String handleCustomErrorExceptions(HttpServletRequest request, Model model,
+			SQLIntegrityConstraintViolationException e) {
+		templateAdvice.addDefaultAttributes(request, model);
+		model.addAttribute("status", 422);
+		model.addAttribute("error", "Unprocessable Entity");
+		model.addAttribute("message", "The request violates a constraint in the database: " + e.getMessage());
+		model.addAttribute("timestamp", new Date());
+		return "error";
 	}
+
 }

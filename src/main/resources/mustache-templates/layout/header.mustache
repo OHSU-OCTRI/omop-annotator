@@ -17,33 +17,33 @@
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">{{displayName}}</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-					data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+					data-bs-target="#navbar_collapse" aria-controls="navbar_collapse"
 					role="button" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="navbarCollapse">
+				<div class="collapse navbar-collapse" id="navbar_collapse">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link" href="{{req.contextPath}}/">Home</a></li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dataMenu" data-bs-toggle="dropdown"
+							<a class="nav-link dropdown-toggle" href="#" id="data_menu" data-bs-toggle="dropdown"
 							role="button" aria-haspopup="true" aria-expanded="false">Data</a>
-							<div class="dropdown-menu" aria-labelledby="dataMenu">
+							<div class="dropdown-menu" aria-labelledby="data_menu">
 								{{>components/data_items}}
 							</div>
 						</li>
 						{{#isAdminOrSuper}}
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="adminMenu" data-bs-toggle="dropdown"
+							<a class="nav-link dropdown-toggle" href="#" id="admin_menu" data-bs-toggle="dropdown"
 							role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-							<div class="dropdown-menu" aria-labelledby="adminMenu">
+							<div class="dropdown-menu" aria-labelledby="admin_menu">
 								{{>components/admin_items}}
 							</div>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="userManagementMenu" data-bs-toggle="dropdown"
+							<a class="nav-link dropdown-toggle" href="#" id="user_management_menu" data-bs-toggle="dropdown"
 							role="button" aria-haspopup="true" aria-expanded="false">Users</a>
 							<div class="dropdown-menu"
-								aria-labelledby="userManagementMenu">
+								aria-labelledby="user_management_menu">
 								<a class="dropdown-item" href="{{req.contextPath}}/admin/user/form"><span class="fa fa-user-plus"></span> New User</a>
 								<a class="dropdown-item" href="{{req.contextPath}}/admin/user/list"><span class="fa fa-list"></span> List of Users</a>
 							</div>

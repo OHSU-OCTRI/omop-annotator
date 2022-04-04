@@ -26,8 +26,8 @@ public class ApplicationTemplateAdvice {
 	public String handleCustomErrorExceptions(HttpServletRequest request, Model model,
 			SQLIntegrityConstraintViolationException e) {
 		templateAdvice.addDefaultAttributes(request, model);
-		model.addAttribute("status", 403);
-		model.addAttribute("error", "Forbidden");
+		model.addAttribute("status", 422);
+		model.addAttribute("error", "Unprocessable Entity");
 		model.addAttribute("message", "The request violates a constraint in the database: " + e.getMessage());
 		model.addAttribute("timestamp", new Date());
 		return "error";

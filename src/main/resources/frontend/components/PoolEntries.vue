@@ -1,6 +1,6 @@
 <template>
   <div class="container pool-entries">
-    <div class="row mt-4 mb-4">
+    <div class="row my-4">
       <div class="col">
         <h3>{{ cardTitleText }}</h3>
       </div>
@@ -11,14 +11,7 @@
       </div>
     </div>
     <div v-if="loading">
-      <span class="ms-2"></span>
-      <span
-        class="spinner-border spinner-border-sm text-secondary ms-auto"
-        role="status"
-        aria-hidden="true"
-      >
-      </span>
-      <span class="ms-2">Loading...</span>
+      <LoadingSpinner/>
     </div>
     <div v-else class="table-responsive" ref="table-div">
       <table
@@ -68,6 +61,8 @@
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner';
+
 export default {
   props: {
     contextPath: {
@@ -90,6 +85,9 @@ export default {
       type: String,
       default: 'asc'
     }
+  },
+  components: {
+    LoadingSpinner
   },
   data() {
     return {

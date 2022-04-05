@@ -138,8 +138,8 @@ describe('PoolEntries.vue', () => {
   });
 
   // TODO: The built-in isVisible function for Vue tests does not work for this component
-  function isVisible(elem) {
-    const styleAttr = elem.attributes('style');
+  function isVisible(wrapper) {
+    const styleAttr = wrapper.attributes('style');
     if (styleAttr === undefined) {
       return true;
     } else if (styleAttr.includes('display: none;')) {

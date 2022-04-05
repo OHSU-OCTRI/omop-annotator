@@ -2,14 +2,7 @@
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
     <div v-if="loading">
-      <span class="ms-2"></span>
-      <span
-        class="spinner-border spinner-border-sm text-secondary ms-auto"
-        role="status"
-        aria-hidden="true"
-      >
-      </span>
-      <span class="ms-2">Loading...</span>
+      <LoadingSpinner/>
     </div>
     <div v-else class="table-responsive">
       <table :id="tableId" class="table table-striped table-bordered">
@@ -44,6 +37,8 @@
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner';
+
 export default {
   props: {
     contextPath: {
@@ -66,6 +61,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  components: {
+    LoadingSpinner
   },
   data() {
     return {

@@ -4,7 +4,7 @@
     <a @click="addRow" class="new-entity btn btn-success">
       <i class="fas fa-plus-circle"></i> New
     </a>
-    <div id="annotationLabels">
+    <div>
       <table class="table table-striped table-bordered sorted">
         <tbody>
           <tr>

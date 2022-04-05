@@ -56,11 +56,8 @@ public class PersonController {
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
-		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-				"datatables/js/dataTables.bootstrap5.min.js" });
 		model.put("pageScripts",
-				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js",
-				});
+				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", });
 		model.put("entity", personRepository.findById(id).get());
 
 		return "person/show";

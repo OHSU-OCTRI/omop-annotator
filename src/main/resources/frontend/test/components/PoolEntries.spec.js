@@ -40,15 +40,18 @@ describe('PoolEntries.vue', () => {
               judgmentId: null,
               annotation: null
             }
-          ]
+          ],
+          loading: false,
+          showUnjudged: true
         };
       }
     });
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
-    expect(wrapper.find('[data-field="poolEntryId0"]').text().includes('1'));
-    expect(wrapper.find('[data-field="documentId0"]').text().includes('12345'));
-    expect(wrapper.find('[data-field="judgment0"]').find('a').exists()).toBe(true);
-    expect(wrapper.find('[data-field="poolEntryId1"]').exists()).toBe(false);
+    expect(wrapper.find('[data-field="unjudged_poolEntryId"]').text().includes('1'));
+    expect(wrapper.find('[data-field="unjudged_documentId"]').text().includes('12345'));
+    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(
+      true
+    );
   });
 
   it('loads data', async () => {
@@ -78,43 +81,45 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
     await flushPromises();
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
-    expect(wrapper.find('[data-field="poolEntryId0"]').text().includes('1'));
-    expect(wrapper.find('[data-field="documentId0"]').text().includes('12345'));
-    expect(wrapper.find('[data-field="judgment0"]').find('a').exists()).toBe(true);
-    expect(wrapper.find('[data-field="poolEntryId1"]').exists()).toBe(false);
+    expect(wrapper.find('[data-field="unjudged_poolEntryId"]').text().includes('1'));
+    expect(wrapper.find('[data-field="unjudged_documentId"]').text().includes('12345'));
+    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(
+      true
+    );
   });
 
-  it('renders only unjudged entries by default', async () => {
+  it('renders only unjudged table by default', async () => {
     const wrapper = mount(PoolEntries, {
       props: { poolId: 1, topicId: 1 },
       data: function () {
         return {
+          loading: false,
+          showUnjudged: true,
           entries: entries_example
         };
       }
     });
-    expect(wrapper.findAll('tr')).toHaveSize(3);
-    expect(wrapper.find('h3').text().includes('Unjudged'));
-    expect(wrapper.find('button').text().includes('Unjudged')).toBe(false);
+    expect(isVisible(wrapper.find('#pool_1_topic_1_unjudged'))).toBe(true);
+    expect(isVisible(wrapper.find('#pool_1_topic_1_judged'))).toBe(false);
   });
 
-  it('toggles between judged and unjudged entries', async () => {
+  it('toggles between judged and unjudged table', async () => {
     const wrapper = mount(PoolEntries, {
       props: { poolId: 1, topicId: 1 },
       data: function () {
         return {
+          loading: false,
+          showUnjudged: true,
           entries: entries_example
         };
       }
     });
     await wrapper.find('button').trigger('click');
-    expect(wrapper.findAll('tr')).toHaveSize(2);
-    expect(wrapper.find('h3').text().includes('Unjudged')).toBe(false);
-    expect(wrapper.find('button').text().includes('Unjudged'));
+    expect(isVisible(wrapper.find('#pool_1_topic_1_judged'))).toBe(true);
+    expect(isVisible(wrapper.find('#pool_1_topic_1_unjudged'))).toBe(false);
     await wrapper.find('button').trigger('click');
-    expect(wrapper.findAll('tr')).toHaveSize(3);
-    expect(wrapper.find('h3').text().includes('Unjudged'));
-    expect(wrapper.find('button').text().includes('Unjudged')).toBe(false);
+    expect(isVisible(wrapper.find('#pool_1_topic_1_unjudged'))).toBe(true);
+    expect(isVisible(wrapper.find('#pool_1_topic_1_judged'))).toBe(false);
   });
 
   it('displays the count of judged and unjudged entries', async () => {
@@ -122,6 +127,8 @@ describe('PoolEntries.vue', () => {
       props: { poolId: 1, topicId: 1 },
       data: function () {
         return {
+          loading: false,
+          showUnjudged: true,
           entries: entries_example
         };
       }
@@ -129,4 +136,16 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('h3').text().includes('2'));
     expect(wrapper.find('button').text().includes('1'));
   });
+
+  // TODO: The built-in isVisible function for Vue tests does not work for this component
+  function isVisible(wrapper) {
+    const styleAttr = wrapper.attributes('style');
+    if (styleAttr === undefined) {
+      return true;
+    } else if (styleAttr.includes('display: none;')) {
+      return false;
+    }
+
+    return true;
+  }
 });

@@ -21,7 +21,11 @@
       <span class="ms-2">Loading...</span>
     </div>
     <div v-else class="table-responsive" ref="table-div">
-      <table v-show="showUnjudged" :id="unjudgedTableId" class="table table-striped table-bordered sorted">
+      <table
+        v-show="showUnjudged"
+        :id="unjudgedTableId"
+        class="table table-striped table-bordered sorted"
+      >
         <thead>
           <tr>
             <th>Sort Order</th>
@@ -39,7 +43,11 @@
           </tr>
         </tbody>
       </table>
-      <table v-show="showJudged" :id="judgedTableId" class="table table-striped table-bordered sorted">
+      <table
+        v-show="showJudged"
+        :id="judgedTableId"
+        class="table table-striped table-bordered sorted"
+      >
         <thead>
           <tr>
             <th>Sort Order</th>
@@ -131,10 +139,14 @@ export default {
   methods: {
     toggleUnjudged() {
       this.showUnjudged = !this.showUnjudged;
-      const elem = this.$refs["table-div"];
+      const elem = this.$refs['table-div'];
       if (typeof $.fn.DataTable === 'function') {
-        const unjudgedDataTableWrapper = elem.querySelector(`#${this.unjudgedTableId}_wrapper`);
-        const judgedDataTableWrapper = elem.querySelector(`#${this.judgedTableId}_wrapper`);
+        const unjudgedDataTableWrapper = elem.querySelector(
+          `#${this.unjudgedTableId}_wrapper`
+        );
+        const judgedDataTableWrapper = elem.querySelector(
+          `#${this.judgedTableId}_wrapper`
+        );
         if (this.showUnjudged) {
           unjudgedDataTableWrapper.hidden = false;
           judgedDataTableWrapper.hidden = true;
@@ -166,12 +178,11 @@ export default {
           searching: true,
           info: true
         });
-        const elem = this.$refs["table-div"];
+        const elem = this.$refs['table-div'];
         elem.querySelector(`#${this.unjudgedTableId}_wrapper`).hidden = false;
         elem.querySelector(`#${this.judgedTableId}_wrapper`).hidden = true;
       }
     }
-
   }
 };
 </script>

@@ -49,7 +49,9 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
     expect(wrapper.find('[data-field="unjudged_poolEntryId"]').text().includes('1'));
     expect(wrapper.find('[data-field="unjudged_documentId"]').text().includes('12345'));
-    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(true);
+    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(
+      true
+    );
   });
 
   it('loads data', async () => {
@@ -81,7 +83,9 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
     expect(wrapper.find('[data-field="unjudged_poolEntryId"]').text().includes('1'));
     expect(wrapper.find('[data-field="unjudged_documentId"]').text().includes('12345'));
-    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(true);
+    expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(
+      true
+    );
   });
 
   it('renders only unjudged table by default', async () => {
@@ -95,7 +99,7 @@ describe('PoolEntries.vue', () => {
         };
       }
     });
-    console.log(wrapper.find('#pool_1_topic_1_judged').find("thead").isVisible());
+    console.log(wrapper.find('#pool_1_topic_1_judged').find('thead').isVisible());
     expect(isVisible(wrapper.find('#pool_1_topic_1_unjudged'))).toBe(true);
     expect(isVisible(wrapper.find('#pool_1_topic_1_judged'))).toBe(false);
   });
@@ -136,14 +140,13 @@ describe('PoolEntries.vue', () => {
 
   // TODO: The built-in isVisible function for Vue tests does not seem to work
   function isVisible(elem) {
-    const styleAttr = elem.attributes("style");
+    const styleAttr = elem.attributes('style');
     if (styleAttr === undefined) {
       return true;
-    } else if (styleAttr.includes("display: none;")) {
+    } else if (styleAttr.includes('display: none;')) {
       return false;
     }
 
     return true;
   }
-  
 });

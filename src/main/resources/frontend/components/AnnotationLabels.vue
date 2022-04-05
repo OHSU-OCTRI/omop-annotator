@@ -37,6 +37,7 @@
                 v-model="labels[index].displayLabel"
                 required
               />
+              <div class="invalid-feedback">Value must be present and unique</div>
             </td>
             <td>
               <input

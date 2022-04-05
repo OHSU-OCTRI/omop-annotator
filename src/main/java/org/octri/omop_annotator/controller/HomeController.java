@@ -26,10 +26,6 @@ public class HomeController {
 		if (securityHelper.isLoggedIn()) {
 			model.put("page_title", "OMOP Annotator");
 			model.put("pools", poolRepository.findAll());
-			model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-					"datatables/js/dataTables.bootstrap5.min.js" });
-			model.put("pageScripts", new String[] { "table-sorting.js" });
-
 			return new ModelAndView("home", model);
 		}
 

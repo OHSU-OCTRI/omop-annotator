@@ -45,9 +45,6 @@ public class JudgeController {
 		model.put("pool", poolRepository.findById(id).get());
 		model.put("topicJudgments", customViewRepository.summarizeTopicJudgments(id,
 				securityHelper.authenticationUserDetails().getUserId()));
-		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-				"datatables/js/dataTables.bootstrap5.min.js" });
-		model.put("pageScripts", new String[] { "table-sorting.js" });
 		return "judge/show_topics";
 	}
 

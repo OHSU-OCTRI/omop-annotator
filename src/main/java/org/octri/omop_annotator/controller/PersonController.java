@@ -56,11 +56,8 @@ public class PersonController {
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
-		model.put("pageWebjars", new String[] { "datatables/js/jquery.dataTables.min.js",
-				"datatables/js/dataTables.bootstrap5.min.js" });
 		model.put("pageScripts",
-				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js",
-				});
+				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", });
 		model.put("entity", personRepository.findById(id).get());
 
 		return "person/show";
@@ -84,7 +81,8 @@ public class PersonController {
 	@ResponseBody
 	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
 		// TODO: The following query also works but is (currently) slow.
-		// return mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
+		// return
+		// mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
 		return mapper.writeValueAsString(conditionOccurrenceRepository.conditionOccurrenceRows(personId));
 	}
 }

@@ -50,12 +50,12 @@
 
 	{{#hasResults}}
 	<table
-		class="table table-striped table-bordered users-table center-all display responsive no-wrap">
+		class="table table-striped table-bordered center-all display responsive no-wrap sorted">
 		<thead>
 			<tr>
 				<th>Topic Number</th>
-				<th>Person Id</th>
 				<th>Sort Order</th>
+				<th>Person Id</th>
 				{{#error}}
 				<th>Errors</th>
 				{{/error}}
@@ -65,8 +65,8 @@
 			{{#newPoolEntries}}
 			<tr>
 				<td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
-				<td>{{#personId}}{{.}}{{/personId}}</td> 
 				<td>{{#poolEntry}}{{#sortOrder}}{{.}}{{/sortOrder}}{{/poolEntry}}</td>
+				<td>{{#personId}}{{.}}{{/personId}}</td>
 				{{#error}}
 				<td><span class='text-danger'>{{errorDescription}}</span></td>
 				{{/error}}

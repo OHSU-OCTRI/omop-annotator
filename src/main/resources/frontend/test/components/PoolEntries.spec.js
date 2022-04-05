@@ -99,7 +99,6 @@ describe('PoolEntries.vue', () => {
         };
       }
     });
-    console.log(wrapper.find('#pool_1_topic_1_judged').find('thead').isVisible());
     expect(isVisible(wrapper.find('#pool_1_topic_1_unjudged'))).toBe(true);
     expect(isVisible(wrapper.find('#pool_1_topic_1_judged'))).toBe(false);
   });
@@ -138,7 +137,7 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('button').text().includes('1'));
   });
 
-  // TODO: The built-in isVisible function for Vue tests does not seem to work
+  // TODO: The built-in isVisible function for Vue tests does not work for this component
   function isVisible(elem) {
     const styleAttr = elem.attributes('style');
     if (styleAttr === undefined) {

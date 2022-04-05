@@ -81,8 +81,7 @@ public class PersonController {
 	@ResponseBody
 	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
 		// TODO: The following query also works but is (currently) slow.
-		// return
-		// mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
+		// return mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
 		return mapper.writeValueAsString(conditionOccurrenceRepository.conditionOccurrenceRows(personId));
 	}
 }

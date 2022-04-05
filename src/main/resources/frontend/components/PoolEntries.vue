@@ -139,21 +139,16 @@ export default {
   methods: {
     toggleUnjudged() {
       this.showUnjudged = !this.showUnjudged;
-      const elem = this.$refs['table-div'];
       if (typeof $.fn.DataTable === 'function') {
+        const elem = this.$refs['table-div'];
         const unjudgedDataTableWrapper = elem.querySelector(
           `#${this.unjudgedTableId}_wrapper`
         );
         const judgedDataTableWrapper = elem.querySelector(
           `#${this.judgedTableId}_wrapper`
         );
-        if (this.showUnjudged) {
-          unjudgedDataTableWrapper.hidden = false;
-          judgedDataTableWrapper.hidden = true;
-        } else {
-          unjudgedDataTableWrapper.hidden = true;
-          judgedDataTableWrapper.hidden = false;
-        }
+        unjudgedDataTableWrapper.hidden = !unjudgedDataTableWrapper.hidden;
+        judgedDataTableWrapper.hidden = !judgedDataTableWrapper.hidden;
       }
     },
     judgmentLink(poolEntryId) {

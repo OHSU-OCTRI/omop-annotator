@@ -5,7 +5,7 @@
       <i class="fas fa-plus-circle"></i> New
     </a>
     <div>
-      <table class="table table-striped table-bordered sorted">
+      <table class="table table-striped table-bordered">
         <tbody>
           <tr>
             <th>Display Order</th>
@@ -105,11 +105,14 @@ export default {
     addRow() {
       // Assign default color of black or a random color if black is in use
       let color = '#000000';
+      while (this.colorTaken(color)) {
+        color = this.randomColor();
+      }
       this.labels.push({
         displayLabel: '',
         outputLabel: '',
         displayOrder: '',
-        accentColor: this.colorTaken(color) ? this.randomColor() : color
+        accentColor: color
       });
     },
     colorTaken(color) {

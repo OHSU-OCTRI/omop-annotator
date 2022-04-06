@@ -18,8 +18,9 @@
 </div>
 
 <div class="form-group">
-    <label for="narrative" class="form-label">Narrative</label>
-    <input type="text" class="form-control" id="narrative" name="narrative" value="{{#narrative}}{{.}}{{/narrative}}" >
+    <label for="narrative" class="form-label required-field">Narrative</label>
+    <input type="text" class="form-control" id="narrative" name="narrative" value="{{#narrative}}{{.}}{{/narrative}}" required>
+    <div class="invalid-feedback">Value must be present</div>
 </div>
 
 {{/entity}}

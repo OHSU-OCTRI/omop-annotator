@@ -28,8 +28,9 @@
 </div>
 
 <div class="form-group">
-    <label for="documentId" class="form-label">Document id</label>
-    <input type="number" class="form-control" id="documentId" name="documentId" value="{{#documentId}}{{.}}{{/documentId}}" >
+    <label for="documentId" class="form-label required-field">Document id</label>
+    <input type="number" class="form-control" id="documentId" name="documentId" value="{{#documentId}}{{.}}{{/documentId}}" required>
+    <div class="invalid-feedback">Value must be present</div>
 </div>
 
 <div class="form-group">

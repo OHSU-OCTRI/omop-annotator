@@ -40,6 +40,7 @@ public class PersonController {
 	private VisitOccurrenceRepository visitOccurrenceRepository;
 	private ConditionOccurrenceRepository conditionOccurrenceRepository;
 	private ObservationRepository observationRepository;
+	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
@@ -53,13 +54,14 @@ public class PersonController {
 		this.visitOccurrenceRepository = visitOccurrenceRepository;
 		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
 		this.observationRepository = observationRepository;
+		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
 		model.put("pageScripts",
-				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", "observation-list.js"});
+				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", "observation-list.js", "procedure-list.js"});
 		model.put("entity", personRepository.findById(id).get());
 
 		return "person/show";
@@ -93,6 +95,12 @@ public class PersonController {
 	@ResponseBody
 	public String getObservations(@PathVariable Long personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(observationRepository.findByPersonId(personId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/procedures", produces = "application/json")
+	@ResponseBody
+	public String getProcedures(@PathVariable Long personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(procedureOccurrenceRepository.findByPersonId(personId));
 	}
 
 }

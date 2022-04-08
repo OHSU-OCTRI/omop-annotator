@@ -1,6 +1,7 @@
 package org.octri.omop_annotator.domain.omop;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -29,6 +30,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class ProcedureOccurrence {
 	
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 	@Column(name="procedure_occurrence_id")
 	@Id
 	private Long id;
@@ -87,6 +90,13 @@ public class ProcedureOccurrence {
 
 	public void setProcedureDatetime(Date procedureDatetime) {
 		this.procedureDatetime = procedureDatetime;
+	}
+
+	public String getFormattedProcedureDate() {
+		if (procedureDatetime != null) {
+			return DATE_FORMAT.format(procedureDatetime);
+		}
+		return null;
 	}
 
 	public Concept getProcedureType() {

@@ -74,7 +74,9 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
 	@ResponseBody
 	public String getVisits(@PathVariable Long personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
+		// TODO: The following query also works but is (currently) slow.
+		//return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(visitOccurrenceRepository.visitOccurrenceRows(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")

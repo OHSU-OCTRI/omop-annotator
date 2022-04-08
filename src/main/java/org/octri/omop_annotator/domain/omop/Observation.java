@@ -1,5 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,6 +28,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Observation {
 
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	@Column(name = "observation_id")
 	@Id
 	private Long id;
@@ -100,6 +103,13 @@ public class Observation {
 
 	public void setObservationDatetime(Date observationDatetime) {
 		this.observationDatetime = observationDatetime;
+	}
+
+	public String getFormattedObservationDate() {
+		if (observationDatetime != null) {
+			return DATE_FORMAT.format(observationDatetime);
+		}
+		return null;
 	}
 
 	public Concept getObservationType() {

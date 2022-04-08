@@ -31,7 +31,20 @@
 		      </div>
 		    </div>
 		  </div>
-		  
+
+		  <div class="accordion-item">
+		    <h2 class="accordion-header" id="observations_heading">
+		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_observations" aria-expanded="false" aria-controls="collapse_observations">
+		        Observations
+		      </button>
+		    </h2>
+		    <div id="collapse_observations" class="accordion-collapse collapse" aria-labelledby="observations_heading" data-bs-parent="#person_data">
+		      <div class="accordion-body">
+		         <div id="observation_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="true"></div>
+		      </div>
+		    </div>
+		  </div>
+
 		</div>
        
         {{/entity}}

@@ -24,8 +24,8 @@
             <td data-field="procedure">
               {{ procedure.procedure?.name }}
             </td>
-            <td data-field="procedureDateTime">
-              {{ procedure.formattedProcedureDate }}
+            <td data-field="procedureDatetime">
+              {{ procedure.procedureDatetime }}
             </td>
             <td data-field="procedureType">
               {{ procedure.procedureType?.name }}

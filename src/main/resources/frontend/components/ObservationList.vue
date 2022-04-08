@@ -24,8 +24,8 @@
             <td data-field="observation">
               {{ observation.observation?.name }}
             </td>
-            <td data-field="observationDateTime">
-              {{ observation.formattedObservationDate }}
+            <td data-field="observationDatetime">
+              {{ observation.observationDatetime }}
             </td>
             <td data-field="observationType">
               {{ observation.observationType?.name }}

@@ -1,5 +1,5 @@
 <template>
-  <div class="observation-list">
+  <div class="procedure-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div v-if="loading">
       <LoadingSpinner/>
@@ -9,32 +9,32 @@
         <thead>
           <tr>
             <th>Id</th>
-            <th>Observation</th>
+            <th>Procedure</th>
             <th>Datetime</th>
             <th>Type</th>
-            <th>Value</th>
+            <th>Quantity</th>
             <th>Visit Occurrence</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="observation in observations" :key="observation.id">
+          <tr v-for="procedure in procedures" :key="procedure.id">
             <td data-field="id">
-              {{ observation.id }}
+              {{ procedure.id }}
             </td>
-            <td data-field="observation">
-              {{ observation.observation?.name }}
+            <td data-field="procedure">
+              {{ procedure.procedure?.name }}
             </td>
-            <td data-field="observationDateTime">
-              {{ observation.formattedObservationDate }}
+            <td data-field="procedureDateTime">
+              {{ procedure.formattedProcedureDate }}
             </td>
-            <td data-field="observationType">
-              {{ observation.observationType?.name }}
+            <td data-field="procedureType">
+              {{ procedure.procedureType?.name }}
             </td>
-            <td data-field="valueAsString">
-              {{ observation.valueAsString }}
+            <td data-field="quantity">
+              {{ procedure.quantity }}
             </td>
             <td data-field="visitOccurrence">
-              {{ observation.visitOccurrence?.id }}
+              {{ procedure.visitOccurrence?.id }}
             </td>
           </tr>
         </tbody>
@@ -78,14 +78,14 @@ export default {
   },
   data() {
     return {
-      observations: [],
+      procedures: [],
       loading: true
     };
   },
   async mounted() {
-    if (this.observations.length === 0) {
+    if (this.procedures.length === 0) {
       const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.observations = await response.json();
+      this.procedures = await response.json();
       this.loading = false;
     }
     await this.$nextTick(this.drawDataTable);
@@ -93,14 +93,14 @@ export default {
   computed: {
     url() {
       // TODO: filter by visit if visitId is present
-      return `${this.contextPath}/data/person/summary/${this.personId}/observations`;
+      return `${this.contextPath}/data/person/summary/${this.personId}/procedures`;
     },
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
-      return `Observations${filter}`;
+      return `Procedures${filter}`;
     },
     tableId() {
-      return `patient_${this.personId}_visit_${this.visitId}_observation_data`;
+      return `patient_${this.personId}_visit_${this.visitId}_procedure_data`;
     }
   },
   methods: {

@@ -16,8 +16,13 @@ import javax.validation.constraints.NotNull;
  * 
  * The following columns have been excluded:
  * 
- * observation_date provider_id visit_detail_id observation_source_value
- * observation_source_concept_id unit_source_value qualifier_source_value
+ * observation_date
+ * provider_id
+ * visit_detail_id
+ * observation_source_value
+ * observation_source_concept_id
+ * unit_source_value
+ * qualifier_source_value
  */
 @Entity
 public class Observation {

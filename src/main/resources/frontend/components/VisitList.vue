@@ -12,23 +12,30 @@
             <th>Visit Type</th>
             <th>Visit Start</th>
             <th>Visit End</th>
-            <th>Visit Source</th>
-            <th>Admitting Source</th>
-            <th>Discharged To</th>
+            <th>Provider</th>
+            <th>Care Site</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loading">
-            <td>Loading...</td>
-          </tr>
-          <tr v-for="visit in visits" :key="visit.id" :data-visit-id="visit.id">
-            <td data-field="id">{{ visit.id }}</td>
-            <td data-field="visitType">{{ visit.visitType.name }}</td>
-            <td data-field="visitStart">{{ visit.visitStart }}</td>
-            <td data-field="visitEnd">{{ visit.visitEnd }}</td>
-            <td data-field="visitSource">{{ visit.visitSource }}</td>
-            <td data-field="admittingSource">{{ visit.admittingSource }}</td>
-            <td data-field="dischargedTo">{{ visit.dischargedTo }}</td>
+          <tr v-for="visitOccurrence in visits" :key="visitOccurrence.id">
+            <td data-field="id">
+              {{ visitOccurrence.id }}
+            </td>
+            <td data-field="visitType">
+              {{ visitOccurrence.visitType }}
+            </td>
+            <td data-field="visitStart">
+              {{ visitOccurrence.visitStart }}
+            </td>
+            <td data-field="visitEnd">
+              {{ visitOccurrence.visitEnd }}
+            </td>
+            <td data-field="provider">
+              {{ visitOccurrence.providerName }}
+            </td>
+            <td data-field="careSite">
+              {{ visitOccurrence.careSiteName }}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -11,12 +11,12 @@ describe('VisitList.vue', () => {
           loading: false,
           visits: [
             {
-              visitType: { name: 'Emergency' },
+              id: 1,
+              visitType: 'Emergency',
               visitStart: '2022-01-01',
               visitEnd: '2022-01-01',
-              visitSource: 'Visit Source',
-              admittingSource: 'Admitting Source',
-              dischargedTo: 'Discharged To'
+              provider: 'Dr. Nick',
+              careSite: 'Springfield Hospital'
             }
           ]
         };
@@ -26,22 +26,19 @@ describe('VisitList.vue', () => {
     expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
     expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
     expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitSource"]').text().includes('Visit Source'));
-    expect(
-      wrapper.find('[data-field="admittingSource"]').text().includes('Admitting Source')
-    );
-    expect(wrapper.find('[data-field="dischargedTo"]').text().includes('Discharged To'));
+    expect(wrapper.find('[data-field="provider"]').text().includes('Dr. Nick'));
+    expect(wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital'));
   });
 
   it('loads data', async () => {
     const visitData = [
       {
-        visitType: { name: 'Emergency' },
+        id: 1,
+        visitType: 'Emergency',
         visitStart: '2022-01-01',
         visitEnd: '2022-01-01',
-        visitSource: 'Visit Source',
-        admittingSource: 'Admitting Source',
-        dischargedTo: 'Discharged To'
+        provider: 'Dr. Nick',
+        careSite: 'Springfield Hospital'
       }
     ];
 
@@ -57,14 +54,10 @@ describe('VisitList.vue', () => {
       credentials: 'same-origin'
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
-    expect(wrapper.find('[data-field="visitType"]').exists()).toBe(true);
     expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
     expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
     expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitSource"]').text().includes('Visit Source'));
-    expect(
-      wrapper.find('[data-field="admittingSource"]').text().includes('Admitting Source')
-    );
-    expect(wrapper.find('[data-field="dischargedTo"]').text().includes('Discharged To'));
+    expect(wrapper.find('[data-field="provider"]').text().includes('Dr. Nick'));
+    expect(wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital'));
   });
 });

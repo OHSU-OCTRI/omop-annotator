@@ -18,10 +18,8 @@ import javax.validation.constraints.NotNull;
  * 
  * visit_start_date
  * visit_end_date
- * provider_id
- * care_site_id
  * visit_type_concept_id (Generally "Visit derived from EHR encounter record")
- * visit_source_concept_id
+ * visit_source_value
  * admitting_source_concept_id
  * discharge_to_concept_id
  * preceding_visit_occurrence_id
@@ -53,8 +51,18 @@ public class VisitOccurrence extends OmopEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visitEnd;
 
-	@Column(name = "visit_source_value")
-	private String visitSource;
+	@ManyToOne
+	@JoinColumn(name = "provider_id")
+	Provider provider;
+
+	@ManyToOne
+	@JoinColumn(name = "care_site_id")
+	CareSite careSite;
+
+	// TODO: At OHSU, this always maps to "No matching concept". The source value has more info, but is not very user friendly.
+	@ManyToOne
+	@JoinColumn(name = "visit_source_concept_id")
+	private Concept visitSource;
 
 	@Column(name = "admitting_source_value")
 	private String admittingSource;
@@ -102,11 +110,27 @@ public class VisitOccurrence extends OmopEntity {
 		this.visitEnd = visitEnd;
 	}
 
-	public String getVisitSource() {
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
+
+	public CareSite getCareSite() {
+		return careSite;
+	}
+
+	public void setCareSite(CareSite careSite) {
+		this.careSite = careSite;
+	}
+
+	public Concept getVisitSource() {
 		return visitSource;
 	}
 
-	public void setVisitSource(String visitSource) {
+	public void setVisitSource(Concept visitSource) {
 		this.visitSource = visitSource;
 	}
 
@@ -129,8 +153,9 @@ public class VisitOccurrence extends OmopEntity {
 	@Override
 	public String toString() {
 		return "VisitOccurrence [id=" + id + ", person=" + person + ", visitType=" + visitType + ", visitStart="
-				+ visitStart + ", visitEnd=" + visitEnd + ", visitSource=" + visitSource + ", admittingSource="
-				+ admittingSource + ", dischargedTo=" + dischargedTo + "]";
+				+ visitStart + ", visitEnd=" + visitEnd + ", provider=" + provider + ", careSite=" + careSite
+				+ ", visitSource=" + visitSource + ", admittingSource=" + admittingSource + ", dischargedTo="
+				+ dischargedTo + "]";
 	}
 
 }

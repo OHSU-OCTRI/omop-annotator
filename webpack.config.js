@@ -26,7 +26,8 @@ module.exports = {
     'visit-list': entrypointPath('visit-list.js'),
     'condition-list': entrypointPath('condition-list.js'),
     'observation-list': entrypointPath('observation-list.js'),
-    'procedure-list': entrypointPath('procedure-list.js')
+    'procedure-list': entrypointPath('procedure-list.js'),
+    'measurement-list': entrypointPath('measurement-list.js')
   },
   resolve: {
     alias: {

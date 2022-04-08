@@ -67,6 +67,7 @@ public class Measurement {
 	@JoinColumn(name="visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
 	
+	// At OHSU, this seems to be identical to measurement
 	@ManyToOne
 	@JoinColumn(name="measurement_source_concept_id")
 	private Concept measurementSource;

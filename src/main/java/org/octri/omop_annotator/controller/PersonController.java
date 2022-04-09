@@ -3,6 +3,9 @@ package org.octri.omop_annotator.controller;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
@@ -21,9 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Controller for {@link Person} objects
@@ -86,9 +86,8 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
 	@ResponseBody
 	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
-		// TODO: The following query also works but is (currently) slow.
-		// return mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
-		return mapper.writeValueAsString(conditionOccurrenceRepository.conditionOccurrenceRows(personId));
+		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
+		return json;
 	}
 	
 	@GetMapping(value = "/summary/{personId}/observations", produces = "application/json")

@@ -1,5 +1,5 @@
 <template>
-  <div class="procedure-list">
+  <div class="measurement-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div v-if="loading">
       <LoadingSpinner/>
@@ -9,32 +9,36 @@
         <thead>
           <tr>
             <th>Id</th>
-            <th>Procedure</th>
+            <th>Measurement</th>
             <th>Datetime</th>
             <th>Type</th>
-            <th>Quantity</th>
+            <th>Value</th>
+            <th>Unit</th>
             <th>Visit Occurrence</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="procedure in procedures" :key="procedure.id">
+          <tr v-for="measurement in measurements" :key="measurement.id">
             <td data-field="id">
-              {{ procedure.id }}
+              {{ measurement.id }}
             </td>
-            <td data-field="procedure">
-              {{ procedure.procedure?.name }}
+            <td data-field="measurement">
+              {{ measurement.measurement }}
             </td>
-            <td data-field="procedureDatetime">
-              {{ procedure.procedureDatetime }}
+            <td data-field="measurementDateTime">
+              {{ measurement.measurementDatetime }}
             </td>
-            <td data-field="procedureType">
-              {{ procedure.procedureType?.name }}
+            <td data-field="measurementType">
+              {{ measurement.measurementType }}
             </td>
-            <td data-field="quantity">
-              {{ procedure.quantity }}
+            <td data-field="measurementValue">
+              {{ getValue(measurement) }}
+            </td>
+            <td data-field="measurementUnit">
+              {{ measurement.unit }}
             </td>
             <td data-field="visitOccurrence">
-              {{ procedure.visitOccurrence?.id }}
+              {{ measurement.visitOccurrence }}
             </td>
           </tr>
         </tbody>
@@ -78,14 +82,14 @@ export default {
   },
   data() {
     return {
-      procedures: [],
+      measurements: [],
       loading: true
     };
   },
   async mounted() {
-    if (this.procedures.length === 0) {
+    if (this.measurements.length === 0) {
       const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.procedures = await response.json();
+      this.measurements = await response.json();
       this.loading = false;
     }
     await this.$nextTick(this.drawDataTable);
@@ -93,14 +97,14 @@ export default {
   computed: {
     url() {
       // TODO: filter by visit if visitId is present
-      return `${this.contextPath}/data/person/summary/${this.personId}/procedures`;
+      return `${this.contextPath}/data/person/summary/${this.personId}/measurements`;
     },
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
-      return `Procedures${filter}`;
+      return `Measurements${filter}`;
     },
     tableId() {
-      return `patient_${this.personId}_visit_${this.visitId}_procedure_data`;
+      return `patient_${this.personId}_visit_${this.visitId}_measurement_data`;
     }
   },
   methods: {
@@ -114,6 +118,9 @@ export default {
           info: true
         });
       }
+    },
+    getValue(measurement) {
+      return measurement.valueAsNumber ?? measurement.valueAsConcept;
     }
   }
 };

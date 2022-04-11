@@ -102,7 +102,8 @@ export default {
       this.entries = await response.json();
       this.loading = false;
     }
-    await this.$nextTick(this.drawDataTable);
+    await this.$nextTick();
+    this.drawDataTable();
   },
   computed: {
     url() {

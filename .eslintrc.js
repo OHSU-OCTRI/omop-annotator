@@ -5,35 +5,29 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential'
+    // https://eslint.vuejs.org/rules/#priority-a-essential-error-prevention-for-vue-js-3-x
+    // consider switching to `plugin:vue/vue3-strongly-recommended` or `plugin:vue/vue3-recommended` for stricter rules.
+    'plugin:vue/vue3-essential'
   ],
   env: {
     browser: true
   },
   globals: {
-    'Map': true,
-    'Set': true,
-    'Promise': true
+    $: true,
+    Map: true,
+    Set: true,
+    Promise: true
   },
-  plugins: [
-    'vue'
-  ],
+  plugins: ['vue'],
   rules: {
-    'eqeqeq': ['error', 'always'],
+    eqeqeq: ['error', 'always'],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-unused-vars': ['error', { vars: 'all', args: 'none' }]
   },
   overrides: [
     // node files
     {
-      files: [
-        '.eslintrc.js',
-        '.prettierrc.js',
-        'karma.conf.js',
-        'webpack.config.js'
-      ],
+      files: ['.eslintrc.js', '.prettierrc.js', 'karma.conf.js', 'webpack.config.js'],
       env: {
         browser: false,
         node: true
@@ -42,9 +36,7 @@ module.exports = {
 
     // jasmine tests
     {
-      files: [
-        'src/main/resources/frontend/test/**/*.js'
-      ],
+      files: ['src/main/resources/frontend/test/**/*.js'],
       env: {
         jasmine: true
       }

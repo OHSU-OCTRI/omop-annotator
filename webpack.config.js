@@ -22,12 +22,7 @@ module.exports = {
   entry: {
     'annotation-admin': entrypointPath('annotation-admin.js'),
     'pool-entries': entrypointPath('pool-entries.js'),
-    'person-summary': entrypointPath('person-summary.js'),
-    'visit-list': entrypointPath('visit-list.js'),
-    'condition-list': entrypointPath('condition-list.js'),
-    'observation-list': entrypointPath('observation-list.js'),
-    'procedure-list': entrypointPath('procedure-list.js'),
-    'measurement-list': entrypointPath('measurement-list.js')
+    'person': entrypointPath('person.js')
   },
   resolve: {
     alias: {

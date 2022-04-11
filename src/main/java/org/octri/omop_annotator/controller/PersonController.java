@@ -62,8 +62,7 @@ public class PersonController {
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
-		model.put("pageScripts",
-				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", "observation-list.js", "procedure-list.js", "measurement-list.js"});
+		model.put("pageScripts", new String[] { "vendor.js", "person.js" });
 		model.put("entity", personRepository.findById(id).get());
 
 		return "person/show";

@@ -1,78 +1,10 @@
 {{>layout/header}}
 <div class="container">
-    <h1>Person</h1>
-    {{>components/messages}}
-    <div>
-        {{#entity}}
-        <div id="person_summary" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
-		<div class="accordion" id="person_data">
-		  <div class="accordion-item">
-		    <h2 class="accordion-header" id="visit_heading">
-		      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_visits" aria-expanded="true" aria-controls="collapse_visits">
-		        Visits
-		      </button>
-		    </h2>
-		    <div id="collapse_visits" class="accordion-collapse collapse show" aria-labelledby="visit_heading" data-bs-parent="#person_data">
-		      <div class="accordion-body">
-		          <div id="visit_list" class="mb-4" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="false"></div>
-		      </div>
-		    </div>
-		  </div>
-		  
-		  <div class="accordion-item">
-		    <h2 class="accordion-header" id="conditions_heading">
-		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_conditions" aria-expanded="false" aria-controls="collapse_conditions">
-		        Condition Occurrences
-		      </button>
-		    </h2>
-		    <div id="collapse_conditions" class="accordion-collapse collapse" aria-labelledby="conditions_heading" data-bs-parent="#person_data">
-		      <div class="accordion-body">
-		         <div id="condition_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="false"></div>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="accordion-item">
-		    <h2 class="accordion-header" id="observations_heading">
-		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_observations" aria-expanded="false" aria-controls="collapse_observations">
-		        Observations
-		      </button>
-		    </h2>
-		    <div id="collapse_observations" class="accordion-collapse collapse" aria-labelledby="observations_heading" data-bs-parent="#person_data">
-		      <div class="accordion-body">
-		         <div id="observation_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="true"></div>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="accordion-item">
-		    <h2 class="accordion-header" id="procedures_heading">
-		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_procedures" aria-expanded="false" aria-controls="collapse_procedures">
-		        Procedures
-		      </button>
-		    </h2>
-		    <div id="collapse_procedures" class="accordion-collapse collapse" aria-labelledby="procedures_heading" data-bs-parent="#person_data">
-		      <div class="accordion-body">
-		         <div id="procedure_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="true"></div>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="accordion-item">
-		    <h2 class="accordion-header" id="measurements_heading">
-		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_measurements" aria-expanded="false" aria-controls="collapse_measurements">
-		        Measurements
-		      </button>
-		    </h2>
-		    <div id="collapse_measurements" class="accordion-collapse collapse" aria-labelledby="measurements_heading" data-bs-parent="#person_data">
-		      <div class="accordion-body">
-		         <div id="measurement_list" data-context-path="{{req.contextPath}}" data-person-id="{{id}}" data-show-header="true"></div>
-		      </div>
-		    </div>
-		  </div>
-
-		</div>
-       
-        {{/entity}}
-    </div>
+	<h1>Person</h1>
+	{{>components/messages}}
+	<div>
+		{{#entity}}
+		<div id="person_browser" data-context-path="{{req.contextPath}}" data-person-id="{{id}}"></div>
+		{{/entity}}
+	</div>
 {{>layout/footer}}

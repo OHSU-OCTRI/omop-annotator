@@ -92,7 +92,8 @@ export default {
       this.measurements = await response.json();
       this.loading = false;
     }
-    await this.$nextTick(this.drawDataTable);
+    await this.$nextTick();
+    this.drawDataTable();
   },
   computed: {
     url() {

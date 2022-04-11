@@ -41,6 +41,7 @@ public class PersonController {
 	private ConditionOccurrenceRepository conditionOccurrenceRepository;
 	private ObservationRepository observationRepository;
 	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
+	private MeasurementRepository measurementRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
@@ -55,13 +56,14 @@ public class PersonController {
 		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
 		this.observationRepository = observationRepository;
 		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
+		this.measurementRepository = measurementRepository;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Long id) {
 		model.put("pageScripts",
-				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", "observation-list.js", "procedure-list.js"});
+				new String[] { "vendor.js", "person-summary.js", "visit-list.js", "condition-list.js", "observation-list.js", "procedure-list.js", "measurement-list.js"});
 		model.put("entity", personRepository.findById(id).get());
 
 		return "person/show";
@@ -100,6 +102,14 @@ public class PersonController {
 	@ResponseBody
 	public String getProcedures(@PathVariable Long personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(procedureOccurrenceRepository.findByPersonId(personId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/measurements", produces = "application/json")
+	@ResponseBody
+	public String getMeasurements(@PathVariable Long personId) throws JsonProcessingException {
+		// TODO: Either query is very slow. Even the 'fast' one can take 30 seconds.
+		//return mapper.writeValueAsString(measurementRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(measurementRepository.measurementRows(personId));
 	}
 
 }

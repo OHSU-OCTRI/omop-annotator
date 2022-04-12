@@ -1,11 +1,11 @@
 <template>
   <div class="measurement-list">
     <h2 v-if="showHeader">{{ header }}</h2>
-    <div v-if="loading">
-      <LoadingSpinner/>
+    <div v-if="loading" class="d-flex justify-content-center">
+      <LoadingSpinner />
     </div>
     <div v-else class="table-responsive">
-      <table :id="tableId" class="table table-striped table-bordered sorted">
+      <table :id="tableId" class="table table-striped table-bordered table-sm">
         <thead>
           <tr>
             <th>Id</th>

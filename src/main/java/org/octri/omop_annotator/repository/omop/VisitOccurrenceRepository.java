@@ -11,16 +11,14 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(path = "visit_occurrence")
 public interface VisitOccurrenceRepository extends PagingAndSortingRepository<VisitOccurrence, Long> {
 
-	static final String visitOccurrenceQuery = "select visit_occurrence_id as id, person_id as person, visit_concept.concept_name as visitType, visit_start_datetime as visitStart, visit_end_datetime as visitEnd, provider.provider_name as providerName, care_site.care_site_name as careSiteName"
-			+ " from visit_occurrence"
-			+ " left join concept visit_concept on visit_concept.concept_id = visit_occurrence.visit_concept_id"
-			+ " left join provider on provider.provider_id = visit_occurrence.provider_id"
-			+ " left join care_site on care_site.care_site_id = visit_occurrence.care_site_id"
-			+ " where visit_occurrence.person_id = ?1";
+	static final String visitOccurrenceQuery = "select v.id as id, v.person.id as person, visitType.name as visitType,"
+			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName, careSite.careSiteName as careSiteName"
+			+ " from VisitOccurrence v"
+			+ " left join v.visitType visitType"
+			+ " left join v.provider provider"
+			+ " left join v.careSite careSite"
+			+ " where v.person.id = ?1";
 
-	List<VisitOccurrence> findByPersonId(Long id);
-
-	// TODO: OA-95 ; Eliminate native queries for distribution to other organizations.
-	@Query(value = visitOccurrenceQuery, nativeQuery = true)
-	List<VisitOccurrenceRow> visitOccurrenceRows(Long personId);
+	@Query(value = visitOccurrenceQuery)
+	List<VisitOccurrenceRow> findByPersonId(Long id);
 }

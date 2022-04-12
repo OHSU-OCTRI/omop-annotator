@@ -1,7 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,47 +14,47 @@ import javax.validation.constraints.NotNull;
 
 /**
  * OMOP 5.3 Definition of a Procedure Occurrence
- * 
+ *
  * The following columns have been excluded:
- * 	
- * 	procedure_date
- * 	modifier_concept_id
- * 	provider_id
- * 	visit_detail_id - Always 0
- *	procedure_source_value - For example, an ICD10 code, but without the vocabulary so not very useful?
- *	procedure_source_concept_id
- *	modifier_source_value
- * 
+ *
+ * procedure_date
+ * modifier_concept_id
+ * provider_id
+ * visit_detail_id - Always 0
+ * procedure_source_value - For example, an ICD10 code, but without the vocabulary so not very useful?
+ * procedure_source_concept_id
+ * modifier_source_value
+ *
  */
 @Entity
 public class ProcedureOccurrence {
-	
-	@Column(name="procedure_occurrence_id")
+
+	@Column(name = "procedure_occurrence_id")
 	@Id
 	private Long id;
-	
+
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name="person_id")
+	@JoinColumn(name = "person_id")
 	private Person person;
-	
+
 	@ManyToOne
-	@JoinColumn(name="procedure_concept_id")
+	@JoinColumn(name = "procedure_concept_id")
 	private Concept procedure;
-	
-	@Column(name="procedure_datetime")
+
+	@Column(name = "procedure_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date procedureDatetime;
-	
+
 	@ManyToOne
-	@JoinColumn(name="procedure_type_concept_id")
+	@JoinColumn(name = "procedure_type_concept_id")
 	private Concept procedureType;
-	
+
 	@ManyToOne
-	@JoinColumn(name="visit_occurrence_id")
+	@JoinColumn(name = "visit_occurrence_id")
 	VisitOccurrence visitOccurrence;
 
-	@Column(name="quantity")
+	@Column(name = "quantity")
 	private BigDecimal quantity;
 
 	public Long getId() {
@@ -120,5 +119,5 @@ public class ProcedureOccurrence {
 				+ ", procedureDatetime=" + procedureDatetime + ", procedureType=" + procedureType + ", visitOccurrence="
 				+ visitOccurrence + ", quantity=" + quantity + "]";
 	}
-	
+
 }

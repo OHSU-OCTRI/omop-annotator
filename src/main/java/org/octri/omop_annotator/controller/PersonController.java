@@ -79,9 +79,7 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
 	@ResponseBody
 	public String getVisits(@PathVariable Long personId) throws JsonProcessingException {
-		// TODO: The following query also works but is (currently) slow.
-		//return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
-		return mapper.writeValueAsString(visitOccurrenceRepository.visitOccurrenceRows(personId));
+		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
@@ -90,11 +88,26 @@ public class PersonController {
 		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
 		return json;
 	}
-	
+
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/conditions", produces = "application/json")
+	@ResponseBody
+	public String getVisitConditions(@PathVariable Long personId, @PathVariable Long visitId)
+			throws JsonProcessingException {
+		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByVisitOccurrenceId(visitId));
+		return json;
+	}
+
 	@GetMapping(value = "/summary/{personId}/observations", produces = "application/json")
 	@ResponseBody
 	public String getObservations(@PathVariable Long personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(observationRepository.findByPersonId(personId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/observations", produces = "application/json")
+	@ResponseBody
+	public String getVisitObservations(@PathVariable Long personId, @PathVariable Long visitId)
+			throws JsonProcessingException {
+		return mapper.writeValueAsString(observationRepository.findByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/procedures", produces = "application/json")
@@ -103,12 +116,23 @@ public class PersonController {
 		return mapper.writeValueAsString(procedureOccurrenceRepository.findByPersonId(personId));
 	}
 
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/procedures", produces = "application/json")
+	@ResponseBody
+	public String getVisitProcedures(@PathVariable Long personId, @PathVariable Long visitId)
+			throws JsonProcessingException {
+		return mapper.writeValueAsString(procedureOccurrenceRepository.findByVisitOccurrenceId(visitId));
+	}
+
 	@GetMapping(value = "/summary/{personId}/measurements", produces = "application/json")
 	@ResponseBody
 	public String getMeasurements(@PathVariable Long personId) throws JsonProcessingException {
-		// TODO: Either query is very slow. Even the 'fast' one can take 30 seconds.
-		//return mapper.writeValueAsString(measurementRepository.findByPersonId(personId));
-		return mapper.writeValueAsString(measurementRepository.measurementRows(personId));
+		return mapper.writeValueAsString(measurementRepository.findByPersonId(personId));
 	}
 
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/measurements", produces = "application/json")
+	@ResponseBody
+	public String getVisitMeasurements(@PathVariable Long personId, @PathVariable Long visitId)
+			throws JsonProcessingException {
+		return mapper.writeValueAsString(measurementRepository.findByVisitOccurrenceId(visitId));
+	}
 }

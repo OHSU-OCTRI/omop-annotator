@@ -1,10 +1,10 @@
 import { createApp } from 'vue';
 
-import PersonDataBrowser from './components/PersonDataBrowser';
+import OmopBrowser from './components/OmopBrowser';
 
-const dataset = document.querySelector('#person_browser').dataset;
-const app = createApp(PersonDataBrowser, {
+const rootNode = document.getElementById('omop_browser');
+const dataset = rootNode.dataset;
+createApp(OmopBrowser, {
   contextPath: dataset.contextPath,
   personId: dataset.personId ? Number.parseInt(dataset.personId) : null
-});
-app.mount('#person_browser');
+}).mount(rootNode);

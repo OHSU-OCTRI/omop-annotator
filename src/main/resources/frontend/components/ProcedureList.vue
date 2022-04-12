@@ -2,7 +2,7 @@
   <div class="procedure-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div v-if="loading">
-      <LoadingSpinner/>
+      <LoadingSpinner />
     </div>
     <div v-else class="table-responsive">
       <table :id="tableId" class="table table-striped table-bordered sorted">
@@ -22,19 +22,19 @@
               {{ procedure.id }}
             </td>
             <td data-field="procedure">
-              {{ procedure.procedure?.name }}
+              {{ procedure.procedure }}
             </td>
             <td data-field="procedureDatetime">
-              {{ procedure.procedureDatetime }}
+              {{ procedure.date }}
             </td>
             <td data-field="procedureType">
-              {{ procedure.procedureType?.name }}
+              {{ procedure.procedureType }}
             </td>
             <td data-field="quantity">
               {{ procedure.quantity }}
             </td>
             <td data-field="visitOccurrence">
-              {{ procedure.visitOccurrence?.id }}
+              {{ procedure.visitOccurrence }}
             </td>
           </tr>
         </tbody>

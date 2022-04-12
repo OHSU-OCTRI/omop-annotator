@@ -2,7 +2,7 @@
   <div class="observation-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div v-if="loading">
-      <LoadingSpinner/>
+      <LoadingSpinner />
     </div>
     <div v-else class="table-responsive">
       <table :id="tableId" class="table table-striped table-bordered sorted">
@@ -22,19 +22,19 @@
               {{ observation.id }}
             </td>
             <td data-field="observation">
-              {{ observation.observation?.name }}
+              {{ observation.name }}
             </td>
             <td data-field="observationDatetime">
-              {{ observation.observationDatetime }}
+              {{ observation.date }}
             </td>
             <td data-field="observationType">
-              {{ observation.observationType?.name }}
+              {{ observation.type }}
             </td>
             <td data-field="valueAsString">
-              {{ observation.valueAsString }}
+              {{ observation.value }}
             </td>
             <td data-field="visitOccurrence">
-              {{ observation.visitOccurrence?.id }}
+              {{ observation.visitOccurrence }}
             </td>
           </tr>
         </tbody>

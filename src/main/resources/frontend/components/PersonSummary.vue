@@ -33,36 +33,9 @@
 <script>
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    personId: {
-      type: Number,
+    person: {
+      type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      person: {}
-    };
-  },
-  mounted() {
-    if (this.personIsEmpty) {
-      fetch(this.url, { credentials: 'same-origin' })
-        .then(response => response.json())
-        .then(jsonObj => {
-          this.person = jsonObj;
-        });
-    }
-  },
-  methods: {},
-  computed: {
-    url() {
-      return this.contextPath + '/data/person/summary/' + this.personId;
-    },
-    personIsEmpty() {
-      return Object.keys(this.person).length === 0;
     }
   }
 };

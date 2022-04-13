@@ -1,11 +1,8 @@
 <template>
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
-    <div v-if="loading" class="d-flex justify-content-center">
-      <LoadingSpinner />
-    </div>
-    <div v-else class="table-responsive">
-      <table :id="tableId" class="table table-striped table-bordered table-sm">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -44,16 +41,10 @@
 </template>
 
 <script>
-import LoadingSpinner from './LoadingSpinner';
-
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    personId: {
-      type: Number,
+    visits: {
+      type: Array,
       required: true
     },
     sortColumn: {
@@ -69,43 +60,29 @@ export default {
       default: true
     }
   },
-  components: {
-    LoadingSpinner
-  },
-  data() {
-    return {
-      visits: [],
-      loading: true
-    };
-  },
-  async mounted() {
-    if (this.visits.length === 0) {
-      const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.visits = await response.json();
-      this.loading = false;
-    }
-    await this.$nextTick();
-    this.drawDataTable();
-  },
-  computed: {
-    url() {
-      return `${this.contextPath}/data/person/summary/${this.personId}/visits`;
-    },
-    tableId() {
-      return `patient_${this.personId}_visit_data`;
-    }
+  mounted() {
+    this.$nextTick(this.drawDataTable);
   },
   methods: {
     drawDataTable() {
       // Format with the the datatables library if it is available.
-      if (typeof $.fn.DataTable === 'function') {
-        $(`#${this.tableId}`).DataTable({
+      if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
+        if (this.dataTable) {
+          this.dataTable.clear().destroy();
+        }
+
+        this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
           info: true
         });
       }
+    }
+  },
+  watch: {
+    visits() {
+      this.$nextTick(this.drawDataTable);
     }
   }
 };

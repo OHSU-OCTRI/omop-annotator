@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     drawDataTable() {
-      // Format with the the datatables library if it is available.
+      // Format with the datatables library if it is available.
       if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
         if (this.dataTable) {
           this.dataTable.clear().destroy();

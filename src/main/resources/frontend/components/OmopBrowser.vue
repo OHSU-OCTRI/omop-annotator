@@ -1,11 +1,16 @@
 <template>
-  <PersonSummary :context-path="contextPath" :person-id="personId" />
+  <PersonSummary :person="person" />
 
+  <div class="d-flex justify-content-center" v-if="visitsLoading">
+    <LoadingSpinner />
+  </div>
   <VisitList
+    v-else
     class="mb-4"
-    :context-path="contextPath"
-    :person-id="personId"
+    :visits="visits"
     :show-header="false"
+    :selected-visit-id="selectedVisitId"
+    @visit-selected="setSelectedVisit"
   />
 
   <ul class="nav nav-tabs mb-3" role="tablist">
@@ -19,8 +24,10 @@
         data-bs-target="#condition_occurrences"
         aria-controls="condition_occurrences"
         aria-selected="true"
+        ref="conditionTab"
       >
         Condition Occurrences
+        <span v-if="selectedVisitId"> ({{ conditions.length }})</span>
       </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -35,6 +42,7 @@
         aria-selected="false"
       >
         Observations
+        <span v-if="selectedVisitId"> ({{ observations.length }})</span>
       </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -49,6 +57,7 @@
         aria-selected="false"
       >
         Procedures
+        <span v-if="selectedVisitId"> ({{ procedures.length }})</span>
       </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -63,6 +72,7 @@
         aria-selected="false"
       >
         Measurements
+        <span v-if="selectedVisitId"> ({{ measurements.length }})</span>
       </button>
     </li>
   </ul>
@@ -73,11 +83,14 @@
       role="tabpanel"
       aria-labelledby="condition_occurrences_tab"
     >
-      <ConditionList
-        :context-path="contextPath"
-        :person-id="personId"
-        :show-header="false"
+      <PlaceholderMessage
+        v-if="noVisitSelected"
+        message="Select a visit to see related conditions."
       />
+      <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
+        <LoadingSpinner />
+      </div>
+      <ConditionList v-else :conditions="conditions" :show-header="false" />
     </div>
     <div
       id="observations"
@@ -85,11 +98,14 @@
       role="tabpanel"
       aria-labelledby="observations_tab"
     >
-      <ObservationList
-        :context-path="contextPath"
-        :person-id="personId"
-        :show-header="false"
+      <PlaceholderMessage
+        v-if="noVisitSelected"
+        message="Select a visit to see related observations."
       />
+      <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
+        <LoadingSpinner />
+      </div>
+      <ObservationList v-else :observations="observations" :show-header="false" />
     </div>
     <div
       id="procedures"
@@ -97,11 +113,14 @@
       role="tabpanel"
       aria-labelledby="procedures_tab"
     >
-      <ProcedureList
-        :context-path="contextPath"
-        :person-id="personId"
-        :show-header="false"
+      <PlaceholderMessage
+        v-if="noVisitSelected"
+        message="Select a visit to see related procedures."
       />
+      <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
+        <LoadingSpinner />
+      </div>
+      <ProcedureList v-else :procedures="procedures" :show-header="false" />
     </div>
     <div
       id="measurements"
@@ -109,22 +128,29 @@
       role="tabpanel"
       aria-labelledby="measurements_tab"
     >
-      <MeasurementList
-        :context-path="contextPath"
-        :person-id="personId"
-        :show-header="false"
+      <PlaceholderMessage
+        v-if="noVisitSelected"
+        message="Select a visit to see related measurements."
       />
+      <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
+        <LoadingSpinner />
+      </div>
+      <MeasurementList v-else :measurements="measurements" :show-header="false" />
     </div>
   </div>
 </template>
 
 <script>
 import ConditionList from './ConditionList';
+import LoadingSpinner from './LoadingSpinner.vue';
 import MeasurementList from './MeasurementList';
 import ObservationList from './ObservationList';
 import PersonSummary from './PersonSummary';
+import PlaceholderMessage from './PlaceholderMessage';
 import ProcedureList from './ProcedureList';
 import VisitList from './VisitList';
+
+import OmopApi from '../utils/omop-api';
 
 export default {
   props: {
@@ -142,13 +168,102 @@ export default {
     MeasurementList,
     ObservationList,
     PersonSummary,
+    PlaceholderMessage,
     ProcedureList,
-    VisitList
+    VisitList,
+    LoadingSpinner
   },
   data() {
     return {
-      selectedVisit: null
+      omopApi: null,
+      person: {},
+      visits: [],
+      visitsLoading: true,
+      selectedVisitId: null,
+      conditions: [],
+      observations: [],
+      procedures: [],
+      measurements: [],
+      loadingVisitData: false
     };
+  },
+  async mounted() {
+    if (this.omopApi === null) {
+      this.omopApi = new OmopApi(this.contextPath);
+    }
+    await this.loadPerson();
+  },
+  methods: {
+    resetState() {
+      this.person = {};
+      this.visits = [];
+      this.visitsLoading = true;
+      this.selectedVisitId = null;
+      this.conditions = [];
+      this.observations = [];
+      this.procedures = [];
+      this.measurements = [];
+      this.loadingVisitData = false;
+    },
+
+    resetTabs() {
+      if (window.bootstrap && window.bootstrap.Tab && this.$refs.conditionTab) {
+        window.bootstrap.Tab.getOrCreateInstance(this.$refs.conditionTab).show();
+      }
+    },
+
+    async loadPerson() {
+      const { omopApi } = this;
+      this.resetState();
+      this.resetTabs();
+
+      const [person, visits] = await Promise.all([
+        omopApi.getPerson(this.personId),
+        omopApi.getVisitsForPerson(this.personId)
+      ]);
+
+      this.person = person;
+      this.visits = visits;
+      this.visitsLoading = false;
+    },
+
+    async setSelectedVisit(visitId) {
+      if (visitId === this.selectedVisitId) {
+        return;
+      }
+
+      const { omopApi } = this;
+      this.selectedVisitId = visitId;
+      this.loadingVisitData = true;
+      this.resetTabs();
+
+      const [conditions, observations, procedures, measurements] = await Promise.all([
+        omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
+        omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
+        omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
+        omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId)
+      ]);
+
+      this.conditions = conditions;
+      this.observations = observations;
+      this.procedures = procedures;
+      this.measurements = measurements;
+      this.loadingVisitData = false;
+    }
+  },
+  computed: {
+    visitSelected() {
+      return this.selectedVisitId !== null;
+    },
+
+    noVisitSelected() {
+      return !this.visitSelected;
+    }
+  },
+  watch: {
+    personId() {
+      this.$nextTick(this.loadPerson);
+    }
   }
 };
 </script>

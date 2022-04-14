@@ -17,4 +17,30 @@ describe('VisitList.vue', () => {
       wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital')
     );
   });
+
+  it('emits an event when a visit row is clicked', async () => {
+    const wrapper = mount(VisitList, {
+      props: { visits }
+    });
+
+    const visitRows = wrapper.findAll('tbody tr');
+    expect(visitRows.length).toEqual(visits.length);
+
+    await visitRows.at(1).trigger('click');
+    expect(wrapper.emitted('visit-selected').length).toEqual(1);
+    expect(wrapper.emitted('visit-selected')[0]).toEqual([visits[1].id]);
+  });
+
+  it('adds a class to the selected visit row', async () => {
+    const wrapper = mount(VisitList, {
+      // selectedVisitId is null by default
+      props: { visits }
+    });
+
+    // nothing selected yet
+    expect(wrapper.findAll('tr.table-active').length).toEqual(0);
+
+    await wrapper.setProps({ selectedVisitId: visits[1].id });
+    expect(wrapper.findAll('tr.table-active').length).toEqual(1);
+  });
 });

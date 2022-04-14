@@ -2,6 +2,8 @@ import { mount } from '@vue/test-utils';
 import PoolEntries from '@/components/PoolEntries';
 import flushPromises from 'flush-promises';
 
+import { mockFetchResponse } from '../helpers';
+
 const entries_example = [
   {
     poolEntryId: 1,
@@ -65,10 +67,7 @@ describe('PoolEntries.vue', () => {
       }
     ];
 
-    const okResponse = new Response(JSON.stringify(poolEntryData), {
-      status: 200,
-      statusText: 'OK'
-    });
+    const okResponse = mockFetchResponse(poolEntryData);
     spyOn(window, 'fetch').and.resolveTo(okResponse);
 
     const wrapper = mount(PoolEntries, { props: { poolId: 1, topicId: 1 } });

@@ -1,5 +1,7 @@
 import OmopApi from '@/utils/omop-api';
 
+import { mockFetchResponse } from '../helpers';
+
 describe('OMOP API', () => {
   const expectedPersonPrefix = '/data/person/summary';
   const api = new OmopApi();
@@ -15,11 +17,7 @@ describe('OMOP API', () => {
   });
 
   it('makes fetch requests', () => {
-    const okResponse = new Response(JSON.stringify({}), {
-      status: 200,
-      statusText: 'OK'
-    });
-
+    const okResponse = mockFetchResponse({});
     spyOn(window, 'fetch').and.resolveTo(okResponse);
 
     api.getPerson(42);
@@ -29,7 +27,7 @@ describe('OMOP API', () => {
   });
 
   it('rejects when requests are not successful', async () => {
-    const failedResponse = new Response('', {
+    const failedResponse = mockFetchResponse('', {
       status: 401,
       statusText: 'Unauthorized'
     });
@@ -55,10 +53,7 @@ describe('OMOP API', () => {
       ethnicity: 'Non-Hispanic'
     };
 
-    const okResponse = new Response(JSON.stringify(person), {
-      status: 200,
-      statusText: 'OK'
-    });
+    const okResponse = mockFetchResponse(person);
 
     spyOn(window, 'fetch').and.resolveTo(okResponse);
 

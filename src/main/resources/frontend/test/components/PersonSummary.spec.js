@@ -1,20 +1,12 @@
 import { mount } from '@vue/test-utils';
 import PersonSummary from '@/components/PersonSummary';
 
+import { person } from '../example-data';
+
 describe('PersonSummary.vue', () => {
   it('renders summary fields', () => {
     const wrapper = mount(PersonSummary, {
-      props: {
-        person: {
-          id: 12345,
-          monthOfBirth: 1,
-          yearOfBirth: 1990,
-          age: 22,
-          gender: 'Male',
-          race: 'White',
-          ethnicity: 'Non-Hispanic'
-        }
-      }
+      props: { person }
     });
 
     expect(wrapper.find('.person-summary').exists()).toBe(true);

@@ -1,24 +1,7 @@
 import { mount } from '@vue/test-utils';
 import VisitList from '@/components/VisitList';
 
-const visits = [
-  {
-    id: 1,
-    visitType: 'Emergency',
-    visitStart: '2022-01-01',
-    visitEnd: '2022-01-01',
-    provider: 'Dr. Nick',
-    careSite: 'Springfield Hospital'
-  },
-  {
-    id: 2,
-    visitType: 'Inpatient Visit',
-    visitStart: '2022-02-02',
-    visitEnd: '2022-02-03',
-    provider: 'Dr. Hibbert',
-    careSite: 'Shelbyville General Hospital'
-  }
-];
+import { visits } from '../example-data';
 
 describe('VisitList.vue', () => {
   it('renders', () => {

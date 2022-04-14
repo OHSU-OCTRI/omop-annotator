@@ -14,7 +14,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="visitOccurrence in visits" :key="visitOccurrence.id">
+          <tr
+            v-for="visitOccurrence in visits"
+            :key="visitOccurrence.id"
+            @click="$emit('visit-selected', visitOccurrence.id)"
+            :class="{ 'table-active': isSelectedVisit(visitOccurrence.id) }"
+          >
             <td data-field="id">
               {{ visitOccurrence.id }}
             </td>
@@ -47,6 +52,10 @@ export default {
       type: Array,
       required: true
     },
+    selectedVisitId: {
+      type: Number,
+      default: null
+    },
     sortColumn: {
       type: Number,
       default: 2
@@ -78,6 +87,10 @@ export default {
           info: true
         });
       }
+    },
+
+    isSelectedVisit(visitId) {
+      return this.selectedVisitId && this.selectedVisitId === visitId;
     }
   },
   watch: {

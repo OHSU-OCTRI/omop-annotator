@@ -85,3 +85,8 @@ div.parent-summary strong {
 	z-index: 1;
 	background: white;
 }
+
+/** Selected visit row **/
+.visit-list .table-active {
+	background-color: rgba(var(--bs-primary-rgb), 0.25);
+}

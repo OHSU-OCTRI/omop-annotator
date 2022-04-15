@@ -24,5 +24,5 @@ bundle-stats.json
 .java-version
 
 # Visual Studio Code
-.vscode
+.vscode/launch.json
 

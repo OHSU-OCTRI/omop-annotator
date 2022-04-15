@@ -12,5 +12,10 @@
     "[vue]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
-    }
+    },
+    "[java]": {
+        "editor.formatOnSave": true
+    },
+    "java.saveActions.organizeImports": true,
+    "java.format.settings.url": "settings/OCTRI_java_format.xml"
 }

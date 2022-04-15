@@ -1,63 +1,46 @@
 import { mount } from '@vue/test-utils';
 import VisitList from '@/components/VisitList';
-import flushPromises from 'flush-promises';
+
+import { visits } from '../example-data';
 
 describe('VisitList.vue', () => {
   it('renders', () => {
     const wrapper = mount(VisitList, {
-      props: { personId: 12345 },
-      data: function () {
-        return {
-          loading: false,
-          visits: [
-            {
-              id: 1,
-              visitType: 'Emergency',
-              visitStart: '2022-01-01',
-              visitEnd: '2022-01-01',
-              provider: 'Dr. Nick',
-              careSite: 'Springfield Hospital'
-            }
-          ]
-        };
-      }
+      props: { visits: visits.slice(0, 1) }
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
     expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
     expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
     expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
     expect(wrapper.find('[data-field="provider"]').text().includes('Dr. Nick'));
-    expect(wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital'));
+    expect(
+      wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital')
+    );
   });
 
-  it('loads data', async () => {
-    const visitData = [
-      {
-        id: 1,
-        visitType: 'Emergency',
-        visitStart: '2022-01-01',
-        visitEnd: '2022-01-01',
-        provider: 'Dr. Nick',
-        careSite: 'Springfield Hospital'
-      }
-    ];
-
-    const okResponse = new Response(JSON.stringify(visitData), {
-      status: 200,
-      statusText: 'OK'
+  it('emits an event when a visit row is clicked', async () => {
+    const wrapper = mount(VisitList, {
+      props: { visits }
     });
-    spyOn(window, 'fetch').and.resolveTo(okResponse);
 
-    const wrapper = mount(VisitList, { props: { personId: 123456 } });
-    await flushPromises();
-    expect(window.fetch).toHaveBeenCalledWith('/data/person/summary/123456/visits', {
-      credentials: 'same-origin'
+    const visitRows = wrapper.findAll('tbody tr');
+    expect(visitRows.length).toEqual(visits.length);
+
+    await visitRows.at(1).trigger('click');
+    expect(wrapper.emitted('visit-selected').length).toEqual(1);
+    expect(wrapper.emitted('visit-selected')[0]).toEqual([visits[1].id]);
+  });
+
+  it('adds a class to the selected visit row', async () => {
+    const wrapper = mount(VisitList, {
+      // selectedVisitId is null by default
+      props: { visits }
     });
-    expect(wrapper.find('.visit-list').exists()).toBe(true);
-    expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency'));
-    expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01'));
-    expect(wrapper.find('[data-field="provider"]').text().includes('Dr. Nick'));
-    expect(wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital'));
+
+    // nothing selected yet
+    expect(wrapper.findAll('tr.table-active').length).toEqual(0);
+
+    await wrapper.setProps({ selectedVisitId: visits[1].id });
+    expect(wrapper.findAll('tr.table-active').length).toEqual(1);
   });
 });

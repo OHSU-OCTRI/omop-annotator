@@ -158,7 +158,7 @@ export default {
       return `${this.contextPath}/data/person/${personId}`;
     },
     drawDataTable() {
-      // Format with the the datatables library if it is available.
+      // Format with the datatables library if it is available.
       if (typeof $.fn.DataTable === 'function') {
         $(`#${this.unjudgedTableId}`).DataTable({
           order: [[this.sortColumn, this.sortOrder]],

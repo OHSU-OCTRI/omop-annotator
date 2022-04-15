@@ -1,11 +1,8 @@
 <template>
   <div class="procedure-list">
     <h2 v-if="showHeader">{{ header }}</h2>
-    <div v-if="loading" class="d-flex justify-content-center">
-      <LoadingSpinner />
-    </div>
-    <div v-else class="table-responsive">
-      <table :id="tableId" class="table table-striped table-bordered table-sm">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -44,16 +41,10 @@
 </template>
 
 <script>
-import LoadingSpinner from './LoadingSpinner';
-
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    personId: {
-      type: Number,
+    procedures: {
+      type: Array,
       required: true
     },
     visitId: {
@@ -73,48 +64,35 @@ export default {
       default: true
     }
   },
-  components: {
-    LoadingSpinner
-  },
-  data() {
-    return {
-      procedures: [],
-      loading: true
-    };
-  },
-  async mounted() {
-    if (this.procedures.length === 0) {
-      const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.procedures = await response.json();
-      this.loading = false;
-    }
-    await this.$nextTick();
-    this.drawDataTable();
+  mounted() {
+    this.$nextTick(this.drawDataTable);
   },
   computed: {
-    url() {
-      // TODO: filter by visit if visitId is present
-      return `${this.contextPath}/data/person/summary/${this.personId}/procedures`;
-    },
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
       return `Procedures${filter}`;
-    },
-    tableId() {
-      return `patient_${this.personId}_visit_${this.visitId}_procedure_data`;
     }
   },
   methods: {
     drawDataTable() {
-      // Format with the the datatables library if it is available.
-      if (typeof $.fn.DataTable === 'function') {
-        $(`#${this.tableId}`).DataTable({
+      // Format with the datatables library if it is available.
+      if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
+        if (this.dataTable) {
+          this.dataTable.clear().destroy();
+        }
+
+        this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
           info: true
         });
       }
+    }
+  },
+  watch: {
+    procedures() {
+      this.$nextTick(this.drawDataTable);
     }
   }
 };

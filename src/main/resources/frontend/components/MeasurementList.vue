@@ -1,11 +1,8 @@
 <template>
   <div class="measurement-list">
     <h2 v-if="showHeader">{{ header }}</h2>
-    <div v-if="loading" class="d-flex justify-content-center">
-      <LoadingSpinner />
-    </div>
-    <div v-else class="table-responsive">
-      <table :id="tableId" class="table table-striped table-bordered table-sm">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -48,16 +45,10 @@
 </template>
 
 <script>
-import LoadingSpinner from './LoadingSpinner';
-
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    personId: {
-      type: Number,
+    measurements: {
+      type: Array,
       required: true
     },
     visitId: {
@@ -77,42 +68,24 @@ export default {
       default: true
     }
   },
-  components: {
-    LoadingSpinner
-  },
-  data() {
-    return {
-      measurements: [],
-      loading: true
-    };
-  },
-  async mounted() {
-    if (this.measurements.length === 0) {
-      const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.measurements = await response.json();
-      this.loading = false;
-    }
-    await this.$nextTick();
-    this.drawDataTable();
+  mounted() {
+    this.$nextTick(this.drawDataTable);
   },
   computed: {
-    url() {
-      // TODO: filter by visit if visitId is present
-      return `${this.contextPath}/data/person/summary/${this.personId}/measurements`;
-    },
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
       return `Measurements${filter}`;
-    },
-    tableId() {
-      return `patient_${this.personId}_visit_${this.visitId}_measurement_data`;
     }
   },
   methods: {
     drawDataTable() {
-      // Format with the the datatables library if it is available.
-      if (typeof $.fn.DataTable === 'function') {
-        $(`#${this.tableId}`).DataTable({
+      // Format with the datatables library if it is available.
+      if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
+        if (this.dataTable) {
+          this.dataTable.clear().destroy();
+        }
+
+        this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
@@ -122,6 +95,11 @@ export default {
     },
     getValue(measurement) {
       return measurement.valueAsNumber ?? measurement.valueAsConcept;
+    }
+  },
+  watch: {
+    measurements() {
+      this.$nextTick(this.drawDataTable);
     }
   }
 };

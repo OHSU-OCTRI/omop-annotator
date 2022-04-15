@@ -6,4 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "judgment")
 public interface JudgmentRepository extends PagingAndSortingRepository<Judgment, Long> {
+
+    Judgment findByUserIdAndPoolEntryId(Long userId, Long poolEntryId);
 }

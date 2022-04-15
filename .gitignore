@@ -1,5 +1,6 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
+.DS_Store
 
 # STS
 .apt_generated
@@ -11,6 +12,7 @@
 .sts4-cache
 
 .env
+dev.properties
 docker_data/
 .mvn/
 mvnw
@@ -25,4 +27,5 @@ bundle-stats.json
 
 # Visual Studio Code
 .vscode/launch.json
+.vscode/tasks.json
 

@@ -56,7 +56,7 @@ export default {
     title() {
       return `Judge Entry ${this.poolEntryId}`;
     },
-    sortedLabels: function () {
+    sortedLabels() {
       function compareLabel(a, b) {
         if (a.displayOrder < b.displayOrder) return -1;
         if (a.displayOrder > b.displayOrder) return 1;

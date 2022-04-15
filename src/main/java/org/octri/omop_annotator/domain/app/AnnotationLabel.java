@@ -22,14 +22,14 @@ public class AnnotationLabel extends AbstractEntity implements Labelled {
 
 	@NotNull
 	private Integer displayOrder;
-	
+
 	@Size(max = 7)
 	@NotNull
 	private String accentColor;
 
 	@NotNull
 	private String displayLabel;
-	
+
 	@NotNull
 	private String outputLabel;
 

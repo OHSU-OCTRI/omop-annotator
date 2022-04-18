@@ -49,10 +49,13 @@ http://localhost:8080/omop_annotator
 
 unless you updated `SERVER_SERVLET_CONTEXTPATH`.
 
+### Running with VS Code
+
+There are several ways to run a Spring Boot application using Visual Studio Code. See [Running Spring Boot Applications with VS Code](https://octri.ohsu.edu/wiki/display/TKB/Running+Spring+Boot+Applications+With+VS+Code) for examples.
+
 ### Running with Eclipse
 
-See [Running Chimera Applications with Eclipse](https://octri.ohsu.edu/wiki/display/ORDS/Running+Chimera+Applications+with+Eclipse) for a complete guide.
-
+See [Running Spring Boot Applications with Eclipse](https://octri.ohsu.edu/wiki/display/ORDS/Running+Spring+Boot+Applications+with+Spring+Tool+Suite) for a complete guide.
 
 ## Templates
 

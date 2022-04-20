@@ -1,7 +1,7 @@
 <template>
   <div class="measurement-list">
     <h2 v-if="showHeader">{{ header }}</h2>
-    <div class="table-responsive">
+    <div class="table-responsive omop-data">
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
@@ -11,7 +11,7 @@
             <th>Type</th>
             <th>Value</th>
             <th>Unit</th>
-            <th>Visit Occurrence</th>
+            <th v-if="showVisit">Visit Occurrence</th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
             <td data-field="measurementUnit">
               {{ measurement.unit }}
             </td>
-            <td data-field="visitOccurrence">
+            <td v-if="showVisit" data-field="visitOccurrence">
               {{ measurement.visitOccurrence }}
             </td>
           </tr>
@@ -66,6 +66,10 @@ export default {
     showHeader: {
       type: Boolean,
       default: true
+    },
+    showVisit: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

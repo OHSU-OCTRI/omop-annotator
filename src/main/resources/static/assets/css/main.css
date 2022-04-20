@@ -61,7 +61,7 @@ footer img.last-item {
 
 div.parent-summary {
 	padding-top: 1.5rem;
-	padding-bottom: 1.5rem;	
+	padding-bottom: 1.5rem;
 }
 
 div.parent-summary strong {
@@ -74,14 +74,14 @@ div.parent-summary strong {
 }
 
 /** Vertically scrollable table with fixed header **/
-.tableFixHead { 
-	overflow: auto; 
+.tableFixHead {
+	overflow: auto;
 	height: 16rem;
 }
 
 .tableFixHead thead th {
-	position: sticky; 
-	top: 0; 
+	position: sticky;
+	top: 0;
 	z-index: 1;
 	background: white;
 }
@@ -89,4 +89,16 @@ div.parent-summary strong {
 /** Selected visit row **/
 .visit-list .table-active {
 	background-color: rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.omop-data {
+	font-size: 0.9rem;
+}
+.omop-data table tbody {
+	font-family: Courier, monospace;
+	font-size: 0.8rem;
+}
+
+#omop_browser .nav-item {
+	font-size: 0.9rem;
 }

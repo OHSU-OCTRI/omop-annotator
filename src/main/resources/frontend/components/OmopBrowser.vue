@@ -13,7 +13,9 @@
       @visit-selected="setSelectedVisit"
     />
     <div class="visit-data card">
-      <div class="card-header">Visit Data ({{ selectedVisitId }})</div>
+      <div class="card-header">
+        Visit Data<span v-if="selectedVisitId"> (id: {{ selectedVisitId }})</span>
+      </div>
       <div class="card-body">
         <ul class="nav nav-tabs mb-3" role="tablist">
           <li class="nav-item" role="presentation">

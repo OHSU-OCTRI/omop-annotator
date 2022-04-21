@@ -36,20 +36,3 @@ export default {
   }
 };
 </script>
-<style>
-button.annotation-label {
-  filter: opacity(80%);
-  font-size: 0.8rem;
-}
-button.annotation-label:hover,
-button.annotation-label:focus,
-button.annotation-label.active {
-  filter: opacity(100%);
-}
-button.annotation-label:focus {
-  filter: brightness(95%);
-}
-button.annotation-label.active {
-  filter: saturate(120%);
-}
-</style>

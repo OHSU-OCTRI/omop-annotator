@@ -57,12 +57,13 @@ export default {
       return `Judge Entry ${this.poolEntryId}`;
     },
     sortedLabels() {
+      const labels = this.judgment.annotationLabels;
       function compareLabel(a, b) {
         if (a.displayOrder < b.displayOrder) return -1;
         if (a.displayOrder > b.displayOrder) return 1;
         return 0;
       }
-      return this.judgment.annotationLabels.sort(compareLabel);
+      return [...labels].sort(compareLabel);
     }
   },
   methods: {

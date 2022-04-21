@@ -22,7 +22,7 @@ module.exports = {
   entry: {
     'annotation-admin': entrypointPath('annotation-admin.js'),
     'pool-entries': entrypointPath('pool-entries.js'),
-    'person': entrypointPath('person.js'),
+    person: entrypointPath('person.js'),
     'judge-entry': entrypointPath('judge-entry.js') // TODO: temporary entry point for demo.
   },
   resolve: {
@@ -64,6 +64,7 @@ module.exports = {
   },
   devtool: 'cheap-source-map',
   plugins: [
+    new MiniCssExtractPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       __VUE_OPTIONS_API__: JSON.stringify(true),

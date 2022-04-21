@@ -4,7 +4,7 @@
 
 	<groupId>org.octri</groupId>
 	<artifactId>omop_annotator</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.3.0</version>
 	<packaging>jar</packaging>
 
 	<name>omop_annotator</name>

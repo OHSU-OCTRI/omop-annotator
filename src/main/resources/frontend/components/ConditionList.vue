@@ -1,7 +1,7 @@
 <template>
   <div class="condition-list">
     <h2 v-if="showHeader">{{ header }}</h2>
-    <div class="table-responsive">
+    <div class="table-responsive omop-data">
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
@@ -10,7 +10,7 @@
             <th>Type</th>
             <th>Start</th>
             <th>End</th>
-            <th>Visit</th>
+            <th v-if="showVisit">Visit</th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
             <td data-field="conditionEnd">
               {{ conditionOccurrence.conditionEnd }}
             </td>
-            <td data-field="visitOccurrence">
+            <td v-if="showVisit" data-field="visitOccurrence">
               {{ conditionOccurrence.visitOccurrence }}
             </td>
           </tr>
@@ -62,6 +62,10 @@ export default {
     showHeader: {
       type: Boolean,
       default: true
+    },
+    showVisit: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

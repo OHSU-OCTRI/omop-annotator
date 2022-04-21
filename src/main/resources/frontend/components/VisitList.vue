@@ -1,7 +1,7 @@
 <template>
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
-    <div class="table-responsive">
+    <div class="table-responsive omop-data">
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>

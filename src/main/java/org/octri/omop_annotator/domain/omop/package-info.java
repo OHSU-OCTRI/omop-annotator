@@ -10,7 +10,6 @@
  * These tables still need evaluation and possible inclusion:
  * 
  * DEATH
- * NOTE
  * NOTE_NLP
  * SPECIMEN
  * FACT_RELATIONSHIP

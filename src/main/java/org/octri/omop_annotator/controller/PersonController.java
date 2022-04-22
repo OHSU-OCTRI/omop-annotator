@@ -14,6 +14,7 @@ import org.octri.omop_annotator.repository.omop.ConceptRepository;
 import org.octri.omop_annotator.repository.omop.ConditionOccurrenceRepository;
 import org.octri.omop_annotator.repository.omop.DrugExposureRepository;
 import org.octri.omop_annotator.repository.omop.MeasurementRepository;
+import org.octri.omop_annotator.repository.omop.NoteRepository;
 import org.octri.omop_annotator.repository.omop.ObservationRepository;
 import org.octri.omop_annotator.repository.omop.PersonRepository;
 import org.octri.omop_annotator.repository.omop.ProcedureOccurrenceRepository;
@@ -42,13 +43,14 @@ public class PersonController {
 	private ObservationRepository observationRepository;
 	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
 	private MeasurementRepository measurementRepository;
+	private NoteRepository noteRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
 			VisitOccurrenceRepository visitOccurrenceRepository, ConceptRepository conceptRepository,
 			ConditionOccurrenceRepository conditionOccurrenceRepository, DrugExposureRepository drugExposureRepository,
 			MeasurementRepository measurementRepository, ObservationRepository observationRepository,
-			ProcedureOccurrenceRepository procedureOccurrenceRepository) {
+			ProcedureOccurrenceRepository procedureOccurrenceRepository, NoteRepository noteRepository) {
 		super();
 		this.omopDataConfig = omopDataConfig;
 		this.personRepository = personRepository;
@@ -57,6 +59,7 @@ public class PersonController {
 		this.observationRepository = observationRepository;
 		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
 		this.measurementRepository = measurementRepository;
+		this.noteRepository = noteRepository;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
 
@@ -135,4 +138,18 @@ public class PersonController {
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(measurementRepository.findByVisitOccurrenceId(visitId));
 	}
+	
+	@GetMapping(value = "/summary/{personId}/notes", produces = "application/json")
+	@ResponseBody
+	public String getNotes(@PathVariable Long personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(noteRepository.findByPersonId(personId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/notes", produces = "application/json")
+	@ResponseBody
+	public String getVisitNotes(@PathVariable Long personId, @PathVariable Long visitId)
+			throws JsonProcessingException {
+		return mapper.writeValueAsString(noteRepository.findByVisitOccurrenceId(visitId));
+	}
+
 }

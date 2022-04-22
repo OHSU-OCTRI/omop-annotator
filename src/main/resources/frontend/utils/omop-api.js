@@ -136,6 +136,29 @@ export default class OmopApi {
   }
 
   /**
+   * Gets all `Notes`s for the given person ID.
+   *
+   * @param {number} personId
+   * @returns {Promise<Array<Notes>>}
+   */
+  async getNotesForPerson(personId) {
+    const url = `${this.personPrefix}/${personId}/notes`;
+    return await this.getJson(url);
+  }
+
+  /**
+   * Gets all `Note`s for the given person ID and visit ID.
+   *
+   * @param {number} personId
+   * @param {number} visitId
+   * @returns {Promise<Array<Measurement>>}
+   */
+  async getNotesForPersonAndVisit(personId, visitId) {
+    const url = `${this.personPrefix}/${personId}/visit/${visitId}/notes`;
+    return await this.getJson(url);
+  }
+
+  /**
    * Makes a `fetch` request to the given URL, expecting a JSON response. Returns parsed
    * JSON data.
    *

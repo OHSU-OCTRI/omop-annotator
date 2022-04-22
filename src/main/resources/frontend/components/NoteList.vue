@@ -35,7 +35,7 @@
               {{ note.text }}
             </td>
             <td v-if="showVisit" data-field="visitOccurrence">
-              {{ measurement.visitOccurrence }}
+              {{ note.visitOccurrence }}
             </td>
           </tr>
         </tbody>

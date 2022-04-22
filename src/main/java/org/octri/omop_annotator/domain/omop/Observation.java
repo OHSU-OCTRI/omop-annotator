@@ -1,6 +1,5 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;

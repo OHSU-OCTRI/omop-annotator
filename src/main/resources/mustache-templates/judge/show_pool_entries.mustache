@@ -1,15 +1,15 @@
 {{>layout/header}}
 
-<div class="container vertical-space">
+<div class="vertical-space">
 	<div class="card mb-4">
-  		<div class="card-body">Topic {{#topic}}{{topicNumber}} - {{narrative}}{{/topic}}</div>
+		<div class="card-body">Topic {{#topic}}{{topicNumber}} - {{narrative}}{{/topic}}</div>
 	</div>
 	<nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a href="{{req.contextPath}}">Home</a></li>
-	    <li class="breadcrumb-item"><a href="{{req.contextPath}}/judge/pool/{{#pool}}{{id}}{{/pool}}">Pool {{#pool}}{{id}}{{/pool}}</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Topic {{#topic}}{{topicNumber}}{{/topic}}</li>
-	  </ol>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{{req.contextPath}}">Home</a></li>
+			<li class="breadcrumb-item"><a href="{{req.contextPath}}/judge/pool/{{#pool}}{{id}}{{/pool}}">Pool {{#pool}}{{id}}{{/pool}}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Topic {{#topic}}{{topicNumber}}{{/topic}}</li>
+		</ol>
 	</nav>
 
 	<div id="pool_entries" data-context-path="{{req.contextPath}}" data-pool-id="{{#pool}}{{id}}{{/pool}}" data-topic-id="{{#topic}}{{id}}{{/topic}}">

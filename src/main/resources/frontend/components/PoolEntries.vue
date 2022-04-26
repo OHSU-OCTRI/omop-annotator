@@ -1,5 +1,5 @@
 <template>
-  <div class="container pool-entries">
+  <div class="pool-entries">
     <div class="row my-4">
       <div class="col">
         <h3>{{ cardTitleText }}</h3>
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-if="loading">
-      <LoadingSpinner/>
+      <LoadingSpinner />
     </div>
     <div v-else class="table-responsive" ref="table-div">
       <table

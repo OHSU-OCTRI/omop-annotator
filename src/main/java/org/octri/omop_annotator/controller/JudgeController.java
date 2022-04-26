@@ -2,6 +2,9 @@ package org.octri.omop_annotator.controller;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.octri.authentication.server.security.SecurityHelper;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
@@ -15,9 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/judge")
@@ -53,6 +53,7 @@ public class JudgeController {
 			@PathVariable Long topicId) {
 		model.put("pool", poolRepository.findById(poolId).get());
 		model.put("topic", topicRepository.findById(topicId).get());
+		model.put("mainClasses", "container-fluid");
 		model.put("pageScripts", new String[] { "vendor.js", "pool-entries.js" });
 		return "judge/show_pool_entries";
 	}

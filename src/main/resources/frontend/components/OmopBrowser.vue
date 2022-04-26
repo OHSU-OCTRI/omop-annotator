@@ -278,13 +278,14 @@ export default {
       this.loadingVisitData = true;
       this.resetTabs();
 
-      const [conditions, observations, procedures, measurements, notes] = await Promise.all([
-        omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
-        omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
-        omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
-        omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId),
-        omopApi.getNotesForPersonAndVisit(this.personId, visitId)
-      ]);
+      const [conditions, observations, procedures, measurements, notes] =
+        await Promise.all([
+          omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
+          omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
+          omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
+          omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId),
+          omopApi.getNotesForPersonAndVisit(this.personId, visitId)
+        ]);
 
       this.conditions = conditions;
       this.observations = observations;

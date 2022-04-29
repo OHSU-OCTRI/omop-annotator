@@ -14,18 +14,25 @@
 
 <script>
 import JudgeButton from './JudgeButton.vue';
+
+import { contextPath, csrfToken, csrfHeader } from '../utils/injection-keys';
+
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    token: {
-      type: String
-    },
     poolEntryId: {
       type: Number,
       default: 1
+    }
+  },
+  inject: {
+    [contextPath]: {
+      default: ''
+    },
+    [csrfToken]: {
+      default: ''
+    },
+    [csrfHeader]: {
+      default: 'X-CSRF-TOKEN'
     }
   },
   components: { JudgeButton },
@@ -72,13 +79,14 @@ export default {
       this.save();
     },
     async save() {
+      const { csrfHeader } = this;
       const res = await fetch(this.saveUrl, {
         method: 'post',
         credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          'X-CSRF-TOKEN': this.token
+          [csrfHeader]: this.csrfToken
         },
         body: JSON.stringify(this.judgment)
       });

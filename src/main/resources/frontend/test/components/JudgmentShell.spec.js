@@ -1,5 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils';
-import flushPromises from 'flush-promises';
+import { flushPromises, mount, shallowMount } from '@vue/test-utils';
 
 import EntryJudgment from '@/components/EntryJudgment';
 import JudgmentShell from '@/components/JudgmentShell';
@@ -8,7 +7,6 @@ import { poolEntryJudgments } from '../example-data';
 import { mockFetchResponse } from '../helpers';
 
 const defaultProps = Object.freeze({
-  contextPath: '/omop_annotator',
   poolId: 6,
   topicId: 2
 });
@@ -33,7 +31,7 @@ describe('JudgmentShell.vue', () => {
   });
 
   it('loads pool entry judgments on mount', async () => {
-    const expectedUrl = '/omop_annotator/judge/pool/6/topic/2/pool_entry_judgments';
+    const expectedUrl = '/judge/pool/6/topic/2/pool_entry_judgments';
     const mockResponse = mockFetchResponse(poolEntryJudgments);
     spyOn(window, 'fetch').and.callFake((url, _options) => {
       if (url.endsWith('pool_entry_judgments')) {
@@ -48,7 +46,7 @@ describe('JudgmentShell.vue', () => {
     const wrapper = mount(JudgmentShell, {
       props: defaultProps
     });
-    await flushPromises;
+    await flushPromises();
 
     // umount the component to prevent the OMOP browser from making requests
     wrapper.unmount();

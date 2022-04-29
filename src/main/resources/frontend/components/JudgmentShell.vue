@@ -26,6 +26,7 @@
         v-if="selectedEntryJudgment"
         :person-id="selectedEntryJudgment.documentId"
         :pool-entry-id="selectedEntryJudgment.poolEntryId"
+        @judgment-saved="handleJudgment"
       />
       <LoadingSpinner v-else />
     </div>
@@ -93,6 +94,17 @@ export default {
     }
   },
   methods: {
+    handleJudgment(judgment) {
+      const entryJudgment = this.entryJudgments.find(
+        ej => ej.poolEntryId === judgment.poolEntryId
+      );
+      const selectedLabel = judgment.annotationLabels.find(
+        al => al.id === judgment.annotationLabelId
+      );
+      entryJudgment.judgmentId = judgment.id;
+      entryJudgment.annotation = selectedLabel.label;
+    },
+
     isSelected(entryJudgment) {
       const { selectedEntryJudgment } = this;
       return (

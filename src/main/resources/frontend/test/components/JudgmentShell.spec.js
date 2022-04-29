@@ -3,7 +3,7 @@ import { flushPromises, mount, shallowMount } from '@vue/test-utils';
 import EntryJudgment from '@/components/EntryJudgment';
 import JudgmentShell from '@/components/JudgmentShell';
 
-import { poolEntryJudgments } from '../example-data';
+import { judgmentDto, poolEntryJudgments } from '../example-data';
 import { mockFetchResponse } from '../helpers';
 
 const defaultProps = Object.freeze({
@@ -94,5 +94,29 @@ describe('JudgmentShell.vue', () => {
     await listGroupItems.at(1).trigger('click');
     expect(listGroupItems.at(1).element.classList).toContain('active');
     expect(listGroupItems.at(0).element.classList).not.toContain('active');
+  });
+
+  it('updates the state when a judgment is saved', () => {
+    const expectedLabel = judgmentDto.annotationLabels[1].label;
+    const wrapper = shallowMount(JudgmentShell, {
+      props: defaultProps,
+      data() {
+        return {
+          loading: false,
+          entryJudgments: poolEntryJudgments,
+          selectedEntryJudgment: poolEntryJudgments[0]
+        };
+      }
+    });
+
+    expect(wrapper.vm.entryJudgments[0].annotation).not.toEqual(expectedLabel);
+
+    // Trigger the event handler directly to avoid mocking several requests.
+    wrapper.vm.handleJudgment({
+      ...judgmentDto,
+      annotationLabelId: 8
+    });
+
+    expect(wrapper.vm.entryJudgments[0].annotation).toEqual(expectedLabel);
   });
 });

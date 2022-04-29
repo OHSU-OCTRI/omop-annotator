@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-between align-items-center mb-4">
     <PersonSummary :person="person" />
-    <JudgeEntry :pool-entry-id="poolEntryId" />
+    <JudgeEntry :pool-entry-id="poolEntryId" @judgment-saved="handleJudgment" />
   </div>
   <h2 class="fs-4">Visits</h2>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
@@ -223,6 +223,7 @@ export default {
     LoadingSpinner,
     JudgeEntry
   },
+  emits: ['judgment-saved'],
   data() {
     return {
       omopApi: null,
@@ -245,6 +246,9 @@ export default {
     await this.loadPerson();
   },
   methods: {
+    handleJudgment(...data) {
+      this.$emit('judgment-saved', ...data);
+    },
     resetState() {
       this.person = {};
       this.visits = [];

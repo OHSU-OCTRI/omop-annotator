@@ -17,7 +17,7 @@ describe('OmopBrowser.vue', () => {
     mockApi = new OmopApi();
 
     // pool entry requests
-    spyOn(window, 'fetch').and.resolveTo(mockFetchResponse(exampleData.poolEntry));
+    spyOn(window, 'fetch').and.resolveTo(mockFetchResponse(exampleData.judgmentDto));
 
     // person requests
     spyOn(mockApi, 'getPerson').and.resolveTo(person);

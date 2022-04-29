@@ -36,6 +36,7 @@ export default {
     }
   },
   components: { JudgeButton },
+  emits: ['judgment-saved'],
   data() {
     return {
       // JudgmentDTO
@@ -95,6 +96,7 @@ export default {
       });
       // On the initial save this will provide us with an id for future updates.
       this.judgment = await res.json();
+      this.$emit('judgment-saved', this.judgment);
     }
   },
   watch: {

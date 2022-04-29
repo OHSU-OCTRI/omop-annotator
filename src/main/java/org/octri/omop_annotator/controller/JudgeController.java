@@ -54,7 +54,7 @@ public class JudgeController {
 		model.put("pool", poolRepository.findById(poolId).get());
 		model.put("topic", topicRepository.findById(topicId).get());
 		model.put("mainClasses", "container-fluid");
-		model.put("pageScripts", new String[] { "vendor.js", "pool-entries.js" });
+		model.put("pageScripts", new String[] { "vendor.js", "judge.js" });
 		return "judge/show_pool_entries";
 	}
 

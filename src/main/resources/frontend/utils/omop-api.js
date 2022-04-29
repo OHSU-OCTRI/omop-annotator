@@ -162,7 +162,7 @@ export default class OmopApi {
    * Makes a `fetch` request to the given URL, expecting a JSON response. Returns parsed
    * JSON data.
    *
-   * @param {string} url 
+   * @param {string} url
    * @returns {Promise}
    */
   async getJson(url) {

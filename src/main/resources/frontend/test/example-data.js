@@ -27,7 +27,7 @@ export const visits = [
   })
 ];
 
-export const poolEntry = {
+export const judgmentDto = {
   id: 13,
   userId: 3,
   poolEntryId: 12,
@@ -118,8 +118,8 @@ export const poolEntryJudgments = [
 ];
 
 export default {
+  judgmentDto,
   person,
-  poolEntry,
   poolEntryJudgments,
   visits
 };

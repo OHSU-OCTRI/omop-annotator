@@ -27,6 +27,72 @@ export const visits = [
   })
 ];
 
+export const poolEntry = {
+  id: 13,
+  userId: 3,
+  poolEntryId: 12,
+  annotationLabelId: 7,
+  annotationLabels: [
+    {
+      id: 7,
+      version: 0,
+      createdAt: '2022-03-23T18:12:38.000+00:00',
+      updatedAt: '2022-03-23T18:12:38.000+00:00',
+      annotationSchema: {
+        id: 5,
+        version: 0,
+        createdAt: '2022-03-23T18:12:37.000+00:00',
+        updatedAt: '2022-03-23T18:12:37.000+00:00',
+        name: 'Relevance Judgment',
+        label: 'Relevance Judgment'
+      },
+      displayOrder: 1,
+      accentColor: '#069335',
+      displayLabel: 'Relevant',
+      outputLabel: '1',
+      label: 'Relevant'
+    },
+    {
+      id: 8,
+      version: 0,
+      createdAt: '2022-03-23T18:12:38.000+00:00',
+      updatedAt: '2022-03-23T18:12:38.000+00:00',
+      annotationSchema: {
+        id: 5,
+        version: 0,
+        createdAt: '2022-03-23T18:12:37.000+00:00',
+        updatedAt: '2022-03-23T18:12:37.000+00:00',
+        name: 'Relevance Judgment',
+        label: 'Relevance Judgment'
+      },
+      displayOrder: 2,
+      accentColor: '#e2f019',
+      displayLabel: 'Partially Relevant',
+      outputLabel: '2',
+      label: 'Partially Relevant'
+    },
+    {
+      id: 9,
+      version: 0,
+      createdAt: '2022-03-23T18:12:38.000+00:00',
+      updatedAt: '2022-03-23T18:12:38.000+00:00',
+      annotationSchema: {
+        id: 5,
+        version: 0,
+        createdAt: '2022-03-23T18:12:37.000+00:00',
+        updatedAt: '2022-03-23T18:12:37.000+00:00',
+        name: 'Relevance Judgment',
+        label: 'Relevance Judgment'
+      },
+      displayOrder: 3,
+      accentColor: '#f40101',
+      displayLabel: 'Not Relevant',
+      outputLabel: '3',
+      label: 'Not Relevant'
+    }
+  ]
+};
+
 export const poolEntryJudgments = [
   {
     judgmentId: 13,
@@ -53,6 +119,7 @@ export const poolEntryJudgments = [
 
 export default {
   person,
+  poolEntry,
   poolEntryJudgments,
   visits
 };

@@ -19,7 +19,7 @@ describe('JudgmentShell.vue', () => {
         return {
           loading: false,
           entryJudgments: poolEntryJudgments,
-          selectedDocumentId: poolEntryJudgments[0].documentId
+          selectedEntryJudgment: poolEntryJudgments[0]
         };
       }
     });
@@ -62,7 +62,7 @@ describe('JudgmentShell.vue', () => {
         return {
           loading: false,
           entryJudgments: poolEntryJudgments,
-          selectedDocumentId: null
+          selectedEntryJudgment: null
         };
       }
     });
@@ -81,7 +81,7 @@ describe('JudgmentShell.vue', () => {
         return {
           loading: false,
           entryJudgments: poolEntryJudgments,
-          selectedDocumentId: null
+          selectedEntryJudgment: null
         };
       }
     });

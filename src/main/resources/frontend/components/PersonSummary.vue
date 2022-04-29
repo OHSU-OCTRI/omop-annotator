@@ -1,5 +1,5 @@
 <template>
-  <div class="person-summary card mb-4">
+  <div class="person-summary card">
     <div class="card-body py-2">
       <ul class="list-group list-group-horizontal-md mb-0 text-">
         <li data-field="id" class="list-group-item py-0 border-0">

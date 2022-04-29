@@ -1,9 +1,9 @@
-import { mount } from '@vue/test-utils';
-import flushPromises from 'flush-promises';
+import { flushPromises, mount } from '@vue/test-utils';
 
 import OmopApi from '@/utils/omop-api';
 import OmopBrowser from '@/components/OmopBrowser';
 
+import { mockFetchResponse } from '../helpers';
 import exampleData from '../example-data';
 
 describe('OmopBrowser.vue', () => {
@@ -15,6 +15,9 @@ describe('OmopBrowser.vue', () => {
     const { person, visits } = exampleData;
 
     mockApi = new OmopApi();
+
+    // pool entry requests
+    spyOn(window, 'fetch').and.resolveTo(mockFetchResponse(exampleData.poolEntry));
 
     // person requests
     spyOn(mockApi, 'getPerson').and.resolveTo(person);
@@ -33,7 +36,7 @@ describe('OmopBrowser.vue', () => {
     });
 
     defaultOptions = {
-      props: { personId: person.id },
+      props: { personId: person.id, poolEntryId: 12 },
       data: () => ({ omopApi: mockApi })
     };
   });

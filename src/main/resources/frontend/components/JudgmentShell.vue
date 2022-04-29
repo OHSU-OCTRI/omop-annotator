@@ -23,10 +23,11 @@
     </div>
     <div class="col">
       <OmopBrowser
-        v-if="selectedDocumentId"
-        :context-path="contextPath"
-        :person-id="selectedDocumentId"
+        v-if="selectedEntryJudgment"
+        :person-id="selectedEntryJudgment.documentId"
+        :pool-entry-id="selectedEntryJudgment.poolEntryId"
       />
+      <LoadingSpinner v-else />
     </div>
   </div>
 </template>
@@ -63,7 +64,7 @@ export default {
     return {
       loading: true,
       entryJudgments: [],
-      selectedDocumentId: null
+      selectedEntryJudgment: null
     };
   },
   async mounted() {
@@ -74,8 +75,8 @@ export default {
       this.loading = false;
     }
 
-    if (this.hasEntryJudgments && !this.selectedDocumentId) {
-      this.selectedDocumentId = this.entryJudgments[0].documentId;
+    if (this.hasEntryJudgments && !this.selectedEntryJudgment) {
+      this.selectedEntryJudgment = this.entryJudgments[0];
     }
   },
   computed: {
@@ -93,13 +94,15 @@ export default {
   },
   methods: {
     isSelected(entryJudgment) {
-      return this.selectedDocumentId === entryJudgment.documentId;
+      const { selectedEntryJudgment } = this;
+      return (
+        selectedEntryJudgment &&
+        selectedEntryJudgment.documentId === entryJudgment.documentId
+      );
     },
 
     selectDocument(entryJudgment) {
-      if (this.selectedDocumentId !== entryJudgment.documentId) {
-        this.selectedDocumentId = entryJudgment.documentId;
-      }
+      this.selectedEntryJudgment = entryJudgment;
     }
   }
 };

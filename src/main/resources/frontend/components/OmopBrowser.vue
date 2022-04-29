@@ -1,11 +1,7 @@
 <template>
-  <div class="d-flex align-items-center">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <PersonSummary :person="person" />
-    <JudgeEntry
-      :context-path="contextPath"
-      :pool-entry-id="12"
-      token="66423fcb-e5db-46a8-8df8-39c5c28429c5"
-    />
+    <JudgeEntry :pool-entry-id="poolEntryId" />
   </div>
   <h2 class="fs-4">Visits</h2>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
@@ -205,6 +201,10 @@ export default {
       type: Number,
       required: true
     },
+    poolEntryId: {
+      type: Number,
+      required: true
+    }
   },
   inject: {
     [contextPath]: {

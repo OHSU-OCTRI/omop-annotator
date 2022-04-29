@@ -49,9 +49,7 @@ export default {
     };
   },
   async mounted() {
-    const response = await fetch(this.judgmentUrl, { credentials: 'same-origin' });
-    this.judgment = await response.json();
-    await this.$nextTick();
+    await this.loadJudgment();
   },
   computed: {
     judgmentUrl() {
@@ -76,9 +74,14 @@ export default {
   methods: {
     selectLabel(id) {
       this.judgment.annotationLabelId = id;
-      this.save();
+      this.saveJudgment();
     },
-    async save() {
+    async loadJudgment() {
+      const response = await fetch(this.judgmentUrl, { credentials: 'same-origin' });
+      this.judgment = await response.json();
+      await this.$nextTick();
+    },
+    async saveJudgment() {
       const { csrfHeader } = this;
       const res = await fetch(this.saveUrl, {
         method: 'post',
@@ -92,6 +95,11 @@ export default {
       });
       // On the initial save this will provide us with an id for future updates.
       this.judgment = await res.json();
+    }
+  },
+  watch: {
+    poolEntryId() {
+      this.loadJudgment();
     }
   }
 };

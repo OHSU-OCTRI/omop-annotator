@@ -196,17 +196,19 @@ import PlaceholderMessage from './PlaceholderMessage';
 import ProcedureList from './ProcedureList';
 import VisitList from './VisitList';
 
+import { contextPath } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
 
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
     personId: {
       type: Number,
       required: true
+    },
+  },
+  inject: {
+    [contextPath]: {
+      default: ''
     }
   },
   components: {

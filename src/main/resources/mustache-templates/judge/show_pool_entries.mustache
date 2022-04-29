@@ -12,7 +12,13 @@
 		</ol>
 	</nav>
 
-	<div id="judgment_app" data-context-path="{{req.contextPath}}" data-pool-id="{{#pool}}{{id}}{{/pool}}" data-topic-id="{{#topic}}{{id}}{{/topic}}">
+	<div id="judgment_app"
+		data-context-path="{{req.contextPath}}"
+		data-csrf-token="{{_csrf.token}}"
+		data-csrf-header="{{_csrf.headerName}}"
+		data-pool-id="{{#pool}}{{id}}{{/pool}}"
+		data-topic-id="{{#topic}}{{id}}{{/topic}}"
+	>
 	</div>
 
 </div>

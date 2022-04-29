@@ -36,12 +36,10 @@ import EntryJudgment from './EntryJudgment';
 import LoadingSpinner from './LoadingSpinner';
 import OmopBrowser from './OmopBrowser';
 
+import { contextPath } from '../utils/injection-keys';
+
 export default {
   props: {
-    contextPath: {
-      type: String,
-      required: true
-    },
     poolId: {
       type: Number,
       required: true
@@ -49,6 +47,11 @@ export default {
     topicId: {
       type: Number,
       required: true
+    }
+  },
+  inject: {
+    [contextPath]: {
+      default: ''
     }
   },
   components: {

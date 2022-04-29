@@ -21,8 +21,9 @@ module.exports = {
   },
   entry: {
     'annotation-admin': entrypointPath('annotation-admin.js'),
-    'pool-entries': entrypointPath('pool-entries.js'),
+    judge: entrypointPath('judge.js'),
     person: entrypointPath('person.js'),
+    'pool-entries': entrypointPath('pool-entries.js'),
     'judge-entry': entrypointPath('judge-entry.js') // TODO: temporary entry point for demo.
   },
   resolve: {

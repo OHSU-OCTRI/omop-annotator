@@ -1,6 +1,13 @@
 <template>
-  <PersonSummary :person="person" />
-  <h2>Visits</h2>
+  <div class="d-flex align-items-center">
+    <PersonSummary :person="person" />
+    <JudgeEntry
+      :context-path="contextPath"
+      :pool-entry-id="12"
+      token="66423fcb-e5db-46a8-8df8-39c5c28429c5"
+    />
+  </div>
+  <h2 class="fs-4">Visits</h2>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
     <LoadingSpinner />
   </div>
@@ -179,6 +186,7 @@
 
 <script>
 import ConditionList from './ConditionList';
+import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
 import MeasurementList from './MeasurementList';
 import NoteList from './NoteList';
@@ -210,7 +218,8 @@ export default {
     PlaceholderMessage,
     ProcedureList,
     VisitList,
-    LoadingSpinner
+    LoadingSpinner,
+    JudgeEntry
   },
   data() {
     return {

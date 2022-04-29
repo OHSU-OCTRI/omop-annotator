@@ -27,7 +27,32 @@ export const visits = [
   })
 ];
 
+export const poolEntryJudgments = [
+  {
+    judgmentId: 13,
+    poolEntryId: 12,
+    sortOrder: 1,
+    documentId: 115496,
+    annotation: 'Relevant'
+  },
+  {
+    judgmentId: null,
+    poolEntryId: 40,
+    sortOrder: 2,
+    documentId: 192829,
+    annotation: null
+  },
+  {
+    judgmentId: null,
+    poolEntryId: 41,
+    sortOrder: 3,
+    documentId: 136698,
+    annotation: null
+  }
+];
+
 export default {
   person,
+  poolEntryJudgments,
   visits
 };

@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "pool_entry")
 public interface PoolEntryRepository extends PagingAndSortingRepository<PoolEntry, Long> {
+	Long countByPoolId(Long id);
 }

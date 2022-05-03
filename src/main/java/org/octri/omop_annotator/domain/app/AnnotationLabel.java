@@ -5,6 +5,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import org.octri.omop_annotator.view.IdSerializer;
 import org.octri.omop_annotator.view.Labelled;
 
 /**
@@ -18,6 +21,7 @@ public class AnnotationLabel extends AbstractEntity implements Labelled {
 
 	@ManyToOne
 	@NotNull
+	@JsonSerialize(using = IdSerializer.class)
 	private AnnotationSchema annotationSchema;
 
 	@NotNull

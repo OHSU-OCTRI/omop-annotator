@@ -4,7 +4,7 @@
     :class="{ btn: true, 'annotation-label': true, active: isActive }"
     :style="{
       'background-color': this.label.accentColor,
-      'border-color': this.borderColor
+      color: this.fontColor
     }"
     @click="$emit('select-label', label.id)"
   >
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { isDark } from '../utils/color';
 export default {
   props: {
     label: {
@@ -24,14 +25,15 @@ export default {
   },
   emits: ['select-label'],
   computed: {
-    borderSize() {
-      return this.isActive ? 1 : 0.5;
-    },
-    borderColor() {
-      return this.isActive ? 'gray' : 'lightgray';
-    },
     isActive() {
       return this.selected === true;
+    },
+    fontColor() {
+      let color = this.label.accentColor;
+      if (color && isDark(color)) {
+        return 'white';
+      }
+      return 'black';
     }
   }
 };

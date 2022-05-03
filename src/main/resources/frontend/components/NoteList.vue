@@ -20,10 +20,10 @@
               {{ note.id }}
             </td>
             <td data-field="noteDatetime">
-              {{ note.dateTime }}
+              {{ note.date }}
             </td>
             <td data-field="noteType">
-              {{ note.noteType }}
+              {{ note.type }}
             </td>
             <td data-field="noteClass">
               {{ note.noteClass }}

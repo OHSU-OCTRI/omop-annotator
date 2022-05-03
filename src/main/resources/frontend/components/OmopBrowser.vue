@@ -1,6 +1,9 @@
 <template>
-  <PersonSummary :person="person" />
-  <h2>Visits</h2>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <PersonSummary :person="person" />
+    <JudgeEntry :pool-entry-id="poolEntryId" @judgment-saved="handleJudgment" />
+  </div>
+  <h2 class="fs-4">Visits</h2>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
     <LoadingSpinner />
   </div>
@@ -179,6 +182,7 @@
 
 <script>
 import ConditionList from './ConditionList';
+import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
 import MeasurementList from './MeasurementList';
 import NoteList from './NoteList';
@@ -188,17 +192,23 @@ import PlaceholderMessage from './PlaceholderMessage';
 import ProcedureList from './ProcedureList';
 import VisitList from './VisitList';
 
+import { contextPath } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
 
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
     personId: {
       type: Number,
       required: true
+    },
+    poolEntryId: {
+      type: Number,
+      required: true
+    }
+  },
+  inject: {
+    [contextPath]: {
+      default: ''
     }
   },
   components: {
@@ -210,8 +220,10 @@ export default {
     PlaceholderMessage,
     ProcedureList,
     VisitList,
-    LoadingSpinner
+    LoadingSpinner,
+    JudgeEntry
   },
+  emits: ['judgment-saved'],
   data() {
     return {
       omopApi: null,
@@ -234,6 +246,9 @@ export default {
     await this.loadPerson();
   },
   methods: {
+    handleJudgment(...data) {
+      this.$emit('judgment-saved', ...data);
+    },
     resetState() {
       this.person = {};
       this.visits = [];
@@ -278,13 +293,14 @@ export default {
       this.loadingVisitData = true;
       this.resetTabs();
 
-      const [conditions, observations, procedures, measurements, notes] = await Promise.all([
-        omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
-        omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
-        omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
-        omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId),
-        omopApi.getNotesForPersonAndVisit(this.personId, visitId)
-      ]);
+      const [conditions, observations, procedures, measurements, notes] =
+        await Promise.all([
+          omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
+          omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
+          omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
+          omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId),
+          omopApi.getNotesForPersonAndVisit(this.personId, visitId)
+        ]);
 
       this.conditions = conditions;
       this.observations = observations;

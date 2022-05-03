@@ -139,7 +139,7 @@ export default class OmopApi {
    * Gets all `Notes`s for the given person ID.
    *
    * @param {number} personId
-   * @returns {Promise<Array<Notes>>}
+   * @returns {Promise<Array<Note>>}
    */
   async getNotesForPerson(personId) {
     const url = `${this.personPrefix}/${personId}/notes`;
@@ -151,7 +151,7 @@ export default class OmopApi {
    *
    * @param {number} personId
    * @param {number} visitId
-   * @returns {Promise<Array<Measurement>>}
+   * @returns {Promise<Array<Note>>}
    */
   async getNotesForPersonAndVisit(personId, visitId) {
     const url = `${this.personPrefix}/${personId}/visit/${visitId}/notes`;
@@ -162,7 +162,7 @@ export default class OmopApi {
    * Makes a `fetch` request to the given URL, expecting a JSON response. Returns parsed
    * JSON data.
    *
-   * @param {string} url 
+   * @param {string} url
    * @returns {Promise}
    */
   async getJson(url) {

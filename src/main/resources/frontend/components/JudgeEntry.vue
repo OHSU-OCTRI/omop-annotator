@@ -14,21 +14,29 @@
 
 <script>
 import JudgeButton from './JudgeButton.vue';
+
+import { contextPath, csrfToken, csrfHeader } from '../utils/injection-keys';
+
 export default {
   props: {
-    contextPath: {
-      type: String,
-      default: ''
-    },
-    token: {
-      type: String
-    },
     poolEntryId: {
       type: Number,
       default: 1
     }
   },
+  inject: {
+    [contextPath]: {
+      default: ''
+    },
+    [csrfToken]: {
+      default: ''
+    },
+    [csrfHeader]: {
+      default: 'X-CSRF-TOKEN'
+    }
+  },
   components: { JudgeButton },
+  emits: ['judgment-saved'],
   data() {
     return {
       // JudgmentDTO
@@ -42,9 +50,7 @@ export default {
     };
   },
   async mounted() {
-    const response = await fetch(this.judgmentUrl, { credentials: 'same-origin' });
-    this.judgment = await response.json();
-    await this.$nextTick();
+    await this.loadJudgment();
   },
   computed: {
     judgmentUrl() {
@@ -69,21 +75,33 @@ export default {
   methods: {
     selectLabel(id) {
       this.judgment.annotationLabelId = id;
-      this.save();
+      this.saveJudgment();
     },
-    async save() {
+    async loadJudgment() {
+      const response = await fetch(this.judgmentUrl, { credentials: 'same-origin' });
+      this.judgment = await response.json();
+      await this.$nextTick();
+    },
+    async saveJudgment() {
+      const { csrfHeader } = this;
       const res = await fetch(this.saveUrl, {
         method: 'post',
         credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          'X-CSRF-TOKEN': this.token
+          [csrfHeader]: this.csrfToken
         },
         body: JSON.stringify(this.judgment)
       });
       // On the initial save this will provide us with an id for future updates.
       this.judgment = await res.json();
+      this.$emit('judgment-saved', this.judgment);
+    }
+  },
+  watch: {
+    poolEntryId() {
+      this.loadJudgment();
     }
   }
 };

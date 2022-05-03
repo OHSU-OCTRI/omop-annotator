@@ -9,8 +9,8 @@ import JudgeEntry from './components/JudgeEntry';
  */
 const dataset = document.querySelector('#judge_entry').dataset;
 const app = createApp(JudgeEntry, {
-    contextPath: dataset.contextPath,
-    poolEntryId: Number.parseInt(dataset.poolEntryId),
-    token: dataset.token
+  contextPath: dataset.contextPath,
+  poolEntryId: Number.parseInt(dataset.poolEntryId),
+  token: dataset.token
 });
 app.mount('#judge_entry');

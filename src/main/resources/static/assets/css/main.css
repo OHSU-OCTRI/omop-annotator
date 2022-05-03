@@ -8,8 +8,14 @@ body {
 	margin-bottom: 60px;
 }
 
-body>.container {
+main.container {
+	/* pad top to account for the navbar */
 	padding: 70px 15px 0;
+}
+
+main.container-fluid {
+	/* pad top to account for the navbar */
+	padding-top: 70px;
 }
 
 .new-entity {

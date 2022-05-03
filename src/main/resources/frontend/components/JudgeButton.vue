@@ -1,10 +1,15 @@
 <template>
   <button
     type="button"
-    :class="{ btn: true, 'annotation-label': true, active: isActive }"
+    :class="{
+      btn: true,
+      'annotation-label': true,
+      active: isActive,
+      light: isLight,
+      dark: isDark
+    }"
     :style="{
-      'background-color': this.label.accentColor,
-      color: this.fontColor
+      'background-color': this.label.accentColor
     }"
     @click="$emit('select-label', label.id)"
   >
@@ -13,7 +18,7 @@
 </template>
 
 <script>
-import { isDark } from '../utils/color';
+import { isDark, isLight } from '../utils/color';
 export default {
   props: {
     label: {
@@ -28,12 +33,11 @@ export default {
     isActive() {
       return this.selected === true;
     },
-    fontColor() {
-      let color = this.label.accentColor;
-      if (color && isDark(color)) {
-        return 'white';
-      }
-      return 'black';
+    isLight() {
+      return this.label.accentColor && isLight(this.label.accentColor);
+    },
+    isDark() {
+      return this.label.accentColor && isDark(this.label.accentColor);
     }
   }
 };

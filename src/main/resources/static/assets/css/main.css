@@ -111,16 +111,23 @@ div.parent-summary strong {
 
 /** JudgeButton component styles **/
 button.annotation-label {
-	filter: opacity(65%);
+	filter: opacity(60%);
 	font-size: 0.8rem;
 	border-color: lightgray;
+}
+
+button.annotation-label.light {
+	color: black;
+}
+
+button.annotation-label.dark {
+	color: white;
 }
 
 button.annotation-label:hover,
 button.annotation-label:focus,
 button.annotation-label.active {
 	filter: opacity(100%);
-	font-weight: bolder;
 }
 
 button.annotation-label:focus {
@@ -128,5 +135,5 @@ button.annotation-label:focus {
 }
 
 button.annotation-label.active {
-	border-color: gray;
+	border-color: darkgray;
 }

@@ -23,8 +23,9 @@ module.exports = {
     'annotation-admin': entrypointPath('annotation-admin.js'),
     judge: entrypointPath('judge.js'),
     person: entrypointPath('person.js'),
-    'pool-entries': entrypointPath('pool-entries.js'),
-    'judge-entry': entrypointPath('judge-entry.js') // TODO: temporary entry point for demo.
+    'judge-entry': entrypointPath('judge-entry.js'), // TODO: temporary entry point for demo.
+    'judge-control': entrypointPath('judge-control.js'),
+    'pool-entries': entrypointPath('pool-entries.js')
   },
   resolve: {
     alias: {

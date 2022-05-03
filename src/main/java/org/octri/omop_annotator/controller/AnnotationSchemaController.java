@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
@@ -32,9 +35,10 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 	@Autowired
 	private AnnotationLabelRepository annotationLabelRepository;
-	
+
 	@Autowired
 	private PoolRepository poolRepository;
+	private ObjectMapper mapper = new ObjectMapper();
 
 	/**
 	 * Form model class used by the new and edit forms.
@@ -76,19 +80,27 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 	protected AnnotationSchemaRepository getRepository() {
 		return this.repository;
 	}
-	
+
 	@GetMapping("/{id}")
 	@Override
 	public String show(Map<String, Object> model, @PathVariable Long id) {
 		addTemplateAttributes(model);
+		model.put("pageScripts", new String[] { "vendor.js", "judge-control.js" });
 
 		AnnotationSchema annotationSchema = repository.findById(id).get();
-
+		var labels = getLabelsForSchema(id);
 		model.put("entity", annotationSchema);
-		model.put("labels", getLabelsForSchema(id));
+		model.put("labels", labels);
 		Long numRelatedPools = poolRepository.countByAnnotationSchemaId(id);
-		model.put("noRelatedPools",numRelatedPools==0);
-		
+		model.put("noRelatedPools", numRelatedPools == 0);
+
+		String labelsJson = "[]";
+		try {
+			labelsJson = mapper.writeValueAsString(labels);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		model.put("labelsJson", labelsJson);
 		return template("show");
 	}
 
@@ -99,7 +111,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 		model.put("pageScripts", new String[] { "vendor.js", "annotation-admin.js" });
 		AnnotationSchema annotationSchema = newEntity();
 		model.put("schema", annotationSchema);
-		
+
 		return template("new");
 	}
 
@@ -117,12 +129,14 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 	@GetMapping("/{id}/delete")
 	@Override
 	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-		// TODO: Once there are judgments we won't be able to delete schemas/labels related so we may need more refined behavior
+		// TODO: Once there are judgments we won't be able to delete schemas/labels related so we may need more refined
+		// behavior
 		AnnotationSchema annotationSchema = repository.findById(id).get();
 		Long numRelatedPools = poolRepository.countByAnnotationSchemaId(id);
 		if (numRelatedPools != 0) {
-			redirectAttributes.addFlashAttribute("errorMessage", "This schema has related pools and cannot be deleted.");
-			return "redirect:/admin/annotation_schema/" + id;			
+			redirectAttributes.addFlashAttribute("errorMessage",
+					"This schema has related pools and cannot be deleted.");
+			return "redirect:/admin/annotation_schema/" + id;
 		}
 		annotationLabelRepository.deleteByAnnotationSchema(annotationSchema);
 		return super.delete(id, redirectAttributes);
@@ -130,7 +144,8 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 	@PostMapping("/new_combined")
 	public String createCombined(RedirectAttributes redirectAttributes,
-			@Valid @ModelAttribute("annotation_schema_form") AnnotationSchemaForm annotationSchemaForm, BindingResult annotationSchemaBinding) {
+			@Valid @ModelAttribute("annotation_schema_form") AnnotationSchemaForm annotationSchemaForm,
+			BindingResult annotationSchemaBinding) {
 
 		AnnotationSchema savedSchema = repository.save(annotationSchemaForm.getSchema());
 
@@ -145,20 +160,22 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 	@PostMapping("/edit_combined/{id}")
 	public String updateCombined(@PathVariable Long id, RedirectAttributes redirectAttributes,
-			@Valid @ModelAttribute("annotation_schema_form") AnnotationSchemaForm annotationSchemaForm, BindingResult annotationSchemaBinding) {
+			@Valid @ModelAttribute("annotation_schema_form") AnnotationSchemaForm annotationSchemaForm,
+			BindingResult annotationSchemaBinding) {
 
 		Long schemaId = annotationSchemaForm.getSchema().getId();
 		if (schemaId != null) {
 			Long numRelatedPools = poolRepository.countByAnnotationSchemaId(schemaId);
 			if (numRelatedPools != 0) {
-				redirectAttributes.addFlashAttribute("errorMessage", "This schema has related pools and cannot be edited.");
-				return "redirect:/admin/annotation_schema/" + schemaId;			
+				redirectAttributes.addFlashAttribute("errorMessage",
+						"This schema has related pools and cannot be edited.");
+				return "redirect:/admin/annotation_schema/" + schemaId;
 			}
 		}
-		
+
 		AnnotationSchema schema = repository.save(annotationSchemaForm.getSchema());
 		annotationLabelRepository.deleteByAnnotationSchema(schema);
-		
+
 		List<AnnotationLabel> annotationLabels = annotationSchemaForm.getAnnotationLabels();
 		if (annotationLabels != null && annotationLabels.size() > 0) {
 			saveAnnotationLabels(schema, annotationLabels);
@@ -166,15 +183,15 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 		return showRedirect(id);
 	}
-	
-	private void saveAnnotationLabels(AnnotationSchema savedSchema, List<AnnotationLabel> labels) {		
+
+	private void saveAnnotationLabels(AnnotationSchema savedSchema, List<AnnotationLabel> labels) {
 		// Ensure new labels are associated with the schema
 		labels.stream().forEach(label -> label.setAnnotationSchema(savedSchema));
 
 		annotationLabelRepository.saveAll(labels);
 
 	}
-	
+
 	/**
 	 * Gets the list of annotation labels associated with the schema.
 	 *
@@ -188,6 +205,5 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 		return annotationLabelRepository.findByAnnotationSchemaId(schemaId);
 	}
-
 
 }

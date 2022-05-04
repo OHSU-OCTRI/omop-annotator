@@ -1,7 +1,11 @@
 <template>
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="mb-4">
+    <JudgeEntry
+      :pool-entry-id="poolEntryId"
+      @judgment-saved="handleJudgment"
+      class="mb-2"
+    />
     <PersonSummary :person="person" />
-    <JudgeEntry :pool-entry-id="poolEntryId" @judgment-saved="handleJudgment" />
   </div>
   <h2 class="fs-4">Visits</h2>
   <div class="d-flex justify-content-center" v-if="visitsLoading">

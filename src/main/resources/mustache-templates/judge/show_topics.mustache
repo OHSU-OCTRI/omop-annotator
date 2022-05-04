@@ -1,35 +1,34 @@
 {{>layout/header}}
 
 <div class="container vertical-space">
-	<h1>{{#pool}}{{name}}{{/pool}}</h1>
 	<nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
 	    <li class="breadcrumb-item"><a href="{{req.contextPath}}">Home</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Pool {{#pool}}{{id}}{{/pool}}</li>
+	    <li class="breadcrumb-item active" aria-current="page">Pool {{#pool}}{{id}}: {{name}}{{/pool}}</li>
 	  </ol>
 	</nav>
 
-	<p>Select a topic to begin judging.</p>
-	
-    <table class="table table-striped table-bordered sorted">
-        <thead>
-        <tr>
-            <th>Topic Number</th>
-            <th>Narrative</th>
-            <th>Completed Judgments</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#topicJudgments}}
-        <tr>
-            <td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
-            <td>{{#narrative}}{{.}}{{/narrative}}</td>
-            <td>{{#completedJudgments}}{{.}}{{/completedJudgments}}/{{#numEntries}}{{.}}{{/numEntries}}</td>
-            <td><a href="{{req.contextPath}}/judge/pool/{{#pool}}{{id}}{{/pool}}/topic/{{#topicId}}{{.}}{{/topicId}}">View</a></td>
-        </tr>
-        {{/topicJudgments}}
-        </tbody>
+	<p class="instructions"><i class="fas fa-info-circle"></i> Select a topic to begin judging.</p>
+
+  <table class="table table-striped table-bordered sorted">
+      <thead>
+      <tr>
+          <th>Topic Number</th>
+          <th>Narrative</th>
+          <th>Completed Judgments</th>
+          <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#topicJudgments}}
+      <tr>
+          <td>{{#topicNumber}}{{.}}{{/topicNumber}}</td>
+          <td>{{#narrative}}{{.}}{{/narrative}}</td>
+          <td>{{#completedJudgments}}{{.}}{{/completedJudgments}}/{{#numEntries}}{{.}}{{/numEntries}}</td>
+          <td><a href="{{req.contextPath}}/judge/pool/{{#pool}}{{id}}{{/pool}}/topic/{{#topicId}}{{.}}{{/topicId}}">View</a></td>
+      </tr>
+      {{/topicJudgments}}
+      </tbody>
     </table>
 
 </div>

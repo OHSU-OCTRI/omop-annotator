@@ -4,7 +4,7 @@
   </div>
   <div class="row" v-else>
     <div class="col-2">
-      <h2 class="fs-4">Pool Entries</h2>
+      <h2 v-if="showHeader" class="fs-4">Pool Entries</h2>
       <!-- TODO: filter by judged or unjudged -->
       <!-- TODO: pagination or scrolling -->
       <div class="list-group">
@@ -13,6 +13,7 @@
           :key="item.documentId"
           href="#"
           class="list-group-item list-group-item-action"
+          :title="`Show document: ${item.documentId}`"
           :class="{ active: isSelected(item) }"
           :aria-current="isSelected(item)"
           @click.prevent="selectDocument(item)"
@@ -49,6 +50,10 @@ export default {
     topicId: {
       type: Number,
       required: true
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   inject: {

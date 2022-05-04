@@ -8,4 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface JudgmentRepository extends PagingAndSortingRepository<Judgment, Long> {
 
     Judgment findByUserIdAndPoolEntryId(Long userId, Long poolEntryId);
+
+	Long countByPoolEntryId(Long id);
 }

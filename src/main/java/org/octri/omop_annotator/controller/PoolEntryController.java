@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
+import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.AnnotationSchemaRepository;
+import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicRepository;
@@ -22,13 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
@@ -60,6 +65,18 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 	
 	@Autowired
 	private PoolEntryUploadService poolEntryUploadService;
+	
+	@Autowired
+	private JudgmentRepository judgmentRepository;
+
+	@Override
+	public String show(Map<String, Object> model, @PathVariable Long id) {
+		String template = super.show(model, id);
+
+		Long numRelatedJudgments = judgmentRepository.countByPoolEntryId(id);
+		model.put("noRelatedJudgments", numRelatedJudgments == 0);
+		return template;
+	}
 
 	@Override
 	public String newEntity(Map<String, Object> model) {
@@ -85,6 +102,19 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 		model.put("topicOptions",
 				OptionList.fromSearch(topicRepository.findAll(), entity.getTopic()));
 		return template;
+	}
+
+	@Override
+	public String update(Map<String, Object> model, @PathVariable Long id, @ModelAttribute("entity") PoolEntry entity,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		Long numRelatedJudgments = judgmentRepository.countByPoolEntryId(id);
+		if (numRelatedJudgments != 0) {
+			redirectAttributes.addFlashAttribute("errorMessage",
+					"This entry has already been judged and cannot be edited.");
+			return "redirect:/admin/pool_entry/" + id;
+		}
+
+		return super.update(model, id, entity, bindingResult, redirectAttributes);
 	}
 
 	/**

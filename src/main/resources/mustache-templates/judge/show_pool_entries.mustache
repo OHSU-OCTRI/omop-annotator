@@ -1,23 +1,23 @@
 {{>layout/header}}
 
 <div class="vertical-space">
-	<div class="card mb-4">
-		<div class="card-body">Topic {{#topic}}{{topicNumber}} - {{narrative}}{{/topic}}</div>
-	</div>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="{{req.contextPath}}">Home</a></li>
 			<li class="breadcrumb-item"><a href="{{req.contextPath}}/judge/pool/{{#pool}}{{id}}{{/pool}}">Pool {{#pool}}{{id}}{{/pool}}</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Topic {{#topic}}{{topicNumber}}{{/topic}}</li>
+			<li class="breadcrumb-item active" aria-current="page">Topic {{#topic}}{{topicNumber}}: {{narrative}}{{/topic}}</li>
 		</ol>
 	</nav>
 
-	<div id="judgment_app"
+	<p class="instructions"><i class="fas fa-info-circle"></i> Select a pool entry to view and judge a document.</p>
+	<h2 class="fs-4 mt-2">Pool Entries</h2>
+	<div id="judgment_app" class="mt-2"
 		data-context-path="{{req.contextPath}}"
 		data-csrf-token="{{_csrf.token}}"
 		data-csrf-header="{{_csrf.headerName}}"
 		data-pool-id="{{#pool}}{{id}}{{/pool}}"
 		data-topic-id="{{#topic}}{{id}}{{/topic}}"
+		data-show-header="false"
 	>
 	</div>
 

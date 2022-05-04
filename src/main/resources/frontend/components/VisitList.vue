@@ -79,7 +79,7 @@ export default {
   },
   data() {
     return {
-      dataTable: null
+      search: null
     };
   },
   mounted() {
@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     contextAvailable() {
-      return this.selectedVisitId && this.dataTable && this.dataTable.search();
+      return this.selectedVisitId && this.search;
     }
   },
   methods: {
@@ -104,6 +104,10 @@ export default {
           searching: true,
           info: true
         });
+        // Update the component search term when a datatables search is performed.
+        this.dataTable.on('search.dt', () => {
+          this.search = this.dataTable.search();
+        });
       }
     },
     visitIndex(visitId) {
@@ -117,6 +121,8 @@ export default {
       return sortedVisits.findIndex(visit => visit.id === visitId);
     },
     showContext() {
+      // Shows the context in a linear timeline. We may also want the ability to
+      // navigate to the selected record after sorting by a column.
       if (this.contextAvailable) {
         const index = this.visitIndex(this.selectedVisitId);
         const pageLength = this.dataTable.page.len();

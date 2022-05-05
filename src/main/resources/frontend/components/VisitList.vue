@@ -54,6 +54,15 @@
 </template>
 
 <script>
+/**
+ * Comparison function to compare two visit occurrences by visitStart.
+ */
+function compareVisitStart(a, b) {
+  if (a.visitStart < b.visitStart) return -1;
+  if (a.visitStart > b.visitStart) return 1;
+  return 0;
+}
+
 export default {
   props: {
     visits: {
@@ -79,7 +88,8 @@ export default {
   },
   data() {
     return {
-      search: null
+      search: null,
+      pageLength: 10
     };
   },
   mounted() {
@@ -87,7 +97,22 @@ export default {
   },
   computed: {
     contextAvailable() {
-      return this.selectedVisitId && this.search;
+      return Boolean(this.selectedVisitId && this.search);
+    },
+    selectedVisitIndex() {
+      // index when temporally sorted
+      if (this.selectedVisitId) {
+        const sortedVisits = [...this.visits].sort(compareVisitStart);
+        return sortedVisits.findIndex(visit => visit.id === this.selectedVisitId);
+      }
+      return null;
+    },
+    selectedVisitPage() {
+      // page when sorted by visitStart.
+      if (this.selectedVisitIndex) {
+        return Math.floor(this.selectedVisitIndex / this.pageLength);
+      }
+      return null;
     }
   },
   methods: {
@@ -101,6 +126,7 @@ export default {
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
+          pageLength: this.pageLength,
           searching: true,
           info: true
         });
@@ -108,31 +134,22 @@ export default {
         this.dataTable.on('search.dt', () => {
           this.search = this.dataTable.search();
         });
+
+        this.dataTable.on('length.dt', (e, settings, len) => {
+          this.pageLength = len;
+        });
       }
-    },
-    visitIndex(visitId) {
-      // index when temporally sorted
-      function compareDate(a, b) {
-        if (a.visitStart < b.visitStart) return -1;
-        if (a.visitStart > b.visitStart) return 1;
-        return 0;
-      }
-      const sortedVisits = [...this.visits].sort(compareDate);
-      return sortedVisits.findIndex(visit => visit.id === visitId);
     },
     showContext() {
       // Shows the context in a linear timeline. We may also want the ability to
       // navigate to the selected record after sorting by a column.
       if (this.contextAvailable) {
-        const index = this.visitIndex(this.selectedVisitId);
-        const pageLength = this.dataTable.page.len();
         const startDateColumn = 2;
-        let visitPage = Math.floor(index / pageLength);
         this.dataTable
           .search('')
           .order([startDateColumn, 'asc'])
           .draw()
-          .page(visitPage)
+          .page(this.selectedVisitPage)
           .draw(false);
       }
     },

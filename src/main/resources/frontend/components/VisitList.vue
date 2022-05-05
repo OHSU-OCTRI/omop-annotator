@@ -2,6 +2,14 @@
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
     <div class="table-responsive omop-data">
+      <button
+        class="btn btn-outline-primary btn-sm mb-2"
+        v-if="contextAvailable"
+        @click="showContext()"
+        title="Show the surrounding context of the selected visit"
+      >
+        <small>Show Context</small>
+      </button>
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
@@ -69,8 +77,18 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+      search: null
+    };
+  },
   mounted() {
     this.$nextTick(this.drawDataTable);
+  },
+  computed: {
+    contextAvailable() {
+      return this.selectedVisitId && this.search;
+    }
   },
   methods: {
     drawDataTable() {
@@ -86,9 +104,38 @@ export default {
           searching: true,
           info: true
         });
+        // Update the component search term when a datatables search is performed.
+        this.dataTable.on('search.dt', () => {
+          this.search = this.dataTable.search();
+        });
       }
     },
-
+    visitIndex(visitId) {
+      // index when temporally sorted
+      function compareDate(a, b) {
+        if (a.visitStart < b.visitStart) return -1;
+        if (a.visitStart > b.visitStart) return 1;
+        return 0;
+      }
+      const sortedVisits = [...this.visits].sort(compareDate);
+      return sortedVisits.findIndex(visit => visit.id === visitId);
+    },
+    showContext() {
+      // Shows the context in a linear timeline. We may also want the ability to
+      // navigate to the selected record after sorting by a column.
+      if (this.contextAvailable) {
+        const index = this.visitIndex(this.selectedVisitId);
+        const pageLength = this.dataTable.page.len();
+        const startDateColumn = 2;
+        let visitPage = Math.floor(index / pageLength);
+        this.dataTable
+          .search('')
+          .order([startDateColumn, 'asc'])
+          .draw()
+          .page(visitPage)
+          .draw(false);
+      }
+    },
     isSelectedVisit(visitId) {
       return this.selectedVisitId && this.selectedVisitId === visitId;
     }

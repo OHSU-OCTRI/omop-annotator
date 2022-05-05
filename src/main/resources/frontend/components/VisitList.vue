@@ -58,6 +58,9 @@
  * Comparison function to compare two visit occurrences by visitStart.
  */
 function compareVisitStart(a, b) {
+  if (a.visitStart === null && b.visitStart === null) return 0;
+  if (a.visitStart === null && b.visitStart !== null) return -1;
+  if (a.visitStart !== null && b.visitStart === null) return 1;
   if (a.visitStart < b.visitStart) return -1;
   if (a.visitStart > b.visitStart) return 1;
   return 0;

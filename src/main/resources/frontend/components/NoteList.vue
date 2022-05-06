@@ -2,20 +2,30 @@
   <div class="note-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped table-bordered table-sm" ref="table">
+      <table
+        class="table table-striped table-bordered table-sm"
+        ref="table"
+        style="width: 100%"
+      >
         <thead>
           <tr>
+            <th class="no-sort"></th>
             <th>Id</th>
             <th>Datetime</th>
             <th>Type</th>
-            <th>Class</th>
             <th>Title</th>
-            <th>Text</th>
+            <th class="col-6">Text Preview</th>
             <th v-if="showVisit">Visit Occurrence</th>
+            <th class="no-sort d-none">Text</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="note in notes" :key="note.id">
+            <td
+              class="text-center details-control"
+              @click="toggleDetails"
+              title="Show/hide full note"
+            ></td>
             <td data-field="id">
               {{ note.id }}
             </td>
@@ -25,17 +35,18 @@
             <td data-field="noteType">
               {{ note.type }}
             </td>
-            <td data-field="noteClass">
-              {{ note.noteClass }}
-            </td>
             <td data-field="title">
               {{ note.title }}
             </td>
-            <td data-field="text">
-              {{ note.text }}
+            <td class="col-6" data-field="text">
+              {{ preview(note.text) }}
             </td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ note.visitOccurrence }}
+            </td>
+            <!-- Add a hidden column for the full text so it can be searched -->
+            <td class="d-none">
+              {{ note.text }}
             </td>
           </tr>
         </tbody>
@@ -57,7 +68,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 4
+      default: 2
     },
     sortOrder: {
       type: String,
@@ -93,9 +104,45 @@ export default {
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
-          info: true
+          info: true,
+          columnDefs: [
+            {
+              orderable: false,
+              targets: 'no-sort'
+            }
+          ],
+          fnDrawCallback: function (settings) {
+            $('td.details-control').html(
+              '<i class="fas fa-lg fa-plus-circle text-primary"></i>'
+            );
+          }
         });
       }
+    },
+    preview(text) {
+      let sub = text.substring(0, 200);
+      if (sub.length === 200) {
+        sub = sub.concat('...');
+      }
+      return sub;
+    },
+    toggleDetails(event) {
+      // TODO: Check for existence of the data table?
+      // TODO: Probably should use $refs but didn't know how inside v-for
+      let tr = event.target.closest('tr');
+      let td = event.target.closest('td');
+      let row = this.dataTable.row(tr);
+      if (row.child.isShown()) {
+        row.child.hide();
+        $(td).html('<i class="fas fa-lg fa-plus-circle text-primary"></i>');
+      } else {
+        row.child(this.showNoteText(row.data()), 'details-row').show();
+        $(td).html('<i class="fas fa-lg fa-minus-circle text-primary"></i>');
+      }
+    },
+    showNoteText(d) {
+      // TODO: Something better than passing data in and showing last column?
+      return '<p>' + d[d.length - 1] + '</p>';
     }
   },
   watch: {

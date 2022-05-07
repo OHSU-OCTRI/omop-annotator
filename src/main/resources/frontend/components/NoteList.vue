@@ -14,13 +14,13 @@
             <th>Datetime</th>
             <th>Type</th>
             <th>Title</th>
-            <th class="col-6">Text Preview</th>
+            <th class="col-md-8">Text Preview</th>
             <th v-if="showVisit">Visit Occurrence</th>
             <th class="no-sort d-none">Text</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="note in notes" :key="note.id">
+          <tr v-for="(note, idx) in notes" :key="note.id">
             <td
               class="text-center details-control"
               @click="toggleDetails"
@@ -38,9 +38,13 @@
             <td data-field="title">
               {{ note.title }}
             </td>
-            <td class="col-6" data-field="text">
-              {{ preview(note.text) }}
-            </td>
+            <td
+              class="col-md-8"
+              data-field="text"
+              @click="toggleText(idx)"
+              title="Show/hide full note"
+              v-html="noteText(idx)"
+            ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ note.visitOccurrence }}
             </td>
@@ -83,7 +87,17 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      showFullText: []
+    };
+  },
   mounted() {
+    this.showFullText = new Array(this.notes.length);
+    for (let i = 0; i < this.notes.length; i++) {
+      this.showFullText[i] = false;
+    }
+    console.log(this.showFullText);
     this.$nextTick(this.drawDataTable);
   },
   computed: {
@@ -119,12 +133,21 @@ export default {
         });
       }
     },
+    noteText(idx) {
+      if (this.showFullText[idx] === true) {
+        return this.notes[idx].text;
+      }
+      return this.preview(this.notes[idx].text);
+    },
     preview(text) {
       let sub = text.substring(0, 200);
       if (sub.length === 200) {
-        sub = sub.concat('...');
+        sub = sub.concat('... <i class="fas fa-angle-double-right text-primary"></i>');
       }
       return sub;
+    },
+    toggleText(idx) {
+      this.showFullText[idx] = !this.showFullText[idx];
     },
     toggleDetails(event) {
       // TODO: Check for existence of the data table?

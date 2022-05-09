@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import PoolEntries from '@/components/PoolEntries';
 import flushPromises from 'flush-promises';
 
-import { mockFetchResponse } from '../helpers';
+import { mockFetchResponse, isVisible } from '../helpers';
 
 const entries_example = [
   {
@@ -135,16 +135,4 @@ describe('PoolEntries.vue', () => {
     expect(wrapper.find('h3').text().includes('2'));
     expect(wrapper.find('button').text().includes('1'));
   });
-
-  // TODO: The built-in isVisible function for Vue tests does not work for this component
-  function isVisible(wrapper) {
-    const styleAttr = wrapper.attributes('style');
-    if (styleAttr === undefined) {
-      return true;
-    } else if (styleAttr.includes('display: none;')) {
-      return false;
-    }
-
-    return true;
-  }
 });

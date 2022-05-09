@@ -14,16 +14,33 @@ export const visits = [
     visitType: 'Emergency',
     visitStart: '2022-01-01',
     visitEnd: '2022-01-01',
-    provider: 'Dr. Nick',
-    careSite: 'Springfield Hospital'
+    providerName: 'Dr. Nick',
+    careSiteName: 'Springfield Hospital'
   }),
   Object.freeze({
     id: 2,
     visitType: 'Inpatient Visit',
     visitStart: '2022-02-02',
     visitEnd: '2022-02-03',
-    provider: 'Dr. Hibbert',
-    careSite: 'Shelbyville General Hospital'
+    providerName: 'Dr. Hibbert',
+    careSiteName: 'Shelbyville General Hospital'
+  })
+];
+
+export const notes = [
+  Object.freeze({
+    id: 1,
+    date: '2022-01-01',
+    type: 'EHR',
+    title: 'Long Note',
+    text: 'All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. Spoon.'
+  }),
+  Object.freeze({
+    id: 1,
+    date: '2022-01-02',
+    type: 'Other',
+    title: 'Short Note',
+    text: 'All work and no play makes Jack a dull boy.'
   })
 ];
 

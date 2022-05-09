@@ -2,20 +2,20 @@
   <div class="note-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped table-bordered table-sm" ref="table">
+      <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
             <th>Id</th>
             <th>Datetime</th>
             <th>Type</th>
-            <th>Class</th>
             <th>Title</th>
-            <th>Text</th>
+            <th class="col-md-8">Text</th>
             <th v-if="showVisit">Visit Occurrence</th>
+            <th class="d-none">Full Text</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="note in notes" :key="note.id">
+          <tr v-for="(note, idx) in notes" :key="note.id">
             <td data-field="id">
               {{ note.id }}
             </td>
@@ -25,17 +25,22 @@
             <td data-field="noteType">
               {{ note.type }}
             </td>
-            <td data-field="noteClass">
-              {{ note.noteClass }}
-            </td>
             <td data-field="title">
               {{ note.title }}
             </td>
-            <td data-field="text">
-              {{ note.text }}
-            </td>
+            <td
+              class="col-md-8"
+              data-field="text"
+              @click="toggleText(idx)"
+              title="Show/hide full note"
+              v-html="noteText(idx)"
+            ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ note.visitOccurrence }}
+            </td>
+            <!-- Add a hidden column for the full text so it can be searched -->
+            <td class="d-none" data-field="fullText">
+              {{ note.text }}
             </td>
           </tr>
         </tbody>
@@ -57,7 +62,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 4
+      default: 2
     },
     sortOrder: {
       type: String,
@@ -70,9 +75,22 @@ export default {
     showVisit: {
       type: Boolean,
       default: false
+    },
+    previewSize: {
+      type: Number,
+      default: 200
     }
   },
+  data() {
+    return {
+      showFullText: []
+    };
+  },
   mounted() {
+    this.showFullText = new Array(this.notes.length);
+    for (let i = 0; i < this.notes.length; i++) {
+      this.showFullText[i] = false;
+    }
     this.$nextTick(this.drawDataTable);
   },
   computed: {
@@ -96,6 +114,28 @@ export default {
           info: true
         });
       }
+    },
+    noteText(idx) {
+      if (this.showFullText[idx] === true) {
+        return this.expand(this.notes[idx].text);
+      }
+      return this.preview(this.notes[idx].text);
+    },
+    preview(text) {
+      let sub = text.substring(0, this.previewSize);
+      if (sub.length === this.previewSize) {
+        sub = sub.concat('... <i class="fas fa-angle-double-right text-primary"></i>');
+      }
+      return sub;
+    },
+    expand(text) {
+      if (text.length > this.previewSize) {
+        text = text.concat(' <i class="fas fa-angle-double-left text-primary"></i>');
+      }
+      return text;
+    },
+    toggleText(idx) {
+      this.showFullText[idx] = !this.showFullText[idx];
     }
   },
   watch: {

@@ -2,11 +2,7 @@
   <div class="note-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table
-        class="table table-striped table-bordered table-sm"
-        ref="table"
-        style="width: 100%"
-      >
+      <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -121,7 +117,7 @@ export default {
     },
     noteText(idx) {
       if (this.showFullText[idx] === true) {
-        return this.notes[idx].text;
+        return this.expand(this.notes[idx].text);
       }
       return this.preview(this.notes[idx].text);
     },
@@ -131,6 +127,12 @@ export default {
         sub = sub.concat('... <i class="fas fa-angle-double-right text-primary"></i>');
       }
       return sub;
+    },
+    expand(text) {
+      if (text.length > this.previewSize) {
+        text = text.concat(' <i class="fas fa-angle-double-left text-primary"></i>');
+      }
+      return text;
     },
     toggleText(idx) {
       this.showFullText[idx] = !this.showFullText[idx];

@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
@@ -29,9 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
 @Service
 public class PoolEntryUploadService {
 
@@ -46,7 +46,7 @@ public class PoolEntryUploadService {
 
 	@Autowired
 	private PersonRepository personRepository;
-	
+
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
 	 * 
@@ -59,13 +59,15 @@ public class PoolEntryUploadService {
 	 * @throws IOException
 	 * @throws CsvValidationException
 	 */
-	public List<UploadResult> uploadPoolEntries(MultipartFile multipartFile, TopicSet topicSet, String poolName, String poolComments, AnnotationSchema annotationSchema)
+	public List<UploadResult> uploadPoolEntries(MultipartFile multipartFile, TopicSet topicSet, String poolName,
+			String poolComments, AnnotationSchema annotationSchema)
 			throws IOException, CsvValidationException {
-		
+
 		// Get the valid topics for the topic set
 		List<Topic> validTopics = topicRepository.findByTopicSetId(topicSet.getId());
-		List<Integer> validTopicNumbers = validTopics.stream().map(topic -> topic.getTopicNumber()).collect(Collectors.toList());
-		
+		List<Integer> validTopicNumbers = validTopics.stream().map(topic -> topic.getTopicNumber())
+				.collect(Collectors.toList());
+
 		List<UploadResult> results = new ArrayList<>();
 		Boolean noErrors = true;
 		CSVReader reader = new CSVReader(new InputStreamReader(multipartFile.getInputStream()));
@@ -87,7 +89,7 @@ public class PoolEntryUploadService {
 			if (personId.isEmpty()) {
 				errors.add("Person " + personAsString + " is not a number");
 			} else {
-				Optional<Person> person = personRepository.findById(Long.valueOf(personId.get()));
+				Optional<Person> person = personRepository.findById(Integer.valueOf(personId.get()));
 				if (person.isEmpty()) {
 					errors.add("Person " + personAsString + " is not in the OMOP database.");
 				}
@@ -103,7 +105,8 @@ public class PoolEntryUploadService {
 				Integer topicNum = topicNumber.get();
 				poolEntry = new PoolEntry();
 				poolEntry.setDocumentId(personId.get());
-				poolEntry.setTopic(validTopics.stream().filter(topic -> topic.getTopicNumber() == topicNum).findFirst().get());
+				poolEntry.setTopic(
+						validTopics.stream().filter(topic -> topic.getTopicNumber() == topicNum).findFirst().get());
 				if (!topicNumberSortOrder.containsKey(topicNum)) {
 					topicNumberSortOrder.put(topicNum, 1);
 				}
@@ -116,7 +119,7 @@ public class PoolEntryUploadService {
 			results.add(new UploadResult(topicAsString, personAsString, poolEntry, errors));
 		}
 		reader.close();
-		
+
 		if (noErrors) {
 			saveAll(results, topicSet, poolName, poolComments, annotationSchema);
 		}
@@ -129,14 +132,15 @@ public class PoolEntryUploadService {
 	 */
 	private Optional<Integer> parseInteger(String str) {
 		try {
-			return Optional.of(Integer.parseInt(str));			
+			return Optional.of(Integer.parseInt(str));
 		} catch (NumberFormatException e) {
 			return Optional.empty();
 		}
 	}
 
 	@Transactional
-	private void saveAll(List<UploadResult> results, TopicSet topicSet, String poolName, String poolComments, AnnotationSchema annotationSchema) {
+	private void saveAll(List<UploadResult> results, TopicSet topicSet, String poolName, String poolComments,
+			AnnotationSchema annotationSchema) {
 		// First create the pool
 		Pool pool = new Pool();
 		pool.setTopicSet(topicSet);
@@ -144,7 +148,7 @@ public class PoolEntryUploadService {
 		pool.setComments(poolComments);
 		pool.setAnnotationSchema(annotationSchema);
 		final Pool savedPool = poolRepository.save(pool);
-		
+
 		// Loop through the results, adding the newly created pool to each before saving
 		List<PoolEntry> poolEntries = results.stream().map(result -> {
 			PoolEntry entry = result.getPoolEntry();
@@ -154,13 +158,13 @@ public class PoolEntryUploadService {
 		repository.saveAll(poolEntries);
 	}
 
-
 	/**
 	 * Helper class (POJO) representing the result of an uploaded pool entry.
 	 * Includes the inputs, the entry if created, and any associated validation errors.
 	 * 
 	 */
 	public class UploadResult {
+
 		String topicNumber;
 		String personId;
 		PoolEntry poolEntry;

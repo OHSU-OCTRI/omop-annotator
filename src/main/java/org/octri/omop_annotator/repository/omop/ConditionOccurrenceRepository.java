@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "condition_occurrence")
-public interface ConditionOccurrenceRepository extends PagingAndSortingRepository<ConditionOccurrence, Long> {
+public interface ConditionOccurrenceRepository extends PagingAndSortingRepository<ConditionOccurrence, Integer> {
 
 	static final String query = "select co.id as id, co.person.id as personId, condition.name as condition,"
 			+ " conditionType.name as conditionType, co.conditionStart as conditionStart,"
@@ -20,8 +20,8 @@ public interface ConditionOccurrenceRepository extends PagingAndSortingRepositor
 			+ " left join co.visitOccurrence visitOccurrence";
 
 	@Query(query + " where co.person.id = ?1")
-	List<ConditionOccurrenceRow> findByPersonId(Long personId);
+	List<ConditionOccurrenceRow> findByPersonId(Integer personId);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ConditionOccurrenceRow> findByVisitOccurrenceId(Long visitOccurrenceId);
+	List<ConditionOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
 }

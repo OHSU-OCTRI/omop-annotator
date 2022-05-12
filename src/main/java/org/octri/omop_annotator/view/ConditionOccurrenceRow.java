@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public interface ConditionOccurrenceRow {
 
-	public Long getId();
+	public Integer getId();
 
-	public Long getPersonId();
+	public Integer getPersonId();
 
 	public String getCondition();
 
@@ -19,6 +19,6 @@ public interface ConditionOccurrenceRow {
 
 	public Date getConditionEnd();
 
-	public Long getVisitOccurrence();
+	public Integer getVisitOccurrence();
 
 }

@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "measurement")
-public interface MeasurementRepository extends PagingAndSortingRepository<Measurement, Long> {
+public interface MeasurementRepository extends PagingAndSortingRepository<Measurement, Integer> {
 
 	static final String query = "select m.id as id, m.person.id as person, measurementConcept.name as measurement,"
 			+ " measurementTypeConcept.name as measurementType, m.measurementDatetime as measurementDatetime,"
@@ -23,8 +23,8 @@ public interface MeasurementRepository extends PagingAndSortingRepository<Measur
 			+ " left join m.visitOccurrence visitOccurrence";
 
 	@Query(query + " where m.person.id = ?1")
-	List<MeasurementRow> findByPersonId(Long id);
+	List<MeasurementRow> findByPersonId(Integer id);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<MeasurementRow> findByVisitOccurrenceId(Long visitOccurrenceId);
+	List<MeasurementRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
 }

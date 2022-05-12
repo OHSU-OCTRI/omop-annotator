@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import org.octri.omop_annotator.view.Named;
 
 /**
- * OMOP 5.3 Definition of a Concept 
+ * OMOP 5.3 Definition of a Concept
  * 
  * The following columns have been excluded:
  * 
@@ -20,23 +20,23 @@ import org.octri.omop_annotator.view.Named;
  * invalid_reason
  */
 @Entity
-public class Concept extends OmopEntity implements Named {
-	
+public class Concept implements Named {
+
 	@Id
 	@Column(name = "concept_id")
-	private Long id;
-	
-	@Column(name="concept_name")
+	private Integer id;
+
+	@Column(name = "concept_name")
 	private String name;
-	
-	@Column(name="concept_code")
+
+	@Column(name = "concept_code")
 	private String code;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

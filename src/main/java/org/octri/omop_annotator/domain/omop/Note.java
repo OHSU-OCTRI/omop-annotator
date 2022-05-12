@@ -29,7 +29,7 @@ public class Note {
 
 	@Column(name = "note_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@ManyToOne
 	@NotNull
@@ -59,11 +59,11 @@ public class Note {
 	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

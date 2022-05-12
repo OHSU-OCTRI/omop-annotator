@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "procedure_occurrence")
-public interface ProcedureOccurrenceRepository extends PagingAndSortingRepository<ProcedureOccurrence, Long> {
+public interface ProcedureOccurrenceRepository extends PagingAndSortingRepository<ProcedureOccurrence, Integer> {
 
 	static final String query = "select po.id as id, po.person.id as personId, procedure.name as procedure,"
 			+ " procedureType.name as procedureType, po.procedureDatetime as date, po.quantity as quantity,"
@@ -20,9 +20,9 @@ public interface ProcedureOccurrenceRepository extends PagingAndSortingRepositor
 			+ " left join po.visitOccurrence visitOccurrence";
 
 	@Query(query + " where po.person.id = ?1")
-	List<ProcedureOccurrenceRow> findByPersonId(Long personId);
+	List<ProcedureOccurrenceRow> findByPersonId(Integer personId);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ProcedureOccurrenceRow> findByVisitOccurrenceId(Long visitOccurrenceId);
+	List<ProcedureOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

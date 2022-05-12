@@ -28,11 +28,11 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-public class VisitOccurrence extends OmopEntity {
+public class VisitOccurrence {
 
 	@Id
 	@Column(name = "visit_occurrence_id")
-	private Long id;
+	private Integer id;
 
 	@ManyToOne
 	@NotNull
@@ -59,7 +59,8 @@ public class VisitOccurrence extends OmopEntity {
 	@JoinColumn(name = "care_site_id")
 	CareSite careSite;
 
-	// TODO: At OHSU, this always maps to "No matching concept". The source value has more info, but is not very user friendly.
+	// TODO: At OHSU, this always maps to "No matching concept". The source value has more info, but is not very user
+	// friendly.
 	@ManyToOne
 	@JoinColumn(name = "visit_source_concept_id")
 	private Concept visitSource;
@@ -70,11 +71,11 @@ public class VisitOccurrence extends OmopEntity {
 	@Column(name = "discharge_to_source_value")
 	private String dischargedTo;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

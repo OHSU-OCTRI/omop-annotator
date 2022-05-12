@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public interface ObservationRow {
 
-    public Long getId();
+    public Integer getId();
 
-    public Long getPerson();
+    public Integer getPerson();
 
     public String getName();
 
@@ -19,5 +19,5 @@ public interface ObservationRow {
 
     public String getValue();
 
-    public Long getVisitOccurrence();
+    public Integer getVisitOccurrence();
 }

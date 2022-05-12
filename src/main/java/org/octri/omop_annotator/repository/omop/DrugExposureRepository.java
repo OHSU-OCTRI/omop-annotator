@@ -5,5 +5,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "drug_exposure")
-public interface DrugExposureRepository extends PagingAndSortingRepository<DrugExposure, Long> {
+public interface DrugExposureRepository extends PagingAndSortingRepository<DrugExposure, Integer> {
 }

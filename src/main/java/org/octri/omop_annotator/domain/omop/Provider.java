@@ -27,7 +27,7 @@ public class Provider {
 
 	@Column(name = "provider_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@Column(name = "provider_name")
 	private String providerName;
@@ -36,11 +36,11 @@ public class Provider {
 	@JoinColumn(name = "specialty_concept_id")
 	private Concept specialty;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

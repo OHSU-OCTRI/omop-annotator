@@ -28,9 +28,7 @@ import org.hibernate.annotations.Type;
  * visit_detail_id
  * measurement_source_value
  * unit_source_value
- * value_as_number (Hibernate type conflict between Oracle/Postgres. Observationally, value_source_value has better
- * info)
- * anyway)
+ * value_as_number (Hibernate conflict between Oracle/Postgres. Value_source_value has better info anyway)
  * 
  */
 @Entity

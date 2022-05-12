@@ -98,7 +98,11 @@ export default {
       }
     },
     getValue(measurement) {
-      return measurement.valueSourceValue ?? measurement.valueAsConcept;
+      return (
+        measurement.valueSourceValue ??
+        measurement.valueAsConcept ??
+        measurement.valueAsNumber
+      );
     }
   },
   watch: {

@@ -20,6 +20,8 @@ public interface MeasurementRow {
 
 	public String getValueSourceValue();
 
+	public Float getValueAsNumber();
+
 	public String getValueAsConcept();
 
 	public String getUnit();

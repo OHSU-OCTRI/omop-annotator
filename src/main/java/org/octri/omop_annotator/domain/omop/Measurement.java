@@ -11,6 +11,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 /**
  * OMOP 5.3 Definition of a Measurement
  * 
@@ -25,7 +27,6 @@ import javax.validation.constraints.NotNull;
  * visit_detail_id
  * measurement_source_value
  * unit_source_value
- * value_as_number (Hibernate conflict between Oracle/Postgres. Value_source_value has better info anyway)
  * 
  */
 @Entity
@@ -54,6 +55,10 @@ public class Measurement {
 
 	@Column(name = "value_source_value")
 	private String valueSourceValue;
+
+	@Column(name = "value_as_number")
+	@Type(type = "ToFloat")
+	private Float valueAsNumber;
 
 	@ManyToOne
 	@JoinColumn(name = "value_as_concept_id")
@@ -118,6 +123,14 @@ public class Measurement {
 
 	public void setValueSourceValue(String valueSourceValue) {
 		this.valueSourceValue = valueSourceValue;
+	}
+
+	public Float getValueAsNumber() {
+		return valueAsNumber;
+	}
+
+	public void setValueAsNumber(Float valueAsNumber) {
+		this.valueAsNumber = valueAsNumber;
 	}
 
 	public Concept getValueAsConcept() {

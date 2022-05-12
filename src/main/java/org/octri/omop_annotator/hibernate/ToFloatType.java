@@ -6,19 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Objects;
-import java.util.Properties;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
 
 /**
  * This custom type can be used to convert a field in a Hibernate entity to a Java Float. It supports Oracle Float and
  * Postgres Numeric. The out of the box Hibernate types expect Postgres Numeric to be a java BigDecimal.
  */
-public class ToFloatType implements UserType, DynamicParameterizedType {
+public class ToFloatType implements UserType {
 
     private static final String ORACLE_DATABASE = "oracle";
     private static final String POSTGRES_DATABASE = "postgres";
@@ -28,11 +26,7 @@ public class ToFloatType implements UserType, DynamicParameterizedType {
 
     String database;
 
-    public ToFloatType() {
-        // TODO: May be able to remove this once we remove the DynamicParamterizedType
-    }
-
-    public ToFloatType(String database) {
+    private ToFloatType(String database) {
         this.database = database;
     }
 
@@ -110,8 +104,4 @@ public class ToFloatType implements UserType, DynamicParameterizedType {
         return x.hashCode();
     }
 
-    @Override
-    public void setParameterValues(Properties parameters) {
-        this.database = parameters.getProperty("database");
-    }
 }

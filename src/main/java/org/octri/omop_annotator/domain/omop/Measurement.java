@@ -11,7 +11,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 /**
@@ -28,7 +27,6 @@ import org.hibernate.annotations.Type;
  * visit_detail_id
  * measurement_source_value
  * unit_source_value
- * value_as_number (Hibernate conflict between Oracle/Postgres. Value_source_value has better info anyway)
  * 
  */
 @Entity
@@ -59,8 +57,7 @@ public class Measurement {
 	private String valueSourceValue;
 
 	@Column(name = "value_as_number")
-	@Type(type = "org.octri.omop_annotator.hibernate.ToFloatType", parameters = {
-			@Parameter(name = "database", value = "oracle") })
+	@Type(type = "ToFloat")
 	private Float valueAsNumber;
 
 	@ManyToOne

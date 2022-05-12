@@ -11,6 +11,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 /**
  * OMOP 5.3 Definition of an Observation
  * 
@@ -19,8 +21,6 @@ import javax.validation.constraints.NotNull;
  * observation_date
  * provider_id
  * visit_detail_id
- * value_as_number (Hibernate conflict between Oracle/Postgres. observation_source_value and value_as_string have better
- * info anyway)
  * observation_source_concept_id
  * unit_source_value
  * qualifier_source_value
@@ -51,6 +51,10 @@ public class Observation {
 
 	@Column(name = "observation_source_value")
 	private String observationSourceValue;
+
+	@Column(name = "value_as_number")
+	@Type(type = "ToFloat")
+	private String valueAsNumber;
 
 	@Column(name = "value_as_string")
 	private String valueAsString;
@@ -119,6 +123,14 @@ public class Observation {
 		this.observationSourceValue = observationSourceValue;
 	}
 
+	public String getValueAsNumber() {
+		return valueAsNumber;
+	}
+
+	public void setValueAsNumber(String valueAsNumber) {
+		this.valueAsNumber = valueAsNumber;
+	}
+
 	public String getValueAsString() {
 		return valueAsString;
 	}
@@ -161,10 +173,10 @@ public class Observation {
 
 	@Override
 	public String toString() {
-		return "Observation [id=" + id + ", person=" + person + ", observation=" + observation
-				+ ", observationDatetime=" + observationDatetime + ", observationType=" + observationType
-				+ ", observationSourceValue=" + observationSourceValue + ", valueAsString=" + valueAsString
-				+ ", valueAsConcept=" + valueAsConcept + ", qualifier=" + qualifier + ", unit=" + unit
+		return "Observation [id=" + id + ", observation=" + observation + ", observationDatetime=" + observationDatetime
+				+ ", observationSourceValue=" + observationSourceValue + ", observationType=" + observationType
+				+ ", person=" + person + ", qualifier=" + qualifier + ", unit=" + unit + ", valueAsConcept="
+				+ valueAsConcept + ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString
 				+ ", visitOccurrence=" + visitOccurrence + "]";
 	}
 

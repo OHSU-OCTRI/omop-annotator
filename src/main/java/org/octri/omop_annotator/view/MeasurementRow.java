@@ -18,7 +18,7 @@ public interface MeasurementRow {
 
 	public String getMeasurementType();
 
-	public Float getValueAsNumber();
+	public String getValueSourceValue();
 
 	public String getValueAsConcept();
 

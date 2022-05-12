@@ -62,7 +62,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 2
+      default: 0
     },
     sortOrder: {
       type: String,

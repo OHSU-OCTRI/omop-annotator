@@ -11,6 +11,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
 /**
  * OMOP 5.3 Definition of a Measurement
  * 
@@ -56,6 +59,11 @@ public class Measurement {
 
 	@Column(name = "value_source_value")
 	private String valueSourceValue;
+
+	@Column(name = "value_as_number")
+	@Type(type = "org.octri.omop_annotator.hibernate.ToFloatType", parameters = {
+			@Parameter(name = "database", value = "oracle") })
+	private Float valueAsNumber;
 
 	@ManyToOne
 	@JoinColumn(name = "value_as_concept_id")
@@ -120,6 +128,14 @@ public class Measurement {
 
 	public void setValueSourceValue(String valueSourceValue) {
 		this.valueSourceValue = valueSourceValue;
+	}
+
+	public Float getValueAsNumber() {
+		return valueAsNumber;
+	}
+
+	public void setValueAsNumber(Float valueAsNumber) {
+		this.valueAsNumber = valueAsNumber;
 	}
 
 	public Concept getValueAsConcept() {

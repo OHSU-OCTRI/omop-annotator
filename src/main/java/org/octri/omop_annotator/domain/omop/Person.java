@@ -36,14 +36,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * ethnicity_source_concept_id
  */
 @Entity
-public class Person extends OmopEntity {
+public class Person {
 
 	@Transient
 	private LocalDate ageCalculationDate = LocalDate.now();
 
 	@Id
 	@Column(name = "person_id")
-	public Long id;
+	public Integer id;
 
 	@Column(name = "birth_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -59,11 +59,11 @@ public class Person extends OmopEntity {
 	@Column(name = "ethnicity_source_value")
 	private String ethnicity;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -8,9 +8,9 @@ import java.util.Date;
  */
 public interface VisitOccurrenceRow {
 
-	public Long getId();
+	public Integer getId();
 
-	public Long getPerson();
+	public Integer getPerson();
 
 	public String getVisitType();
 

@@ -64,7 +64,7 @@ public class PersonController {
 	}
 
 	@GetMapping("/{id}")
-	public String show(Map<String, Object> model, @PathVariable Long id) {
+	public String show(Map<String, Object> model, @PathVariable Integer id) {
 		model.put("pageScripts", new String[] { "vendor.js", "person.js" });
 		model.put("entity", personRepository.findById(id).get());
 
@@ -73,7 +73,7 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")
 	@ResponseBody
-	public String getPerson(@PathVariable Long personId) throws JsonProcessingException {
+	public String getPerson(@PathVariable Integer personId) throws JsonProcessingException {
 		Person person = personRepository.findById(personId).get();
 		person.setAgeCalculationDate(omopDataConfig.getRefreshDate());
 		return mapper.writeValueAsString(person);
@@ -81,20 +81,20 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
 	@ResponseBody
-	public String getVisits(@PathVariable Long personId) throws JsonProcessingException {
+	public String getVisits(@PathVariable Integer personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
 	@ResponseBody
-	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
+	public String getConditions(@PathVariable Integer personId) throws JsonProcessingException {
 		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
 		return json;
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/conditions", produces = "application/json")
 	@ResponseBody
-	public String getVisitConditions(@PathVariable Long personId, @PathVariable Long visitId)
+	public String getVisitConditions(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByVisitOccurrenceId(visitId));
 		return json;
@@ -102,52 +102,52 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}/observations", produces = "application/json")
 	@ResponseBody
-	public String getObservations(@PathVariable Long personId) throws JsonProcessingException {
+	public String getObservations(@PathVariable Integer personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(observationRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/observations", produces = "application/json")
 	@ResponseBody
-	public String getVisitObservations(@PathVariable Long personId, @PathVariable Long visitId)
+	public String getVisitObservations(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(observationRepository.findByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/procedures", produces = "application/json")
 	@ResponseBody
-	public String getProcedures(@PathVariable Long personId) throws JsonProcessingException {
+	public String getProcedures(@PathVariable Integer personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(procedureOccurrenceRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/procedures", produces = "application/json")
 	@ResponseBody
-	public String getVisitProcedures(@PathVariable Long personId, @PathVariable Long visitId)
+	public String getVisitProcedures(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(procedureOccurrenceRepository.findByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/measurements", produces = "application/json")
 	@ResponseBody
-	public String getMeasurements(@PathVariable Long personId) throws JsonProcessingException {
+	public String getMeasurements(@PathVariable Integer personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(measurementRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/measurements", produces = "application/json")
 	@ResponseBody
-	public String getVisitMeasurements(@PathVariable Long personId, @PathVariable Long visitId)
+	public String getVisitMeasurements(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(measurementRepository.findByVisitOccurrenceId(visitId));
 	}
-	
+
 	@GetMapping(value = "/summary/{personId}/notes", produces = "application/json")
 	@ResponseBody
-	public String getNotes(@PathVariable Long personId) throws JsonProcessingException {
+	public String getNotes(@PathVariable Integer personId) throws JsonProcessingException {
 		return mapper.writeValueAsString(noteRepository.findByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/notes", produces = "application/json")
 	@ResponseBody
-	public String getVisitNotes(@PathVariable Long personId, @PathVariable Long visitId)
+	public String getVisitNotes(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(noteRepository.findByVisitOccurrenceId(visitId));
 	}

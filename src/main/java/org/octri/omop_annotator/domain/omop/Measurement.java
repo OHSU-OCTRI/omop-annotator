@@ -16,67 +16,67 @@ import javax.validation.constraints.NotNull;
  * 
  * The following columns have been excluded:
  * 
- * 	measurement_date
- * 	measurement_time
- * 	operator_concept_id
- * 	range_low
- * 	range_high
- *	provider_id
- *	visit_detail_id
- *	measurement_source_value
- *	unit_source_value
- *	value_source_value
+ * measurement_date
+ * measurement_time
+ * operator_concept_id
+ * range_low
+ * range_high
+ * provider_id
+ * visit_detail_id
+ * measurement_source_value
+ * unit_source_value
+ * value_source_value
  * 
  */
 @Entity
 public class Measurement {
 
-	@Column(name="measurement_id")
+	@Column(name = "measurement_id")
 	@Id
-	private Long id;
-	
+	private Integer id;
+
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name="person_id")
+	@JoinColumn(name = "person_id")
 	private Person person;
 
 	@ManyToOne
-	@JoinColumn(name="measurement_concept_id")
+	@JoinColumn(name = "measurement_concept_id")
 	private Concept measurement;
-	
-	@Column(name="measurement_datetime")
+
+	@Column(name = "measurement_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date measurementDatetime;
-	
+
 	@ManyToOne
-	@JoinColumn(name="measurement_type_concept_id")
+	@JoinColumn(name = "measurement_type_concept_id")
 	private Concept measurementType;
-	
-	@Column(name="value_as_number")
+
+	@Column(name = "value_as_number")
 	private Float valueAsNumber;
-	
+
 	@ManyToOne
-	@JoinColumn(name="value_as_concept_id")
+	@JoinColumn(name = "value_as_concept_id")
 	private Concept valueAsConcept;
-	
+
 	@ManyToOne
-	@JoinColumn(name="unit_concept_id")
+	@JoinColumn(name = "unit_concept_id")
 	private Concept unit;
 
 	@ManyToOne
-	@JoinColumn(name="visit_occurrence_id")
+	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
-	
+
 	// At OHSU, this seems to be identical to measurement
 	@ManyToOne
-	@JoinColumn(name="measurement_source_concept_id")
+	@JoinColumn(name = "measurement_source_concept_id")
 	private Concept measurementSource;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -159,5 +159,5 @@ public class Measurement {
 				+ ", valueAsNumber=" + valueAsNumber + ", valueAsConcept=" + valueAsConcept + ", unit=" + unit
 				+ ", visitOccurrence=" + visitOccurrence + ", measurementSource=" + measurementSource + "]";
 	}
-	
+
 }

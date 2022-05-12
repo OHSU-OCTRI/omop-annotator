@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public interface NoteRow {
 
-    public Long getId();
+    public Integer getId();
 
-    public Long getPerson();
+    public Integer getPerson();
 
     public Date getDate();
 
@@ -21,5 +21,5 @@ public interface NoteRow {
 
     public String getText();
 
-    public Long getVisitOccurrence();
+    public Integer getVisitOccurrence();
 }

@@ -5,5 +5,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "concept")
-public interface ConceptRepository extends PagingAndSortingRepository<Concept, Long> {
+public interface ConceptRepository extends PagingAndSortingRepository<Concept, Integer> {
 }

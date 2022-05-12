@@ -19,8 +19,8 @@ import javax.validation.constraints.NotNull;
  * observation_date
  * provider_id
  * visit_detail_id
- * value_as_number (Hibernate type conflict between Oracle/Postgres. Seems like observation_source_value and
- * value_as_string have better info)
+ * value_as_number (Hibernate conflict between Oracle/Postgres. observation_source_value and value_as_string have better
+ * info anyway)
  * observation_source_concept_id
  * unit_source_value
  * qualifier_source_value

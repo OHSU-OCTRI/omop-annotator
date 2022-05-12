@@ -25,7 +25,9 @@ import javax.validation.constraints.NotNull;
  * visit_detail_id
  * measurement_source_value
  * unit_source_value
- * value_source_value
+ * value_as_number (Hibernate type conflict between Oracle/Postgres. Observationally, value_source_value has better
+ * info)
+ * anyway)
  * 
  */
 @Entity
@@ -52,8 +54,8 @@ public class Measurement {
 	@JoinColumn(name = "measurement_type_concept_id")
 	private Concept measurementType;
 
-	@Column(name = "value_as_number")
-	private Float valueAsNumber;
+	@Column(name = "value_source_value")
+	private String valueSourceValue;
 
 	@ManyToOne
 	@JoinColumn(name = "value_as_concept_id")
@@ -112,12 +114,12 @@ public class Measurement {
 		this.measurementType = measurementType;
 	}
 
-	public Float getValueAsNumber() {
-		return valueAsNumber;
+	public String getValueSourceValue() {
+		return valueSourceValue;
 	}
 
-	public void setValueAsNumber(Float valueAsNumber) {
-		this.valueAsNumber = valueAsNumber;
+	public void setValueSourceValue(String valueSourceValue) {
+		this.valueSourceValue = valueSourceValue;
 	}
 
 	public Concept getValueAsConcept() {
@@ -156,7 +158,7 @@ public class Measurement {
 	public String toString() {
 		return "Measurement [id=" + id + ", person=" + person + ", measurement=" + measurement
 				+ ", measurementDatetime=" + measurementDatetime + ", measurementType=" + measurementType
-				+ ", valueAsNumber=" + valueAsNumber + ", valueAsConcept=" + valueAsConcept + ", unit=" + unit
+				+ ", valueSourceValue=" + valueSourceValue + ", valueAsConcept=" + valueAsConcept + ", unit=" + unit
 				+ ", visitOccurrence=" + visitOccurrence + ", measurementSource=" + measurementSource + "]";
 	}
 

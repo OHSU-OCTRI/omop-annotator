@@ -19,7 +19,8 @@ import javax.validation.constraints.NotNull;
  * observation_date
  * provider_id
  * visit_detail_id
- * observation_source_value
+ * value_as_number (Hibernate type conflict between Oracle/Postgres. Seems like observation_source_value and
+ * value_as_string have better info)
  * observation_source_concept_id
  * unit_source_value
  * qualifier_source_value
@@ -48,8 +49,8 @@ public class Observation {
 	@JoinColumn(name = "observation_type_concept_id")
 	private Concept observationType;
 
-	@Column(name = "value_as_number")
-	private Float valueAsNumber;
+	@Column(name = "observation_source_value")
+	private String observationSourceValue;
 
 	@Column(name = "value_as_string")
 	private String valueAsString;
@@ -110,12 +111,12 @@ public class Observation {
 		this.observationType = observationType;
 	}
 
-	public Float getValueAsNumber() {
-		return valueAsNumber;
+	public String getObservationSourceValue() {
+		return observationSourceValue;
 	}
 
-	public void setValueAsNumber(Float valueAsNumber) {
-		this.valueAsNumber = valueAsNumber;
+	public void setObservationSourceValue(String observationSourceValue) {
+		this.observationSourceValue = observationSourceValue;
 	}
 
 	public String getValueAsString() {
@@ -162,9 +163,9 @@ public class Observation {
 	public String toString() {
 		return "Observation [id=" + id + ", person=" + person + ", observation=" + observation
 				+ ", observationDatetime=" + observationDatetime + ", observationType=" + observationType
-				+ ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString + ", valueAsConcept="
-				+ valueAsConcept + ", qualifier=" + qualifier + ", unit=" + unit + ", visitOccurrence="
-				+ visitOccurrence + "]";
+				+ ", observationSourceValue=" + observationSourceValue + ", valueAsString=" + valueAsString
+				+ ", valueAsConcept=" + valueAsConcept + ", qualifier=" + qualifier + ", unit=" + unit
+				+ ", visitOccurrence=" + visitOccurrence + "]";
 	}
 
 }

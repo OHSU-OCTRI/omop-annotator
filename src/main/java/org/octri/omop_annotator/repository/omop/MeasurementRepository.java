@@ -13,7 +13,7 @@ public interface MeasurementRepository extends PagingAndSortingRepository<Measur
 
 	static final String query = "select m.id as id, m.person.id as person, measurementConcept.name as measurement,"
 			+ " measurementTypeConcept.name as measurementType, m.measurementDatetime as measurementDatetime,"
-			+ " m.valueAsNumber as valueAsNumber, valueAsConcept.name as valueAsConcept, unit.name as unit,"
+			+ " m.valueSourceValue as valueSourceValue, valueAsConcept.name as valueAsConcept, unit.name as unit,"
 			+ " visitOccurrence.id as visitOccurrence"
 			+ " from Measurement m"
 			+ " left join m.measurement measurementConcept"

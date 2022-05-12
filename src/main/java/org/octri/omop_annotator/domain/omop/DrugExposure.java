@@ -56,8 +56,9 @@ public class DrugExposure {
 	@Column(name = "stop_reason")
 	private String stopReason;
 
-	@Column(name = "quantity")
-	private Float quantity;
+	// TODO: Add this back with support for both Oracle and Postgres
+	// @Column(name = "quantity")
+	// private Float quantity;
 
 	@ManyToOne
 	@JoinColumn(name = "drug_type_concept_id")
@@ -121,14 +122,6 @@ public class DrugExposure {
 		this.stopReason = stopReason;
 	}
 
-	public Float getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Float quantity) {
-		this.quantity = quantity;
-	}
-
 	public Concept getDrugType() {
 		return drugType;
 	}
@@ -164,7 +157,7 @@ public class DrugExposure {
 	@Override
 	public String toString() {
 		return "DrugExposure [id=" + id + ", person=" + person + ", drug=" + drug + ", drugStart=" + drugStart
-				+ ", drugEnd=" + drugEnd + ", stopReason=" + stopReason + ", quantity=" + quantity + ", drugType="
+				+ ", drugEnd=" + drugEnd + ", stopReason=" + stopReason + ", drugType="
 				+ drugType + ", visitOccurrence=" + visitOccurrence + ", route=" + route + ", doseUnit=" + doseUnit
 				+ "]";
 	}

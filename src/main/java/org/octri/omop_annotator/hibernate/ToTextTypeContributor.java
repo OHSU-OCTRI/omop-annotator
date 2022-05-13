@@ -2,34 +2,22 @@ package org.octri.omop_annotator.hibernate;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.boot.model.TypeContributions;
-import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.service.ServiceRegistry;
 
-public class ToTextTypeContributor implements TypeContributor {
-
-    String dialect;
+public class ToTextTypeContributor extends OmopTypeContributor {
 
     public ToTextTypeContributor(String dialect) {
-        this.dialect = dialect;
+        super(dialect);
     }
 
     @Override
     public void contribute(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
-        if (isPostgres(dialect)) {
+        if (isPostgres(getDialect())) {
             typeContributions.contributeType(ToTextTypeBuilder.POSTGRES_INSTANCE);
-        } else if (isOracle(dialect)) {
+        } else if (isOracle(getDialect())) {
             typeContributions.contributeType(ToTextTypeBuilder.ORACLE_INSTANCE);
         } else {
-            throw new NotImplementedException("Cannot instantiate the dialect " + dialect);
+            throw new NotImplementedException("Cannot instantiate the dialect " + getDialect());
         }
     }
-
-    private boolean isOracle(String dialect) {
-        return dialect.toLowerCase().contains("oracle");
-    }
-
-    private boolean isPostgres(String dialect) {
-        return dialect.toLowerCase().contains("postgres");
-    }
-
 }

@@ -3,18 +3,24 @@ package org.octri.omop_annotator.hibernate;
 import java.sql.Clob;
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
 import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
 
-public class OracleClobJavaDescriptor extends AbstractTypeDescriptor<String> {
+/**
+ * This descriptor handles transformation when Hibernate interprets the database field as a java.sql.Clob but the entity
+ * is typed as a String with no @Lob annotation.
+ */
+public class ClobStringJavaDescriptor extends AbstractTypeDescriptor<String> {
 
-    private static final Log log = LogFactory.getLog(OracleClobJavaDescriptor.class);
-    public static final OracleClobJavaDescriptor INSTANCE = new OracleClobJavaDescriptor();
+    private static final Log log = LogFactory.getLog(ClobStringJavaDescriptor.class);
+    public static final ClobStringJavaDescriptor INSTANCE = new ClobStringJavaDescriptor();
 
-    public OracleClobJavaDescriptor() {
+    @SuppressWarnings("unchecked")
+    public ClobStringJavaDescriptor() {
         super(String.class, ImmutableMutabilityPlan.INSTANCE);
     }
 
@@ -25,11 +31,7 @@ public class OracleClobJavaDescriptor extends AbstractTypeDescriptor<String> {
 
     @Override
     public <X> X unwrap(String value, Class<X> type, WrapperOptions options) {
-        if (value == null) {
-            return null;
-        }
-
-        return (X) value;
+        throw new NotImplementedException("This is a read-only database");
     }
 
     @Override

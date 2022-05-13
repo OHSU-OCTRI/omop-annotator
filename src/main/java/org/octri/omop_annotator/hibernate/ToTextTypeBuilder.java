@@ -6,8 +6,7 @@ import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 
 /**
  * This custom type builder can be used to convert a text field in a Hibernate entity to a Java String. It supports
- * Oracle Clob and
- * Postgres Text. The out of the box Hibernate types require the @Lob annotation for Oracle.
+ * Oracle Clob and Postgres Text. The out of the box Hibernate types require the @Lob annotation for Oracle.
  */
 public class ToTextTypeBuilder {
 
@@ -46,7 +45,7 @@ public class ToTextTypeBuilder {
         }
 
         public OracleTextType() {
-            super(ClobTypeDescriptor.DEFAULT, OracleClobJavaDescriptor.INSTANCE);
+            super(ClobTypeDescriptor.DEFAULT, ClobStringJavaDescriptor.INSTANCE);
         }
 
     }
@@ -59,7 +58,7 @@ public class ToTextTypeBuilder {
         }
 
         public PostgresTextType() {
-            super(VarcharTypeDescriptor.INSTANCE, PostgresTextJavaDescriptor.INSTANCE);
+            super(VarcharTypeDescriptor.INSTANCE, StringStringJavaDescriptor.INSTANCE);
         }
     }
 

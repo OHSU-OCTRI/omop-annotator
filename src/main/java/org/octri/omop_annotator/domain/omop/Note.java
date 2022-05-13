@@ -52,7 +52,6 @@ public class Note {
 	@Column(name = "note_title")
 	private String title;
 
-	// TODO: Need to support both Oracle and Postgres. Removing @Lob annotation fixes Postgres but breaks Oracle
 	@Column(name = "note_text")
 	@Type(type = "ToText")
 	private String text;

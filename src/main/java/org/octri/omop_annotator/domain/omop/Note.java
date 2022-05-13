@@ -6,11 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
 
 /**
  * OMOP 5.3 Definition of a Note
@@ -51,9 +52,8 @@ public class Note {
 	@Column(name = "note_title")
 	private String title;
 
-	// TODO: Need to support both Oracle and Postgres. Removing @Lob annotation fixes Postgres but breaks Oracle
-	@Lob
 	@Column(name = "note_text")
+	@Type(type = "ToText")
 	private String text;
 
 	@ManyToOne

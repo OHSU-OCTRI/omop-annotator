@@ -12,6 +12,7 @@ import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.octri.omop_annotator.hibernate.ToFloatTypeContributor;
+import org.octri.omop_annotator.hibernate.ToTextTypeContributor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -78,7 +79,8 @@ public class OmopDataSourceConfiguration {
 
 			@Override
 			public List<TypeContributor> getTypeContributors() {
-				return Arrays.asList(new ToFloatTypeContributor(omopHibernateProperties().getDialect()));
+				return Arrays.asList(new ToFloatTypeContributor(omopHibernateProperties().getDialect()),
+						new ToTextTypeContributor(omopHibernateProperties().getDialect()));
 			}
 		});
 

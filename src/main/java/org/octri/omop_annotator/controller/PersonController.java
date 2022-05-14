@@ -1,6 +1,8 @@
 package org.octri.omop_annotator.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,9 +23,11 @@ import org.octri.omop_annotator.repository.omop.ProcedureOccurrenceRepository;
 import org.octri.omop_annotator.repository.omop.VisitOccurrenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -85,6 +89,43 @@ public class PersonController {
 		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
 	}
 
+	enum FilterEntity {
+		condition, procedure, observation, measurement, note
+	}
+
+	@GetMapping(value = "/summary/{personId}/visits/filter/{entity}")
+	@ResponseBody
+	public String getFilteredVisitIds(@PathVariable Long personId, @PathVariable FilterEntity entity,
+			@RequestParam(required = true) String name)
+			throws JsonProcessingException {
+
+		List<Long> visitIds = new ArrayList<Long>();
+		String searchTerm = likeQueryValue(name);
+		if (entity == FilterEntity.procedure) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndProcedureNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.condition) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndConditionNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.observation) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndObservationNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.measurement) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndMeasurementNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.note) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndNoteTextLike(personId, searchTerm);
+		}
+		return mapper.writeValueAsString(visitIds);
+	}
+
+	/**
+	 * @param searchTerm
+	 * @return value used in a SQL LIKE query.
+	 */
+	private String likeQueryValue(String searchTerm) {
+		Assert.notNull(searchTerm, "Search term is required");
+		String prefix = searchTerm.startsWith("%") ? "" : "%";
+		String suffix = searchTerm.endsWith("%") ? "" : "%";
+		return prefix + searchTerm.toLowerCase() + suffix;
+	}
+
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
 	@ResponseBody
 	public String getConditions(@PathVariable Long personId) throws JsonProcessingException {
@@ -138,7 +179,7 @@ public class PersonController {
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(measurementRepository.findByVisitOccurrenceId(visitId));
 	}
-	
+
 	@GetMapping(value = "/summary/{personId}/notes", produces = "application/json")
 	@ResponseBody
 	public String getNotes(@PathVariable Long personId) throws JsonProcessingException {

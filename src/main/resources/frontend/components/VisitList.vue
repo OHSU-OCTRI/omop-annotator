@@ -2,14 +2,48 @@
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
     <div class="table-responsive omop-data">
-      <button
-        class="btn btn-outline-primary btn-sm mb-2"
-        v-if="contextAvailable"
-        @click="showContext()"
-        title="Show the surrounding context of the selected visit"
-      >
-        <small>Show Context</small>
-      </button>
+      <div v-if="dataTable" class="d-flex justify-content-center">
+        <div class="row gx-2 mb-2">
+          <div class="col-auto">
+            <select
+              id="visit_search_filter_entity"
+              class="form-select form-select-sm"
+              v-model="searchEntity"
+            >
+              <option
+                v-for="option in searchEntities"
+                :key="option"
+                v-bind:value="option"
+              >
+                {{ option }}
+              </option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">contains</span>
+              <input
+                id="search_term"
+                class="form-control form-control-sm"
+                type="text"
+                v-model="searchTerm"
+              />
+            </div>
+          </div>
+          <div class="col-auto">
+            <LoadingSpinner v-if="searching" :inline="true" />
+            <span v-else>
+              <button type="submit" class="btn btn-sm btn-primary" @click="search()">
+                Search
+              </button>
+              <button type="button" class="btn btn-sm btn-link" @click="clearSearch()">
+                Clear
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
@@ -65,9 +99,16 @@ function compareVisitStart(a, b) {
   if (a.visitStart > b.visitStart) return 1;
   return 0;
 }
+import { contextPath } from '../utils/injection-keys';
+import OmopApi from '../utils/omop-api';
+import LoadingSpinner from './LoadingSpinner';
 
 export default {
   props: {
+    personId: {
+      type: Number,
+      required: true
+    },
     visits: {
       type: Array,
       required: true
@@ -87,21 +128,40 @@ export default {
     showHeader: {
       type: Boolean,
       default: true
+    },
+    searchEntities: {
+      type: Array,
+      default: () => {
+        return ['visit', 'condition', 'procedure', 'observation', 'measurement', 'note'];
+      }
     }
+  },
+  inject: {
+    [contextPath]: {
+      default: ''
+    }
+  },
+  components: {
+    LoadingSpinner
   },
   data() {
     return {
-      search: null,
-      pageLength: 10
+      dataTable: null,
+      omopApi: null,
+      pageLength: 10,
+      searchEntity: 'visit',
+      searchTerm: '',
+      searchResults: null,
+      searching: false
     };
   },
   mounted() {
+    if (this.omopApi === null) {
+      this.omopApi = new OmopApi(this.contextPath);
+    }
     this.$nextTick(this.drawDataTable);
   },
   computed: {
-    contextAvailable() {
-      return Boolean(this.selectedVisitId && this.search);
-    },
     selectedVisitIndex() {
       // index when temporally sorted
       if (this.selectedVisitId) {
@@ -115,39 +175,64 @@ export default {
       if (this.selectedVisitIndex) {
         return Math.floor(this.selectedVisitIndex / this.pageLength);
       }
-      return null;
+      return 0;
     }
   },
   methods: {
     drawDataTable() {
-      // Format with the datatables library if it is available.
       if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
         if (this.dataTable) {
           this.dataTable.clear().destroy();
         }
-
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           pageLength: this.pageLength,
-          searching: true,
-          info: true
+          searching: true, // this must be true to use the api call
+          info: true,
+          dom: 'lrtip' // exclude default search controls from the dom
         });
-        // Update the component search term when a datatables search is performed.
-        this.dataTable.on('search.dt', () => {
-          this.search = this.dataTable.search();
-        });
-
         this.dataTable.on('length.dt', (e, settings, len) => {
           this.pageLength = len;
         });
       }
     },
-    showContext() {
-      // Shows the context in a linear timeline. We may also want the ability to
-      // navigate to the selected record after sorting by a column.
-      if (this.contextAvailable) {
+    isSelectedVisit(visitId) {
+      return this.selectedVisitId && this.selectedVisitId === visitId;
+    },
+    async search() {
+      // Datatables could be made optional with some refactoring to use a `renderedVisits`
+      // computed property which filters on `searchResults`.
+      if (this.dataTable) {
+        this.searching = true;
+        if (this.searchEntity === 'visit') {
+          // search the datatable
+          this.searchResults = null;
+          this.dataTable.search(this.searchTerm).draw();
+        } else if (this.searchTerm.length > 0) {
+          // use the API to search the selected child entity
+          this.searchResults = await this.omopApi.searchPersonData(
+            this.personId,
+            this.searchEntity,
+            this.searchTerm
+          );
+          // The returned visit ids are converted to a regex so we can use the
+          // datatables functionality for filtering the rows.
+          const re = `^(${this.searchResults.join('|')})$`;
+          this.dataTable.column(0).search(re, true, false).draw();
+        }
+        this.searching = false;
+      }
+    },
+    clearSearch() {
+      this.searchEntity = 'visit';
+      this.searchTerm = '';
+      this.searchResults = null;
+
+      if (this.dataTable) {
+        // Clear the filter, sort by visitStart, and goto the selectedVisit page.
         const startDateColumn = 2;
+        this.dataTable.column(0).search('');
         this.dataTable
           .search('')
           .order([startDateColumn, 'asc'])
@@ -155,9 +240,6 @@ export default {
           .page(this.selectedVisitPage)
           .draw(false);
       }
-    },
-    isSelectedVisit(visitId) {
-      return this.selectedVisitId && this.selectedVisitId === visitId;
     }
   },
   watch: {

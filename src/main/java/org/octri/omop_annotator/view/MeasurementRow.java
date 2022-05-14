@@ -8,9 +8,9 @@ import java.util.Date;
  */
 public interface MeasurementRow {
 
-	public Long getId();
+	public Integer getId();
 
-	public Long getPerson();
+	public Integer getPerson();
 
 	public Date getMeasurementDatetime();
 
@@ -18,12 +18,14 @@ public interface MeasurementRow {
 
 	public String getMeasurementType();
 
+	public String getValueSourceValue();
+
 	public Float getValueAsNumber();
 
 	public String getValueAsConcept();
 
 	public String getUnit();
 
-	public Long getVisitOccurrence();
+	public Integer getVisitOccurrence();
 
 }

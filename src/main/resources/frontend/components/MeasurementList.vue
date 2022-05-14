@@ -57,7 +57,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 4
+      default: 0
     },
     sortOrder: {
       type: String,
@@ -98,7 +98,11 @@ export default {
       }
     },
     getValue(measurement) {
-      return measurement.valueAsNumber ?? measurement.valueAsConcept;
+      return (
+        measurement.valueSourceValue ??
+        measurement.valueAsConcept ??
+        measurement.valueAsNumber
+      );
     }
   },
   watch: {

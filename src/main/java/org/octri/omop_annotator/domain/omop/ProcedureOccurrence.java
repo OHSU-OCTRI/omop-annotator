@@ -1,6 +1,5 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -31,7 +30,7 @@ public class ProcedureOccurrence {
 
 	@Column(name = "procedure_occurrence_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@ManyToOne
 	@NotNull
@@ -55,13 +54,13 @@ public class ProcedureOccurrence {
 	VisitOccurrence visitOccurrence;
 
 	@Column(name = "quantity")
-	private BigDecimal quantity;
+	private Integer quantity;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -105,11 +104,11 @@ public class ProcedureOccurrence {
 		this.visitOccurrence = visitOccurrence;
 	}
 
-	public BigDecimal getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

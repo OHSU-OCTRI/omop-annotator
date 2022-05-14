@@ -19,16 +19,16 @@ public class CareSite {
 
 	@Column(name = "care_site_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@Column(name = "care_site_name")
 	private String careSiteName;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -6,11 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
 
 /**
  * OMOP 5.3 Definition of a Note
@@ -29,7 +30,7 @@ public class Note {
 
 	@Column(name = "note_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@ManyToOne
 	@NotNull
@@ -51,19 +52,19 @@ public class Note {
 	@Column(name = "note_title")
 	private String title;
 
-	@Lob
 	@Column(name = "note_text")
+	@Type(type = "ToText")
 	private String text;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

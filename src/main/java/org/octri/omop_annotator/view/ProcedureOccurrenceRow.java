@@ -1,6 +1,5 @@
 package org.octri.omop_annotator.view;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -8,9 +7,9 @@ import java.util.Date;
  */
 public interface ProcedureOccurrenceRow {
 
-    public Long getId();
+    public Integer getId();
 
-    public Long getPersonId();
+    public Integer getPersonId();
 
     public String getProcedure();
 
@@ -18,7 +17,7 @@ public interface ProcedureOccurrenceRow {
 
     public Date getDate();
 
-    public BigDecimal getQuantity();
+    public Integer getQuantity();
 
-    public Long getVisitOccurrence();
+    public Integer getVisitOccurrence();
 }

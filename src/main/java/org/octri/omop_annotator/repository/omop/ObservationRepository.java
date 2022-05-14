@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "observation")
-public interface ObservationRepository extends PagingAndSortingRepository<Observation, Long> {
+public interface ObservationRepository extends PagingAndSortingRepository<Observation, Integer> {
 
 	static final String query = "select obs.id as id, obs.person.id as person, obsConcept.name as name,"
 			+ " obsTypeConcept.name as type, obs.observationDatetime as date, obs.valueAsString as value,"
@@ -20,9 +20,9 @@ public interface ObservationRepository extends PagingAndSortingRepository<Observ
 			+ " left join obs.visitOccurrence visitOccurrence";
 
 	@Query(query + " where obs.person.id = ?1")
-	List<ObservationRow> findByPersonId(Long id);
+	List<ObservationRow> findByPersonId(Integer id);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ObservationRow> findByVisitOccurrenceId(Long visitOccurrenceId);
+	List<ObservationRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

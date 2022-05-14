@@ -11,73 +11,76 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 /**
  * OMOP 5.3 Definition of a Drug Exposure
  * 
  * The following columns have been excluded:
  * 
- * 	drug_exposure_start_date
- *	drug_exposure_end_date
- *	verbatim_end_date
- *	refills
- *	days_supply
- *	sig
- *	route_concept_id
- *	lot_number
- *	provider_id
- *	visit_detail_id - always null
- *	drug_source_value
- *	drug_source_concept_id
+ * drug_exposure_start_date
+ * drug_exposure_end_date
+ * verbatim_end_date
+ * refills
+ * days_supply
+ * sig
+ * route_concept_id
+ * lot_number
+ * provider_id
+ * visit_detail_id - always null
+ * drug_source_value
+ * drug_source_concept_id
  */
 @Entity
 public class DrugExposure {
 
-	@Column(name="drug_exposure_id")
+	@Column(name = "drug_exposure_id")
 	@Id
-	private Long id;
-	
+	private Integer id;
+
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name="person_id")
+	@JoinColumn(name = "person_id")
 	private Person person;
 
 	@ManyToOne
-	@JoinColumn(name="drug_concept_id")
+	@JoinColumn(name = "drug_concept_id")
 	private Concept drug;
-	
-	@Column(name="drug_exposure_start_datetime")
+
+	@Column(name = "drug_exposure_start_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date drugStart;
-	
-	@Column(name="drug_exposure_end_datetime")
+
+	@Column(name = "drug_exposure_end_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date drugEnd;
-	
-	@Column(name="stop_reason")
+
+	@Column(name = "stop_reason")
 	private String stopReason;
-	
-	@Column(name="quantity")
+
+	@Column(name = "quantity")
+	@Type(type = "ToFloat")
 	private Float quantity;
-	
+
 	@ManyToOne
-	@JoinColumn(name="drug_type_concept_id")
+	@JoinColumn(name = "drug_type_concept_id")
 	private Concept drugType;
-	
+
 	@ManyToOne
-	@JoinColumn(name="visit_occurrence_id")
+	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
-	
-	@Column(name="route_source_value")
+
+	@Column(name = "route_source_value")
 	private String route;
-	
-	@Column(name="dose_unit_source_value")
+
+	@Column(name = "dose_unit_source_value")
 	private String doseUnit;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -163,10 +166,9 @@ public class DrugExposure {
 
 	@Override
 	public String toString() {
-		return "DrugExposure [id=" + id + ", person=" + person + ", drug=" + drug + ", drugStart=" + drugStart
-				+ ", drugEnd=" + drugEnd + ", stopReason=" + stopReason + ", quantity=" + quantity + ", drugType="
-				+ drugType + ", visitOccurrence=" + visitOccurrence + ", route=" + route + ", doseUnit=" + doseUnit
-				+ "]";
+		return "DrugExposure [doseUnit=" + doseUnit + ", drug=" + drug + ", drugEnd=" + drugEnd + ", drugStart="
+				+ drugStart + ", drugType=" + drugType + ", id=" + id + ", person=" + person + ", quantity=" + quantity
+				+ ", route=" + route + ", stopReason=" + stopReason + ", visitOccurrence=" + visitOccurrence + "]";
 	}
-	
+
 }

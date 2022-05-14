@@ -11,6 +11,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 /**
  * OMOP 5.3 Definition of an Observation
  * 
@@ -19,7 +21,6 @@ import javax.validation.constraints.NotNull;
  * observation_date
  * provider_id
  * visit_detail_id
- * observation_source_value
  * observation_source_concept_id
  * unit_source_value
  * qualifier_source_value
@@ -29,7 +30,7 @@ public class Observation {
 
 	@Column(name = "observation_id")
 	@Id
-	private Long id;
+	private Integer id;
 
 	@ManyToOne
 	@NotNull
@@ -48,8 +49,12 @@ public class Observation {
 	@JoinColumn(name = "observation_type_concept_id")
 	private Concept observationType;
 
+	@Column(name = "observation_source_value")
+	private String observationSourceValue;
+
 	@Column(name = "value_as_number")
-	private Float valueAsNumber;
+	@Type(type = "ToFloat")
+	private String valueAsNumber;
 
 	@Column(name = "value_as_string")
 	private String valueAsString;
@@ -70,11 +75,11 @@ public class Observation {
 	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -110,11 +115,19 @@ public class Observation {
 		this.observationType = observationType;
 	}
 
-	public Float getValueAsNumber() {
+	public String getObservationSourceValue() {
+		return observationSourceValue;
+	}
+
+	public void setObservationSourceValue(String observationSourceValue) {
+		this.observationSourceValue = observationSourceValue;
+	}
+
+	public String getValueAsNumber() {
 		return valueAsNumber;
 	}
 
-	public void setValueAsNumber(Float valueAsNumber) {
+	public void setValueAsNumber(String valueAsNumber) {
 		this.valueAsNumber = valueAsNumber;
 	}
 
@@ -160,11 +173,11 @@ public class Observation {
 
 	@Override
 	public String toString() {
-		return "Observation [id=" + id + ", person=" + person + ", observation=" + observation
-				+ ", observationDatetime=" + observationDatetime + ", observationType=" + observationType
-				+ ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString + ", valueAsConcept="
-				+ valueAsConcept + ", qualifier=" + qualifier + ", unit=" + unit + ", visitOccurrence="
-				+ visitOccurrence + "]";
+		return "Observation [id=" + id + ", observation=" + observation + ", observationDatetime=" + observationDatetime
+				+ ", observationSourceValue=" + observationSourceValue + ", observationType=" + observationType
+				+ ", person=" + person + ", qualifier=" + qualifier + ", unit=" + unit + ", valueAsConcept="
+				+ valueAsConcept + ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString
+				+ ", visitOccurrence=" + visitOccurrence + "]";
 	}
 
 }

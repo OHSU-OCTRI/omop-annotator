@@ -95,11 +95,11 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}/visits/filter/{entity}")
 	@ResponseBody
-	public String getFilteredVisitIds(@PathVariable Long personId, @PathVariable FilterEntity entity,
+	public String getFilteredVisitIds(@PathVariable Integer personId, @PathVariable FilterEntity entity,
 			@RequestParam(required = true) String name)
 			throws JsonProcessingException {
 
-		List<Long> visitIds = new ArrayList<Long>();
+		List<Integer> visitIds = new ArrayList<Integer>();
 		String searchTerm = likeQueryValue(name);
 		if (entity == FilterEntity.procedure) {
 			visitIds = visitOccurrenceRepository.findByPersonIdAndProcedureNameLike(personId, searchTerm);

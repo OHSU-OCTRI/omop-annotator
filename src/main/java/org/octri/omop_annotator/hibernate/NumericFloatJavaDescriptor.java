@@ -1,6 +1,7 @@
 package org.octri.omop_annotator.hibernate;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.type.descriptor.WrapperOptions;
@@ -8,15 +9,15 @@ import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
 import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
 
 /**
- * This descriptor handles transformation when Hibernate interprets the database field as a java.math.BigDecimal but the
- * entity is typed as a Float.
+ * This descriptor handles transformation when Hibernate interprets the database field as a java.math.BigDecimal or
+ * java.math.BigInteger but the entity is typed as a Float.
  */
-public class BigDecimalFloatJavaDescriptor extends AbstractTypeDescriptor<Float> {
+public class NumericFloatJavaDescriptor extends AbstractTypeDescriptor<Float> {
 
-    public static final BigDecimalFloatJavaDescriptor INSTANCE = new BigDecimalFloatJavaDescriptor();
+    public static final NumericFloatJavaDescriptor INSTANCE = new NumericFloatJavaDescriptor();
 
     @SuppressWarnings("unchecked")
-    public BigDecimalFloatJavaDescriptor() {
+    public NumericFloatJavaDescriptor() {
         super(Float.class, ImmutableMutabilityPlan.INSTANCE);
     }
 
@@ -35,9 +36,15 @@ public class BigDecimalFloatJavaDescriptor extends AbstractTypeDescriptor<Float>
         if (value == null) {
             return null;
         }
-
-        BigDecimal d = (BigDecimal) value;
-        return Float.valueOf(d.floatValue());
+        if (BigDecimal.class.isInstance(value)) {
+            return ((BigDecimal) value).floatValue();
+        }
+        if (BigInteger.class.isInstance(value)) {
+            return ((BigInteger) value).floatValue();
+        } else if (String.class.isInstance(value)) {
+            return Float.valueOf(((String) value));
+        }
+        throw unknownWrap(value.getClass());
     }
 
 }

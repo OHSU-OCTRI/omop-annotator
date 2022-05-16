@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="col-auto">
-            <LoadingSpinner v-if="searching" :inline="true" />
+            <LoadingSpinner v-if="searching" class="d-inline" />
             <span v-else>
               <button type="submit" class="btn btn-sm btn-primary" @click="search()">
                 Search

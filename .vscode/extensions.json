@@ -9,7 +9,7 @@
         // Formatter for JavaScript and Vue files
         "esbenp.prettier-vscode",
         // Vue single file component (SFC) support
-        "johnsoncodehk.volar",
+        "Vue.volar",
         // Java language support
         "vscjava.vscode-java-pack"
     ]

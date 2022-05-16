@@ -159,6 +159,19 @@ export default class OmopApi {
   }
 
   /**
+   * Search Person data and return a list of visit ids that match.
+   *
+   * @param {number} personId
+   * @param {string}  entity
+   * @param {string} term
+   * @returns {Promise<Array<number>>}
+   */
+  async searchPersonData(personId, entity, term) {
+    const url = `${this.personPrefix}/${personId}/visits/filter/${entity}?name=${term}`;
+    return await this.getJson(url);
+  }
+
+  /**
    * Makes a `fetch` request to the given URL, expecting a JSON response. Returns parsed
    * JSON data.
    *

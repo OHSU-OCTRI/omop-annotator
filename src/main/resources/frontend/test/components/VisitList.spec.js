@@ -6,7 +6,7 @@ import { visits } from '../example-data';
 describe('VisitList.vue', () => {
   it('renders', () => {
     const wrapper = mount(VisitList, {
-      props: { visits: visits.slice(0, 1) }
+      props: { visits: visits.slice(0, 1), personId: 1234 }
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
     expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency')).toBe(
@@ -28,7 +28,7 @@ describe('VisitList.vue', () => {
 
   it('emits an event when a visit row is clicked', async () => {
     const wrapper = mount(VisitList, {
-      props: { visits }
+      props: { visits: visits, personId: 1234 }
     });
 
     const visitRows = wrapper.findAll('tbody tr');
@@ -42,7 +42,7 @@ describe('VisitList.vue', () => {
   it('adds a class to the selected visit row', async () => {
     const wrapper = mount(VisitList, {
       // selectedVisitId is null by default
-      props: { visits }
+      props: { visits: visits, personId: 1234 }
     });
 
     // nothing selected yet

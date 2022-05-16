@@ -16,6 +16,7 @@
       class="mb-4"
       :visits="visits"
       :show-header="false"
+      :person-id="personId"
       :selected-visit-id="selectedVisitId"
       @visit-selected="setSelectedVisit"
     />

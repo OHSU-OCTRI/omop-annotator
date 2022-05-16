@@ -3,7 +3,6 @@ package org.octri.omop_annotator.hibernate;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
 import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
@@ -26,9 +25,20 @@ public class NumericFloatJavaDescriptor extends AbstractTypeDescriptor<Float> {
         return Float.valueOf(string);
     }
 
+    @SuppressWarnings({ "unchecked" })
     @Override
     public <X> X unwrap(Float value, Class<X> type, WrapperOptions options) {
-        throw new NotImplementedException("This is a read-only database");
+        if (value == null) {
+            return null;
+        }
+        if (BigDecimal.class.isAssignableFrom(type)) {
+            return (X) BigDecimal.valueOf(value.doubleValue());
+        } else if (BigInteger.class.isAssignableFrom(type)) {
+            return (X) BigInteger.valueOf(value.longValue());
+        } else if (String.class.isAssignableFrom(type)) {
+            return (X) value.toString();
+        }
+        throw unknownUnwrap(type);
     }
 
     @Override
@@ -38,8 +48,7 @@ public class NumericFloatJavaDescriptor extends AbstractTypeDescriptor<Float> {
         }
         if (BigDecimal.class.isInstance(value)) {
             return ((BigDecimal) value).floatValue();
-        }
-        if (BigInteger.class.isInstance(value)) {
+        } else if (BigInteger.class.isInstance(value)) {
             return ((BigInteger) value).floatValue();
         } else if (String.class.isInstance(value)) {
             return Float.valueOf(((String) value));

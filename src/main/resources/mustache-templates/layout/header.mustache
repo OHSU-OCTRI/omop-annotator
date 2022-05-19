@@ -1,15 +1,21 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>{{displayName}}</title>
-<meta charset="utf-8">
-<meta name="ctx" content="{{req.contextPath}}/">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-{{>authlib_fragments/css}}
-<link rel="stylesheet" href="{{req.contextPath}}/webjars/datatables/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="{{req.contextPath}}/webjars/font-awesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="{{req.contextPath}}/assets/css/datepicker.css">
-<link rel="stylesheet" href="{{req.contextPath}}/assets/css/main.css">
+	<title>{{displayName}}</title>
+	<meta charset="utf-8">
+	<meta name="ctx" content="{{req.contextPath}}/">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	{{>authlib_fragments/css}}
+	<link rel="stylesheet" href="{{req.contextPath}}/webjars/datatables/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="{{req.contextPath}}/webjars/font-awesome/css/fontawesome.min.css">
+	<link rel="stylesheet" href="{{req.contextPath}}/assets/css/datepicker.css">
+	<link rel="stylesheet" href="{{req.contextPath}}/assets/css/main.css">
+
+	{{! Page-specific stylesheets can be specified in the view model }}
+	{{#pageStyles}}
+	<link rel="stylesheet" href="{{req.contextPath}}/assets/css/{{.}}">
+	{{/pageStyles}}
 </head>
 <body>
 	<header>

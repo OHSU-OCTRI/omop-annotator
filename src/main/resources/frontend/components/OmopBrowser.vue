@@ -102,6 +102,21 @@
               <span v-if="selectedVisitId"> ({{ notes.length }})</span>
             </button>
           </li>
+          <li class="nav-item" role="presentation">
+            <button
+              id="drugs_tab"
+              class="nav-link"
+              type="button"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#drugs"
+              aria-controls="drugs"
+              aria-selected="false"
+            >
+              Medications
+              <span v-if="selectedVisitId"> ({{ drugs.length }})</span>
+            </button>
+          </li>
         </ul>
         <div class="tab-content">
           <div
@@ -179,6 +194,21 @@
             </div>
             <NoteList v-else :notes="notes" :show-header="false" />
           </div>
+          <div
+            id="drugs"
+            class="tab-pane fade"
+            role="tabpanel"
+            aria-labelledby="drugs_tab"
+          >
+            <PlaceholderMessage
+              v-if="noVisitSelected"
+              message="Select a visit to see related medications."
+            />
+            <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
+              <LoadingSpinner />
+            </div>
+            <DrugList v-else :drugs="drugs" :show-header="false" />
+          </div>
         </div>
       </div>
     </div>
@@ -187,6 +217,7 @@
 
 <script>
 import ConditionList from './ConditionList';
+import DrugList from './DrugList';
 import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
 import MeasurementList from './MeasurementList';
@@ -218,6 +249,7 @@ export default {
   },
   components: {
     ConditionList,
+    DrugList,
     MeasurementList,
     NoteList,
     ObservationList,
@@ -241,6 +273,7 @@ export default {
       procedures: [],
       measurements: [],
       notes: [],
+      drugs: [],
       loadingVisitData: false
     };
   },
@@ -264,6 +297,7 @@ export default {
       this.procedures = [];
       this.measurements = [];
       this.notes = [];
+      this.drugs = [];
       this.loadingVisitData = false;
     },
 
@@ -298,13 +332,14 @@ export default {
       this.loadingVisitData = true;
       this.resetTabs();
 
-      const [conditions, observations, procedures, measurements, notes] =
+      const [conditions, observations, procedures, measurements, notes, drugs] =
         await Promise.all([
           omopApi.getConditionsForPersonAndVisit(this.personId, visitId),
           omopApi.getObservationsForPersonAndVisit(this.personId, visitId),
           omopApi.getProceduresForPersonAndVisit(this.personId, visitId),
           omopApi.getMeasurementsForPersonAndVisit(this.personId, visitId),
-          omopApi.getNotesForPersonAndVisit(this.personId, visitId)
+          omopApi.getNotesForPersonAndVisit(this.personId, visitId),
+          omopApi.getDrugsForPersonAndVisit(this.personId, visitId)
         ]);
 
       this.conditions = conditions;
@@ -312,6 +347,7 @@ export default {
       this.procedures = procedures;
       this.measurements = measurements;
       this.notes = notes;
+      this.drugs = drugs;
       this.loadingVisitData = false;
     }
   },

@@ -48,6 +48,7 @@ public class PersonController {
 	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
 	private MeasurementRepository measurementRepository;
 	private NoteRepository noteRepository;
+	private DrugExposureRepository drugExposureRepository;
 
 	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
@@ -60,9 +61,10 @@ public class PersonController {
 		this.personRepository = personRepository;
 		this.visitOccurrenceRepository = visitOccurrenceRepository;
 		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
+		this.drugExposureRepository = drugExposureRepository;
+		this.measurementRepository = measurementRepository;
 		this.observationRepository = observationRepository;
 		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
-		this.measurementRepository = measurementRepository;
 		this.noteRepository = noteRepository;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
@@ -191,6 +193,19 @@ public class PersonController {
 	public String getVisitNotes(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
 		return mapper.writeValueAsString(noteRepository.findByVisitOccurrenceId(visitId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/drugs", produces = "application/json")
+	@ResponseBody
+	public String getDrugs(@PathVariable Integer personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(drugExposureRepository.findByPersonId(personId));
+	}
+
+	@GetMapping(value = "/summary/{personId}/visit/{visitId}/drugs", produces = "application/json")
+	@ResponseBody
+	public String getVisitDrugs(@PathVariable Integer personId, @PathVariable Integer visitId)
+			throws JsonProcessingException {
+		return mapper.writeValueAsString(drugExposureRepository.findByVisitOccurrenceId(visitId));
 	}
 
 }

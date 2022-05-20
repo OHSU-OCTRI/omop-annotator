@@ -159,6 +159,29 @@ export default class OmopApi {
   }
 
   /**
+   * Gets all `DrugExposures`s for the given person ID.
+   *
+   * @param {number} personId
+   * @returns {Promise<Array<Drug>>}
+   */
+  async getDrugsForPerson(personId) {
+    const url = `${this.personPrefix}/${personId}/drugs`;
+    return await this.getJson(url);
+  }
+
+  /**
+   * Gets all `Drug`s for the given person ID and visit ID.
+   *
+   * @param {number} personId
+   * @param {number} visitId
+   * @returns {Promise<Array<Drug>>}
+   */
+  async getDrugsForPersonAndVisit(personId, visitId) {
+    const url = `${this.personPrefix}/${personId}/visit/${visitId}/drugs`;
+    return await this.getJson(url);
+  }
+
+  /**
    * Search Person data and return a list of visit ids that match.
    *
    * @param {number} personId

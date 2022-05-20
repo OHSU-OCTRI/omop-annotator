@@ -132,7 +132,15 @@ export default {
     searchEntities: {
       type: Array,
       default: () => {
-        return ['visit', 'condition', 'procedure', 'observation', 'measurement', 'note'];
+        return [
+          'visit',
+          'condition',
+          'procedure',
+          'observation',
+          'measurement',
+          'note',
+          'medication'
+        ];
       }
     }
   },

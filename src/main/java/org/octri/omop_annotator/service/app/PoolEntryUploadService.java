@@ -1,4 +1,4 @@
-package org.octri.omop_annotator.service;
+package org.octri.omop_annotator.service.app;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +49,7 @@ public class PoolEntryUploadService {
 
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
-	 * 
+	 *
 	 * @param multipartFile
 	 * @param topicSet
 	 * @param poolName
@@ -161,7 +161,7 @@ public class PoolEntryUploadService {
 	/**
 	 * Helper class (POJO) representing the result of an uploaded pool entry.
 	 * Includes the inputs, the entry if created, and any associated validation errors.
-	 * 
+	 *
 	 */
 	public class UploadResult {
 

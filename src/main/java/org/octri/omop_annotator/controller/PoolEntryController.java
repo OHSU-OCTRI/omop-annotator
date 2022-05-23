@@ -7,8 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
-import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.AnnotationSchemaRepository;
@@ -35,9 +37,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
-
 /**
  * Controller for {@link PoolEntry} objects.
  */
@@ -62,10 +61,10 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 
 	@Autowired
 	private TopicSetRepository topicSetRepository;
-	
+
 	@Autowired
 	private PoolEntryUploadService poolEntryUploadService;
-	
+
 	@Autowired
 	private JudgmentRepository judgmentRepository;
 
@@ -119,6 +118,7 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 
 	/**
 	 * Load the bulk upload form
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -170,11 +170,13 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 	 * @throws CsvValidationException
 	 */
 	@PostMapping("/upload")
-	public String uploadFile(@RequestPart(value = "file") MultipartFile multiPartFile, @RequestParam TopicSet topicSet, 
-			@RequestParam String poolName, @RequestParam(required=false) String poolComments, @RequestParam AnnotationSchema annotationSchema, 
+	public String uploadFile(@RequestPart(value = "file") MultipartFile multiPartFile, @RequestParam TopicSet topicSet,
+			@RequestParam String poolName, @RequestParam(required = false) String poolComments,
+			@RequestParam AnnotationSchema annotationSchema,
 			HttpServletRequest request, final ModelMap model) throws IOException, CsvValidationException {
-		
-		List<UploadResult> results = poolEntryUploadService.uploadPoolEntries(multiPartFile, topicSet, poolName, poolComments, annotationSchema);
+
+		List<UploadResult> results = poolEntryUploadService.uploadPoolEntries(multiPartFile, topicSet, poolName,
+				poolComments, annotationSchema);
 		model.put("hasResults", !results.isEmpty());
 		if (results.isEmpty()) {
 			model.put("error", true);
@@ -199,5 +201,5 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 	protected PoolEntryRepository getRepository() {
 		return this.repository;
 	}
-	
+
 }

@@ -29,7 +29,8 @@ describe('OmopBrowser.vue', () => {
       'getObservationsForPersonAndVisit',
       'getProceduresForPersonAndVisit',
       'getMeasurementsForPersonAndVisit',
-      'getNotesForPersonAndVisit'
+      'getNotesForPersonAndVisit',
+      'getDrugsForPersonAndVisit'
     ];
     visitApiMocks = visitApiCalls.map(methodName => {
       return spyOn(mockApi, methodName).and.resolveTo([]);

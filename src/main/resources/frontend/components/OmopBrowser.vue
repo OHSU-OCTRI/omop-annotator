@@ -114,7 +114,7 @@
               aria-selected="false"
             >
               Medications
-              <span v-if="selectedVisitId"> ({{ drugs.length }})</span>
+              <span v-if="selectedVisitId"> ({{ drugs.size }})</span>
             </button>
           </li>
         </ul>
@@ -273,7 +273,7 @@ export default {
       procedures: [],
       measurements: [],
       notes: [],
-      drugs: [],
+      drugs: {},
       loadingVisitData: false
     };
   },
@@ -297,7 +297,7 @@ export default {
       this.procedures = [];
       this.measurements = [];
       this.notes = [];
-      this.drugs = [];
+      this.drugs = {};
       this.loadingVisitData = false;
     },
 

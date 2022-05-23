@@ -11,7 +11,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(drug, index) in primaryDrugInfo.keys()"
+            v-for="(drug, index) in drugs.keys()"
             :key="drug"
             ref="drugRows"
             class="main-row"
@@ -35,7 +35,7 @@
 export default {
   props: {
     drugs: {
-      type: Array,
+      type: Map,
       required: true
     },
     visitId: {
@@ -66,12 +66,6 @@ export default {
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
       return `Medications${filter}`;
-    },
-    primaryDrugInfo() {
-      return this.drugs.reduce(
-        (entryMap, e) => entryMap.set(e.drug, [...(entryMap.get(e.drug) || []), e]),
-        new Map()
-      );
     }
   },
   methods: {
@@ -116,7 +110,7 @@ export default {
       }
     },
     showDetails(drug) {
-      let details = this.primaryDrugInfo.get(drug);
+      let details = this.drugs.get(drug);
       let table = `
         <table class='table details-table'>
         <thead>

@@ -117,29 +117,31 @@ export default {
     },
     showDetails(drug) {
       let details = this.primaryDrugInfo.get(drug);
-      let table =
-        "<table class='table details-table'>" +
-        '<thead>' +
-        '<tr><th>Id</th><th>Drug Type</th><th>Start</th><th>End</th><th>Stop Reason</th><th>Quantity</th></tr>' +
-        '</thead>' +
-        '<tbody>';
+      let table = `
+        <table class='table details-table'>
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Drug Type</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Stop Reason</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>`;
       for (let i = 0; i < details.length; i++) {
         let drugRecord = details[i];
-        table +=
-          '<tr>' +
-          '<td>' +
-          drugRecord.id +
-          '</td><td>' +
-          drugRecord.drugType +
-          '</td><td>' +
-          drugRecord.drugStart +
-          '</td><td>' +
-          drugRecord.drugEnd +
-          '</td><td>' +
-          drugRecord.stopReason +
-          '</td><td>' +
-          drugRecord.quantity +
-          '</td></tr>';
+        table += `
+          <tr>
+            <td>${drugRecord.id}</td>
+            <td>${drugRecord.drugType}</td>
+            <td>${drugRecord.drugStart}</td>
+            <td>${drugRecord.drugEnd}</td>
+            <td>${drugRecord.stopReason}</td>
+            <td>${drugRecord.quantity}</td>
+          </tr>
+        `;
       }
       table += '</tbody></table>';
       return table;

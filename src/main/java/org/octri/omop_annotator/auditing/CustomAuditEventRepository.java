@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.octri.authentication.server.security.entity.LoginAttempt;
 import org.octri.omop_annotator.auditing.RequestAuditEvent.RequestType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 	private static final Log log = LogFactory.getLog(CustomAuditEventRepository.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	@Autowired
+	@Resource
 	private RequestAuditEventRepository repository;
 
 	@Override
@@ -73,6 +74,10 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 	@Override
 	public List<AuditEvent> find(String principal, Instant after, String type) {
 		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	public void setRepository(RequestAuditEventRepository repository) {
+		this.repository = repository;
 	}
 
 }

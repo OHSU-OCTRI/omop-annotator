@@ -111,6 +111,8 @@ public class PersonController {
 			visitIds = visitOccurrenceRepository.findByPersonIdAndObservationNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.measurement) {
 			visitIds = visitOccurrenceRepository.findByPersonIdAndMeasurementNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.note) {
+			visitIds = visitOccurrenceRepository.findByPersonIdAndNoteTextLike(personId, searchTerm);
 		} else if (entity == FilterEntity.medication) {
 			visitIds = visitOccurrenceRepository.findByPersonIdAndDrugNameLike(personId, searchTerm);
 		}

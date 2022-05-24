@@ -25,9 +25,9 @@ public interface NoteRepository extends PagingAndSortingRepository<Note, Integer
 			+ " left join note.visitOccurrence visitOccurrence";
 
 	@Query(query + " where note.person.id = ?1")
-	List<NoteRow> findByPersonId(Integer id);
+	List<NoteRow> findAllByPersonId(Integer id);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<NoteRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<NoteRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

@@ -28,8 +28,8 @@ public interface MeasurementRepository extends PagingAndSortingRepository<Measur
 			+ " left join m.visitOccurrence visitOccurrence";
 
 	@Query(query + " where m.person.id = ?1")
-	List<MeasurementRow> findByPersonId(Integer id);
+	List<MeasurementRow> findAllByPersonId(Integer id);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<MeasurementRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<MeasurementRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 }

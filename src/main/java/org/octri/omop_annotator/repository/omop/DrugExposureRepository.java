@@ -26,9 +26,9 @@ public interface DrugExposureRepository extends PagingAndSortingRepository<DrugE
             + " left join de.visitOccurrence visitOccurrence";
 
     @Query(query + " where de.person.id = ?1")
-    List<DrugExposureRow> findByPersonId(Integer personId);
+    List<DrugExposureRow> findAllByPersonId(Integer personId);
 
     @Query(query + " where visitOccurrence.id = ?1")
-    List<DrugExposureRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+    List<DrugExposureRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

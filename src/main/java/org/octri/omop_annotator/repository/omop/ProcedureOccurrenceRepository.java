@@ -25,9 +25,9 @@ public interface ProcedureOccurrenceRepository extends PagingAndSortingRepositor
 			+ " left join po.visitOccurrence visitOccurrence";
 
 	@Query(query + " where po.person.id = ?1")
-	List<ProcedureOccurrenceRow> findByPersonId(Integer personId);
+	List<ProcedureOccurrenceRow> findAllByPersonId(Integer personId);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ProcedureOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<ProcedureOccurrenceRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

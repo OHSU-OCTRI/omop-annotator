@@ -13,12 +13,12 @@ public class ProcedureOccurrenceService {
 	@Autowired
 	ProcedureOccurrenceRepository repository;
 
-	public List<ProcedureOccurrenceRow> findByPersonId(Integer personId) {
-		return repository.findByPersonId(personId);
+	public List<ProcedureOccurrenceRow> findAllByPersonId(Integer personId) {
+		return repository.findAllByPersonId(personId);
 	}
 
-	public List<ProcedureOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<ProcedureOccurrenceRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

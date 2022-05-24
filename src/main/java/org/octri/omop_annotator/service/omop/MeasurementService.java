@@ -13,12 +13,12 @@ public class MeasurementService {
 	@Autowired
 	private MeasurementRepository repository;
 
-	public List<MeasurementRow> findByPersonId(Integer id) {
-		return repository.findByPersonId(id);
+	public List<MeasurementRow> findAllByPersonId(Integer id) {
+		return repository.findAllByPersonId(id);
 	}
 
-	public List<MeasurementRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<MeasurementRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

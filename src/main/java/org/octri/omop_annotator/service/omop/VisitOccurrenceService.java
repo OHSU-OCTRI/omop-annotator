@@ -13,28 +13,28 @@ public class VisitOccurrenceService {
 	@Autowired
 	VisitOccurrenceRepository repository;
 
-	public List<VisitOccurrenceRow> findByPersonId(Integer personId) {
-		return repository.findByPersonId(personId);
+	public List<VisitOccurrenceRow> findAllByPersonId(Integer personId) {
+		return repository.findAllByPersonId(personId);
 	}
 
-	public List<Integer> findByPersonIdAndProcedureNameLike(Integer personId, String procedureName) {
-		return repository.findByPersonIdAndProcedureNameLike(personId, procedureName);
+	public List<Integer> findAllByPersonIdAndProcedureNameLike(Integer personId, String procedureName) {
+		return repository.findAllByPersonIdAndProcedureNameLike(personId, procedureName);
 	}
 
-	public List<Integer> findByPersonIdAndConditionNameLike(Integer personId, String conditionName) {
-		return repository.findByPersonIdAndConditionNameLike(personId, conditionName);
+	public List<Integer> findAllByPersonIdAndConditionNameLike(Integer personId, String conditionName) {
+		return repository.findAllByPersonIdAndConditionNameLike(personId, conditionName);
 	}
 
-	public List<Integer> findByPersonIdAndObservationNameLike(Integer personId, String observationName) {
-		return repository.findByPersonIdAndObservationNameLike(personId, observationName);
+	public List<Integer> findAllByPersonIdAndObservationNameLike(Integer personId, String observationName) {
+		return repository.findAllByPersonIdAndObservationNameLike(personId, observationName);
 	}
 
-	public List<Integer> findByPersonIdAndMeasurementNameLike(Integer personId, String measurementName) {
-		return repository.findByPersonIdAndMeasurementNameLike(personId, measurementName);
+	public List<Integer> findAllByPersonIdAndMeasurementNameLike(Integer personId, String measurementName) {
+		return repository.findAllByPersonIdAndMeasurementNameLike(personId, measurementName);
 	}
 
-	public List<Integer> findByPersonIdAndDrugNameLike(Integer personId, String drugName) {
-		return repository.findByPersonIdAndDrugNameLike(personId, drugName);
+	public List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName) {
+		return repository.findAllByPersonIdAndDrugNameLike(personId, drugName);
 	}
 
 }

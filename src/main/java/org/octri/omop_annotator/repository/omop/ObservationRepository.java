@@ -25,9 +25,9 @@ public interface ObservationRepository extends PagingAndSortingRepository<Observ
 			+ " left join obs.visitOccurrence visitOccurrence";
 
 	@Query(query + " where obs.person.id = ?1")
-	List<ObservationRow> findByPersonId(Integer id);
+	List<ObservationRow> findAllByPersonId(Integer id);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ObservationRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<ObservationRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

@@ -13,12 +13,12 @@ public class ObservationService {
 	@Autowired
 	private ObservationRepository repository;
 
-	public List<ObservationRow> findByPersonId(Integer id) {
-		return repository.findByPersonId(id);
+	public List<ObservationRow> findAllByPersonId(Integer id) {
+		return repository.findAllByPersonId(id);
 	}
 
-	public List<ObservationRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<ObservationRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

@@ -13,12 +13,12 @@ public class DrugExposureService {
 	@Autowired
 	private DrugExposureRepository repository;
 
-	public List<DrugExposureRow> findByPersonId(Integer personId) {
-		return repository.findByPersonId(personId);
+	public List<DrugExposureRow> findAllByPersonId(Integer personId) {
+		return repository.findAllByPersonId(personId);
 	}
 
-	public List<DrugExposureRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<DrugExposureRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

@@ -13,12 +13,12 @@ public class ConditionOccurrenceService {
 	@Autowired
 	private ConditionOccurrenceRepository repository;
 
-	public List<ConditionOccurrenceRow> findByPersonId(Integer personId) {
-		return repository.findByPersonId(personId);
+	public List<ConditionOccurrenceRow> findAllByPersonId(Integer personId) {
+		return repository.findAllByPersonId(personId);
 	}
 
-	public List<ConditionOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<ConditionOccurrenceRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

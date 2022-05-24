@@ -13,12 +13,12 @@ public class NoteService {
 	@Autowired
 	private NoteRepository repository;
 
-	public List<NoteRow> findByPersonId(Integer id) {
-		return repository.findByPersonId(id);
+	public List<NoteRow> findAllByPersonId(Integer id) {
+		return repository.findAllByPersonId(id);
 	}
 
-	public List<NoteRow> findByVisitOccurrenceId(Integer visitOccurrenceId) {
-		return repository.findByVisitOccurrenceId(visitOccurrenceId);
+	public List<NoteRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId) {
+		return repository.findAllByVisitOccurrenceId(visitOccurrenceId);
 	}
 
 }

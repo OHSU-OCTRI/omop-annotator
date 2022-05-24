@@ -25,8 +25,8 @@ public interface ConditionOccurrenceRepository extends PagingAndSortingRepositor
 			+ " left join co.visitOccurrence visitOccurrence";
 
 	@Query(query + " where co.person.id = ?1")
-	List<ConditionOccurrenceRow> findByPersonId(Integer personId);
+	List<ConditionOccurrenceRow> findAllByPersonId(Integer personId);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ConditionOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<ConditionOccurrenceRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 }

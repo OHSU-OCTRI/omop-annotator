@@ -27,7 +27,7 @@ import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicRepository;
-import org.octri.omop_annotator.repository.omop.PersonRepository;
+import org.octri.omop_annotator.service.omop.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +45,7 @@ public class PoolEntryUploadService {
 	private TopicRepository topicRepository;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonService personService;
 
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
@@ -89,7 +89,7 @@ public class PoolEntryUploadService {
 			if (personId.isEmpty()) {
 				errors.add("Person " + personAsString + " is not a number");
 			} else {
-				Optional<Person> person = personRepository.findById(Integer.valueOf(personId.get()));
+				Optional<Person> person = personService.findById(Integer.valueOf(personId.get()));
 				if (person.isEmpty()) {
 					errors.add("Person " + personAsString + " is not in the OMOP database.");
 				}

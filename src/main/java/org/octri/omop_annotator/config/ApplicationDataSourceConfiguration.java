@@ -20,13 +20,14 @@ import org.springframework.transaction.PlatformTransactionManager;
  * Configuration for the data source that stores application domain entities.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = { "org.octri.omop_annotator.repository.app",
+@EnableJpaRepositories(basePackages = { "org.octri.omop_annotator.repository.app", "org.octri.omop_annotator.auditing",
 		"org.octri.authentication" }, entityManagerFactoryRef = "applicationEntityManagerFactory", transactionManagerRef = "applicationTransactionManager")
 public class ApplicationDataSourceConfiguration {
 
 	private static final Log log = LogFactory.getLog(ApplicationDataSourceConfiguration.class);
 
 	private static final String[] APP_DOMAIN_PACKAGES = new String[] {
+			"org.octri.omop_annotator.auditing",
 			"org.octri.omop_annotator.domain.app",
 			"org.octri.authentication"
 	};

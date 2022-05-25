@@ -69,7 +69,7 @@ describe('JudgmentShell.vue', () => {
 
     await flushPromises();
 
-    expect(wrapper.findAll('.active').length).toEqual(1);
+    expect(wrapper.findAll('.entry-judgments a.active').length).toEqual(1);
     const listGroupItems = wrapper.findAll('.list-group-item');
     expect(listGroupItems.at(0).element.classList).toContain('active');
   });

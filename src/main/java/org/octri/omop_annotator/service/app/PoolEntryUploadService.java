@@ -1,4 +1,4 @@
-package org.octri.omop_annotator.service;
+package org.octri.omop_annotator.service.app;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,7 +27,7 @@ import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicRepository;
-import org.octri.omop_annotator.repository.omop.PersonRepository;
+import org.octri.omop_annotator.service.omop.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,11 +45,11 @@ public class PoolEntryUploadService {
 	private TopicRepository topicRepository;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonService personService;
 
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
-	 * 
+	 *
 	 * @param multipartFile
 	 * @param topicSet
 	 * @param poolName
@@ -89,7 +89,7 @@ public class PoolEntryUploadService {
 			if (personId.isEmpty()) {
 				errors.add("Person " + personAsString + " is not a number");
 			} else {
-				Optional<Person> person = personRepository.findById(Integer.valueOf(personId.get()));
+				Optional<Person> person = personService.findById(Integer.valueOf(personId.get()));
 				if (person.isEmpty()) {
 					errors.add("Person " + personAsString + " is not in the OMOP database.");
 				}
@@ -161,7 +161,7 @@ public class PoolEntryUploadService {
 	/**
 	 * Helper class (POJO) representing the result of an uploaded pool entry.
 	 * Includes the inputs, the entry if created, and any associated validation errors.
-	 * 
+	 *
 	 */
 	public class UploadResult {
 

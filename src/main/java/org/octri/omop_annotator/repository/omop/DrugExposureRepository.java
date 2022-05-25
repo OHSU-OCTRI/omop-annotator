@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+/**
+ * NOTE: Avoid using Repositories directly. To ensure proper request logging and access control,
+ * implement a Service class that wraps the repository and use that to manipulate domain entities
+ * instead.
+ */
 @RepositoryRestResource(path = "drug_exposure")
 public interface DrugExposureRepository extends PagingAndSortingRepository<DrugExposure, Integer> {
 
@@ -21,9 +26,9 @@ public interface DrugExposureRepository extends PagingAndSortingRepository<DrugE
             + " left join de.visitOccurrence visitOccurrence";
 
     @Query(query + " where de.person.id = ?1")
-    List<DrugExposureRow> findByPersonId(Integer personId);
+    List<DrugExposureRow> findAllByPersonId(Integer personId);
 
     @Query(query + " where visitOccurrence.id = ?1")
-    List<DrugExposureRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+    List<DrugExposureRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 
 }

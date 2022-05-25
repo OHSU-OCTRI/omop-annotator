@@ -12,15 +12,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.domain.omop.Person;
-import org.octri.omop_annotator.repository.omop.ConceptRepository;
-import org.octri.omop_annotator.repository.omop.ConditionOccurrenceRepository;
-import org.octri.omop_annotator.repository.omop.DrugExposureRepository;
-import org.octri.omop_annotator.repository.omop.MeasurementRepository;
-import org.octri.omop_annotator.repository.omop.NoteRepository;
-import org.octri.omop_annotator.repository.omop.ObservationRepository;
-import org.octri.omop_annotator.repository.omop.PersonRepository;
-import org.octri.omop_annotator.repository.omop.ProcedureOccurrenceRepository;
-import org.octri.omop_annotator.repository.omop.VisitOccurrenceRepository;
+import org.octri.omop_annotator.service.omop.ConditionOccurrenceService;
+import org.octri.omop_annotator.service.omop.DrugExposureService;
+import org.octri.omop_annotator.service.omop.MeasurementService;
+import org.octri.omop_annotator.service.omop.NoteService;
+import org.octri.omop_annotator.service.omop.ObservationService;
+import org.octri.omop_annotator.service.omop.PersonService;
+import org.octri.omop_annotator.service.omop.ProcedureOccurrenceService;
+import org.octri.omop_annotator.service.omop.VisitOccurrenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -41,38 +40,38 @@ public class PersonController {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private OmopDataConfiguration omopDataConfig;
-	private PersonRepository personRepository;
-	private VisitOccurrenceRepository visitOccurrenceRepository;
-	private ConditionOccurrenceRepository conditionOccurrenceRepository;
-	private ObservationRepository observationRepository;
-	private ProcedureOccurrenceRepository procedureOccurrenceRepository;
-	private MeasurementRepository measurementRepository;
-	private NoteRepository noteRepository;
-	private DrugExposureRepository drugExposureRepository;
+	private PersonService personService;
+	private VisitOccurrenceService visitOccurrenceService;
+	private ConditionOccurrenceService conditionOccurrenceService;
+	private ObservationService observationService;
+	private ProcedureOccurrenceService procedureOccurrenceService;
+	private MeasurementService measurementService;
+	private NoteService noteService;
+	private DrugExposureService drugExposureService;
 
 	@Autowired
-	public PersonController(OmopDataConfiguration omopDataConfig, PersonRepository personRepository,
-			VisitOccurrenceRepository visitOccurrenceRepository, ConceptRepository conceptRepository,
-			ConditionOccurrenceRepository conditionOccurrenceRepository, DrugExposureRepository drugExposureRepository,
-			MeasurementRepository measurementRepository, ObservationRepository observationRepository,
-			ProcedureOccurrenceRepository procedureOccurrenceRepository, NoteRepository noteRepository) {
+	public PersonController(OmopDataConfiguration omopDataConfig, PersonService personService,
+			VisitOccurrenceService visitOccurrenceService, ConditionOccurrenceService conditionOccurrenceService,
+			DrugExposureService drugExposureService, MeasurementService measurementService,
+			ObservationService observationService, ProcedureOccurrenceService procedureOccurrenceService,
+			NoteService noteService) {
 		super();
 		this.omopDataConfig = omopDataConfig;
-		this.personRepository = personRepository;
-		this.visitOccurrenceRepository = visitOccurrenceRepository;
-		this.conditionOccurrenceRepository = conditionOccurrenceRepository;
-		this.drugExposureRepository = drugExposureRepository;
-		this.measurementRepository = measurementRepository;
-		this.observationRepository = observationRepository;
-		this.procedureOccurrenceRepository = procedureOccurrenceRepository;
-		this.noteRepository = noteRepository;
+		this.personService = personService;
+		this.visitOccurrenceService = visitOccurrenceService;
+		this.conditionOccurrenceService = conditionOccurrenceService;
+		this.drugExposureService = drugExposureService;
+		this.measurementService = measurementService;
+		this.observationService = observationService;
+		this.procedureOccurrenceService = procedureOccurrenceService;
+		this.noteService = noteService;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
 	}
 
 	@GetMapping("/{id}")
 	public String show(Map<String, Object> model, @PathVariable Integer id) {
 		model.put("pageScripts", new String[] { "vendor.js", "person.js" });
-		model.put("entity", personRepository.findById(id).get());
+		model.put("entity", personService.findById(id).get());
 
 		return "person/show";
 	}
@@ -80,7 +79,7 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")
 	@ResponseBody
 	public String getPerson(@PathVariable Integer personId) throws JsonProcessingException {
-		Person person = personRepository.findById(personId).get();
+		Person person = personService.findById(personId).get();
 		person.setAgeCalculationDate(omopDataConfig.getRefreshDate());
 		return mapper.writeValueAsString(person);
 	}
@@ -88,7 +87,7 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
 	@ResponseBody
 	public String getVisits(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(visitOccurrenceRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(visitOccurrenceService.findAllByPersonId(personId));
 	}
 
 	enum FilterEntity {
@@ -104,17 +103,17 @@ public class PersonController {
 		List<Integer> visitIds = new ArrayList<Integer>();
 		String searchTerm = likeQueryValue(name);
 		if (entity == FilterEntity.procedure) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndProcedureNameLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndProcedureNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.condition) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndConditionNameLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndConditionNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.observation) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndObservationNameLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndObservationNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.measurement) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndMeasurementNameLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndMeasurementNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.note) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndNoteTextLike(personId, searchTerm);
+			visitIds = visitOccurrenceRepository.findAllByPersonIdAndNoteTextLike(personId, searchTerm);
 		} else if (entity == FilterEntity.medication) {
-			visitIds = visitOccurrenceRepository.findByPersonIdAndDrugNameLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndDrugNameLike(personId, searchTerm);
 		}
 		return mapper.writeValueAsString(visitIds);
 	}
@@ -133,7 +132,7 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
 	@ResponseBody
 	public String getConditions(@PathVariable Integer personId) throws JsonProcessingException {
-		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByPersonId(personId));
+		var json = mapper.writeValueAsString(conditionOccurrenceService.findAllByPersonId(personId));
 		return json;
 	}
 
@@ -141,73 +140,73 @@ public class PersonController {
 	@ResponseBody
 	public String getVisitConditions(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		var json = mapper.writeValueAsString(conditionOccurrenceRepository.findByVisitOccurrenceId(visitId));
+		var json = mapper.writeValueAsString(conditionOccurrenceService.findAllByVisitOccurrenceId(visitId));
 		return json;
 	}
 
 	@GetMapping(value = "/summary/{personId}/observations", produces = "application/json")
 	@ResponseBody
 	public String getObservations(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(observationRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(observationService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/observations", produces = "application/json")
 	@ResponseBody
 	public String getVisitObservations(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		return mapper.writeValueAsString(observationRepository.findByVisitOccurrenceId(visitId));
+		return mapper.writeValueAsString(observationService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/procedures", produces = "application/json")
 	@ResponseBody
 	public String getProcedures(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(procedureOccurrenceRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(procedureOccurrenceService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/procedures", produces = "application/json")
 	@ResponseBody
 	public String getVisitProcedures(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		return mapper.writeValueAsString(procedureOccurrenceRepository.findByVisitOccurrenceId(visitId));
+		return mapper.writeValueAsString(procedureOccurrenceService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/measurements", produces = "application/json")
 	@ResponseBody
 	public String getMeasurements(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(measurementRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(measurementService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/measurements", produces = "application/json")
 	@ResponseBody
 	public String getVisitMeasurements(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		return mapper.writeValueAsString(measurementRepository.findByVisitOccurrenceId(visitId));
+		return mapper.writeValueAsString(measurementService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/notes", produces = "application/json")
 	@ResponseBody
 	public String getNotes(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(noteRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(noteService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/notes", produces = "application/json")
 	@ResponseBody
 	public String getVisitNotes(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		return mapper.writeValueAsString(noteRepository.findByVisitOccurrenceId(visitId));
+		return mapper.writeValueAsString(noteService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/drugs", produces = "application/json")
 	@ResponseBody
 	public String getDrugs(@PathVariable Integer personId) throws JsonProcessingException {
-		return mapper.writeValueAsString(drugExposureRepository.findByPersonId(personId));
+		return mapper.writeValueAsString(drugExposureService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/drugs", produces = "application/json")
 	@ResponseBody
 	public String getVisitDrugs(@PathVariable Integer personId, @PathVariable Integer visitId)
 			throws JsonProcessingException {
-		return mapper.writeValueAsString(drugExposureRepository.findByVisitOccurrenceId(visitId));
+		return mapper.writeValueAsString(drugExposureService.findAllByVisitOccurrenceId(visitId));
 	}
 
 }

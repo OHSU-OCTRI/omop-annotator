@@ -19,8 +19,8 @@ import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
-import org.octri.omop_annotator.service.PoolEntryUploadService;
-import org.octri.omop_annotator.service.PoolEntryUploadService.UploadResult;
+import org.octri.omop_annotator.service.app.PoolEntryUploadService;
+import org.octri.omop_annotator.service.app.PoolEntryUploadService.UploadResult;
 import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -118,7 +118,7 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 
 	/**
 	 * Load the bulk upload form
-	 * 
+	 *
 	 * @param request
 	 * @param model
 	 * @return
@@ -157,7 +157,7 @@ public class PoolEntryController extends AbstractEntityController<PoolEntry, Poo
 
 	/**
 	 * Create a new pool and bulk upload pool entries to it
-	 * 
+	 *
 	 * @param multiPartFile
 	 * @param topicSet
 	 * @param poolName

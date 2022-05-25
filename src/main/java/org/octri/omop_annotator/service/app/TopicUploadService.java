@@ -1,4 +1,4 @@
-package org.octri.omop_annotator.service;
+package org.octri.omop_annotator.service.app;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.octri.omop_annotator.domain.app.Topic;
 import org.octri.omop_annotator.domain.app.TopicSet;
@@ -16,9 +19,6 @@ import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 
 @Service
 public class TopicUploadService {
@@ -28,7 +28,7 @@ public class TopicUploadService {
 
 	/**
 	 * Validate the file and create topics if there are no errors.
-	 * 
+	 *
 	 * @param multipartFile
 	 * @param topicSet
 	 * @return
@@ -105,9 +105,10 @@ public class TopicUploadService {
 
 	/**
 	 * Helper class (POJO) representing the result of an uploaded topic.
-	 * 
+	 *
 	 */
 	public class UploadResult {
+
 		TopicSet topicSet;
 		String topicNumber;
 		String topicNarrative;

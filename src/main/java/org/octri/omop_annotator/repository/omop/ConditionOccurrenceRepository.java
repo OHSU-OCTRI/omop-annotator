@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+/**
+ * NOTE: Avoid using Repositories directly. To ensure proper request logging and access control,
+ * implement a Service class that wraps the repository and use that to manipulate domain entities
+ * instead.
+ */
 @RepositoryRestResource(path = "condition_occurrence")
 public interface ConditionOccurrenceRepository extends PagingAndSortingRepository<ConditionOccurrence, Integer> {
 
@@ -20,8 +25,8 @@ public interface ConditionOccurrenceRepository extends PagingAndSortingRepositor
 			+ " left join co.visitOccurrence visitOccurrence";
 
 	@Query(query + " where co.person.id = ?1")
-	List<ConditionOccurrenceRow> findByPersonId(Integer personId);
+	List<ConditionOccurrenceRow> findAllByPersonId(Integer personId);
 
 	@Query(query + " where visitOccurrence.id = ?1")
-	List<ConditionOccurrenceRow> findByVisitOccurrenceId(Integer visitOccurrenceId);
+	List<ConditionOccurrenceRow> findAllByVisitOccurrenceId(Integer visitOccurrenceId);
 }

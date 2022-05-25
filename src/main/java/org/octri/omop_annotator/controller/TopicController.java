@@ -7,12 +7,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.octri.omop_annotator.domain.app.Topic;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
-import org.octri.omop_annotator.service.TopicUploadService;
-import org.octri.omop_annotator.service.TopicUploadService.UploadResult;
+import org.octri.omop_annotator.service.app.TopicUploadService;
+import org.octri.omop_annotator.service.app.TopicUploadService.UploadResult;
 import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
 
 /**
  * Controller for {@link Topic} objects.
@@ -44,7 +44,7 @@ public class TopicController extends AbstractEntityController<Topic, TopicReposi
 
 	@Autowired
 	private TopicSetRepository topicSetRepository;
-	
+
 	@Autowired
 	private TopicUploadService topicUploadService;
 
@@ -72,6 +72,7 @@ public class TopicController extends AbstractEntityController<Topic, TopicReposi
 
 	/**
 	 * Load the bulk upload form
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -108,7 +109,7 @@ public class TopicController extends AbstractEntityController<Topic, TopicReposi
 
 	/**
 	 * Performs a bulk upload of Topics to a Topic Set
-	 * 
+	 *
 	 * @param multiPartFile
 	 * @param topicSet
 	 * @param request
@@ -118,9 +119,9 @@ public class TopicController extends AbstractEntityController<Topic, TopicReposi
 	 * @throws CsvValidationException
 	 */
 	@PostMapping("/upload")
-	public String uploadFile(@RequestPart(value = "file") MultipartFile multiPartFile, @RequestParam TopicSet topicSet, 
+	public String uploadFile(@RequestPart(value = "file") MultipartFile multiPartFile, @RequestParam TopicSet topicSet,
 			HttpServletRequest request, final ModelMap model) throws IOException, CsvValidationException {
-		
+
 		List<UploadResult> results = topicUploadService.uploadTopics(multiPartFile, topicSet);
 		model.put("hasResults", !results.isEmpty());
 		if (results.isEmpty()) {

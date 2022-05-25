@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+/**
+ * NOTE: Avoid using Repositories directly. To ensure proper request logging and access control,
+ * implement a Service class that wraps the repository and use that to manipulate domain entities
+ * instead.
+ */
 @RepositoryRestResource(path = "visit_occurrence")
 public interface VisitOccurrenceRepository extends PagingAndSortingRepository<VisitOccurrence, Integer> {
 
@@ -20,7 +25,7 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where v.person.id = ?1";
 
 	@Query(value = visitOccurrenceQuery)
-	List<VisitOccurrenceRow> findByPersonId(Integer id);
+	List<VisitOccurrenceRow> findAllByPersonId(Integer id);
 
 	@Query(value = "select distinct po.visitOccurrence.id"
 			+ " from ProcedureOccurrence po"
@@ -28,7 +33,7 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where po.person.id = ?1"
 			+ " and lower(procedure.name) like ?2"
 			+ " order by po.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndProcedureNameLike(Integer personId, String procedureName);
+	List<Integer> findAllByPersonIdAndProcedureNameLike(Integer personId, String procedureName);
 
 	@Query(value = "select distinct co.visitOccurrence.id"
 			+ " from ConditionOccurrence co"
@@ -36,7 +41,7 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where co.person.id = ?1"
 			+ " and lower(condition.name) like ?2"
 			+ " order by co.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndConditionNameLike(Integer personId, String conditionName);
+	List<Integer> findAllByPersonIdAndConditionNameLike(Integer personId, String conditionName);
 
 	@Query(value = "select distinct obs.visitOccurrence.id"
 			+ " from Observation obs"
@@ -44,7 +49,7 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where obs.person.id = ?1"
 			+ " and lower(observation.name) like ?2"
 			+ " order by obs.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndObservationNameLike(Integer personId, String observationName);
+	List<Integer> findAllByPersonIdAndObservationNameLike(Integer personId, String observationName);
 
 	@Query(value = "select distinct m.visitOccurrence.id"
 			+ " from Measurement m"
@@ -52,14 +57,14 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where m.person.id = ?1"
 			+ " and lower(measurement.name) like ?2"
 			+ " order by m.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndMeasurementNameLike(Integer personId, String measurementName);
+	List<Integer> findAllByPersonIdAndMeasurementNameLike(Integer personId, String measurementName);
 
 	@Query(value = "select distinct note.visitOccurrence.id"
 			+ " from Note note"
 			+ " where note.person.id = ?1"
 			+ " and lower(note.text) like ?2"
 			+ " order by note.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndNoteTextLike(Integer personId, String noteText);
+	List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText);
 
 	@Query(value = "select distinct d.visitOccurrence.id"
 			+ " from DrugExposure d"
@@ -67,5 +72,5 @@ public interface VisitOccurrenceRepository extends PagingAndSortingRepository<Vi
 			+ " where d.person.id = ?1"
 			+ " and lower(drug.name) like ?2"
 			+ " order by d.visitOccurrence.id asc")
-	List<Integer> findByPersonIdAndDrugNameLike(Integer personId, String drugName);
+	List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName);
 }

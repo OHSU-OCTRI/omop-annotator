@@ -3,13 +3,24 @@
     <LoadingSpinner />
   </div>
   <div class="row" v-else>
-    <div class="col-2">
+    <div class="col-md-2 mb-4 pool-entries-column">
       <h2 v-if="showHeader" class="fs-4">Pool Entries</h2>
-      <!-- TODO: filter by judged or unjudged -->
-      <!-- TODO: pagination or scrolling -->
-      <div class="list-group">
+
+      <nav class="nav nav-sm nav-pills mb-2" role="group">
         <a
-          v-for="item in entryJudgments"
+          v-for="filter in filterNames"
+          :key="filter"
+          class="nav-link text-capitalize"
+          :class="{ active: filter === activeFilter }"
+          @click.prevent="selectFilter(filter)"
+        >
+          {{ filter }}
+        </a>
+      </nav>
+
+      <div class="list-group entry-judgments">
+        <a
+          v-for="item in filteredEntryJudgments"
           :key="item.documentId"
           href="#"
           class="list-group-item list-group-item-action"
@@ -20,6 +31,7 @@
         >
           <EntryJudgment :entry-judgment="item" :selected="isSelected(item)" />
         </a>
+        <span class="instructions" v-if="filteredEntryJudgments.length === 0">None</span>
       </div>
     </div>
     <div class="col">
@@ -70,7 +82,13 @@ export default {
     return {
       loading: true,
       entryJudgments: [],
-      selectedEntryJudgment: null
+      selectedEntryJudgment: null,
+      filters: {
+        all: () => true,
+        judged: entry => entry.judgmentId !== null,
+        unjudged: entry => entry.judgmentId === null
+      },
+      activeFilter: 'all'
     };
   },
   async mounted() {
@@ -96,6 +114,12 @@ export default {
 
     url() {
       return `${this.contextPath}/judge/pool/${this.poolId}/topic/${this.topicId}/pool_entry_judgments`;
+    },
+    filterNames() {
+      return Object.keys(this.filters);
+    },
+    filteredEntryJudgments() {
+      return this.entryJudgments.filter(this.filters[this.activeFilter]);
     }
   },
   methods: {
@@ -120,6 +144,23 @@ export default {
 
     selectDocument(entryJudgment) {
       this.selectedEntryJudgment = entryJudgment;
+    },
+
+    selectFilter(name) {
+      if (name in this.filters) {
+        this.activeFilter = name;
+        const filtered = this.entryJudgments.filter(this.filters[this.activeFilter]);
+
+        const selectionInView =
+          this.selectedEntryJudgment &&
+          filtered.some(
+            entryJudgment =>
+              entryJudgment.documentId === this.selectedEntryJudgment.documentId
+          );
+        if (!selectionInView && filtered.length > 0) {
+          this.selectedEntryJudgment = filtered[0];
+        }
+      }
     }
   }
 };

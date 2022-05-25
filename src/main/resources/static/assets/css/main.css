@@ -166,10 +166,10 @@ button.annotation-label.active {
 }
 .nav-sm a {
 	/* same dimensions as a btn-group-sm */
-    padding-top: 0.25rem;
-    padding-right: 0.5rem;
-    padding-bottom: 0.25rem;
-    padding-left: 0.5rem;
+	padding-top: 0.25rem;
+	padding-right: 0.5rem;
+	padding-bottom: 0.25rem;
+	padding-left: 0.5rem;
 	border: 1px solid transparent !important;
 	font-size: .875rem;
 }

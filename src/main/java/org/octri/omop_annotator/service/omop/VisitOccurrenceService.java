@@ -33,6 +33,10 @@ public class VisitOccurrenceService {
 		return repository.findAllByPersonIdAndMeasurementNameLike(personId, measurementName);
 	}
 
+	public List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText) {
+		return repository.findAllByPersonIdAndNoteTextLike(personId, noteText);
+	}
+
 	public List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName) {
 		return repository.findAllByPersonIdAndDrugNameLike(personId, drugName);
 	}

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="entry-judgment d-flex w-100 justify-content-md-between align-items-md-center flex-wrap"
+    class="entry-judgment d-flex w-100 justify-content-between align-items-center flex-wrap"
   >
     <span>{{ entryJudgment.documentId }}</span>
     <template v-if="isJudged">

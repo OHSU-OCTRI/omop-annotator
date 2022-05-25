@@ -160,3 +160,28 @@ button.annotation-label.active {
 	margin: 1rem 2rem;
 	font-size: .9rem;
 }
+
+.lighten {
+	filter: opacity(85%);
+}
+.nav-sm a {
+	/* same dimensions as a btn-group-sm */
+	padding-top: 0.25rem;
+	padding-right: 0.5rem;
+	padding-bottom: 0.25rem;
+	padding-left: 0.5rem;
+	border: 1px solid transparent !important;
+	font-size: .875rem;
+}
+.entry-judgments {
+	max-height: 15vh;
+	overflow-y: scroll;
+}
+@media (min-width: 768px) {
+	/* medium devices and larger
+	 * https://getbootstrap.com/docs/5.0/layout/breakpoints/
+	 */
+	.entry-judgments {
+		max-height: 60vh;
+	}
+}

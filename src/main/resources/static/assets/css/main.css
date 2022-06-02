@@ -177,6 +177,19 @@ button.annotation-label.active {
 	max-height: 15vh;
 	overflow-y: scroll;
 }
+.entry-judgments a.list-group-item:not(.active) {
+	border-right-color: darkgray;
+	border-right-width: 1.4px;
+	border-left-color: darkgray;
+}
+.entry-judgments a.list-group-item:first-child:not(.active) {
+	border-top-color: darkgray;
+}
+
+.entry-judgments a.list-group-item:last-child:not(.active) {
+	border-bottom-color: darkgray;
+}
+
 @media (min-width: 768px) {
 	/* medium devices and larger
 	 * https://getbootstrap.com/docs/5.0/layout/breakpoints/

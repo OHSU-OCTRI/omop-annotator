@@ -8,7 +8,7 @@ The application requires two data sources - the read-only OMOP database and a wr
 
 ## Configuration
 
-The simplest way to set up data sources and other configuration for the application is to create a properties file to override expected properties defined in application.properties on the classpath. For example, create a file called override.properties in the same location as the jar. Once this is filled out with the required information, run the jar providing the override location:
+The simplest way to set up data sources and other configuration for the application is to create a properties file to override expected properties defined in `application.properties` on the classpath. For example, create a file called `override.properties` in the same location as the jar. Once this is filled out with the required information, run the jar providing the override location:
 
 ```java -jar omop_annotator.jar --spring.config.location=classpath:/application.properties,file:///Users/home/Annotator/override.properties```
 

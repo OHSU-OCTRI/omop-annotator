@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-The Annotator is a java application and requires the Java 11 Runtime Environment for running the provided jar.
+The Annotator is a Java application and requires the Java 11 Runtime Environment for running the provided jar.
 
 The application requires two data sources - the read-only OMOP database and a writeable database to store application users and their annotations. Both data sources are configurable, but the writeable data source has only been tested with MySQL, and the OMOP data source has been tested with Oracle and Postgres.
 

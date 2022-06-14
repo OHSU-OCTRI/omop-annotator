@@ -12,6 +12,12 @@ The simplest way to set up data sources and other configuration for the applicat
 
 ```java -jar omop_annotator.jar --spring.config.location=classpath:/application.properties,file:///Users/home/Annotator/override.properties```
 
+After the jar is running, the app can be found at the context path provided. For a local instance, this would be:
+
+```
+http://localhost:8080/omop_annotator/
+```
+
 ### Properties for the Writeable Data Source
 
 The following properties must be provided in the override file if they differ from the default values shown below:
@@ -82,6 +88,25 @@ If you will have external users or do not have LDAP, you can enable table-based 
 octri.authentication.enable-table-based=true
 ```
 
+## Spring Mail (Table-Based Authentication)
+
+Spring Mail is used to communicate with table-based users when setting or resetting passwords. If the application will have table-based users, the settings should be configured for your organization. At a minimum, the 'from' address should be changed below:
+
+```
+spring.mail.enabled=false
+spring.mail.from=octrihlp@ohsu.edu
+spring.mail.default-encoding=UTF-8
+spring.mail.host=smtpout.ohsu.edu
+spring.mail.port=25
+spring.mail.protocol=smtp
+spring.mail.test-connection=false
+spring.mail.username=octrihlp@ohsu.edu
+spring.mail.password=secret
+spring.mail.properties.mail.smtp.auth=false
+spring.mail.properties.mail.smtp.starttls.enable=false
+spring.mail.properties.mail.smtp.starttls.required=false
+```
+
 This should be all the configuration needed. When you run the jar for the first time, the writeable database schema will be initialized and the database will be empty.
 
 ## Add a User
@@ -100,4 +125,30 @@ INSERT INTO user_user_role (user, user_role)
 VALUES (@suserid, @admin);
 ````
 
-TODO: Instructions for setting an initial password if table-based only? Create user, role, and password reset token?
+If your organization will have table-based users only, start by creating the first user and role, setting the credentials to expired, and providing an email that will be used for confirmation of password reset:
+
+```
+INSERT INTO `omop_annotator`.`user` (`account_expired`, `account_locked`, `consecutive_login_failures`, `credentials_expired`, `email`, `enabled`, `first_name`, `institution`, `last_name`, `username`)
+VALUES (0, 0, 0, 1, '<email>', 1, '<first_name>', '<institution_name>', '<last_name>', '<username>');
+
+SET @userid = (SELECT last_insert_id());
+SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);
+INSERT INTO user_user_role (user, user_role)
+VALUES (@userid, @admin);
+````
+
+Now, create a password reset token for the user. The token can be any unique string up to 255 characters. This example uses '12345':
+
+```
+SET @expiration = (SELECT DATE_ADD(NOW(), INTERVAL 10 DAY));
+INSERT INTO password_reset_token(token, expiry_date, user)
+VALUES ('12345', @expiration, @userid);
+```
+
+With the jar running, navigate to the application's password reset token url, providing the token parameter:
+
+```
+http://localhost:8080/omop_annotator/user/password/reset?token=12345
+```
+
+You will be prompted to see a new password and will be able to log in once completed.

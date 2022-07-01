@@ -216,6 +216,8 @@ export default {
         if (this.searchEntity === 'visit') {
           // search the datatable
           this.searchResults = null;
+          // clear previous search
+          this.dataTable.column(0).search('');
           this.dataTable.search(this.searchTerm).draw();
         } else if (this.searchTerm.length > 0) {
           // use the API to search the selected child entity

@@ -220,6 +220,8 @@ export default {
           this.dataTable.column(0).search('');
           this.dataTable.search(this.searchTerm).draw();
         } else if (this.searchTerm.length > 0) {
+          // clear previous visit search
+          this.dataTable.search('');
           // use the API to search the selected child entity
           this.searchResults = await this.omopApi.searchPersonData(
             this.personId,

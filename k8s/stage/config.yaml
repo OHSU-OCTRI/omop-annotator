@@ -9,6 +9,7 @@ metadata:
   name: omop-annotator-stage
 data:
   EXTRA_JAVA_OPTS: -XX:MaxRAMPercentage=75.0
+  OCTRI_AUTHENTICATION_BASEURL: https://octristage.ohsu.edu
   OMOP_HIBERNATE_DIALECT: org.hibernate.dialect.Oracle10gDialect
   SERVER_SERVLET_CONTEXTPATH: /omop_annotator
   TZ: America/Los_Angeles

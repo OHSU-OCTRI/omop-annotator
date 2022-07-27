@@ -80,6 +80,7 @@ ldap.context-source.password=
 ldap.context-source.search-base=
 ldap.context-source.search-filter=
 ldap.context-source.organization=
+ldap.context-source.email-domain=
 ```
 
 If you will have external users or do not have LDAP, you can enable table-based users:

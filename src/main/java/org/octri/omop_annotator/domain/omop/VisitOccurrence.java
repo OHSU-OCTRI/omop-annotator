@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
  * visit_start_date
  * visit_end_date
  * visit_type_concept_id (Generally "Visit derived from EHR encounter record")
- * visit_source_value
  * admitting_source_concept_id
  * discharge_to_concept_id
  * preceding_visit_occurrence_id
@@ -43,6 +42,9 @@ public class VisitOccurrence {
 	@JoinColumn(name = "visit_concept_id")
 	Concept visitType;
 
+	@Column(name = "visit_source_value")
+	private String visitSourceValue;
+
 	@Column(name = "visit_start_datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visitStart;
@@ -59,7 +61,7 @@ public class VisitOccurrence {
 	@JoinColumn(name = "care_site_id")
 	CareSite careSite;
 
-	// TODO: At OHSU, this always maps to "No matching concept". The source value has more info, but is not very user
+	// At OHSU, this always maps to "No matching concept". The source value has more info, but is not very user
 	// friendly.
 	@ManyToOne
 	@JoinColumn(name = "visit_source_concept_id")
@@ -93,6 +95,14 @@ public class VisitOccurrence {
 
 	public void setVisitType(Concept visitType) {
 		this.visitType = visitType;
+	}
+
+	public String getVisitSourceValue() {
+		return visitSourceValue;
+	}
+
+	public void setVisitSourceValue(String visitSourceValue) {
+		this.visitSourceValue = visitSourceValue;
 	}
 
 	public Date getVisitStart() {
@@ -153,10 +163,10 @@ public class VisitOccurrence {
 
 	@Override
 	public String toString() {
-		return "VisitOccurrence [id=" + id + ", person=" + person + ", visitType=" + visitType + ", visitStart="
-				+ visitStart + ", visitEnd=" + visitEnd + ", provider=" + provider + ", careSite=" + careSite
-				+ ", visitSource=" + visitSource + ", admittingSource=" + admittingSource + ", dischargedTo="
-				+ dischargedTo + "]";
+		return "VisitOccurrence [admittingSource=" + admittingSource + ", careSite=" + careSite + ", dischargedTo="
+				+ dischargedTo + ", id=" + id + ", person=" + person + ", provider=" + provider + ", visitEnd="
+				+ visitEnd + ", visitSource=" + visitSource + ", visitSourceValue=" + visitSourceValue + ", visitStart="
+				+ visitStart + ", visitType=" + visitType + "]";
 	}
 
 }

@@ -17,7 +17,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface VisitOccurrenceRepository extends PagingAndSortingRepository<VisitOccurrence, Integer> {
 
 	static final String visitOccurrenceQuery = "select v.id as id, v.person.id as person, visitType.name as visitType,"
-			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName, careSite.careSiteName as careSiteName"
+			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName,"
+			+ " careSite.careSiteName as careSiteName, v.visitSourceValue as visitSourceValue"
 			+ " from VisitOccurrence v"
 			+ " left join v.visitType visitType"
 			+ " left join v.provider provider"

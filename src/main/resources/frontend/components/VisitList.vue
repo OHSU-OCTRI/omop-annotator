@@ -49,6 +49,7 @@
           <tr>
             <th>Id</th>
             <th>Visit Type</th>
+            <th>Visit Source Value</th>
             <th>Visit Start</th>
             <th>Visit End</th>
             <th>Provider</th>
@@ -67,6 +68,9 @@
             </td>
             <td data-field="visitType">
               {{ visitOccurrence.visitType }}
+            </td>
+            <td data-field="visitSourceValue">
+              {{ visitOccurrence.visitSourceValue }}
             </td>
             <td data-field="visitStart">
               {{ visitOccurrence.visitStart }}

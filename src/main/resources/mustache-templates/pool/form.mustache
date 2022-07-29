@@ -1,5 +1,12 @@
 {{>components/form_start}}
 {{#entity}}
+
+{{^id}}
+<div class="alert alert-danger" role="alert">
+If you have already identified a set of Pool Entries for a new Pool, <a href="{{req.contextPath}}/admin/pool_entry/upload">create both simultaneously</a>. Once a Pool is created through the form below, bulk upload of related Pool Entries is no longer supported.
+</div>
+{{/id}}
+
 <div class="form-group">
     <label for="topicSet" class="form-label required-field">Topic set</label>
     <select class="form-select" id="topicSet" name="topicSet" value="{{#topicSet}}{{.}}{{/topicSet}}" required>

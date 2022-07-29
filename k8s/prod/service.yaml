@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omop-annotator-prod
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: omop-annotator-prod
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: omop-annotator-prod
+spec:
+  hostname: octriprod.ohsu.edu
+  prefix: /omop_annotator
+  rewrite: /omop_annotator
+  service: omop-annotator-prod

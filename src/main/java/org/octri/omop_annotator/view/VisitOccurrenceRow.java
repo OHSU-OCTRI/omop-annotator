@@ -14,6 +14,8 @@ public interface VisitOccurrenceRow {
 
 	public String getVisitType();
 
+	public String getVisitSourceValue();
+
 	public Date getVisitStart();
 
 	public Date getVisitEnd();

@@ -1,4 +1,4 @@
-# ConfigMap for omop_annotator-dev
+# ConfigMap for omop-annotator-prod
 #
 # k8s documentation:
 # - https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap

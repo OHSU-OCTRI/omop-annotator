@@ -54,6 +54,6 @@ spec:
       volumes:
       - name: mysql-pki
         secret:
-          secretName: dev-mysql-truststore
+          secretName: prod-mysql-truststore
       imagePullSecrets:
       - name: octri-registry-cred

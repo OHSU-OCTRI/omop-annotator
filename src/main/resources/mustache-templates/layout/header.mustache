@@ -31,13 +31,16 @@
 				<div class="collapse navbar-collapse" id="navbar_collapse">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link" href="{{req.contextPath}}/">Home</a></li>
+
+						<!-- This currently contains no items, so it has been removed.
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="data_menu" data-bs-toggle="dropdown"
 							role="button" aria-haspopup="true" aria-expanded="false">Data</a>
 							<div class="dropdown-menu" aria-labelledby="data_menu">
 								{{>components/data_items}}
 							</div>
-						</li>
+						</li> 
+						-->
 						{{#isAdminOrSuper}}
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="admin_menu" data-bs-toggle="dropdown"

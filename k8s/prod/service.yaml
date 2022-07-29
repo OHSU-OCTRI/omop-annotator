@@ -17,7 +17,7 @@ kind: Mapping
 metadata:
   name: omop-annotator-prod
 spec:
-  hostname: octriprod.ohsu.edu
+  hostname: octriinternal.ohsu.edu
   prefix: /omop_annotator
   rewrite: /omop_annotator
   service: omop-annotator-prod

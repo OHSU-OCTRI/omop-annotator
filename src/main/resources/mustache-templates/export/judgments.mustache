@@ -1,0 +1,35 @@
+{{>layout/header}}
+
+<h2>Export Judgments</h3>
+<div>
+    <form name="entityForm" method="POST" action="{{req.contextPath}}/admin/export/judgments" class="needs-validation" novalidate>
+        {{ >authlib_fragments/forms/csrf_input }}
+        <p class="instructions"><i class="fas fa-info-circle"></i> Export judgments for a given user</p>
+        <div class="form-group">
+            <label for="pool_id" class="form-label required-field">Pool</label>
+            <select class="form-select" id="pool_id" name="poolId" required>
+                <option value="">-- Please Select --</option>
+                {{#poolOptions}}
+                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                {{/poolOptions}}
+            </select>
+            <div class="invalid-feedback">Value must be present</div>
+        </div>
+
+        <div class="form-group">
+            <label for="user_id" class="form-label required-field">User</label>
+            <select class="form-select" id="user_id" name="userId" required>
+                <option value="">-- Please Select --</option>
+                {{#userOptions}}
+                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                {{/userOptions}}
+            </select>
+            <div class="invalid-feedback">Value must be present</div>
+        </div>
+
+      <button type="submit" class="btn btn-primary">Download CSV</button>
+    </form>
+</div>
+<script type="text/javascript" src="{{req.contextPath}}/assets/js/validate.js"></script>
+
+{{>layout/footer}}

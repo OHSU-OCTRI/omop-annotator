@@ -27,6 +27,7 @@
                 class="form-control form-control-sm"
                 type="text"
                 v-model="searchTerm"
+                v-on:keyup.enter="search()"
               />
             </div>
           </div>

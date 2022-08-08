@@ -32,7 +32,7 @@ app.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 
 ### Properties for the OMOP Data Source
 
-The OMOP Data Source has no default configuration, so these properties must be provided in the override file. Below are examples of Oracle and Postgres connections:
+The OMOP Data Source has no default configuration, so these properties must be provided in the override file. Below are examples of Oracle, Postgres, and SQL Server connections:
 
 Oracle:
 ```
@@ -50,6 +50,21 @@ omop.datasource.driver-class-name=org.postgresql.Driver
 omop.datasource.username=your_username
 omop.datasource.password=your_password
 omop.hibernate.dialect=org.hibernate.dialect.PostgreSQL81Dialect
+```
+
+Microsoft SQL Server:
+```
+omop.datasource.driverclassname=com.microsoft.sqlserver.jdbc.SQLServerDriver
+omop.datasource.url=jdbc:sqlserver://host:port;databaseName=db_name
+omop.datasource.username=your_username
+omop.datasource.password=your_password
+omop.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+```
+
+If the table names in your data source are in UPPER_CASE format, you may also need to set the `omop.hibernate.physical-naming-strategy` property. We provide a custom physical naming strategy for this purpose.
+
+```
+omop.hibernate.physical-naming-strategy=org.octri.omop_annotator.hibernate.UpperSnakeCaseTablesPhysicalNamingStrategy
 ```
 
 ### Display Properties

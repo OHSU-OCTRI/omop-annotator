@@ -21,7 +21,7 @@ public class HibernateProperties {
 	 * Default physical naming strategy to use. Determines how Hibernate converts logical names from the implicit naming
 	 * strategy to table and column names. Using this strategy, names are converted from camelCase to lower_snake_case.
 	 */
-	private static final String DEFAULT_PHYSICAL_NAMING_STRATEGY = "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy";
+	private static final String DEFAULT_PHYSICAL_NAMING_STRATEGY = "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy";
 
 	/**
 	 * Fully-qualified class name of the Hibernate database dialect the entity manager should use. See the Hibernate

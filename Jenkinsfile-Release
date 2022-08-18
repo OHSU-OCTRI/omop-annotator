@@ -7,6 +7,9 @@ pipeline {
     GIT_URL = 'https://source.ohsu.edu/OCTRI-Apps/omop-annotator.git'
     GIT_CREDENTIALS = 'gcrcicore-ghe-token'
     DEFAULT_BRANCH = 'main'
+    GITHUB_USER = credentials('github-machine-user')
+    RELEASE_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/releases'
+    RELEASE_UPLOAD_URL = 'https://uploads.github.com/repos/OCTRI/omop-annotator-release/releases'
   }
   parameters {
     string(name: 'VERSION', description: 'The version to release.')
@@ -29,6 +32,33 @@ pipeline {
         octriMavenBuild(options: '-DskipTests -Dmaven.repo.local=.repository -Pproduction')
       }
     }
+    stage('Create Github Release') {
+      steps {
+        script {
+          sh '''
+          mkdir omop-annotator-release
+          cp RUNNING.md omop-annotator-release/
+		  cp target/omop_annotator.jar omop-annotator-release/omop_annotator-${VERSION}.jar
+          '''
+          zip zipFile: "omop_annotator-${VERSION}.zip", dir: 'omop-annotator-release', glob: "*"
+
+          def server = Artifactory.server 'octri-artifactory'
+          server.credentialsId = 'jenkins-artifactory'
+
+          def uploadSpec = """{
+            "files": [
+              {
+                "pattern": "omop_annotator*.zip",
+                "target": "libs-staging-local/org/octri/omop-annotator-release/${VERSION}/"
+              }
+            ]
+          }"""
+
+          def buildInfo = server.upload(uploadSpec)
+          server.publishBuildInfo(buildInfo)
+        }
+      }
+    }
     stage('Build Docker Image') {
       steps {
         mavenDockerMetadata(env)
@@ -42,6 +72,49 @@ pipeline {
         nextDevelopmentVersion('', env.DEFAULT_BRANCH)
         octriMavenBuild()
         buildProjectDockerImage(env.IMAGE_NAME)
+      }
+    }
+    stage('Create GitHub Release') {
+      steps {
+        script {
+            // Create the release payload
+            def releaseProps = readJSON text: '{"tag_name": "", "name": ""}'
+            releaseProps['tag_name'] = "v${params.VERSION}".toString()
+            releaseProps['name'] = "OMOP Annotator ${params.VERSION}".toString()
+            writeJSON file: 'release.json', json: releaseProps, pretty: 2
+
+            // Create the GitHub release
+            def releaseCurl = """
+            curl \
+              -f \
+              -u '${env.GITHUB_USER}' \
+              -XPOST \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d @release.json \
+              -o release-response.json \
+              ${env.RELEASE_URL}
+            """
+            sh releaseCurl
+
+            // Parse the response to get the release ID
+            def releaseResponse = readJSON file: 'release-response.json'
+            def releaseId = releaseResponse['id']
+
+            // Attach the zip file to the release
+            def zipFileName = "omop_annotator-${params.VERSION}.zip"
+            def uploadCurl = """
+            curl \
+              -f \
+              -u '${env.GITHUB_USER}' \
+              -X POST \
+              -H "Content-Type: application/zip" \
+              -H "Accept: application/vnd.github.v3+json" \
+              --data-binary @${zipFileName} \
+              ${env.RELEASE_UPLOAD_URL}/${releaseId}/assets?name=${zipFileName}
+            """
+            sh uploadCurl
+        }
       }
     }
   }

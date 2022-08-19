@@ -8,8 +8,10 @@ pipeline {
     GIT_CREDENTIALS = 'gcrcicore-ghe-token'
     DEFAULT_BRANCH = 'main'
     GITHUB_USER = credentials('github-machine-user')
+    GITHUB_PROJECT = 'omop-annotator-release'
     RELEASE_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/releases'
     RELEASE_UPLOAD_URL = 'https://uploads.github.com/repos/OCTRI/omop-annotator-release/releases'
+    DELETE_REF_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/git/refs'
   }
   parameters {
     string(name: 'VERSION', description: 'The version to release.')
@@ -78,44 +80,21 @@ pipeline {
     stage('Create GitHub Release') {
       steps {
         script {
-            // Create the release payload
-            def releaseProps = readJSON text: '{"tag_name": "", "name": ""}'
-            releaseProps['tag_name'] = "v${params.VERSION}".toString()
-            releaseProps['name'] = "OMOP Annotator ${params.VERSION}".toString()
-            releaseProps['body'] = "${params.DESCRIPTION}".toString()
-            writeJSON file: 'release.json', json: releaseProps, pretty: 2
+          def releaseName = "OMOP Annotator ${params.VERSION}"
+          def zipFileName = "omop_annotator-${params.VERSION}.zip"
+          def releaseId = publishGitHubRelease(env.GITHUB_PROJECT, params.VERSION, releaseName)
+          uploadGitHubReleaseZip(env.GITHUB_PROJECT, releaseId, zipFileName)
 
-            // Create the GitHub release
-            def releaseCurl = """
-            curl \
-              -f \
-              -u '${env.GITHUB_USER}' \
-              -XPOST \
-              -H "Content-Type: application/json" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -d @release.json \
-              -o release-response.json \
-              ${env.RELEASE_URL}
-            """
-            sh releaseCurl
-
-            // Parse the response to get the release ID
-            def releaseResponse = readJSON file: 'release-response.json'
-            def releaseId = releaseResponse['id']
-
-            // Attach the zip file to the release
-            def zipFileName = "omop_annotator-${params.VERSION}.zip"
-            def uploadCurl = """
-            curl \
-              -f \
-              -u '${env.GITHUB_USER}' \
-              -X POST \
-              -H "Content-Type: application/zip" \
-              -H "Accept: application/vnd.github.v3+json" \
-              --data-binary @${zipFileName} \
-              ${env.RELEASE_UPLOAD_URL}/${releaseId}/assets?name=${zipFileName}
-            """
-            sh uploadCurl
+          // Delete the tag in the omop-repository-release repo. Nothing has changed there.
+          def deleteTagCurl = """
+          curl \
+            -f \
+            -u '${env.GITHUB_USER}' \
+            -XDELETE \
+            -H "Accept: application/vnd.github.v3+json" \
+            ${env.DELETE_REF_URL}/tags/v${params.VERSION}
+          """
+          sh deleteTagCurl
         }
       }
     }

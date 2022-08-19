@@ -13,6 +13,7 @@ pipeline {
   }
   parameters {
     string(name: 'VERSION', description: 'The version to release.')
+    string(name: 'DESCRIPTION', description: 'A brief description of the release for external collaborators.')
   }
   tools {
     maven '3.5.0'
@@ -32,13 +33,13 @@ pipeline {
         octriMavenBuild(options: '-DskipTests -Dmaven.repo.local=.repository -Pproduction')
       }
     }
-    stage('Create Github Release') {
+    stage('Create Release Archive') {
       steps {
         script {
           sh '''
           mkdir omop-annotator-release
           cp RUNNING.md omop-annotator-release/
-		  cp target/omop_annotator.jar omop-annotator-release/omop_annotator-${VERSION}.jar
+          cp target/omop_annotator.jar omop-annotator-release/omop_annotator-${VERSION}.jar
           '''
           zip zipFile: "omop_annotator-${VERSION}.zip", dir: 'omop-annotator-release', glob: "*"
 
@@ -81,6 +82,7 @@ pipeline {
             def releaseProps = readJSON text: '{"tag_name": "", "name": ""}'
             releaseProps['tag_name'] = "v${params.VERSION}".toString()
             releaseProps['name'] = "OMOP Annotator ${params.VERSION}".toString()
+            releaseProps['body'] = "${params.DESCRIPTION}".toString()
             writeJSON file: 'release.json', json: releaseProps, pretty: 2
 
             // Create the GitHub release

@@ -82,7 +82,7 @@ pipeline {
         script {
           def releaseName = "OMOP Annotator ${params.VERSION}"
           def zipFileName = "omop_annotator-${params.VERSION}.zip"
-          def releaseId = publishGitHubRelease(env.GITHUB_PROJECT, params.VERSION, releaseName)
+          def releaseId = publishGitHubRelease(env.GITHUB_PROJECT, params.VERSION, releaseName, params.DESCRIPTION)
           uploadGitHubReleaseZip(env.GITHUB_PROJECT, releaseId, zipFileName)
 
           // Delete the tag in the omop-repository-release repo. Nothing has changed there.

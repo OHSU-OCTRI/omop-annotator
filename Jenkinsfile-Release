@@ -11,7 +11,7 @@ pipeline {
     GITHUB_PROJECT = 'omop-annotator-release'
     RELEASE_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/releases'
     RELEASE_UPLOAD_URL = 'https://uploads.github.com/repos/OCTRI/omop-annotator-release/releases'
-    DELETE_REF_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/git/refs'
+    UPDATE_CONTENTS_URL = 'https://api.github.com/repos/OCTRI/omop-annotator-release/contents'
   }
   parameters {
     string(name: 'VERSION', description: 'The version to release.')
@@ -80,21 +80,16 @@ pipeline {
     stage('Create GitHub Release') {
       steps {
         script {
+          // Update metadata in the public Github repo to associate the new tag with a code change
+          sh '''
+          curl -X GET -u ${GITHUB_USER} ${UPDATE_CONTENTS_URL}/metadata.json | jq .sha | sed 's:"::g' > sha.txt
+          echo "{\\"version\\": \\"${VERSION}\\"}" | base64 > metadata.json
+          curl -X PUT -u ${GITHUB_USER} -H 'Accept: application/vnd.github.v3+json' ${UPDATE_CONTENTS_URL}/metadata.json -d "{\\"message\\": \\"Release ${VERSION}\\", \\"content\\":\\"$(cat metadata.json)\\", \\"sha\\": \\"$(cat sha.txt)\\"}"
+          '''
           def releaseName = "OMOP Annotator ${params.VERSION}"
           def zipFileName = "omop_annotator-${params.VERSION}.zip"
           def releaseId = publishGitHubRelease(env.GITHUB_PROJECT, params.VERSION, releaseName, params.DESCRIPTION)
           uploadGitHubReleaseZip(env.GITHUB_PROJECT, releaseId, zipFileName)
-
-          // Delete the tag in the omop-repository-release repo. Nothing has changed there.
-          def deleteTagCurl = """
-          curl \
-            -f \
-            -u '${env.GITHUB_USER}' \
-            -XDELETE \
-            -H "Accept: application/vnd.github.v3+json" \
-            ${env.DELETE_REF_URL}/tags/v${params.VERSION}
-          """
-          sh deleteTagCurl
         }
       }
     }

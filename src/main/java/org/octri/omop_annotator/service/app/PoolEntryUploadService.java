@@ -48,6 +48,10 @@ public class PoolEntryUploadService {
 	@Autowired
 	private PersonService personService;
 
+	private static final int NUM_COLUMNS = 2;
+	private static final int TOPIC_NUMBER_COLUMN = 0;
+	private static final int PERSON_ID_COLUMN = 1;
+
 	/**
 	 * Validate the file and create a new pool and associated pool entries if there are no errors.
 	 *
@@ -78,12 +82,12 @@ public class PoolEntryUploadService {
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
-			String topicAsString = nextLine[0];
+			String topicAsString = nextLine[TOPIC_NUMBER_COLUMN];
 			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
-			if (StringUtils.isAllBlank(topicAsString)) {
+			if (nextLine.length < NUM_COLUMNS) {
 				continue;
 			}
-			String personAsString = nextLine[1];
+			String personAsString = nextLine[PERSON_ID_COLUMN];
 			Optional<Integer> topicNumber = parseInteger(topicAsString);
 			if (topicNumber.isEmpty()) {
 				errors.add("Topic " + topicAsString + " is not a number");

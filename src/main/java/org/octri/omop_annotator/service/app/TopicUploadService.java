@@ -27,6 +27,10 @@ public class TopicUploadService {
 	@Autowired
 	private TopicRepository topicRepository;
 
+	private static final int NUM_COLUMNS = 2;
+	private static final int TOPIC_NUMBER_COLUMN = 0;
+	private static final int TOPIC_NARRATIVE_COLUMN = 1;
+
 	/**
 	 * Validate the file and create topics if there are no errors.
 	 *
@@ -52,12 +56,12 @@ public class TopicUploadService {
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
-			String topicNumberAsString = nextLine[0];
+			String topicNumberAsString = nextLine[TOPIC_NUMBER_COLUMN];
 			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
-			if (StringUtils.isAllBlank(topicNumberAsString)) {
+			if (nextLine.length < NUM_COLUMNS) {
 				continue;
 			}
-			String topicNarrative = nextLine[1];
+			String topicNarrative = nextLine[TOPIC_NARRATIVE_COLUMN];
 			Optional<Integer> topicNumber = parseInteger(topicNumberAsString);
 			if (StringUtils.isAllBlank(topicNumberAsString)) {
 				errors.add("Topic number cannot be blank");

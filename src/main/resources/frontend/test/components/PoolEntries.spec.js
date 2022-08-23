@@ -78,8 +78,13 @@ describe('PoolEntries.vue', () => {
       }
     );
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
+
+    // wait for fetch to complete
     await flushPromises();
     expect(wrapper.find('.pool-entries').exists()).toBe(true);
+
+    // wait for the UI to update
+    await flushPromises();
     expect(wrapper.find('[data-field="unjudged_poolEntryId"]').text().includes('1'));
     expect(wrapper.find('[data-field="unjudged_documentId"]').text().includes('12345'));
     expect(wrapper.find('[data-field="unjudged_judgment"]').find('a').exists()).toBe(

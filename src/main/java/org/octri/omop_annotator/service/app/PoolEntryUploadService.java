@@ -13,9 +13,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
@@ -31,6 +28,9 @@ import org.octri.omop_annotator.service.omop.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 @Service
 public class PoolEntryUploadService {
@@ -78,6 +78,10 @@ public class PoolEntryUploadService {
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
 			String topicAsString = nextLine[0];
+			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
+			if (StringUtils.isAllBlank(topicAsString)) {
+				continue;
+			}
 			String personAsString = nextLine[1];
 			Optional<Integer> topicNumber = parseInteger(topicAsString);
 			if (topicNumber.isEmpty()) {

@@ -9,9 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.octri.omop_annotator.domain.app.Topic;
 import org.octri.omop_annotator.domain.app.TopicSet;
@@ -19,6 +16,9 @@ import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 @Service
 public class TopicUploadService {
@@ -52,6 +52,10 @@ public class TopicUploadService {
 		while ((nextLine = reader.readNext()) != null) {
 			List<String> errors = new ArrayList<>();
 			String topicNumberAsString = nextLine[0];
+			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
+			if (StringUtils.isAllBlank(topicNumberAsString)) {
+				continue;
+			}
 			String topicNarrative = nextLine[1];
 			Optional<Integer> topicNumber = parseInteger(topicNumberAsString);
 			if (StringUtils.isAllBlank(topicNumberAsString)) {

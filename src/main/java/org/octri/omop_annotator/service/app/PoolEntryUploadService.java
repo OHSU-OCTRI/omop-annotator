@@ -80,7 +80,7 @@ public class PoolEntryUploadService {
 			List<String> errors = new ArrayList<>();
 			String topicAsString = nextLine[0];
 			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
-			if (StringUtils.isAllBlank(topicAsString)) {
+			if (nextLine.length < 2) {
 				continue;
 			}
 			String personAsString = nextLine[1];

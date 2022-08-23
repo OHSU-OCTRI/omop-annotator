@@ -54,7 +54,7 @@ public class TopicUploadService {
 			List<String> errors = new ArrayList<>();
 			String topicNumberAsString = nextLine[0];
 			// Skip blank lines. This prevents index out of bounds errors with Windows-style carriage returns.
-			if (StringUtils.isAllBlank(topicNumberAsString)) {
+			if (nextLine.length < 2) {
 				continue;
 			}
 			String topicNarrative = nextLine[1];

@@ -5,44 +5,32 @@
       <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Datetime</th>
-            <th>Type</th>
-            <th>Title</th>
-            <th class="col-md-8">Text</th>
+            <th
+              v-for="field in fieldsToShow"
+              :key="field.field"
+              :class="isNoteTextField(field.field) ? 'col-md-8' : null"
+            >
+              {{ field.display }}
+            </th>
             <th v-if="showVisit">Visit Occurrence</th>
             <th class="d-none">Full Text</th>
           </tr>
-          <tr class="search-row">
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+          <tr v-if="indexesToFilter.length > 0" class="search-row">
+            <th v-for="field in fieldsToShow" :key="field.field"></th>
             <th v-if="showVisit"></th>
             <th class="d-none"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(note, idx) in notes" :key="note.id">
-            <td data-field="id">
-              {{ note.id }}
-            </td>
-            <td data-field="noteDatetime">
-              {{ note.date }}
-            </td>
-            <td data-field="noteType">
-              {{ note.type }}
-            </td>
-            <td data-field="title">
-              {{ note.title }}
-            </td>
             <td
-              class="col-md-8"
-              data-field="text"
-              @click="toggleText(idx)"
-              title="Show/hide full note"
-              v-html="noteText(idx)"
+              v-for="field in fieldsToShow"
+              :key="field.field"
+              :data-field="field.field"
+              :class="isNoteTextField(field.field) ? 'col-md-8' : null"
+              :title="isNoteTextField(field.field) ? 'Show/hide full note' : null"
+              @click="isNoteTextField(field.field) ? toggleText(idx) : null"
+              v-html="isNoteTextField(field.field) ? noteText(idx) : note[field.field]"
             ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ note.visitOccurrence }}
@@ -92,7 +80,14 @@ export default {
   },
   data() {
     return {
-      showFullText: []
+      showFullText: [],
+      configuration: [
+        { field: 'id', display: 'Id', filter: false, show: true },
+        { field: 'date', display: 'Date/Time', filter: false, show: true },
+        { field: 'type', display: 'Type', filter: false, show: true },
+        { field: 'title', display: 'Title', filter: true, show: true },
+        { field: 'text', display: 'Text', filter: false, show: true }
+      ]
     };
   },
   mounted() {
@@ -106,6 +101,16 @@ export default {
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
       return `Notes${filter}`;
+    },
+    fieldsToShow() {
+      return this.configuration.filter(f => f.show === true);
+    },
+    indexesToFilter() {
+      const b = this.fieldsToShow
+        .map((item, index) => ({ index, ...item }))
+        .filter(f => f.filter === true)
+        .map(f => f.index);
+      return b;
     }
   },
   methods: {
@@ -116,6 +121,7 @@ export default {
           this.dataTable.clear().destroy();
         }
 
+        const indexesToFilter = this.indexesToFilter;
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
@@ -123,28 +129,30 @@ export default {
           info: true,
           orderCellsTop: true,
           initComplete: function () {
-            this.api()
-              .columns([2, 3])
-              .every(function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
-                  .appendTo(
-                    $('.note-list table thead tr:eq(1) th').eq(column.index()).empty()
-                  )
-                  .on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            if (indexesToFilter.length > 0) {
+              this.api()
+                .columns(indexesToFilter)
+                .every(function () {
+                  var column = this;
+                  var select = $('<select><option value=""></option></select>')
+                    .appendTo(
+                      $('.note-list table thead tr:eq(1) th').eq(column.index()).empty()
+                    )
+                    .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                    column.search(val ? '^' + val + '$' : '', true, false).draw();
-                  });
+                      column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
 
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>');
-                  });
-              });
+                  column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                      select.append('<option value="' + d + '">' + d + '</option>');
+                    });
+                });
+            }
           }
         });
       }
@@ -170,6 +178,10 @@ export default {
     },
     toggleText(idx) {
       this.showFullText[idx] = !this.showFullText[idx];
+    },
+    isNoteTextField(field) {
+      if (field === 'text') return true;
+      return false;
     }
   },
   watch: {

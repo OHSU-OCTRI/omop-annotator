@@ -132,7 +132,12 @@ export default class OmopApi {
    */
   async getMeasurementsForPersonAndVisit(personId, visitId) {
     const url = `${this.personPrefix}/${personId}/visit/${visitId}/measurements`;
-    return await this.getJson(url);
+    const measurements = await this.getJson(url);
+    return measurements.reduce(
+      (entryMap, e) =>
+        entryMap.set(e.measurement, [...(entryMap.get(e.measurement) || []), e]),
+      new Map()
+    );
   }
 
   /**

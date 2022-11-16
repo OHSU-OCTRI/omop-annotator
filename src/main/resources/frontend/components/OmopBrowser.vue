@@ -84,7 +84,7 @@
               aria-selected="false"
             >
               Measurements
-              <span v-if="selectedVisitId"> ({{ measurements.length }})</span>
+              <span v-if="selectedVisitId"> ({{ measurements.size }})</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -271,7 +271,7 @@ export default {
       conditions: [],
       observations: [],
       procedures: [],
-      measurements: [],
+      measurements: {},
       notes: [],
       drugs: {},
       loadingVisitData: false
@@ -295,7 +295,7 @@ export default {
       this.conditions = [];
       this.observations = [];
       this.procedures = [];
-      this.measurements = [];
+      this.measurements = {};
       this.notes = [];
       this.drugs = {};
       this.loadingVisitData = false;

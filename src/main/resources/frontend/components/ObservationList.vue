@@ -2,7 +2,8 @@
   <div class="observation-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped table-bordered table-sm" ref="table">
+      <!-- Width must be declared to circumvent DataTables bug when there are two header rows -->
+      <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
             <th>Id</th>
@@ -11,6 +12,14 @@
             <th>Type</th>
             <th>Value</th>
             <th v-if="showVisit">Visit Occurrence</th>
+          </tr>
+          <tr class="search-row">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th v-if="showVisit"></th>
           </tr>
         </thead>
         <tbody>
@@ -89,7 +98,34 @@ export default {
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
-          info: true
+          info: true,
+          orderCellsTop: true,
+          initComplete: function () {
+            this.api()
+              .columns([1, 3, 4])
+              .every(function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                  .appendTo(
+                    $('.observation-list table thead tr:eq(1) th')
+                      .eq(column.index())
+                      .empty()
+                  )
+                  .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                  });
+              });
+          }
         });
       }
     }

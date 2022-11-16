@@ -13,6 +13,15 @@
             <th v-if="showVisit">Visit Occurrence</th>
             <th class="d-none">Full Text</th>
           </tr>
+          <tr class="search-row">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th v-if="showVisit"></th>
+            <th class="d-none"></th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="(note, idx) in notes" :key="note.id">
@@ -111,7 +120,32 @@ export default {
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
-          info: true
+          info: true,
+          orderCellsTop: true,
+          initComplete: function () {
+            this.api()
+              .columns([2, 3])
+              .every(function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                  .appendTo(
+                    $('.note-list table thead tr:eq(1) th').eq(column.index()).empty()
+                  )
+                  .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                  });
+              });
+          }
         });
       }
     },

@@ -2,41 +2,35 @@
   <div class="measurement-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped table-bordered table-sm" ref="table">
+      <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
-            <th>Id</th>
+            <th class="no-sort col-1"></th>
             <th>Measurement</th>
-            <th>Datetime</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Unit</th>
-            <th v-if="showVisit">Visit Occurrence</th>
+            <th>Count</th>
+          </tr>
+          <tr class="search-row">
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="measurement in measurements" :key="measurement.id">
-            <td data-field="id">
-              {{ measurement.id }}
-            </td>
+          <tr
+            v-for="(measurement, index) in measurements.keys()"
+            :key="measurement"
+            ref="measurementRows"
+            class="main-row"
+          >
+            <td
+              class="text-center details-control col-1"
+              @click="toggleDetails(measurement, index)"
+              title="Show measurement details"
+            ></td>
             <td data-field="measurement">
-              {{ measurement.measurement }}
+              {{ measurement }}
             </td>
-            <td data-field="measurementDateTime">
-              {{ measurement.measurementDatetime }}
-            </td>
-            <td data-field="measurementType">
-              {{ measurement.measurementType }}
-            </td>
-            <td data-field="measurementValue">
-              {{ getValue(measurement) }}
-            </td>
-            <td data-field="measurementUnit">
-              {{ measurement.unit }}
-            </td>
-            <td v-if="showVisit" data-field="visitOccurrence">
-              {{ measurement.visitOccurrence }}
-            </td>
+            <td>{{ count(measurement) }}</td>
           </tr>
         </tbody>
       </table>
@@ -48,7 +42,7 @@
 export default {
   props: {
     measurements: {
-      type: Array,
+      type: Map,
       required: true
     },
     visitId: {
@@ -93,9 +87,91 @@ export default {
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           searching: true,
-          info: true
+          info: true,
+          columnDefs: [
+            {
+              orderable: false,
+              targets: 'no-sort'
+            }
+          ],
+          fnDrawCallback: function (settings) {
+            $('td.details-control').html(
+              '<i class="fas fa-lg fa-plus-circle text-primary"></i>'
+            );
+          },
+          orderCellsTop: true,
+          initComplete: function () {
+            this.api()
+              .columns([1])
+              .every(function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                  .appendTo(
+                    $('.measurement-list table thead tr:eq(1) th')
+                      .eq(column.index())
+                      .empty()
+                  )
+                  .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                  });
+              });
+          }
         });
       }
+    },
+    toggleDetails(measurement, index) {
+      if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
+        let tr = this.$refs.measurementRows[index];
+        let td = tr.querySelector('td');
+        let row = this.dataTable.row(tr);
+        if (row.child.isShown()) {
+          row.child.hide();
+          $(td).html('<i class="fas fa-lg fa-plus-circle text-primary"></i>');
+        } else {
+          row.child(this.showDetails(measurement), 'details-row').show();
+          $(td).html('<i class="fas fa-lg fa-minus-circle text-primary"></i>');
+        }
+      }
+    },
+    showDetails(measurement) {
+      let details = this.measurements.get(measurement);
+      let table = `
+        <table class='table details-table'>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Datetime</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      for (let i = 0; i < details.length; i++) {
+        let measurement = details[i];
+        let val = this.getValue(measurement);
+        table += `
+          <tr>
+            <td>${measurement.id}</td>
+            <td>${measurement.measurementDatetime}</td>
+            <td>${measurement.measurementType}</td>
+            <td>${val}</td>
+            <td>${measurement.unit}</td>
+          </tr>
+        `;
+      }
+      table += '</tbody></table>';
+      return table;
     },
     getValue(measurement) {
       return (
@@ -103,6 +179,9 @@ export default {
         measurement.valueAsConcept ??
         measurement.valueAsNumber
       );
+    },
+    count(measurement) {
+      return this.measurements.get(measurement).length;
     }
   },
   watch: {

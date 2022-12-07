@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
  * provider_id
  * visit_detail_id - Always 0
  * procedure_source_value - For example, an ICD10 code, but without the vocabulary so not very useful?
- * procedure_source_concept_id
  * modifier_source_value
  *
  */
@@ -48,6 +47,10 @@ public class ProcedureOccurrence {
 	@ManyToOne
 	@JoinColumn(name = "procedure_type_concept_id")
 	private Concept procedureType;
+
+	@ManyToOne
+	@JoinColumn(name = "procedure_source_concept_id")
+	private Concept procedureSource;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
@@ -94,6 +97,14 @@ public class ProcedureOccurrence {
 
 	public void setProcedureType(Concept procedureType) {
 		this.procedureType = procedureType;
+	}
+
+	public Concept getProcedureSource() {
+		return procedureSource;
+	}
+
+	public void setProcedureSource(Concept procedureSource) {
+		this.procedureSource = procedureSource;
 	}
 
 	public VisitOccurrence getVisitOccurrence() {

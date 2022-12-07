@@ -10,10 +10,8 @@ describe('NoteList.vue', () => {
       props: { notes: notes.slice(0, 1), visitId: 1 }
     });
     expect(wrapper.find('.note-list').exists()).toBe(true);
-    expect(
-      wrapper.find('[data-field="noteDatetime"]').text().includes('2022-01-01')
-    ).toBe(true);
-    expect(wrapper.find('[data-field="noteType"]').text().includes('EHR')).toBe(true);
+    expect(wrapper.find('[data-field="date"]').text().includes('2022-01-01')).toBe(true);
+    expect(wrapper.find('[data-field="type"]').text().includes('EHR')).toBe(true);
     expect(wrapper.find('[data-field="title"]').text().includes('Long Note')).toBe(true);
   });
 

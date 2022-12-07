@@ -51,7 +51,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 0
+      default: 1
     },
     sortOrder: {
       type: String,

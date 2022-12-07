@@ -38,7 +38,7 @@
               aria-selected="true"
               ref="conditionTab"
             >
-              Condition Occurrences
+              Conditions
               <span v-if="selectedVisitId"> ({{ conditions.length }})</span>
             </button>
           </li>

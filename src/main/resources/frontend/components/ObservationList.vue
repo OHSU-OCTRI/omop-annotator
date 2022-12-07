@@ -114,13 +114,13 @@ export default {
               this.api()
                 .columns(indexesToFilter)
                 .every(function () {
-                  var column = this;
-                  var select = $('<select><option value=""></option></select>')
+                  const column = this;
+                  let select = $('<select><option value=""></option></select>')
                     .appendTo(
                       $('.observation-list .search-row th').eq(column.index()).empty()
                     )
                     .on('change', function () {
-                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                      const val = $.fn.dataTable.util.escapeRegex($(this).val());
 
                       column.search(val ? '^' + val + '$' : '', true, false).draw();
                     });

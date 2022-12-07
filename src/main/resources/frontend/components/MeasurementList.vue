@@ -104,13 +104,13 @@ export default {
             this.api()
               .columns([1])
               .every(function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
+                const column = this;
+                let select = $('<select><option value=""></option></select>')
                   .appendTo(
                     $('.measurement-list .search-row th').eq(column.index()).empty()
                   )
                   .on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
 
                     column.search(val ? '^' + val + '$' : '', true, false).draw();
                   });

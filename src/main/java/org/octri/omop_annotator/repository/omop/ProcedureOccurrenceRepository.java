@@ -17,11 +17,12 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface ProcedureOccurrenceRepository extends PagingAndSortingRepository<ProcedureOccurrence, Integer> {
 
 	static final String query = "select po.id as id, po.person.id as personId, procedure.name as procedure,"
-			+ " procedureType.name as procedureType, po.procedureDatetime as date, po.quantity as quantity,"
+			+ " procedureType.name as procedureType, procedureSource.name as procedureSource, po.procedureDatetime as date, po.quantity as quantity,"
 			+ " visitOccurrence.id as visitOccurrence"
 			+ " from ProcedureOccurrence po"
 			+ " left join po.procedure procedure"
 			+ " left join po.procedureType procedureType"
+			+ " left join po.procedureSource procedureSource"
 			+ " left join po.visitOccurrence visitOccurrence";
 
 	@Query(query + " where po.person.id = ?1")

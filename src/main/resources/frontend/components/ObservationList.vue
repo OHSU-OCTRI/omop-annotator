@@ -6,39 +6,24 @@
       <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Observation</th>
-            <th>Datetime</th>
-            <th>Type</th>
-            <th>Value</th>
+            <th v-for="field in fieldsToShow" :key="field.field">
+              {{ field.display }}
+            </th>
             <th v-if="showVisit">Visit Occurrence</th>
           </tr>
-          <tr class="search-row">
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+          <tr v-if="indexesToFilter.length > 0" class="search-row">
+            <th v-for="field in fieldsToShow" :key="field.field"></th>
             <th v-if="showVisit"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="observation in observations" :key="observation.id">
-            <td data-field="id">
-              {{ observation.id }}
-            </td>
-            <td data-field="observation">
-              {{ observation.name }}
-            </td>
-            <td data-field="observationDatetime">
-              {{ observation.date }}
-            </td>
-            <td data-field="observationType">
-              {{ observation.type }}
-            </td>
-            <td data-field="valueAsString">
-              {{ observation.value }}
-            </td>
+            <td
+              v-for="field in fieldsToShow"
+              :key="field.field"
+              :data-field="field.field"
+              v-html="observation[field.field]"
+            ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ observation.visitOccurrence }}
             </td>
@@ -77,6 +62,19 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      configuration: [
+        { field: 'id', display: 'Id', filter: false, show: true },
+        { field: 'observation', display: 'Observation', filter: true, show: false }, // Not useful for OHSU
+        { field: 'valueAsConcept', display: 'Value Concept', filter: true, show: true },
+        { field: 'sourceValue', display: 'Source Value', filter: true, show: false },
+        { field: 'date', display: 'Date/Time', filter: false, show: true },
+        { field: 'type', display: 'Type', filter: true, show: true },
+        { field: 'value', display: 'Value', filter: false, show: true }
+      ]
+    };
+  },
   mounted() {
     this.$nextTick(this.drawDataTable);
   },
@@ -84,6 +82,16 @@ export default {
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
       return `Observations${filter}`;
+    },
+    fieldsToShow() {
+      return this.configuration.filter(f => f.show === true);
+    },
+    indexesToFilter() {
+      const b = this.fieldsToShow
+        .map((item, index) => ({ index, ...item }))
+        .filter(f => f.filter === true)
+        .map(f => f.index);
+      return b;
     }
   },
   methods: {
@@ -94,6 +102,7 @@ export default {
           this.dataTable.clear().destroy();
         }
 
+        const indexesToFilter = this.indexesToFilter;
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
@@ -101,30 +110,30 @@ export default {
           info: true,
           orderCellsTop: true,
           initComplete: function () {
-            this.api()
-              .columns([1, 3, 4])
-              .every(function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
-                  .appendTo(
-                    $('.observation-list table thead tr:eq(1) th')
-                      .eq(column.index())
-                      .empty()
-                  )
-                  .on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            if (indexesToFilter.length > 0) {
+              this.api()
+                .columns(indexesToFilter)
+                .every(function () {
+                  var column = this;
+                  var select = $('<select><option value=""></option></select>')
+                    .appendTo(
+                      $('.observation-list .search-row th').eq(column.index()).empty()
+                    )
+                    .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                    column.search(val ? '^' + val + '$' : '', true, false).draw();
-                  });
+                      column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
 
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>');
-                  });
-              });
+                  column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                      select.append('<option value="' + d + '">' + d + '</option>');
+                    });
+                });
+            }
           }
         });
       }

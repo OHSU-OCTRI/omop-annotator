@@ -34,7 +34,7 @@
         <span class="instructions" v-if="filteredEntryJudgments.length === 0">None</span>
       </div>
     </div>
-    <div class="col">
+    <div class="col-md-10 mb-8">
       <OmopBrowser
         v-if="selectedEntryJudgment"
         :person-id="selectedEntryJudgment.documentId"

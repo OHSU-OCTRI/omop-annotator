@@ -107,9 +107,7 @@ export default {
                 var column = this;
                 var select = $('<select><option value=""></option></select>')
                   .appendTo(
-                    $('.measurement-list table thead tr:eq(1) th')
-                      .eq(column.index())
-                      .empty()
+                    $('.measurement-list .search-row th').eq(column.index()).empty()
                   )
                   .on('change', function () {
                     var val = $.fn.dataTable.util.escapeRegex($(this).val());

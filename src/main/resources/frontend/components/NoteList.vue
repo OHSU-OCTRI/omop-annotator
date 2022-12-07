@@ -84,7 +84,7 @@ export default {
       configuration: [
         { field: 'id', display: 'Id', filter: false, show: true },
         { field: 'date', display: 'Date/Time', filter: false, show: true },
-        { field: 'type', display: 'Type', filter: false, show: true },
+        { field: 'type', display: 'Type', filter: true, show: true },
         { field: 'title', display: 'Title', filter: true, show: true },
         { field: 'text', display: 'Text', filter: false, show: true }
       ]
@@ -135,9 +135,7 @@ export default {
                 .every(function () {
                   var column = this;
                   var select = $('<select><option value=""></option></select>')
-                    .appendTo(
-                      $('.note-list table thead tr:eq(1) th').eq(column.index()).empty()
-                    )
+                    .appendTo($('.note-list .search-row th').eq(column.index()).empty())
                     .on('change', function () {
                       var val = $.fn.dataTable.util.escapeRegex($(this).val());
 

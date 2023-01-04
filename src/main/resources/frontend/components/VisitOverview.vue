@@ -1,5 +1,5 @@
 <template>
-  <div><svg></svg></div>
+  <div><svg class="timeline"></svg></div>
 </template>
 
 <script>
@@ -18,10 +18,6 @@ export default {
       type: Number,
       default: 50
     },
-    maxBins: {
-      type: Number,
-      default: 40
-    },
     visits: {
       type: Array,
       required: true
@@ -37,10 +33,6 @@ export default {
       .scaleTime()
       .domain(d3.extent(data.map(entry => entry.date)))
       .range([0, this.width]);
-    const y = d3
-      .scaleLinear()
-      .domain([0, d3.max(data.map(entry => entry.count))])
-      .range([this.height, 0]);
 
     // determine circle radius based on the count value.
     const circleScale = d3
@@ -48,32 +40,55 @@ export default {
       .domain([0, d3.max(data.map(entry => entry.count))])
       .range([2, 6]);
 
-    x.ticks(10); // TODO: something with this
+    // x.ticks(10); // TODO: something with this
+    const translateY = 10;
+    // const cy = 2;
+
+    // Initialize SVG
 
     const svg = d3
-      .select('svg')
+      .select('svg.timeline')
       .attr('width', this.width + 100)
-      .attr('height', this.height)
-      .append('g')
-      .attr('transform', 'translate(10, 10)'); // TODO: property for margins
+      .attr('height', this.height);
+    const container = svg.append('g').attr('transform', `translate(40, ${translateY})`); // TODO: property for margins
 
-    svg
+    // Define the div for the tooltip
+    const tooltipDiv = d3
+      .select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
+
+    container
       .selectAll('circle')
       .data(data)
       .join('circle')
       .attr('class', 'timeline-circle')
       .attr('r', d => circleScale(d.count))
       .attr('cy', 8)
-      .attr('cx', d => x(d.date));
+      .attr('cx', d => x(d.date))
+      .on('mouseover', (event, d) => {
+        tooltipDiv.transition().duration(200).style('opacity', 0.9);
+        tooltipDiv
+          .html(this.tooltip(d))
+          .style('left', event.pageX + 'px')
+          .style('top', event.pageY - 32 + 'px');
+      })
+      .on('mouseout', (e, d) => {
+        tooltipDiv.transition().duration(500).style('opacity', 0);
+      })
+      .on('click', (e, d) => {
+        alert(d.date.toDateString());
+      });
 
-    svg
+    container
       .append('text')
       .attr('class', 'timeline-label')
       .attr('x', x(this.firstItem.date))
       .text(format(this.firstItem.date, 'MM-yyyy'));
     // .attr('transform', 'translate(10, 30)');
 
-    svg
+    container
       .append('text')
       .attr('class', 'timeline-label')
       .attr('x', x(this.lastItem.date))
@@ -90,7 +105,6 @@ export default {
         let datetime = parseISO(stamp);
         datetime.setUTCHours(0, 0, 0, 0);
         return datetime.toISOString();
-        // return datetime;
       });
       let dateCounts = Object.entries(counts).map(entry => {
         return { date: parseISO(entry[0]), count: entry[1] };
@@ -99,20 +113,23 @@ export default {
       return dateCounts;
     },
     firstItem() {
-      // TODO: use month / year
       return this.visitDateCounts[0];
     },
     lastItem() {
-      // TODO: month/year
       return this.visitDateCounts[this.visitDateCounts.length - 1];
     },
     dataCount() {
-      return Math.min(this.visits.length, this.maxBins);
-    },
-    barWidth() {
-      return (this.width - this.dataCount) / this.dataCount;
+      return this.visits.length;
     }
   },
-  methods: {}
+  methods: {
+    tooltip(item) {
+      let visit = 'visit';
+      if (item.count && item.count > 1) {
+        visit += 's';
+      }
+      return `${item.count} ${visit}<br>${item.date.toDateString()}`;
+    }
+  }
 };
 </script>

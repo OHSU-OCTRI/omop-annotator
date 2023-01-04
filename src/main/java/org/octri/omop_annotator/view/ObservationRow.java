@@ -11,13 +11,17 @@ public interface ObservationRow {
 
     public Integer getPerson();
 
-    public String getName();
+    public String getObservation();
+
+    public String getSourceValue();
 
     public Date getDate();
 
     public String getType();
 
     public String getValue();
+
+    public String getValueAsConcept();
 
     public Integer getVisitOccurrence();
 }

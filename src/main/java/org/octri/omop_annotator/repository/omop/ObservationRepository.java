@@ -16,12 +16,13 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(path = "observation")
 public interface ObservationRepository extends PagingAndSortingRepository<Observation, Integer> {
 
-	static final String query = "select obs.id as id, obs.person.id as person, obsConcept.name as name,"
-			+ " obsTypeConcept.name as type, obs.observationDatetime as date, obs.valueAsString as value,"
+	static final String query = "select obs.id as id, obs.person.id as person, obsConcept.name as observation,"
+			+ " obs.observationSourceValue as sourceValue, obsTypeConcept.name as type, obs.observationDatetime as date, obs.valueAsString as value, obsValueConcept.name as valueAsConcept, "
 			+ " visitOccurrence.id as visitOccurrence"
 			+ " from Observation obs"
 			+ " left join obs.observation obsConcept"
 			+ " left join obs.observationType obsTypeConcept"
+			+ " left join obs.valueAsConcept obsValueConcept"
 			+ " left join obs.visitOccurrence visitOccurrence";
 
 	@Query(query + " where obs.person.id = ?1")

@@ -2,11 +2,20 @@
   <div class="drug-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped-with-details table-bordered table-sm" ref="table">
+      <table
+        class="table table-striped-with-details table-bordered table-sm w-100"
+        ref="table"
+      >
         <thead>
           <tr>
             <th class="no-sort col-1"></th>
             <th>Drug</th>
+            <th>Count</th>
+          </tr>
+          <tr class="search-row">
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +33,7 @@
             <td data-field="drug">
               {{ drug }}
             </td>
+            <td>{{ count(drug) }}</td>
           </tr>
         </tbody>
       </table>
@@ -91,6 +101,29 @@ export default {
             $('td.details-control').html(
               '<i class="fas fa-lg fa-plus-circle text-primary"></i>'
             );
+          },
+          orderCellsTop: true,
+          initComplete: function () {
+            this.api()
+              .columns([1])
+              .every(function () {
+                const column = this;
+                let select = $('<select><option value=""></option></select>')
+                  .appendTo($('.drug-list .search-row th').eq(column.index()).empty())
+                  .on('change', function () {
+                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                  });
+              });
           }
         });
       }
@@ -139,6 +172,9 @@ export default {
       }
       table += '</tbody></table>';
       return table;
+    },
+    count(drug) {
+      return this.drugs.get(drug).length;
     }
   },
   watch: {

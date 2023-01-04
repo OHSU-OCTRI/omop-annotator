@@ -3,22 +3,20 @@
 </template>
 
 <script>
-function parseDateString(dateString) {
-  return new Date(Date.parse(dateString));
-}
 import * as d3 from 'd3';
 import _ from 'lodash';
+import { format, parseISO } from 'date-fns';
 // import { countBy } from 'lodash/array';
 
 export default {
   props: {
     width: {
       type: Number,
-      default: 200
+      default: 700
     },
     height: {
       type: Number,
-      default: 20
+      default: 50
     },
     maxBins: {
       type: Number,
@@ -34,26 +32,52 @@ export default {
     return {};
   },
   mounted() {
-    const data = d3.range(this.dataCount).map(d => Math.random());
-    const x = d3.scaleLinear().domain([0, this.dataCount]).range([0, this.width]);
-    const y = d3.scaleLinear().domain([0, 1]).range([this.height, 0]);
+    const data = this.visitDateCounts;
+    const x = d3
+      .scaleTime()
+      .domain(d3.extent(data.map(entry => entry.date)))
+      .range([0, this.width]);
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(data.map(entry => entry.count))])
+      .range([this.height, 0]);
+
+    // determine circle radius based on the count value.
+    const circleScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(data.map(entry => entry.count))])
+      .range([2, 6]);
+
+    x.ticks(10); // TODO: something with this
 
     const svg = d3
       .select('svg')
-      .attr('width', this.width)
+      .attr('width', this.width + 100)
       .attr('height', this.height)
-      .append('g');
+      .append('g')
+      .attr('transform', 'translate(10, 10)'); // TODO: property for margins
+
     svg
-      .selectAll('.bar')
+      .selectAll('circle')
       .data(data)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (d, i) => x(i))
-      .attr('y', d => this.height - y(d))
-      .attr('width', this.barWidth)
-      .attr('height', d => y(d))
-      .attr('fill', 'steelblue');
+      .join('circle')
+      .attr('class', 'timeline-circle')
+      .attr('r', d => circleScale(d.count))
+      .attr('cy', 8)
+      .attr('cx', d => x(d.date));
+
+    svg
+      .append('text')
+      .attr('class', 'timeline-label')
+      .attr('x', x(this.firstItem.date))
+      .text(format(this.firstItem.date, 'MM-yyyy'));
+    // .attr('transform', 'translate(10, 30)');
+
+    svg
+      .append('text')
+      .attr('class', 'timeline-label')
+      .attr('x', x(this.lastItem.date))
+      .text(format(this.lastItem.date, 'MM-yyyy'));
   },
   computed: {
     visitDates() {
@@ -63,14 +87,24 @@ export default {
     visitDateCounts() {
       // Group by date, ignoring time.
       let counts = _.countBy(this.visitDates, stamp => {
-        let datetime = parseDateString(stamp);
+        let datetime = parseISO(stamp);
         datetime.setUTCHours(0, 0, 0, 0);
         return datetime.toISOString();
         // return datetime;
       });
-      return Object.entries(counts).map(entry => {
-        return { date: parseDateString(entry[0]), count: entry[1] };
+      let dateCounts = Object.entries(counts).map(entry => {
+        return { date: parseISO(entry[0]), count: entry[1] };
       });
+      dateCounts.sort((a, b) => a.date - b.date);
+      return dateCounts;
+    },
+    firstItem() {
+      // TODO: use month / year
+      return this.visitDateCounts[0];
+    },
+    lastItem() {
+      // TODO: month/year
+      return this.visitDateCounts[this.visitDateCounts.length - 1];
     },
     dataCount() {
       return Math.min(this.visits.length, this.maxBins);

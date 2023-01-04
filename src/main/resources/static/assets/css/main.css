@@ -198,3 +198,9 @@ button.annotation-label.active {
 		max-height: 60vh;
 	}
 }
+
+
+.timeline-label {
+	color: darkgray;
+	font-size: 0.75rem;
+}

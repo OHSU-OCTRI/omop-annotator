@@ -230,3 +230,7 @@ div.timeline-tooltip {
 .timeline-circle {
 	cursor: pointer;
 }
+
+.timeline-circle-selected {
+	fill: rgba(13, 110, 253, 0.25)
+}

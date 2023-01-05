@@ -10,6 +10,7 @@
           :r="circleScale(visitDateCount.count)"
           :cy="circleY"
           :cx="xScale(visitDateCount.date)"
+          @click="selectDate(visitDateCount)"
           @mouseenter="event => showTooltip(visitDateCount, event)"
           @mouseleave="hideTooltip"
         ></circle>
@@ -74,7 +75,7 @@ export default {
   },
 
   data() {
-    return { tooltipItem: null, tooltipCoords: { left: 0, top: 0 } };
+    return { tooltipItem: null, tooltipCoords: { left: 0, top: 0 }, selectedDate: null };
   },
   mounted() {},
   computed: {
@@ -159,11 +160,21 @@ export default {
         left: `${event.pageX}px`
       };
     },
+    selectDate(visitDate) {
+      const dt = visitDate.date;
+      if (dt === this.selectedDate) {
+        this.selectedDate = null;
+        this.$emit('date-selected', null);
+      } else {
+        this.selectedDate = dt;
+        this.$emit('date-selected', dt);
+      }
+    },
     hideTooltip() {
       this.tooltipItem = null;
     },
-    isSelectedDate(visitDate) {
-      return false;
+    isSelectedDate(date) {
+      return this.selectedDate && this.selectedDate === date;
     }
   }
 };

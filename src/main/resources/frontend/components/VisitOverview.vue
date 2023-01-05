@@ -1,12 +1,49 @@
 <template>
-  <div><svg class="timeline"></svg></div>
+  <div>
+    <svg class="timeline" :width="timelineWidth" :height="height">
+      <g class="timeline-container" transform="translate(40, 10)">
+        <circle
+          v-for="visitDateCount in visitDateCounts"
+          :key="visitDateCount.date"
+          class="timeline-circle"
+          :class="{ 'timeline-circle-selected': isSelectedDate(visitDateCount.date) }"
+          :r="circleScale(visitDateCount.count)"
+          :cy="circleY"
+          :cx="xScale(visitDateCount.date)"
+          @mouseenter="event => showTooltip(visitDateCount, event)"
+          @mouseleave="hideTooltip"
+        ></circle>
+        <text
+          class="timeline-label"
+          text-anchor="middle"
+          :x="xScale(this.firstItem.date)"
+          :y="labelY"
+        >
+          {{ firstItemLabel }}
+        </text>
+        <text
+          class="timeline-label"
+          text-anchor="middle"
+          :x="xScale(this.lastItem.date)"
+          :y="labelY"
+        >
+          {{ lastItemLabel }}
+        </text>
+      </g>
+    </svg>
+
+    <Transition name="tooltip">
+      <div class="timeline-tooltip" :style="tooltipStyle" v-if="shouldDisplayTooltip">
+        {{ tooltipPrefix }}<br />{{ tooltipItem.date.toDateString() }}
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script>
 import * as d3 from 'd3';
 import _ from 'lodash';
 import { format, parseISO } from 'date-fns';
-// import { countBy } from 'lodash/array';
 
 export default {
   props: {
@@ -21,80 +58,30 @@ export default {
     visits: {
       type: Array,
       required: true
+    },
+    circleY: {
+      type: Number,
+      default: 8
+    },
+    labelY: {
+      type: Number,
+      default: 30
+    },
+    tooltipHeight: {
+      type: Number,
+      default: 40
     }
   },
 
   data() {
-    return {};
+    return { tooltipItem: null, tooltipCoords: { left: 0, top: 0 } };
   },
-  mounted() {
-    const data = this.visitDateCounts;
-    const x = d3
-      .scaleTime()
-      .domain(d3.extent(data.map(entry => entry.date)))
-      .range([0, this.width]);
-
-    // determine circle radius based on the count value.
-    const circleScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(data.map(entry => entry.count))])
-      .range([2, 6]);
-
-    // x.ticks(10); // TODO: something with this
-    const translateY = 10;
-    // const cy = 2;
-
-    // Initialize SVG
-
-    const svg = d3
-      .select('svg.timeline')
-      .attr('width', this.width + 100)
-      .attr('height', this.height);
-    const container = svg.append('g').attr('transform', `translate(40, ${translateY})`); // TODO: property for margins
-
-    // Define the div for the tooltip
-    const tooltipDiv = d3
-      .select('body')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
-
-    container
-      .selectAll('circle')
-      .data(data)
-      .join('circle')
-      .attr('class', 'timeline-circle')
-      .attr('r', d => circleScale(d.count))
-      .attr('cy', 8)
-      .attr('cx', d => x(d.date))
-      .on('mouseover', (event, d) => {
-        tooltipDiv.transition().duration(200).style('opacity', 0.9);
-        tooltipDiv
-          .html(this.tooltip(d))
-          .style('left', event.pageX + 'px')
-          .style('top', event.pageY - 32 + 'px');
-      })
-      .on('mouseout', (e, d) => {
-        tooltipDiv.transition().duration(500).style('opacity', 0);
-      })
-      .on('click', (e, d) => {
-        alert(d.date.toDateString());
-      });
-
-    container
-      .append('text')
-      .attr('class', 'timeline-label')
-      .attr('x', x(this.firstItem.date))
-      .text(format(this.firstItem.date, 'MM-yyyy'));
-    // .attr('transform', 'translate(10, 30)');
-
-    container
-      .append('text')
-      .attr('class', 'timeline-label')
-      .attr('x', x(this.lastItem.date))
-      .text(format(this.lastItem.date, 'MM-yyyy'));
-  },
+  mounted() {},
   computed: {
+    timelineWidth() {
+      return this.width + 100;
+    },
+
     visitDates() {
       // NOTE: that this excludes visits without a date.
       return this.visits.map(visit => visit.visitStart).filter(dt => dt);
@@ -120,6 +107,41 @@ export default {
     },
     dataCount() {
       return this.visits.length;
+    },
+    xScale() {
+      return d3
+        .scaleTime()
+        .domain(d3.extent(this.visitDateCounts.map(entry => entry.date)))
+        .range([0, this.width]);
+    },
+    circleScale() {
+      return d3
+        .scaleLinear()
+        .domain([0, d3.max(this.visitDateCounts.map(entry => entry.count))])
+        .range([2, 6]);
+    },
+    firstItemLabel() {
+      return format(this.firstItem.date, 'MM-yyyy');
+    },
+    lastItemLabel() {
+      return format(this.lastItem.date, 'MM-yyyy');
+    },
+    tooltipPrefix() {
+      if (this.tooltipItem) {
+        const count = this.tooltipItem.count;
+        let visit = 'visit';
+        if (count && count > 1) {
+          visit += 's';
+        }
+        return `${count} ${visit}`;
+      }
+      return '';
+    },
+    tooltipStyle() {
+      return { height: `${this.tooltipHeight}px`, ...this.tooltipCoords };
+    },
+    shouldDisplayTooltip() {
+      return this.tooltipItem !== null;
     }
   },
   methods: {
@@ -129,6 +151,19 @@ export default {
         visit += 's';
       }
       return `${item.count} ${visit}<br>${item.date.toDateString()}`;
+    },
+    showTooltip(visitDateCount, event) {
+      this.tooltipItem = visitDateCount;
+      this.tooltipCoords = {
+        top: `${event.pageY - this.tooltipHeight}px`,
+        left: `${event.pageX}px`
+      };
+    },
+    hideTooltip() {
+      this.tooltipItem = null;
+    },
+    isSelectedDate(visitDate) {
+      return false;
     }
   }
 };

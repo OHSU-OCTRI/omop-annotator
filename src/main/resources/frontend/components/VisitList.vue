@@ -1,7 +1,7 @@
 <template>
   <div class="visit-list">
     <h2 v-if="showHeader">Visits</h2>
-    <VisitOverview :visits="visits" @date-selected="setSelectedDate" />
+    <VisitTimeline :visits="visits" @date-selected="setSelectedDate" />
     <div class="table-responsive omop-data">
       <div v-if="dataTable" class="d-flex justify-content-center">
         <div class="row gx-2 mb-2">
@@ -108,7 +108,7 @@ function compareVisitStart(a, b) {
 import { contextPath } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
 import LoadingSpinner from './LoadingSpinner';
-import VisitOverview from './VisitOverview';
+import VisitTimeline from './VisitTimeline';
 
 export default {
   props: {
@@ -158,7 +158,7 @@ export default {
   },
   components: {
     LoadingSpinner,
-    VisitOverview
+    VisitTimeline
   },
   data() {
     return {

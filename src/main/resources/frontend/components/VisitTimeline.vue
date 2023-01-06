@@ -43,7 +43,7 @@
 
 <script>
 import * as d3 from 'd3';
-import _ from 'lodash';
+import { countBy } from 'lodash';
 import { format, parseISO } from 'date-fns';
 
 export default {
@@ -89,7 +89,7 @@ export default {
     },
     visitDateCounts() {
       // Group by date, ignoring time.
-      let counts = _.countBy(this.visitDates, stamp => {
+      let counts = countBy(this.visitDates, stamp => {
         let datetime = parseISO(stamp);
         datetime.setUTCHours(0, 0, 0, 0);
         return datetime.toISOString();

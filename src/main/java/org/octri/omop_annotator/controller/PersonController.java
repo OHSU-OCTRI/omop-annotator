@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.domain.omop.Person;
 import org.octri.omop_annotator.service.omop.ConditionOccurrenceService;
@@ -17,7 +15,6 @@ import org.octri.omop_annotator.service.omop.ObservationService;
 import org.octri.omop_annotator.service.omop.PersonService;
 import org.octri.omop_annotator.service.omop.ProcedureOccurrenceService;
 import org.octri.omop_annotator.service.omop.VisitOccurrenceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +33,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/data/person")
 public class PersonController {
 
-	private static final Log log = LogFactory.getLog(PersonController.class);
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private OmopDataConfiguration omopDataConfig;
@@ -49,7 +45,6 @@ public class PersonController {
 	private NoteService noteService;
 	private DrugExposureService drugExposureService;
 
-	@Autowired
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonService personService,
 			VisitOccurrenceService visitOccurrenceService, ConditionOccurrenceService conditionOccurrenceService,
 			DrugExposureService drugExposureService, MeasurementService measurementService,

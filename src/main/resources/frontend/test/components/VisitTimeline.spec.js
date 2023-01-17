@@ -24,17 +24,17 @@ describe('VisitTimeline.vue', () => {
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        isoDate: '2022-01-01'
+        visitStartIsoDate: '2022-01-01'
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        isoDate: '2022-02-02'
+        visitStartIsoDate: '2022-02-02'
       }),
       Object.freeze({
         id: 3,
         visitType: 'Pharmacy',
-        isoDate: '2022-02-02'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {
@@ -47,17 +47,17 @@ describe('VisitTimeline.vue', () => {
     expect(wrapper.findAll('.timeline-label').length).toEqual(2);
   });
 
-  it('excludes visits without a isoDate', () => {
+  it('excludes visits without a visitStartIsoDate', () => {
     const sampleVisits = [
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        isoDate: null
+        visitStartIsoDate: null
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        isoDate: '2022-02-02'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {
@@ -71,12 +71,12 @@ describe('VisitTimeline.vue', () => {
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        isoDate: '2022-01-01'
+        visitStartIsoDate: '2022-01-01'
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        isoDate: '2022-02-02'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {

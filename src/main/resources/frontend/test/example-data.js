@@ -16,7 +16,7 @@ export const visits = [
     visitEnd: '2022-01-01',
     providerName: 'Dr. Nick',
     careSiteName: 'Springfield Hospital',
-    isoDate: '2022-01-01'
+    visitStartIsoDate: '2022-01-01'
   }),
   Object.freeze({
     id: 2,
@@ -25,7 +25,7 @@ export const visits = [
     visitEnd: '2022-02-03',
     providerName: 'Dr. Hibbert',
     careSiteName: 'Shelbyville General Hospital',
-    isoDate: '2022-02-02'
+    visitStartIsoDate: '2022-02-02'
   })
 ];
 

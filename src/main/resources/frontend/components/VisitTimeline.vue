@@ -35,7 +35,7 @@
 
     <Transition name="tooltip">
       <div class="timeline-tooltip" :style="tooltipStyle" v-if="shouldDisplayTooltip">
-        {{ tooltipPrefix }}<br />{{ tooltipItem.isoDate }}
+        {{ tooltipPrefix }}<br />{{ tooltipItem.visitStartIsoDate }}
       </div>
     </Transition>
   </div>
@@ -85,13 +85,13 @@ export default {
 
     visitDates() {
       // NOTE: that this excludes visits without a date.
-      return this.visits.map(visit => visit.isoDate).filter(dt => dt);
+      return this.visits.map(visit => visit.visitStartIsoDate).filter(dt => dt);
     },
     visitDateCounts() {
       // Group by date, ignoring time.
       let counts = countBy(this.visitDates, dt => dt);
       let dateCounts = Object.entries(counts).map(entry => {
-        return { date: new Date(entry[0]), isoDate: entry[0], count: entry[1] };
+        return { date: new Date(entry[0]), visitStartIsoDate: entry[0], count: entry[1] };
       });
       dateCounts.sort((a, b) => a.date - b.date);
       return dateCounts;
@@ -157,7 +157,7 @@ export default {
       };
     },
     selectDate(visitDate) {
-      const dt = visitDate.isoDate;
+      const dt = visitDate.visitStartIsoDate;
       if (dt === this.selectedDate) {
         this.selectedDate = null;
         this.$emit('date-selected', null);

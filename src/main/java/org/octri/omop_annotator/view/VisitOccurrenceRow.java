@@ -31,7 +31,7 @@ public interface VisitOccurrenceRow {
 	 *
 	 * @return ISO date (ex. "2023-01-13")
 	 */
-	public default String getIsoDate() {
+	public default String getVisitStartIsoDate() {
 		if (this.getVisitStart() != null) {
 			var format = new SimpleDateFormat("yyyy-MM-dd");
 			return format.format(this.getVisitStart());

@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils';
 import VisitTimeline from '@/components/VisitTimeline';
-import { parseISO } from 'date-fns';
 import { visits } from '../example-data';
 
 describe('VisitTimeline.vue', () => {
@@ -25,17 +24,17 @@ describe('VisitTimeline.vue', () => {
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        visitStart: '2022-01-01T00:00:00'
+        visitStartIsoDate: '2022-01-01'
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        visitStart: '2022-02-02T10:43:00'
+        visitStartIsoDate: '2022-02-02'
       }),
       Object.freeze({
         id: 3,
         visitType: 'Pharmacy',
-        visitStart: '2022-02-02T00:00:00'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {
@@ -48,17 +47,17 @@ describe('VisitTimeline.vue', () => {
     expect(wrapper.findAll('.timeline-label').length).toEqual(2);
   });
 
-  it('excludes visits without a visitStart', () => {
+  it('excludes visits without a visitStartIsoDate', () => {
     const sampleVisits = [
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        visitStart: null
+        visitStartIsoDate: null
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        visitStart: '2022-02-02'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {
@@ -72,12 +71,12 @@ describe('VisitTimeline.vue', () => {
       Object.freeze({
         id: 1,
         visitType: 'Emergency',
-        visitStart: '2022-01-01T10:43:00Z'
+        visitStartIsoDate: '2022-01-01'
       }),
       Object.freeze({
         id: 2,
         visitType: 'Inpatient Visit',
-        visitStart: '2022-02-02T00:00:00Z'
+        visitStartIsoDate: '2022-02-02'
       })
     ];
     const wrapper = mount(VisitTimeline, {
@@ -87,8 +86,6 @@ describe('VisitTimeline.vue', () => {
     const circles = wrapper.findAll('.timeline-circle');
     await circles.at(1).trigger('click');
     expect(wrapper.emitted('date-selected').length).toEqual(1);
-    expect(wrapper.emitted('date-selected')[0][0]).toEqual(
-      parseISO('2022-02-02T00:00:00Z')
-    );
+    expect(wrapper.emitted('date-selected')[0][0]).toEqual('2022-02-02');
   });
 });

@@ -41,4 +41,14 @@ public class VisitOccurrenceService {
 		return repository.findAllByPersonIdAndDrugNameLike(personId, drugName);
 	}
 
+	/**
+	 * Do a full text search on the entity and any related entities.
+	 *
+	 * @param personId
+	 * @param text
+	 * @return
+	 */
+	public List<Integer> findAllByPersonIdAndAnyEntityContains(Integer personId, String text) {
+		return repository.findAllByPersonIdAndAnyEntityContains(personId, text);
+	}
 }

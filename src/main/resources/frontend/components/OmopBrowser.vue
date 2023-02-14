@@ -132,7 +132,12 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ConditionList v-else :conditions="conditions" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="conditions"
+              itemType="Condition"
+              :show-header="false"
+            />
           </div>
           <div
             id="observations"
@@ -216,7 +221,7 @@
 </template>
 
 <script>
-import ConditionList from './ConditionList';
+import VisitRelatedList from './VisitRelatedList';
 import DrugList from './DrugList';
 import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
@@ -248,7 +253,7 @@ export default {
     }
   },
   components: {
-    ConditionList,
+    VisitRelatedList,
     DrugList,
     MeasurementList,
     NoteList,

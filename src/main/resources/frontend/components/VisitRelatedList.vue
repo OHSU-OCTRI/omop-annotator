@@ -153,7 +153,8 @@ export default {
   },
   watch: {
     items() {
-      this.$nextTick(this.drawDataTable);
+      console.log('Something about items has changed');
+      this.getDisplayConfig();
     }
   }
 };

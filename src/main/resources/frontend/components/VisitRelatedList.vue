@@ -34,10 +34,13 @@
 </template>
 
 <script>
-import { contextPath } from '../utils/injection-keys';
 export default {
   props: {
     items: {
+      type: Array,
+      required: true
+    },
+    configuration: {
       type: Array,
       required: true
     },
@@ -66,18 +69,8 @@ export default {
       default: false
     }
   },
-  inject: {
-    [contextPath]: {
-      default: ''
-    }
-  },
-  data() {
-    return {
-      configuration: []
-    };
-  },
   mounted() {
-    this.getDisplayConfig();
+    this.$nextTick(this.drawDataTable);
   },
   computed: {
     header() {
@@ -102,12 +95,6 @@ export default {
     }
   },
   methods: {
-    async getDisplayConfig() {
-      const res = await fetch(`${this.contextPath}/display/${this.itemType}`);
-      const finalRes = await res.json();
-      this.configuration = finalRes;
-      this.$nextTick(this.drawDataTable);
-    },
     drawDataTable() {
       // Format with the datatables library if it is available.
       if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
@@ -153,8 +140,10 @@ export default {
   },
   watch: {
     items() {
-      console.log('Something about items has changed');
-      this.getDisplayConfig();
+      this.$nextTick(this.drawDataTable);
+    },
+    configuration() {
+      this.$nextTick(this.drawDataTable);
     }
   }
 };

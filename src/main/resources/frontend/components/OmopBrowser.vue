@@ -135,6 +135,7 @@
             <VisitRelatedList
               v-else
               :items="conditions"
+              :configuration="getConfigurationForEntity('Condition')"
               itemType="Condition"
               :show-header="false"
             />
@@ -268,6 +269,7 @@ export default {
   emits: ['judgment-saved'],
   data() {
     return {
+      configuration: [],
       omopApi: null,
       person: {},
       visits: [],
@@ -286,6 +288,7 @@ export default {
     if (this.omopApi === null) {
       this.omopApi = new OmopApi(this.contextPath);
     }
+    await this.getDisplayConfig();
     await this.loadPerson();
   },
   methods: {
@@ -310,6 +313,16 @@ export default {
       if (window.bootstrap && window.bootstrap.Tab && this.$refs.conditionTab) {
         window.bootstrap.Tab.getOrCreateInstance(this.$refs.conditionTab).show();
       }
+    },
+
+    async getDisplayConfig() {
+      const res = await fetch(`${this.contextPath}/display/`);
+      const finalRes = await res.json();
+      this.configuration = finalRes;
+    },
+
+    getConfigurationForEntity(entityName) {
+      return this.configuration.filter(f => f.entityName === entityName);
     },
 
     async loadPerson() {

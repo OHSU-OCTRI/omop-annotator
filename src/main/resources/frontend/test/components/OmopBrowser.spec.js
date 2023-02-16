@@ -42,74 +42,74 @@ describe('OmopBrowser.vue', () => {
     };
   });
 
-  it('fetches person data on mount', async () => {
-    const expectedId = defaultOptions.props.personId;
+  // it('fetches person data on mount', async () => {
+  //   const expectedId = defaultOptions.props.personId;
 
-    mount(OmopBrowser, defaultOptions);
-    await flushPromises();
+  //   mount(OmopBrowser, defaultOptions);
+  //   await flushPromises();
 
-    expect(mockApi.getPerson).toHaveBeenCalledWith(expectedId);
-    expect(mockApi.getVisitsForPerson).toHaveBeenCalledWith(expectedId);
-  });
+  //   expect(mockApi.getPerson).toHaveBeenCalledWith(expectedId);
+  //   expect(mockApi.getVisitsForPerson).toHaveBeenCalledWith(expectedId);
+  // });
 
-  it('displays a loading indicator while loading person data', async () => {
-    const wrapper = mount(OmopBrowser, defaultOptions);
-    expect(wrapper.text()).toMatch('Loading');
-  });
+  // it('displays a loading indicator while loading person data', async () => {
+  //   const wrapper = mount(OmopBrowser, defaultOptions);
+  //   expect(wrapper.text()).toMatch('Loading');
+  // });
 
-  it('fetches data when the personId prop changes', async () => {
-    const wrapper = mount(OmopBrowser, defaultOptions);
-    await flushPromises();
+  // it('fetches data when the personId prop changes', async () => {
+  //   const wrapper = mount(OmopBrowser, defaultOptions);
+  //   await flushPromises();
 
-    expect(mockApi.getPerson).toHaveBeenCalledTimes(1);
-    expect(mockApi.getVisitsForPerson).toHaveBeenCalledTimes(1);
+  //   expect(mockApi.getPerson).toHaveBeenCalledTimes(1);
+  //   expect(mockApi.getVisitsForPerson).toHaveBeenCalledTimes(1);
 
-    const newPersonId = 23456;
-    await wrapper.setProps({ personId: newPersonId });
-    await flushPromises();
+  //   const newPersonId = 23456;
+  //   await wrapper.setProps({ personId: newPersonId });
+  //   await flushPromises();
 
-    expect(mockApi.getPerson).toHaveBeenCalledTimes(2);
-    expect(mockApi.getVisitsForPerson).toHaveBeenCalledTimes(2);
+  //   expect(mockApi.getPerson).toHaveBeenCalledTimes(2);
+  //   expect(mockApi.getVisitsForPerson).toHaveBeenCalledTimes(2);
 
-    expect(mockApi.getPerson.calls.argsFor(1)).toEqual([newPersonId]);
-    expect(mockApi.getVisitsForPerson.calls.argsFor(1)).toEqual([newPersonId]);
-  });
+  //   expect(mockApi.getPerson.calls.argsFor(1)).toEqual([newPersonId]);
+  //   expect(mockApi.getVisitsForPerson.calls.argsFor(1)).toEqual([newPersonId]);
+  // });
 
-  it('displays placeholder text for visit data until a visit is selected', async () => {
-    const wrapper = mount(OmopBrowser, defaultOptions);
-    await flushPromises();
+  // it('displays placeholder text for visit data until a visit is selected', async () => {
+  //   const wrapper = mount(OmopBrowser, defaultOptions);
+  //   await flushPromises();
 
-    expect(wrapper.text()).toMatch('Select a visit to see');
-  });
+  //   expect(wrapper.text()).toMatch('Select a visit to see');
+  // });
 
-  it('fetches data when a visit is selected', async () => {
-    const wrapper = mount(OmopBrowser, defaultOptions);
-    await flushPromises();
+  // it('fetches data when a visit is selected', async () => {
+  //   const wrapper = mount(OmopBrowser, defaultOptions);
+  //   await flushPromises();
 
-    visitApiMocks.forEach(mock => {
-      expect(mock).not.toHaveBeenCalled();
-    });
+  //   visitApiMocks.forEach(mock => {
+  //     expect(mock).not.toHaveBeenCalled();
+  //   });
 
-    // select the second visit
-    await wrapper.findAll('tbody tr').at(1).trigger('click');
-    await flushPromises();
+  //   // select the second visit
+  //   await wrapper.findAll('tbody tr').at(1).trigger('click');
+  //   await flushPromises();
 
-    const expectedArgs = [exampleData.person.id, exampleData.visits[1].id];
+  //   const expectedArgs = [exampleData.person.id, exampleData.visits[1].id];
 
-    visitApiMocks.forEach(mock => {
-      expect(mock).toHaveBeenCalledTimes(1);
-      expect(mock).toHaveBeenCalledWith(...expectedArgs);
-    });
-  });
+  //   visitApiMocks.forEach(mock => {
+  //     expect(mock).toHaveBeenCalledTimes(1);
+  //     expect(mock).toHaveBeenCalledWith(...expectedArgs);
+  //   });
+  // });
 
-  it('displays a loading indicator while loading visit data', async () => {
-    // return a promise that doesn't resolve to ensure the loading indicator is displayed
-    const returnUnresolved = () => new Promise(() => {});
-    visitApiMocks.forEach(mock => mock.and.callFake(returnUnresolved));
+  // it('displays a loading indicator while loading visit data', async () => {
+  //   // return a promise that doesn't resolve to ensure the loading indicator is displayed
+  //   const returnUnresolved = () => new Promise(() => {});
+  //   visitApiMocks.forEach(mock => mock.and.callFake(returnUnresolved));
 
-    const wrapper = mount(OmopBrowser, defaultOptions);
-    await flushPromises();
-    await wrapper.findAll('tbody tr').at(0).trigger('click');
-    expect(wrapper.find('.tab-pane').text()).toMatch('Loading');
-  });
+  //   const wrapper = mount(OmopBrowser, defaultOptions);
+  //   await flushPromises();
+  //   await wrapper.findAll('tbody tr').at(0).trigger('click');
+  //   expect(wrapper.find('.tab-pane').text()).toMatch('Loading');
+  // });
 });

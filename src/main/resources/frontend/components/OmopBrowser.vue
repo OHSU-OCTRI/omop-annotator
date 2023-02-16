@@ -153,7 +153,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ObservationList v-else :observations="observations" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="observations"
+              :configuration="getConfigurationForEntity('Observation')"
+              itemType="Observation"
+              :show-header="false"
+            />
           </div>
           <div
             id="procedures"
@@ -168,7 +174,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ProcedureList v-else :procedures="procedures" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="procedures"
+              :configuration="getConfigurationForEntity('Procedure')"
+              itemType="Procedure"
+              :show-header="false"
+            />
           </div>
           <div
             id="measurements"
@@ -198,7 +210,12 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <NoteList v-else :notes="notes" :show-header="false" />
+            <NoteList
+              v-else
+              :notes="notes"
+              :configuration="getConfigurationForEntity('Note')"
+              :show-header="false"
+            />
           </div>
           <div
             id="drugs"
@@ -228,10 +245,8 @@ import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
 import MeasurementList from './MeasurementList';
 import NoteList from './NoteList';
-import ObservationList from './ObservationList';
 import PersonSummary from './PersonSummary';
 import PlaceholderMessage from './PlaceholderMessage';
-import ProcedureList from './ProcedureList';
 import VisitList from './VisitList';
 
 import { contextPath } from '../utils/injection-keys';
@@ -258,10 +273,8 @@ export default {
     DrugList,
     MeasurementList,
     NoteList,
-    ObservationList,
     PersonSummary,
     PlaceholderMessage,
-    ProcedureList,
     VisitList,
     LoadingSpinner,
     JudgeEntry

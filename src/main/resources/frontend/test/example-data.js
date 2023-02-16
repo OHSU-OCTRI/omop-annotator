@@ -46,6 +46,44 @@ export const notes = [
   })
 ];
 
+export const notesConfiguration = [
+  Object.freeze({
+    id: 1,
+    fieldName: 'id',
+    columnDisplay: 'Id',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 2,
+    fieldName: 'date',
+    columnDisplay: 'Date/Time',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 3,
+    fieldName: 'type',
+    columnDisplay: 'Type',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 4,
+    fieldName: 'title',
+    columnDisplay: 'Title',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 5,
+    fieldName: 'text',
+    columnDisplay: 'Text',
+    visible: true,
+    filter: false
+  })
+];
+
 export const judgmentDto = {
   id: 13,
   userId: 3,

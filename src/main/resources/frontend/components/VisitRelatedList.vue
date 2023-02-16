@@ -5,14 +5,14 @@
       <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
-            <th v-for="field in fieldsToShow" :key="field.fieldName">
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col">
               {{ field.columnDisplay }}
             </th>
-            <th v-if="showVisit">Visit Occurrence</th>
+            <th v-if="showVisit" scope="col">Visit Occurrence</th>
           </tr>
           <tr v-if="indexesToFilter.length > 0" class="search-row">
-            <th v-for="field in fieldsToShow" :key="field.fieldName"></th>
-            <th v-if="showVisit"></th>
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col"></th>
+            <th v-if="showVisit" scope="col"></th>
           </tr>
         </thead>
         <tbody>

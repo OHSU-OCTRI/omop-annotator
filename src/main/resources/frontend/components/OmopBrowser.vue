@@ -269,7 +269,7 @@ export default {
   emits: ['judgment-saved'],
   data() {
     return {
-      configuration: [],
+      configuration: null,
       omopApi: null,
       person: {},
       visits: [],
@@ -288,7 +288,9 @@ export default {
     if (this.omopApi === null) {
       this.omopApi = new OmopApi(this.contextPath);
     }
-    await this.getDisplayConfig();
+    if (this.configuration === null) {
+      await this.getDisplayConfig();
+    }
     await this.loadPerson();
   },
   methods: {

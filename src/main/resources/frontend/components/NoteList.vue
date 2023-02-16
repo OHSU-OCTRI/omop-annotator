@@ -2,35 +2,42 @@
   <div class="note-list">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table class="table table-striped table-bordered table-sm w-100" ref="table">
+      <table
+        class="table table-striped table-bordered table-sm w-100"
+        ref="table"
+        aria-label="Note List"
+      >
         <thead>
           <tr>
             <th
               v-for="field in fieldsToShow"
-              :key="field.field"
-              :class="isNoteTextField(field.field) ? 'col-md-8' : null"
+              :key="field.fieldName"
+              :class="isNoteTextField(field.fieldName) ? 'col-md-8' : null"
+              scope="col"
             >
-              {{ field.display }}
+              {{ field.columnDisplay }}
             </th>
-            <th v-if="showVisit">Visit Occurrence</th>
-            <th class="d-none">Full Text</th>
+            <th v-if="showVisit" scope="col">Visit Occurrence</th>
+            <th class="d-none" scope="col">Full Text</th>
           </tr>
           <tr v-if="indexesToFilter.length > 0" class="search-row">
-            <th v-for="field in fieldsToShow" :key="field.field"></th>
-            <th v-if="showVisit"></th>
-            <th class="d-none"></th>
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col"></th>
+            <th v-if="showVisit" scope="col"></th>
+            <th class="d-none" scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(note, idx) in notes" :key="note.id">
             <td
               v-for="field in fieldsToShow"
-              :key="field.field"
-              :data-field="field.field"
-              :class="isNoteTextField(field.field) ? 'col-md-8' : null"
-              :title="isNoteTextField(field.field) ? 'Show/hide full note' : null"
-              @click="isNoteTextField(field.field) ? toggleText(idx) : null"
-              v-html="isNoteTextField(field.field) ? noteText(idx) : note[field.field]"
+              :key="field.fieldName"
+              :data-field="field.fieldName"
+              :class="isNoteTextField(field.fieldName) ? 'col-md-8' : null"
+              :title="isNoteTextField(field.fieldName) ? 'Show/hide full note' : null"
+              @click="isNoteTextField(field.fieldName) ? toggleText(idx) : null"
+              v-html="
+                isNoteTextField(field.fieldName) ? noteText(idx) : note[field.fieldName]
+              "
             ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
               {{ note.visitOccurrence }}
@@ -50,6 +57,10 @@
 export default {
   props: {
     notes: {
+      type: Array,
+      required: true
+    },
+    configuration: {
       type: Array,
       required: true
     },
@@ -80,14 +91,7 @@ export default {
   },
   data() {
     return {
-      showFullText: [],
-      configuration: [
-        { field: 'id', display: 'Id', filter: false, show: true },
-        { field: 'date', display: 'Date/Time', filter: false, show: true },
-        { field: 'type', display: 'Type', filter: true, show: true },
-        { field: 'title', display: 'Title', filter: true, show: true },
-        { field: 'text', display: 'Text', filter: false, show: true }
-      ]
+      showFullText: []
     };
   },
   mounted() {
@@ -103,7 +107,7 @@ export default {
       return `Notes${filter}`;
     },
     fieldsToShow() {
-      return this.configuration.filter(f => f.show === true);
+      return this.configuration.filter(f => f.visible === true);
     },
     indexesToFilter() {
       const b = this.fieldsToShow
@@ -178,8 +182,7 @@ export default {
       this.showFullText[idx] = !this.showFullText[idx];
     },
     isNoteTextField(field) {
-      if (field === 'text') return true;
-      return false;
+      return field === 'text';
     }
   },
   watch: {

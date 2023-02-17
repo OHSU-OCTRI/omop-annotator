@@ -1,5 +1,8 @@
 {{>components/form_start}}
 {{#entity}}
+<input type="hidden" name="editable" value="{{entity.editable}}" readonly/>
+<input type="hidden" name="filterable" value="{{entity.filterable}}" readonly/>
+
 <div class="form-group">
     <label for="entity_name" class="form-label">Entity name</label>
     <input type="text" class="read-only-form-input form-control" id="entity_name" name="entityName" value="{{#entityName}}{{.}}{{/entityName}}" readonly >
@@ -20,10 +23,19 @@
     <label for="visible" class="form-label">Visible</label>
 </div>
 
+{{#filterable}}
 <div class="form-check">
     <input type="checkbox" class="form-check-input" id="filter" name="filter" value="true" {{#filter}}checked{{/filter}}>
     <label for="filter" class="form-label">Filter</label>
 </div>
+{{/filterable}}
+{{^filterable}}
+<input type="hidden" name="filter" value="false" readonly/>
+<div class="alert alert-warning alert-dismissible fade show mt-2 mb-2" role="alert">
+	This field is not filterable
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/filterable}}
 
 {{/entity}}
 <button type="submit" class="btn btn-primary">Submit</button>

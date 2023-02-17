@@ -21,7 +21,14 @@
             <td>{{#columnDisplay}}{{.}}{{/columnDisplay}}</td>
             <td>{{#visible}}<span class="fa fa-check text-success"></span>{{/visible}}</td>
             <td>{{#filter}}<span class="fa fa-check text-success"></span>{{/filter}}</td>
-            <td><a href="{{req.contextPath}}{{baseRoute}}/{{id}}/edit">Edit</a></td>
+            <td>
+            {{#editable}}
+            <a href="{{req.contextPath}}{{baseRoute}}/{{id}}/edit">Edit</a>
+            {{/editable}}
+            {{^editable}}
+            (Not Editable)
+            {{/editable}}
+            </td>
         </tr>
         {{/entity_list}}
         </tbody>

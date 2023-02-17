@@ -1,15 +1,12 @@
 <template>
-  <div class="drug-list">
+  <div :class="componentClass">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
-      <table
-        class="table table-striped-with-details table-bordered table-sm w-100"
-        ref="table"
-      >
+      <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
             <th class="no-sort col-1"></th>
-            <th>Drug</th>
+            <th>{{ this.itemType }}</th>
             <th>Count</th>
           </tr>
           <tr class="search-row">
@@ -20,20 +17,20 @@
         </thead>
         <tbody>
           <tr
-            v-for="(drug, index) in drugs.keys()"
-            :key="drug"
-            ref="drugRows"
+            v-for="(item, index) in items.keys()"
+            :key="item"
+            ref="itemRows"
             class="main-row"
           >
             <td
               class="text-center details-control col-1"
-              @click="toggleDetails(drug, index)"
-              title="Show drug details"
+              @click="toggleDetails(item, index)"
+              title="Show item details"
             ></td>
-            <td data-field="drug">
-              {{ drug }}
+            <td data-field="item">
+              {{ item }}
             </td>
-            <td>{{ count(drug) }}</td>
+            <td>{{ count(item) }}</td>
           </tr>
         </tbody>
       </table>
@@ -44,8 +41,16 @@
 <script>
 export default {
   props: {
-    drugs: {
+    items: {
       type: Map,
+      required: true
+    },
+    configuration: {
+      type: Array,
+      required: true
+    },
+    itemType: {
+      type: String,
       required: true
     },
     visitId: {
@@ -75,7 +80,21 @@ export default {
   computed: {
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
-      return `Medications${filter}`;
+      return `${this.itemType}s${filter}`;
+    },
+    componentClass() {
+      return `${this.itemType.toLowerCase()}-list`;
+    },
+    searchRowSelector() {
+      return `.${this.componentClass} .search-row th`;
+    },
+    anchorFieldName() {
+      return `${this.itemType.toLowerCase()}`;
+    },
+    visibleDetailFields() {
+      return this.configuration.filter(
+        f => f.visible === true && f.fieldName !== this.anchorFieldName
+      );
     }
   },
   methods: {
@@ -86,6 +105,7 @@ export default {
           this.dataTable.clear().destroy();
         }
 
+        const searchRowSelector = this.searchRowSelector;
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
@@ -109,7 +129,7 @@ export default {
               .every(function () {
                 const column = this;
                 let select = $('<select><option value=""></option></select>')
-                  .appendTo($('.drug-list .search-row th').eq(column.index()).empty())
+                  .appendTo($(searchRowSelector).eq(column.index()).empty())
                   .on('change', function () {
                     const val = $.fn.dataTable.util.escapeRegex($(this).val());
 
@@ -128,57 +148,53 @@ export default {
         });
       }
     },
-    toggleDetails(drug, index) {
+    toggleDetails(item, index) {
       if (typeof $.fn.DataTable === 'function' && this.$refs.table) {
-        let tr = this.$refs.drugRows[index];
+        let tr = this.$refs.itemRows[index];
         let td = tr.querySelector('td');
         let row = this.dataTable.row(tr);
         if (row.child.isShown()) {
           row.child.hide();
           $(td).html('<i class="fas fa-lg fa-plus-circle text-primary"></i>');
         } else {
-          row.child(this.showDetails(drug), 'details-row').show();
+          row.child(this.showDetails(item), 'details-row').show();
           $(td).html('<i class="fas fa-lg fa-minus-circle text-primary"></i>');
         }
       }
     },
-    showDetails(drug) {
-      let details = this.drugs.get(drug);
+    showDetails(item) {
+      let details = this.items.get(item);
       let table = `
         <table class='table details-table'>
         <thead>
-        <tr>
-          <th>Id</th>
-          <th>Drug Type</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Stop Reason</th>
-          <th>Quantity</th>
-        </tr>
+          <tr>`;
+
+      for (let i = 0; i < this.visibleDetailFields.length; i++) {
+        table += `<th>${this.visibleDetailFields[i].columnDisplay}</th>`;
+      }
+
+      table += `
+          </tr>
         </thead>
         <tbody>`;
+
       for (let i = 0; i < details.length; i++) {
-        let drugRecord = details[i];
-        table += `
-          <tr>
-            <td>${drugRecord.id}</td>
-            <td>${drugRecord.drugType}</td>
-            <td>${drugRecord.drugStart}</td>
-            <td>${drugRecord.drugEnd}</td>
-            <td>${drugRecord.stopReason}</td>
-            <td>${drugRecord.quantity}</td>
-          </tr>
-        `;
+        let item = details[i];
+        table += `<tr>`;
+        for (let j = 0; j < this.visibleDetailFields.length; j++) {
+          table += `<td>${item[this.visibleDetailFields[j].fieldName]}</td>`;
+        }
+        table += `</tr>`;
       }
       table += '</tbody></table>';
       return table;
     },
-    count(drug) {
-      return this.drugs.get(drug).length;
+    count(item) {
+      return this.items.get(item).length;
     }
   },
   watch: {
-    drugs() {
+    items() {
       this.$nextTick(this.drawDataTable);
     }
   }

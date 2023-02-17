@@ -195,7 +195,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <MeasurementList v-else :measurements="measurements" :show-header="false" />
+            <GroupedList
+              v-else
+              :items="measurements"
+              :configuration="getConfigurationForEntity('Measurement')"
+              itemType="Measurement"
+              :show-header="false"
+            />
           </div>
           <div
             id="notes"
@@ -230,7 +236,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <DrugList v-else :drugs="drugs" :show-header="false" />
+            <GroupedList
+              v-else
+              :items="drugs"
+              :configuration="getConfigurationForEntity('Drug')"
+              itemType="Drug"
+              :show-header="false"
+            />
           </div>
         </div>
       </div>
@@ -240,10 +252,9 @@
 
 <script>
 import VisitRelatedList from './VisitRelatedList';
-import DrugList from './DrugList';
 import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
-import MeasurementList from './MeasurementList';
+import GroupedList from './GroupedList';
 import NoteList from './NoteList';
 import PersonSummary from './PersonSummary';
 import PlaceholderMessage from './PlaceholderMessage';
@@ -270,8 +281,7 @@ export default {
   },
   components: {
     VisitRelatedList,
-    DrugList,
-    MeasurementList,
+    GroupedList,
     NoteList,
     PersonSummary,
     PlaceholderMessage,

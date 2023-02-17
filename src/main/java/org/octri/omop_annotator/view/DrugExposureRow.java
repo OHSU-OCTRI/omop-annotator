@@ -3,7 +3,7 @@ package org.octri.omop_annotator.view;
 import java.util.Date;
 
 /**
- * Projection Interface which defines a row in the DrugList table (Vue component).
+ * Projection Interface defining a row and details in the GroupedList component
  */
 public interface DrugExposureRow {
 

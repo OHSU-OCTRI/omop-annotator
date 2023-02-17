@@ -1,6 +1,7 @@
 package org.octri.omop_annotator.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.octri.omop_annotator.domain.app.OmopDisplayConfiguration;
 import org.octri.omop_annotator.repository.app.OmopDisplayConfigurationRepository;
@@ -49,9 +50,15 @@ public class OmopDisplayConfigurationController
 			@ModelAttribute("entity") OmopDisplayConfiguration entity,
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
-		this.getRepository().save(entity);
-		redirectAttributes.addFlashAttribute("infoMessage",
-				entity.getEntityName() + "." + entity.getFieldName() + " updated.");
+		Optional<OmopDisplayConfiguration> oldConfiguration = repository.findById(entity.getId());
+		if (oldConfiguration.isPresent() && oldConfiguration.get().getEditable()) {
+			this.getRepository().save(entity);
+			redirectAttributes.addFlashAttribute("infoMessage",
+					entity.getEntityName() + "." + entity.getFieldName() + " updated.");
+		} else {
+			redirectAttributes.addFlashAttribute("errorMessage",
+					entity.getEntityName() + "." + entity.getFieldName() + " is not editable.");
+		}
 		return listingRedirect();
 	}
 

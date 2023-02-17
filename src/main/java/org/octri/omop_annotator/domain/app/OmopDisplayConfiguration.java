@@ -20,6 +20,14 @@ public class OmopDisplayConfiguration extends AbstractEntity {
     @Column(columnDefinition = "bit default 0")
     private boolean filter;
 
+    // Prevent the field from being edited through the UI in cases where application logic may be impacted
+    @Column(columnDefinition = "bit default 1")
+    private boolean editable;
+
+    // Prevent the field from being filterable through the UI in cases where application logic may be impacted
+    @Column(columnDefinition = "bit default 1")
+    private boolean filterable;
+
     public String getEntityName() {
         return entityName;
     }
@@ -58,6 +66,22 @@ public class OmopDisplayConfiguration extends AbstractEntity {
 
     public void setFilter(boolean filter) {
         this.filter = filter;
+    }
+
+    public boolean getEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public boolean getFilterable() {
+        return filterable;
+    }
+
+    public void setFilterable(boolean filterable) {
+        this.filterable = filterable;
     }
 
 }

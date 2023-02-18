@@ -12,12 +12,13 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 /**
  * OMOP 5.3 Definition of a Note
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * note_date
  * encoding_concept_id
  * language_concept_id
@@ -52,6 +53,7 @@ public class Note {
 	@Column(name = "note_title")
 	private String title;
 
+	@FullTextField
 	@Column(name = "note_text")
 	@Type(type = "ToText")
 	private String text;

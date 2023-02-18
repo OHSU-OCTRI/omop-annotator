@@ -12,12 +12,15 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
 /**
  * OMOP 5.3 Definition of a Measurement
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * measurement_date
  * measurement_time
  * operator_concept_id
@@ -27,7 +30,7 @@ import org.hibernate.annotations.Type;
  * visit_detail_id
  * measurement_source_value
  * unit_source_value
- * 
+ *
  */
 @Entity
 public class Measurement {
@@ -41,6 +44,8 @@ public class Measurement {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
+	@IndexedEmbedded
+	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
 	@ManyToOne
 	@JoinColumn(name = "measurement_concept_id")
 	private Concept measurement;

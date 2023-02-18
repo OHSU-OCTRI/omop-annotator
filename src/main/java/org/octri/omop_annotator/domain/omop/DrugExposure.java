@@ -12,12 +12,15 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
 /**
  * OMOP 5.3 Definition of a Drug Exposure
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * drug_exposure_start_date
  * drug_exposure_end_date
  * verbatim_end_date
@@ -43,6 +46,8 @@ public class DrugExposure {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
+	@IndexedEmbedded
+	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
 	@ManyToOne
 	@JoinColumn(name = "drug_concept_id")
 	private Concept drug;

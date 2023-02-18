@@ -1,7 +1,9 @@
 package org.octri.omop_annotator.service.omop;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.octri.omop_annotator.domain.omop.VisitOccurrence;
 import org.octri.omop_annotator.repository.omop.VisitOccurrenceRepository;
 import org.octri.omop_annotator.view.VisitOccurrenceRow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,7 @@ public class VisitOccurrenceService {
 	 * @return
 	 */
 	public List<Integer> findAllByPersonIdAndAnyEntityContains(Integer personId, String text) {
-		return repository.findAllByPersonIdAndAnyEntityContains(personId, text);
+		return repository.search(personId, text).stream().map(VisitOccurrence::getId).sorted()
+				.collect(Collectors.toList());
 	}
 }

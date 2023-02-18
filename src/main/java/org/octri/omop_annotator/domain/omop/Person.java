@@ -14,13 +14,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * OMOP 5.3 Definition of a Person
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * gender_concept_id
  * year_of_birth
  * month_of_birth
@@ -41,6 +43,8 @@ public class Person {
 	@Transient
 	private LocalDate ageCalculationDate = LocalDate.now();
 
+	/* GenericFields can be used for exact matches when searching with Hibernate Search. */
+	@GenericField
 	@Id
 	@Column(name = "person_id")
 	public Integer id;
@@ -101,7 +105,7 @@ public class Person {
 
 	/**
 	 * Get the patient's age as of the ageCalculationDate.
-	 * 
+	 *
 	 * @return age in years
 	 */
 	public Integer getAge() {
@@ -117,7 +121,7 @@ public class Person {
 
 	/**
 	 * Date at which the patient's age should be calculated. Result is a string that can be serialized to JSON.
-	 * 
+	 *
 	 * @return
 	 */
 	public String getAgeCalculationDate() {

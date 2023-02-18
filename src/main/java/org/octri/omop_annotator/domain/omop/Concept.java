@@ -4,13 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.octri.omop_annotator.view.Named;
 
 /**
  * OMOP 5.3 Definition of a Concept
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * domain_id
  * vocabulary_id
  * concept_class_id
@@ -26,6 +27,7 @@ public class Concept implements Named {
 	@Column(name = "concept_id")
 	private Integer id;
 
+	@FullTextField
 	@Column(name = "concept_name")
 	private String name;
 

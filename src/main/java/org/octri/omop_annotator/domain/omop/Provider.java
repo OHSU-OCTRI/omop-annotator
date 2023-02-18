@@ -6,11 +6,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+
 /**
  * OMOP 5.3 Definition of a Provider
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * npi
  * dea
  * care_site_id (Already given in visit_occurrence, so this is likely superfluous)
@@ -29,6 +31,7 @@ public class Provider {
 	@Id
 	private Integer id;
 
+	@FullTextField
 	@Column(name = "provider_name")
 	private String providerName;
 

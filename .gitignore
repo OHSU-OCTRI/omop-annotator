@@ -29,3 +29,4 @@ bundle-stats.json
 .vscode/launch.json
 .vscode/tasks.json
 
+search_indices/

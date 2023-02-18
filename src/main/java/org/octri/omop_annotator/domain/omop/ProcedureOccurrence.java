@@ -11,6 +11,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+
 /**
  * OMOP 5.3 Definition of a Procedure Occurrence
  *
@@ -36,6 +40,8 @@ public class ProcedureOccurrence {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
+	@IndexedEmbedded
+	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
 	@ManyToOne
 	@JoinColumn(name = "procedure_concept_id")
 	private Concept procedure;

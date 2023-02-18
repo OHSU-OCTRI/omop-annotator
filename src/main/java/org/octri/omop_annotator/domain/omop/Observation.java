@@ -12,12 +12,15 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
 /**
  * OMOP 5.3 Definition of an Observation
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * observation_date
  * provider_id
  * visit_detail_id
@@ -37,6 +40,8 @@ public class Observation {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
+	@IndexedEmbedded
+	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
 	@ManyToOne
 	@JoinColumn(name = "observation_concept_id")
 	private Concept observation;

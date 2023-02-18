@@ -79,6 +79,11 @@ div.parent-summary strong {
 	margin-bottom: 1rem;
 }
 
+.read-only-form-input {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+
 /** Vertically scrollable table with fixed header **/
 .tableFixHead {
 	overflow: auto;

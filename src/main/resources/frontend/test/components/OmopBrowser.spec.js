@@ -38,7 +38,7 @@ describe('OmopBrowser.vue', () => {
 
     defaultOptions = {
       props: { personId: person.id, poolEntryId: 12 },
-      data: () => ({ omopApi: mockApi })
+      data: () => ({ omopApi: mockApi, configuration: [] })
     };
   });
 

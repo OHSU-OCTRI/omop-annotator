@@ -1,30 +1,30 @@
 <template>
-  <div class="procedure-list">
+  <div :class="componentClass">
     <h2 v-if="showHeader">{{ header }}</h2>
     <div class="table-responsive omop-data">
       <table class="table table-striped table-bordered table-sm w-100" ref="table">
         <thead>
           <tr>
-            <th v-for="field in fieldsToShow" :key="field.field">
-              {{ field.display }}
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col">
+              {{ field.columnDisplay }}
             </th>
-            <th v-if="showVisit">Visit Occurrence</th>
+            <th v-if="showVisit" scope="col">Visit Occurrence</th>
           </tr>
           <tr v-if="indexesToFilter.length > 0" class="search-row">
-            <th v-for="field in fieldsToShow" :key="field.field"></th>
-            <th v-if="showVisit"></th>
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col"></th>
+            <th v-if="showVisit" scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="procedure in procedures" :key="procedure.id">
+          <tr v-for="item in items" :key="item.id">
             <td
               v-for="field in fieldsToShow"
-              :key="field.field"
-              :data-field="field.field"
-              v-html="procedure[field.field]"
+              :key="field.fieldName"
+              :data-field="field.fieldName"
+              v-html="item[field.fieldName]"
             ></td>
             <td v-if="showVisit" data-field="visitOccurrence">
-              {{ procedure.visitOccurrence }}
+              {{ item.visitOccurrence }}
             </td>
           </tr>
         </tbody>
@@ -36,8 +36,16 @@
 <script>
 export default {
   props: {
-    procedures: {
+    items: {
       type: Array,
+      required: true
+    },
+    configuration: {
+      type: Array,
+      required: true
+    },
+    itemType: {
+      type: String,
       required: true
     },
     visitId: {
@@ -61,28 +69,16 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      configuration: [
-        { field: 'id', display: 'Id', filter: false, show: true },
-        { field: 'procedure', display: 'Procedure', filter: true, show: true },
-        { field: 'procedureSource', display: 'Source', filter: false, show: false },
-        { field: 'date', display: 'Date/Time', filter: false, show: true },
-        { field: 'procedureType', display: 'Type', filter: true, show: true },
-        { field: 'quantity', display: 'Quantity', filter: false, show: false }
-      ]
-    };
-  },
   mounted() {
     this.$nextTick(this.drawDataTable);
   },
   computed: {
     header() {
       const filter = this.visitId ? ` for visit ${this.visitId}` : '';
-      return `Procedures${filter}`;
+      return `${this.itemType}s${filter}`;
     },
     fieldsToShow() {
-      return this.configuration.filter(f => f.show === true);
+      return this.configuration.filter(f => f.visible === true);
     },
     indexesToFilter() {
       const b = this.fieldsToShow
@@ -90,6 +86,12 @@ export default {
         .filter(f => f.filter === true)
         .map(f => f.index);
       return b;
+    },
+    componentClass() {
+      return `${this.itemType.toLowerCase()}-list`;
+    },
+    searchRowSelector() {
+      return `.${this.componentClass} .search-row th`;
     }
   },
   methods: {
@@ -101,6 +103,7 @@ export default {
         }
 
         const indexesToFilter = this.indexesToFilter;
+        const searchRowSelector = this.searchRowSelector;
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
@@ -114,9 +117,7 @@ export default {
                 .every(function () {
                   const column = this;
                   let select = $('<select><option value=""></option></select>')
-                    .appendTo(
-                      $('.procedure-list .search-row th').eq(column.index()).empty()
-                    )
+                    .appendTo($(searchRowSelector).eq(column.index()).empty())
                     .on('change', function () {
                       const val = $.fn.dataTable.util.escapeRegex($(this).val());
 
@@ -138,7 +139,10 @@ export default {
     }
   },
   watch: {
-    procedures() {
+    items() {
+      this.$nextTick(this.drawDataTable);
+    },
+    configuration() {
       this.$nextTick(this.drawDataTable);
     }
   }

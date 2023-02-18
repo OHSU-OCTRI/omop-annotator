@@ -132,7 +132,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ConditionList v-else :conditions="conditions" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="conditions"
+              :configuration="getConfigurationForEntity('Condition')"
+              itemType="Condition"
+              :show-header="false"
+            />
           </div>
           <div
             id="observations"
@@ -147,7 +153,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ObservationList v-else :observations="observations" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="observations"
+              :configuration="getConfigurationForEntity('Observation')"
+              itemType="Observation"
+              :show-header="false"
+            />
           </div>
           <div
             id="procedures"
@@ -162,7 +174,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <ProcedureList v-else :procedures="procedures" :show-header="false" />
+            <VisitRelatedList
+              v-else
+              :items="procedures"
+              :configuration="getConfigurationForEntity('Procedure')"
+              itemType="Procedure"
+              :show-header="false"
+            />
           </div>
           <div
             id="measurements"
@@ -177,7 +195,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <MeasurementList v-else :measurements="measurements" :show-header="false" />
+            <GroupedList
+              v-else
+              :items="measurements"
+              :configuration="getConfigurationForEntity('Measurement')"
+              itemType="Measurement"
+              :show-header="false"
+            />
           </div>
           <div
             id="notes"
@@ -192,7 +216,12 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <NoteList v-else :notes="notes" :show-header="false" />
+            <NoteList
+              v-else
+              :notes="notes"
+              :configuration="getConfigurationForEntity('Note')"
+              :show-header="false"
+            />
           </div>
           <div
             id="drugs"
@@ -207,7 +236,13 @@
             <div class="d-flex justify-content-center" v-else-if="loadingVisitData">
               <LoadingSpinner />
             </div>
-            <DrugList v-else :drugs="drugs" :show-header="false" />
+            <GroupedList
+              v-else
+              :items="drugs"
+              :configuration="getConfigurationForEntity('Drug')"
+              itemType="Drug"
+              :show-header="false"
+            />
           </div>
         </div>
       </div>
@@ -216,16 +251,13 @@
 </template>
 
 <script>
-import ConditionList from './ConditionList';
-import DrugList from './DrugList';
+import VisitRelatedList from './VisitRelatedList';
 import JudgeEntry from './JudgeEntry';
 import LoadingSpinner from './LoadingSpinner.vue';
-import MeasurementList from './MeasurementList';
+import GroupedList from './GroupedList';
 import NoteList from './NoteList';
-import ObservationList from './ObservationList';
 import PersonSummary from './PersonSummary';
 import PlaceholderMessage from './PlaceholderMessage';
-import ProcedureList from './ProcedureList';
 import VisitList from './VisitList';
 
 import { contextPath } from '../utils/injection-keys';
@@ -248,14 +280,11 @@ export default {
     }
   },
   components: {
-    ConditionList,
-    DrugList,
-    MeasurementList,
+    VisitRelatedList,
+    GroupedList,
     NoteList,
-    ObservationList,
     PersonSummary,
     PlaceholderMessage,
-    ProcedureList,
     VisitList,
     LoadingSpinner,
     JudgeEntry
@@ -263,6 +292,7 @@ export default {
   emits: ['judgment-saved'],
   data() {
     return {
+      configuration: null,
       omopApi: null,
       person: {},
       visits: [],
@@ -280,6 +310,9 @@ export default {
   async mounted() {
     if (this.omopApi === null) {
       this.omopApi = new OmopApi(this.contextPath);
+    }
+    if (this.configuration === null) {
+      await this.getDisplayConfig();
     }
     await this.loadPerson();
   },
@@ -305,6 +338,16 @@ export default {
       if (window.bootstrap && window.bootstrap.Tab && this.$refs.conditionTab) {
         window.bootstrap.Tab.getOrCreateInstance(this.$refs.conditionTab).show();
       }
+    },
+
+    async getDisplayConfig() {
+      const res = await fetch(`${this.contextPath}/display/`);
+      const finalRes = await res.json();
+      this.configuration = finalRes;
+    },
+
+    getConfigurationForEntity(entityName) {
+      return this.configuration.filter(f => f.entityName === entityName);
     },
 
     async loadPerson() {

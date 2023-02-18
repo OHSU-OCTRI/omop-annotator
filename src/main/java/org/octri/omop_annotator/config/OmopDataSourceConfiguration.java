@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
-import org.hibernate.search.mapper.orm.mapping.HibernateOrmSearchMappingConfigurer;
 import org.octri.omop_annotator.hibernate.ToFloatTypeContributor;
 import org.octri.omop_annotator.hibernate.ToTextTypeContributor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +68,6 @@ public class OmopDataSourceConfiguration {
 		return new HibernateProperties();
 	}
 
-	@Bean
-	public HibernateOrmSearchMappingConfigurer searchMappingConfigurer() {
-		return new SearchMappingConfigurer();
-	}
-
 	@Bean(name = "omopEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean omopEntityMangerFactory(EntityManagerFactoryBuilder builder) {
 		log.info("Creating OMOP entity manager");
@@ -98,7 +92,6 @@ public class OmopDataSourceConfiguration {
 		});
 
 		// Add Search properties
-		// jpaProperties.put("hibernate.search.mapping.configurer", searchMappingConfigurer());
 		jpaProperties.putAll(searchConfig.toPropertyMap());
 
 		factory.setJpaPropertyMap(jpaProperties);

@@ -92,3 +92,10 @@ mkdir src/main/resources/db/migration/0.0.1
 ```
 
 Now add your migrations in this directory. For example, `V19700101000042__my_first_migration.sql` which follows the format: `V`, followed by the year, month, day, hours, minutes, seconds (YYYYMMDDhhmmss), two underscores, a short description, and finally `.sql`.
+
+
+## Search Indexing
+
+The Judging interface for OMOP Annotator provides judges with the ability to perform full text searches on VisitOccurrences as well as all related visit data. To do this efficiently, the application uses the Hibernate Search library, which provides a consistent API over full text search engines such as Apache Lucene and Elasticsearch. See the `application.properties` file to view the configuration options.
+
+The default search engine is Lucene, which stores index data to disk. An index schema is created on application startup, but the index is not populated until the Indexer has been run. The easiest way to do this is to login as an admin and navigate to the url: `/admin/search/init_index`. Note that this operation will index all visit occurrences associated with a Patient record that has been assigned to a Pool. This operation can take a long time so it should be performed when the application is not in use.

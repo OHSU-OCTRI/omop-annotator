@@ -13,28 +13,35 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.octri.omop_annotator.hibernate.ToFloatTypeContributor;
 import org.octri.omop_annotator.hibernate.ToTextTypeContributor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Configuration for the data source that stores OMOP domain entities.
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "org.octri.omop_annotator.repository.omop", entityManagerFactoryRef = "omopEntityManagerFactory", transactionManagerRef = "omopTransactionManager")
+@EnableTransactionManagement
 public class OmopDataSourceConfiguration {
 
 	private static final Log log = LogFactory.getLog(OmopDataSourceConfiguration.class);
 
 	public static final String OMOP_DOMAIN_PACKAGE = "org.octri.omop_annotator.domain.omop";
+
+	@Autowired
+	private SearchConfig searchConfig;
 
 	@Bean(name = "omopDataSourceProperties")
 	@ConfigurationProperties(prefix = "omop.datasource")
@@ -84,6 +91,9 @@ public class OmopDataSourceConfiguration {
 			}
 		});
 
+		// Add Search properties
+		jpaProperties.putAll(searchConfig.toPropertyMap());
+
 		factory.setJpaPropertyMap(jpaProperties);
 
 		return factory;
@@ -96,4 +106,8 @@ public class OmopDataSourceConfiguration {
 		return new JpaTransactionManager(omopEntityManagerFactory.getObject());
 	}
 
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
 }

@@ -146,7 +146,8 @@ export default {
           'observation',
           'measurement',
           'note',
-          'medication'
+          'medication',
+          'any'
         ];
       }
     }

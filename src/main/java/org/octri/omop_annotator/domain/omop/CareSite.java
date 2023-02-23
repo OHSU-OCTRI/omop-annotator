@@ -4,11 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+
 /**
  * OMOP 5.3 Definition of a Care Site
- * 
+ *
  * The following columns have been excluded:
- * 
+ *
  * PLACE_OF_SERVICE_CONCEPT_ID
  * LOCATION_ID
  * CARE_SITE_SOURCE_VALUE
@@ -21,6 +23,7 @@ public class CareSite {
 	@Id
 	private Integer id;
 
+	@FullTextField
 	@Column(name = "care_site_name")
 	private String careSiteName;
 

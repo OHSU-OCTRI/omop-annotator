@@ -7,6 +7,7 @@ services:
     image: octri.ohsu.edu/omop_annotator
     volumes:
       - ./target/omop_annotator.jar:/app.jar
+      - ./docker_data/search_indices:/search_indices
     environment:
       - SERVER_SERVLET_CONTEXTPATH
       - APP_DATASOURCE_URL
@@ -24,3 +25,4 @@ services:
       - OMOP_DATASOURCE_PASSWORD
       - OMOP_DATA_REFRESHDATE
       - OMOP_DATA_DATEFORMAT
+      - SEARCH_BACKEND_DIRECTORY_ROOT=search_indices

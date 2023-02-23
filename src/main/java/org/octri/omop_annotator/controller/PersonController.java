@@ -86,7 +86,7 @@ public class PersonController {
 	}
 
 	enum FilterEntity {
-		condition, procedure, observation, measurement, note, medication
+		condition, procedure, observation, measurement, note, medication, any
 	}
 
 	@GetMapping(value = "/summary/{personId}/visits/filter/{entity}")
@@ -109,6 +109,8 @@ public class PersonController {
 			visitIds = visitOccurrenceService.findAllByPersonIdAndNoteTextLike(personId, searchTerm);
 		} else if (entity == FilterEntity.medication) {
 			visitIds = visitOccurrenceService.findAllByPersonIdAndDrugNameLike(personId, searchTerm);
+		} else if (entity == FilterEntity.any) {
+			visitIds = visitOccurrenceService.findAllByPersonIdAndAnyEntityContains(personId, searchTerm);
 		}
 		return mapper.writeValueAsString(visitIds);
 	}

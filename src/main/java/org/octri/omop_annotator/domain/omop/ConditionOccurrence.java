@@ -11,6 +11,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+
 /**
  * OMOP 5.3 Definition of a Condition Occurrence
  *
@@ -38,6 +42,8 @@ public class ConditionOccurrence {
 	@JoinColumn(name = "person_id")
 	private Person person;
 
+	@IndexedEmbedded
+	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
 	@ManyToOne
 	@JoinColumn(name = "condition_concept_id")
 	private Concept condition;
@@ -55,7 +61,7 @@ public class ConditionOccurrence {
 	private Concept conditionType;
 
 	@ManyToOne
-	@JoinColumn(name = "visit_occurrence_id")
+	@JoinColumn(name = "visit_occurrence_id", insertable = false, updatable = false)
 	VisitOccurrence visitOccurrence;
 
 	public Integer getId() {

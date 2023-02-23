@@ -51,9 +51,15 @@ spec:
         - name: mysql-pki
           mountPath: /etc/pki/mysql
           readOnly: true
+        - name: data-safe-nfs
+          mountPath: /search_indices
+          subPath: omop-annotator-stage/search_indices
       volumes:
       - name: mysql-pki
         secret:
           secretName: stage-mysql-truststore
+      - name: data-safe-nfs
+        persistentVolumeClaim:
+          claimName: data-safe-nfs
       imagePullSecrets:
       - name: octri-registry-cred

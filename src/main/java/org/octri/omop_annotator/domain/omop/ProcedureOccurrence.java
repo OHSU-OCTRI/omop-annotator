@@ -20,13 +20,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * procedure_date
- * modifier_concept_id
- * provider_id
+ * procedure_date - Duplicative of datetime
+ * provider_id - Also on visit
  * visit_detail_id - Always 0
- * procedure_source_value - For example, an ICD10 code, but without the vocabulary so not very useful?
- * modifier_source_value
- *
  */
 @Entity
 public class ProcedureOccurrence {
@@ -57,6 +53,16 @@ public class ProcedureOccurrence {
 	@ManyToOne
 	@JoinColumn(name = "procedure_source_concept_id")
 	private Concept procedureSource;
+
+	@Column(name = "procedure_source_value")
+	private String procedureSourceValue;
+
+	@ManyToOne
+	@JoinColumn(name = "modifier_concept_id")
+	private Concept procedureModifier;
+
+	@Column(name = "modifier_source_value")
+	private String modifierSourceValue;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
@@ -113,6 +119,30 @@ public class ProcedureOccurrence {
 		this.procedureSource = procedureSource;
 	}
 
+	public String getProcedureSourceValue() {
+		return procedureSourceValue;
+	}
+
+	public void setProcedureSourceValue(String procedureSourceValue) {
+		this.procedureSourceValue = procedureSourceValue;
+	}
+
+	public Concept getProcedureModifier() {
+		return procedureModifier;
+	}
+
+	public void setProcedureModifier(Concept procedureModifier) {
+		this.procedureModifier = procedureModifier;
+	}
+
+	public String getModifierSourceValue() {
+		return modifierSourceValue;
+	}
+
+	public void setModifierSourceValue(String modifierSourceValue) {
+		this.modifierSourceValue = modifierSourceValue;
+	}
+
 	public VisitOccurrence getVisitOccurrence() {
 		return visitOccurrence;
 	}
@@ -132,7 +162,9 @@ public class ProcedureOccurrence {
 	@Override
 	public String toString() {
 		return "ProcedureOccurrence [id=" + id + ", person=" + person + ", procedure=" + procedure
-				+ ", procedureDatetime=" + procedureDatetime + ", procedureType=" + procedureType + ", visitOccurrence="
+				+ ", procedureDatetime=" + procedureDatetime + ", procedureType=" + procedureType + ", procedureSource="
+				+ procedureSource + ", procedureSourceValue=" + procedureSourceValue + ", procedureModifier="
+				+ procedureModifier + ", modifierSourceValue=" + modifierSourceValue + ", visitOccurrence="
 				+ visitOccurrence + ", quantity=" + quantity + "]";
 	}
 

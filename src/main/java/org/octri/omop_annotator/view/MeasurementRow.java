@@ -18,6 +18,8 @@ public interface MeasurementRow {
 
 	public String getMeasurementType();
 
+	public String getMeasurementOperator();
+
 	public String getValueSourceValue();
 
 	public Float getValueAsNumber();
@@ -25,6 +27,16 @@ public interface MeasurementRow {
 	public String getValueAsConcept();
 
 	public String getUnit();
+
+	public String getUnitSourceValue();
+
+	public Float getRangeLow();
+
+	public Float getRangeHigh();
+
+	public String getMeasurementSource();
+
+	public String getMeasurementSourceValue();
 
 	public Integer getVisitOccurrence();
 

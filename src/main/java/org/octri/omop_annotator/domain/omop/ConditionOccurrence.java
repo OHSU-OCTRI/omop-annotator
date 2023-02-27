@@ -20,15 +20,10 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * condition_start_date
- * condition_end_date
- * stop_reason
- * provider_id
- * condition_status_concept_id
- * visit_detail_id - Always null
- * condition_source_value - Might be an ICD10 code, for example, but need full concept to know vocabulary
- * condition_source_concept_id - Might want eventually, but not pulled in by Dr. Bedrick
- * condition_status_source_value - Often null
+ * condition_start_date - Duplicative of datetime
+ * condition_end_date - Duplicative of datetime
+ * provider_id - Also on visit
+ * visit_detail_id - Always null at OHSU
  */
 @Entity
 public class ConditionOccurrence {
@@ -59,6 +54,23 @@ public class ConditionOccurrence {
 	@ManyToOne
 	@JoinColumn(name = "condition_type_concept_id")
 	private Concept conditionType;
+
+	@ManyToOne
+	@JoinColumn(name = "condition_source_concept_id")
+	private Concept conditionSource;
+
+	@Column(name = "condition_source_value")
+	private String conditionSourceValue;
+
+	@ManyToOne
+	@JoinColumn(name = "condition_status_concept_id")
+	private Concept conditionStatus;
+
+	@Column(name = "condition_status_source_value")
+	private String conditionStatusSourceValue;
+
+	@Column(name = "stop_reason")
+	private String stopReason;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id", insertable = false, updatable = false)
@@ -112,6 +124,46 @@ public class ConditionOccurrence {
 		this.conditionType = conditionType;
 	}
 
+	public Concept getConditionSource() {
+		return conditionSource;
+	}
+
+	public void setConditionSource(Concept conditionSource) {
+		this.conditionSource = conditionSource;
+	}
+
+	public String getConditionSourceValue() {
+		return conditionSourceValue;
+	}
+
+	public void setConditionSourceValue(String conditionSourceValue) {
+		this.conditionSourceValue = conditionSourceValue;
+	}
+
+	public Concept getConditionStatus() {
+		return conditionStatus;
+	}
+
+	public void setConditionStatus(Concept conditionStatus) {
+		this.conditionStatus = conditionStatus;
+	}
+
+	public String getConditionStatusSourceValue() {
+		return conditionStatusSourceValue;
+	}
+
+	public void setConditionStatusSourceValue(String conditionStatusSourceValue) {
+		this.conditionStatusSourceValue = conditionStatusSourceValue;
+	}
+
+	public String getStopReason() {
+		return stopReason;
+	}
+
+	public void setStopReason(String stopReason) {
+		this.stopReason = stopReason;
+	}
+
 	public VisitOccurrence getVisitOccurrence() {
 		return visitOccurrence;
 	}
@@ -124,7 +176,9 @@ public class ConditionOccurrence {
 	public String toString() {
 		return "ConditionOccurrence [id=" + id + ", person=" + person + ", condition=" + condition + ", conditionStart="
 				+ conditionStart + ", conditionEnd=" + conditionEnd + ", conditionType=" + conditionType
-				+ ", visitOccurrence=" + visitOccurrence + "]";
+				+ ", conditionSource=" + conditionSource + ", conditionSourceValue=" + conditionSourceValue
+				+ ", conditionStatus=" + conditionStatus + ", conditionStatusSourceValue=" + conditionStatusSourceValue
+				+ ", stopReason=" + stopReason + ", visitOccurrence=" + visitOccurrence + "]";
 	}
 
 }

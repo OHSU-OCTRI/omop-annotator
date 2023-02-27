@@ -21,7 +21,19 @@ public interface DrugExposureRow {
 
 	public String getStopReason();
 
-	public Integer getQuantity();
+	public Integer getRefills();
+
+	public Float getQuantity();
+
+	public Integer getDaysSupply();
+
+	public String getDrugSource();
+
+	public String getDrugSourceValue();
+
+	public String getRouteSourceValue();
+
+	public String getDoseUnitSourceValue();
 
 	public Integer getVisitOccurrence();
 

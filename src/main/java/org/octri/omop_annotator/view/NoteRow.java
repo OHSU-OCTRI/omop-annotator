@@ -21,5 +21,7 @@ public interface NoteRow {
 
     public String getText();
 
+    public String getNoteSourceValue();
+
     public Integer getVisitOccurrence();
 }

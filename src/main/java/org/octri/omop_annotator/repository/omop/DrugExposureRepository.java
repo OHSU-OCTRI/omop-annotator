@@ -17,12 +17,15 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface DrugExposureRepository extends PagingAndSortingRepository<DrugExposure, Integer> {
 
     static final String query = "select de.id as id, de.person.id as personId, drug.name as drug,"
-            + " drugType.name as drugType, de.drugStart as drugStart, de.drugEnd as drugEnd, "
-            + " de.stopReason as stopReason, de.quantity as quantity, "
+            + " drugType.name as drugType, de.drugStart as drugStart, de.drugEnd as drugEnd,"
+            + " de.stopReason as stopReason, de.refills as refills, de.quantity as quantity,"
+            + " de.daysSupply as daysSupply, drugSource.name as drugSource, de.drugSourceValue as drugSourceValue,"
+            + " de.routeSourceValue as routeSourceValue, de.doseUnitSourceValue as doseUnitSourceValue,"
             + " visitOccurrence.id as visitOccurrence"
             + " from DrugExposure de"
             + " left join de.drug drug"
             + " left join de.drugType drugType"
+            + " left join de.drugSource drugSource"
             + " left join de.visitOccurrence visitOccurrence";
 
     @Query(query + " where de.person.id = ?1")

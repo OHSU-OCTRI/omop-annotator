@@ -49,13 +49,12 @@
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Visit Type</th>
-            <th>Visit Source Value</th>
-            <th>Visit Start</th>
-            <th>Visit End</th>
-            <th>Provider</th>
-            <th>Care Site</th>
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col">
+              {{ field.columnDisplay }}
+            </th>
+          </tr>
+          <tr v-if="indexesToFilter.length > 0" class="search-row">
+            <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -65,27 +64,12 @@
             @click="$emit('visit-selected', visitOccurrence.id)"
             :class="{ 'table-active': isSelectedVisit(visitOccurrence.id) }"
           >
-            <td data-field="id">
-              {{ visitOccurrence.id }}
-            </td>
-            <td data-field="visitType">
-              {{ visitOccurrence.visitType }}
-            </td>
-            <td data-field="visitSourceValue">
-              {{ visitOccurrence.visitSourceValue }}
-            </td>
-            <td data-field="visitStart">
-              {{ visitOccurrence.visitStart }}
-            </td>
-            <td data-field="visitEnd">
-              {{ visitOccurrence.visitEnd }}
-            </td>
-            <td data-field="provider">
-              {{ visitOccurrence.providerName }}
-            </td>
-            <td data-field="careSite">
-              {{ visitOccurrence.careSiteName }}
-            </td>
+            <td
+              v-for="field in fieldsToShow"
+              :key="field.fieldName"
+              :data-field="field.fieldName"
+              v-html="visitOccurrence[field.fieldName]"
+            ></td>
           </tr>
         </tbody>
       </table>
@@ -117,6 +101,10 @@ export default {
       required: true
     },
     visits: {
+      type: Array,
+      required: true
+    },
+    configuration: {
       type: Array,
       required: true
     },
@@ -193,6 +181,16 @@ export default {
         return Math.floor(this.selectedVisitIndex / this.pageLength);
       }
       return 0;
+    },
+    fieldsToShow() {
+      return this.configuration.filter(f => f.visible === true);
+    },
+    indexesToFilter() {
+      const b = this.fieldsToShow
+        .map((item, index) => ({ index, ...item }))
+        .filter(f => f.filter === true)
+        .map(f => f.index);
+      return b;
     }
   },
   methods: {
@@ -201,13 +199,39 @@ export default {
         if (this.dataTable) {
           this.dataTable.clear().destroy();
         }
+        const indexesToFilter = this.indexesToFilter;
         this.dataTable = $(this.$refs.table).DataTable({
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           pageLength: this.pageLength,
           searching: true, // this must be true to use the api call
           info: true,
-          dom: 'lrtip' // exclude default search controls from the dom
+          dom: 'lrtip', // exclude default search controls from the dom
+          orderCellsTop: true,
+          initComplete: function () {
+            if (indexesToFilter.length > 0) {
+              this.api()
+                .columns(indexesToFilter)
+                .every(function () {
+                  const column = this;
+                  let select = $('<select><option value=""></option></select>')
+                    .appendTo($('.visit-list .search-row th').eq(column.index()).empty())
+                    .on('change', function () {
+                      const val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                      column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
+
+                  column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                      select.append('<option value="' + d + '">' + d + '</option>');
+                    });
+                });
+            }
+          }
         });
         this.dataTable.on('length.dt', (e, settings, len) => {
           this.pageLength = len;

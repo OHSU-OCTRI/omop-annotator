@@ -29,6 +29,30 @@ export const visits = [
   })
 ];
 
+export const visitsConfiguration = [
+  Object.freeze({
+    id: 1,
+    fieldName: 'id',
+    columnDisplay: 'Id',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 2,
+    fieldName: 'visitType',
+    columnDisplay: 'Type',
+    visible: true,
+    filter: false
+  }),
+  Object.freeze({
+    id: 3,
+    fieldName: 'careSiteName',
+    columnDisplay: 'Type',
+    visible: false,
+    filter: false
+  })
+];
+
 export const notes = [
   Object.freeze({
     id: 1,

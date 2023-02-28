@@ -24,8 +24,8 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * visit_start_date
- * visit_end_date
+ * visit_start_date - Duplicative of date/time
+ * visit_end_date - Duplicative of date/time
  * visit_type_concept_id (Generally "Visit derived from EHR encounter record")
  * admitting_source_concept_id
  * discharge_to_concept_id
@@ -84,10 +84,10 @@ public class VisitOccurrence {
 	private Concept visitSource;
 
 	@Column(name = "admitting_source_value")
-	private String admittingSource;
+	private String admittingSourceValue;
 
 	@Column(name = "discharge_to_source_value")
-	private String dischargedTo;
+	private String dischargeToSourceValue;
 
 	@IndexedEmbedded
 	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
@@ -197,20 +197,20 @@ public class VisitOccurrence {
 		this.visitSource = visitSource;
 	}
 
-	public String getAdmittingSource() {
-		return admittingSource;
+	public String getAdmittingSourceValue() {
+		return admittingSourceValue;
 	}
 
-	public void setAdmittingSource(String admittingSource) {
-		this.admittingSource = admittingSource;
+	public void setAdmittingSourceValue(String admittingSourceValue) {
+		this.admittingSourceValue = admittingSourceValue;
 	}
 
-	public String getDischargedTo() {
-		return dischargedTo;
+	public String getDischargeToSourceValue() {
+		return dischargeToSourceValue;
 	}
 
-	public void setDischargedTo(String dischargedTo) {
-		this.dischargedTo = dischargedTo;
+	public void setDischargeToSourceValue(String dischargeToSourceValue) {
+		this.dischargeToSourceValue = dischargeToSourceValue;
 	}
 
 	public Set<ConditionOccurrence> getConditionOccurrences() {
@@ -263,9 +263,9 @@ public class VisitOccurrence {
 
 	@Override
 	public String toString() {
-		return "VisitOccurrence [admittingSource=" + admittingSource + ", careSite=" + careSite + ", dischargedTo="
-				+ dischargedTo + ", id=" + id + ", person=" + person + ", provider=" + provider + ", visitEnd="
-				+ visitEnd + ", visitSource=" + visitSource + ", visitSourceValue=" + visitSourceValue + ", visitStart="
-				+ visitStart + ", visitType=" + visitType + "]";
+		return "VisitOccurrence [id=" + id + ", person=" + person + ", visitType=" + visitType + ", visitSourceValue="
+				+ visitSourceValue + ", visitStart=" + visitStart + ", visitEnd=" + visitEnd + ", provider=" + provider
+				+ ", careSite=" + careSite + ", visitSource=" + visitSource + ", admittingSourceValue="
+				+ admittingSourceValue + ", dischargeToSourceValue=" + dischargeToSourceValue + "]";
 	}
 }

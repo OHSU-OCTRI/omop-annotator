@@ -15,6 +15,8 @@ public interface VisitOccurrenceRow {
 
 	public String getVisitType();
 
+	public String getVisitSource();
+
 	public String getVisitSourceValue();
 
 	public Date getVisitStart();
@@ -24,6 +26,10 @@ public interface VisitOccurrenceRow {
 	public String getProviderName();
 
 	public String getCareSiteName();
+
+	public String getAdmittingSourceValue();
+
+	public String getDischargeToSourceValue();
 
 	/**
 	 * The date serialization format is a configurable application property. This method provides a consistent format

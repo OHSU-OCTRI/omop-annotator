@@ -22,3 +22,10 @@ update omop_display_configuration set visible = 1, `filter` = 1, editable = 0 wh
 update omop_display_configuration set visible = 1, `filter` = 1, editable = 0 where entity_name = 'Measurement' and field_name = 'measurement';
 update omop_display_configuration set visible = 1, editable = 0 where entity_name = 'Note' and field_name = 'text';
 update omop_display_configuration set visible = 1, `filter` = 1, editable = 0 where entity_name = 'Drug' and field_name = 'drug';
+
+-- Additional fields not previously mapped in query
+INSERT INTO `omop_display_configuration` (`version`, `created_at`, `updated_at`, `entity_name`, `field_name`, `column_display`, `visible`, `filter`, `editable`, `filterable`) 
+VALUES
+(@version, @now, @now, 'Visit', 'visitSource', 'Visit Source', 0, 0, 1, 1),
+(@version, @now, @now, 'Visit', 'admittingSourceValue', 'Admitting Source Value', 0, 0, 1, 1),
+(@version, @now, @now, 'Visit', 'dischargeToSourceValue', 'Discharge To Source Value', 0, 0, 1, 1);

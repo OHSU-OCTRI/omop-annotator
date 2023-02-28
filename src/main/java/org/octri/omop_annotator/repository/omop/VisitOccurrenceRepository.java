@@ -19,9 +19,11 @@ public interface VisitOccurrenceRepository
 
 	static final String visitOccurrenceQuery = "select v.id as id, v.person.id as person, visitType.name as visitType,"
 			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName,"
-			+ " careSite.careSiteName as careSiteName, v.visitSourceValue as visitSourceValue"
+			+ " careSite.careSiteName as careSiteName, visitSource.name as visitSource, v.visitSourceValue as visitSourceValue,"
+			+ " v.admittingSourceValue as admittingSourceValue, v.dischargeToSourceValue as dischargeToSourceValue"
 			+ " from VisitOccurrence v"
 			+ " left join v.visitType visitType"
+			+ " left join v.visitSource visitSource"
 			+ " left join v.provider provider"
 			+ " left join v.careSite careSite"
 			+ " where v.person.id = ?1";

@@ -21,18 +21,14 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * drug_exposure_start_date
- * drug_exposure_end_date
+ * drug_exposure_start_date - Duplicative of date/time
+ * drug_exposure_end_date - Duplicative of date/time
  * verbatim_end_date
- * refills
- * days_supply
  * sig
  * route_concept_id
  * lot_number
- * provider_id
+ * provider_id - Also on visit
  * visit_detail_id - always null
- * drug_source_value
- * drug_source_concept_id
  */
 @Entity
 public class DrugExposure {
@@ -63,23 +59,36 @@ public class DrugExposure {
 	@Column(name = "stop_reason")
 	private String stopReason;
 
+	@Column(name = "refills")
+	private Integer refills;
+
 	@Column(name = "quantity")
 	@Type(type = "ToFloat")
 	private Float quantity;
+
+	@Column(name = "days_supply")
+	private Integer daysSupply;
 
 	@ManyToOne
 	@JoinColumn(name = "drug_type_concept_id")
 	private Concept drugType;
 
 	@ManyToOne
+	@JoinColumn(name = "drug_source_concept_id")
+	private Concept drugSource;
+
+	@Column(name = "drug_source_value")
+	private String drugSourceValue;
+
+	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
 
 	@Column(name = "route_source_value")
-	private String route;
+	private String routeSourceValue;
 
 	@Column(name = "dose_unit_source_value")
-	private String doseUnit;
+	private String doseUnitSourceValue;
 
 	public Integer getId() {
 		return id;
@@ -129,12 +138,28 @@ public class DrugExposure {
 		this.stopReason = stopReason;
 	}
 
+	public Integer getRefills() {
+		return refills;
+	}
+
+	public void setRefills(Integer refills) {
+		this.refills = refills;
+	}
+
 	public Float getQuantity() {
 		return quantity;
 	}
 
 	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
+	}
+
+	public Integer getDaysSupply() {
+		return daysSupply;
+	}
+
+	public void setDaysSupply(Integer daysSupply) {
+		this.daysSupply = daysSupply;
 	}
 
 	public Concept getDrugType() {
@@ -145,6 +170,22 @@ public class DrugExposure {
 		this.drugType = drugType;
 	}
 
+	public Concept getDrugSource() {
+		return drugSource;
+	}
+
+	public void setDrugSource(Concept drugSource) {
+		this.drugSource = drugSource;
+	}
+
+	public String getDrugSourceValue() {
+		return drugSourceValue;
+	}
+
+	public void setDrugSourceValue(String drugSourceValue) {
+		this.drugSourceValue = drugSourceValue;
+	}
+
 	public VisitOccurrence getVisitOccurrence() {
 		return visitOccurrence;
 	}
@@ -153,27 +194,29 @@ public class DrugExposure {
 		this.visitOccurrence = visitOccurrence;
 	}
 
-	public String getRoute() {
-		return route;
+	public String getRouteSourceValue() {
+		return routeSourceValue;
 	}
 
-	public void setRoute(String route) {
-		this.route = route;
+	public void setRouteSourceValue(String routeSourceValue) {
+		this.routeSourceValue = routeSourceValue;
 	}
 
-	public String getDoseUnit() {
-		return doseUnit;
+	public String getDoseUnitSourceValue() {
+		return doseUnitSourceValue;
 	}
 
-	public void setDoseUnit(String doseUnit) {
-		this.doseUnit = doseUnit;
+	public void setDoseUnitSourceValue(String doseUnitSourceValue) {
+		this.doseUnitSourceValue = doseUnitSourceValue;
 	}
 
 	@Override
 	public String toString() {
-		return "DrugExposure [doseUnit=" + doseUnit + ", drug=" + drug + ", drugEnd=" + drugEnd + ", drugStart="
-				+ drugStart + ", drugType=" + drugType + ", id=" + id + ", person=" + person + ", quantity=" + quantity
-				+ ", route=" + route + ", stopReason=" + stopReason + ", visitOccurrence=" + visitOccurrence + "]";
+		return "DrugExposure [id=" + id + ", person=" + person + ", drug=" + drug + ", drugStart=" + drugStart
+				+ ", drugEnd=" + drugEnd + ", stopReason=" + stopReason + ", refills=" + refills + ", quantity="
+				+ quantity + ", daysSupply=" + daysSupply + ", drugType=" + drugType + ", drugSource=" + drugSource
+				+ ", drugSourceValue=" + drugSourceValue + ", visitOccurrence=" + visitOccurrence
+				+ ", routeSourceValue=" + routeSourceValue + ", doseUnitSourceValue=" + doseUnitSourceValue + "]";
 	}
 
 }

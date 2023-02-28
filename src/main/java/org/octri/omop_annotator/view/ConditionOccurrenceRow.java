@@ -19,6 +19,16 @@ public interface ConditionOccurrenceRow {
 
 	public Date getConditionEnd();
 
+	public String getConditionSource();
+
+	public String getConditionSourceValue();
+
+	public String getConditionStatus();
+
+	public String getConditionStatusSourceValue();
+
+	public String getStopReason();
+
 	public Integer getVisitOccurrence();
 
 }

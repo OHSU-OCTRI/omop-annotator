@@ -18,10 +18,15 @@ public interface ConditionOccurrenceRepository extends PagingAndSortingRepositor
 
 	static final String query = "select co.id as id, co.person.id as personId, condition.name as condition,"
 			+ " conditionType.name as conditionType, co.conditionStart as conditionStart,"
-			+ " co.conditionEnd as conditionEnd, visitOccurrence.id as visitOccurrence"
+			+ " co.conditionEnd as conditionEnd, conditionSource.name as conditionSource,"
+			+ " co.conditionSourceValue as conditionSourceValue, conditionStatus.name as conditionStatus,"
+			+ " co.conditionStatusSourceValue as conditionStatusSourceValue, co.stopReason as stopReason,"
+			+ " visitOccurrence.id as visitOccurrence"
 			+ " from ConditionOccurrence co"
 			+ " left join co.condition condition"
 			+ " left join co.conditionType conditionType"
+			+ " left join co.conditionSource conditionSource"
+			+ " left join co.conditionStatus conditionStatus"
 			+ " left join co.visitOccurrence visitOccurrence";
 
 	@Query(query + " where co.person.id = ?1")

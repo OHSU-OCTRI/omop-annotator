@@ -18,7 +18,7 @@ public interface NoteRepository extends PagingAndSortingRepository<Note, Integer
 
 	static final String query = "select note.id as id, note.person.id as person,"
 			+ " noteTypeConcept.name as type, note.noteDatetime as date, noteClassConcept.name as noteClass,"
-			+ " note.title as title, note.text as text, visitOccurrence.id as visitOccurrence"
+			+ " note.title as title, note.text as text, note.noteSourceValue as noteSourceValue, visitOccurrence.id as visitOccurrence"
 			+ " from Note note"
 			+ " left join note.noteType noteTypeConcept"
 			+ " left join note.noteClass noteClassConcept"

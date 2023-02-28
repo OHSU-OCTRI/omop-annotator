@@ -17,6 +17,12 @@ public interface ProcedureOccurrenceRow {
 
     public String getProcedureSource();
 
+    public String getProcedureSourceValue();
+
+    public String getProcedureModifier();
+
+    public String getModifierSourceValue();
+
     public Date getDate();
 
     public Integer getQuantity();

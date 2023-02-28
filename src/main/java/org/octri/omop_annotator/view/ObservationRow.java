@@ -13,15 +13,27 @@ public interface ObservationRow {
 
     public String getObservation();
 
-    public String getSourceValue();
+    public String getObservationSource();
+
+    public String getObservationSourceValue();
 
     public Date getDate();
 
-    public String getType();
+    public String getObservationType();
 
-    public String getValue();
+    public String getValueAsString();
+
+    public Float getValueAsNumber();
 
     public String getValueAsConcept();
+
+    public String getObservationQualifier();
+
+    public String getQualifierSourceValue();
+
+    public String getObservationUnit();
+
+    public String getUnitSourceValue();
 
     public Integer getVisitOccurrence();
 }

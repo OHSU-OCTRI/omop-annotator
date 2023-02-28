@@ -19,12 +19,11 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
  *
  * The following columns have been excluded:
  *
- * note_date
+ * note_date - Duplicative of date/time
  * encoding_concept_id
  * language_concept_id
- * provider_id
- * visit_detail_id
- * note_source_value
+ * provider_id - Also on visit
+ * visit_detail_id - Null at OHSU
  */
 @Entity
 public class Note {
@@ -57,6 +56,9 @@ public class Note {
 	@Column(name = "note_text")
 	@Type(type = "ToText")
 	private String text;
+
+	@Column(name = "note_source_value")
+	private String noteSourceValue;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
@@ -118,6 +120,14 @@ public class Note {
 		this.text = text;
 	}
 
+	public String getNoteSourceValue() {
+		return noteSourceValue;
+	}
+
+	public void setNoteSourceValue(String noteSourceValue) {
+		this.noteSourceValue = noteSourceValue;
+	}
+
 	public VisitOccurrence getVisitOccurrence() {
 		return visitOccurrence;
 	}
@@ -129,8 +139,8 @@ public class Note {
 	@Override
 	public String toString() {
 		return "Note [id=" + id + ", person=" + person + ", noteDatetime=" + noteDatetime + ", noteType=" + noteType
-				+ ", noteClass=" + noteClass + ", title=" + title + ", text=" + text + ", visitOccurrence="
-				+ visitOccurrence + "]";
+				+ ", noteClass=" + noteClass + ", title=" + title + ", text=" + text + ", noteSourceValue="
+				+ noteSourceValue + ", visitOccurrence=" + visitOccurrence + "]";
 	}
 
 }

@@ -21,16 +21,10 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * measurement_date
- * measurement_time
- * operator_concept_id
- * range_low
- * range_high
- * provider_id
- * visit_detail_id
- * measurement_source_value
- * unit_source_value
- *
+ * measurement_date - Duplicative of datetime
+ * measurement_time - Duplicative of datetime
+ * provider_id - Also on visit
+ * visit_detail_id - Null at OHSU
  */
 @Entity
 public class Measurement {
@@ -58,6 +52,10 @@ public class Measurement {
 	@JoinColumn(name = "measurement_type_concept_id")
 	private Concept measurementType;
 
+	@ManyToOne
+	@JoinColumn(name = "operator_concept_id")
+	private Concept measurementOperator;
+
 	@Column(name = "value_source_value")
 	private String valueSourceValue;
 
@@ -73,6 +71,17 @@ public class Measurement {
 	@JoinColumn(name = "unit_concept_id")
 	private Concept unit;
 
+	@Column(name = "unit_source_value")
+	private String unitSourceValue;
+
+	@Column(name = "range_low")
+	@Type(type = "ToFloat")
+	private Float rangeLow;
+
+	@Column(name = "range_high")
+	@Type(type = "ToFloat")
+	private Float rangeHigh;
+
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
 	private VisitOccurrence visitOccurrence;
@@ -81,6 +90,9 @@ public class Measurement {
 	@ManyToOne
 	@JoinColumn(name = "measurement_source_concept_id")
 	private Concept measurementSource;
+
+	@Column(name = "measurement_source_value")
+	private String measurementSourceValue;
 
 	public Integer getId() {
 		return id;
@@ -122,6 +134,14 @@ public class Measurement {
 		this.measurementType = measurementType;
 	}
 
+	public Concept getMeasurementOperator() {
+		return measurementOperator;
+	}
+
+	public void setMeasurementOperator(Concept measurementOperator) {
+		this.measurementOperator = measurementOperator;
+	}
+
 	public String getValueSourceValue() {
 		return valueSourceValue;
 	}
@@ -154,6 +174,30 @@ public class Measurement {
 		this.unit = unit;
 	}
 
+	public String getUnitSourceValue() {
+		return unitSourceValue;
+	}
+
+	public void setUnitSourceValue(String unitSourceValue) {
+		this.unitSourceValue = unitSourceValue;
+	}
+
+	public Float getRangeLow() {
+		return rangeLow;
+	}
+
+	public void setRangeLow(Float rangeLow) {
+		this.rangeLow = rangeLow;
+	}
+
+	public Float getRangeHigh() {
+		return rangeHigh;
+	}
+
+	public void setRangeHigh(Float rangeHigh) {
+		this.rangeHigh = rangeHigh;
+	}
+
 	public VisitOccurrence getVisitOccurrence() {
 		return visitOccurrence;
 	}
@@ -170,12 +214,23 @@ public class Measurement {
 		this.measurementSource = measurementSource;
 	}
 
+	public String getMeasurementSourceValue() {
+		return measurementSourceValue;
+	}
+
+	public void setMeasurementSourceValue(String measurementSourceValue) {
+		this.measurementSourceValue = measurementSourceValue;
+	}
+
 	@Override
 	public String toString() {
 		return "Measurement [id=" + id + ", person=" + person + ", measurement=" + measurement
 				+ ", measurementDatetime=" + measurementDatetime + ", measurementType=" + measurementType
-				+ ", valueSourceValue=" + valueSourceValue + ", valueAsConcept=" + valueAsConcept + ", unit=" + unit
-				+ ", visitOccurrence=" + visitOccurrence + ", measurementSource=" + measurementSource + "]";
+				+ ", measurementOperator=" + measurementOperator + ", valueSourceValue=" + valueSourceValue
+				+ ", valueAsNumber=" + valueAsNumber + ", valueAsConcept=" + valueAsConcept + ", unit=" + unit
+				+ ", unitSourceValue=" + unitSourceValue + ", rangeLow=" + rangeLow + ", rangeHigh=" + rangeHigh
+				+ ", visitOccurrence=" + visitOccurrence + ", measurementSource=" + measurementSource
+				+ ", measurementSourceValue=" + measurementSourceValue + "]";
 	}
 
 }

@@ -21,12 +21,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDe
  *
  * The following columns have been excluded:
  *
- * observation_date
- * provider_id
- * visit_detail_id
- * observation_source_concept_id
- * unit_source_value
- * qualifier_source_value
+ * observation_date - Duplicative of datetime
+ * provider_id - Also on Visit
+ * visit_detail_id - Always null at OHSU
  */
 @Entity
 public class Observation {
@@ -54,12 +51,16 @@ public class Observation {
 	@JoinColumn(name = "observation_type_concept_id")
 	private Concept observationType;
 
+	@ManyToOne
+	@JoinColumn(name = "observation_source_concept_id")
+	private Concept observationSource;
+
 	@Column(name = "observation_source_value")
 	private String observationSourceValue;
 
 	@Column(name = "value_as_number")
 	@Type(type = "ToFloat")
-	private String valueAsNumber;
+	private Float valueAsNumber;
 
 	@Column(name = "value_as_string")
 	private String valueAsString;
@@ -72,9 +73,15 @@ public class Observation {
 	@JoinColumn(name = "qualifier_concept_id")
 	private Concept qualifier;
 
+	@Column(name = "qualifier_source_value")
+	private String qualifierSourceValue;
+
 	@ManyToOne
 	@JoinColumn(name = "unit_concept_id")
 	private Concept unit;
+
+	@Column(name = "unit_source_value")
+	private String unitSourceValue;
 
 	@ManyToOne
 	@JoinColumn(name = "visit_occurrence_id")
@@ -120,6 +127,14 @@ public class Observation {
 		this.observationType = observationType;
 	}
 
+	public Concept getObservationSource() {
+		return observationSource;
+	}
+
+	public void setObservationSource(Concept observationSource) {
+		this.observationSource = observationSource;
+	}
+
 	public String getObservationSourceValue() {
 		return observationSourceValue;
 	}
@@ -128,11 +143,11 @@ public class Observation {
 		this.observationSourceValue = observationSourceValue;
 	}
 
-	public String getValueAsNumber() {
+	public Float getValueAsNumber() {
 		return valueAsNumber;
 	}
 
-	public void setValueAsNumber(String valueAsNumber) {
+	public void setValueAsNumber(Float valueAsNumber) {
 		this.valueAsNumber = valueAsNumber;
 	}
 
@@ -160,12 +175,28 @@ public class Observation {
 		this.qualifier = qualifier;
 	}
 
+	public String getQualifierSourceValue() {
+		return qualifierSourceValue;
+	}
+
+	public void setQualifierSourceValue(String qualifierSourceValue) {
+		this.qualifierSourceValue = qualifierSourceValue;
+	}
+
 	public Concept getUnit() {
 		return unit;
 	}
 
 	public void setUnit(Concept unit) {
 		this.unit = unit;
+	}
+
+	public String getUnitSourceValue() {
+		return unitSourceValue;
+	}
+
+	public void setUnitSourceValue(String unitSourceValue) {
+		this.unitSourceValue = unitSourceValue;
 	}
 
 	public VisitOccurrence getVisitOccurrence() {
@@ -178,11 +209,13 @@ public class Observation {
 
 	@Override
 	public String toString() {
-		return "Observation [id=" + id + ", observation=" + observation + ", observationDatetime=" + observationDatetime
-				+ ", observationSourceValue=" + observationSourceValue + ", observationType=" + observationType
-				+ ", person=" + person + ", qualifier=" + qualifier + ", unit=" + unit + ", valueAsConcept="
-				+ valueAsConcept + ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString
-				+ ", visitOccurrence=" + visitOccurrence + "]";
+		return "Observation [id=" + id + ", person=" + person + ", observation=" + observation
+				+ ", observationDatetime=" + observationDatetime + ", observationType=" + observationType
+				+ ", observationSource=" + observationSource + ", observationSourceValue=" + observationSourceValue
+				+ ", valueAsNumber=" + valueAsNumber + ", valueAsString=" + valueAsString + ", valueAsConcept="
+				+ valueAsConcept + ", qualifier=" + qualifier + ", qualifierSourceValue=" + qualifierSourceValue
+				+ ", unit=" + unit + ", unitSourceValue=" + unitSourceValue + ", visitOccurrence=" + visitOccurrence
+				+ "]";
 	}
 
 }

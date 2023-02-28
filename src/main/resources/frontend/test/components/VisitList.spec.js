@@ -1,34 +1,28 @@
 import { mount } from '@vue/test-utils';
 import VisitList from '@/components/VisitList';
 
-import { visits } from '../example-data';
+import { visits, visitsConfiguration } from '../example-data';
 
 describe('VisitList.vue', () => {
   it('renders', () => {
     const wrapper = mount(VisitList, {
-      props: { visits: visits.slice(0, 1), personId: 1234 }
+      props: {
+        visits: visits.slice(0, 1),
+        configuration: visitsConfiguration,
+        personId: 1234
+      }
     });
     expect(wrapper.find('.visit-list').exists()).toBe(true);
     expect(wrapper.find('[data-field="visitType"]').text().includes('Emergency')).toBe(
       true
     );
-    expect(wrapper.find('[data-field="visitStart"]').text().includes('2022-01-01')).toBe(
-      true
-    );
-    expect(wrapper.find('[data-field="visitEnd"]').text().includes('2022-01-01')).toBe(
-      true
-    );
-    expect(wrapper.find('[data-field="provider"]').text().includes('Dr. Nick')).toBe(
-      true
-    );
-    expect(
-      wrapper.find('[data-field="careSite"]').text().includes('Springfield Hospital')
-    ).toBe(true);
+    // This is configured to not be visible so should not exist
+    expect(wrapper.find('[data-field="careTeamName"]').exists()).toBe(false);
   });
 
   it('emits an event when a visit row is clicked', async () => {
     const wrapper = mount(VisitList, {
-      props: { visits: visits, personId: 1234 }
+      props: { visits: visits, configuration: visitsConfiguration, personId: 1234 }
     });
 
     const visitRows = wrapper.findAll('tbody tr');
@@ -42,7 +36,7 @@ describe('VisitList.vue', () => {
   it('adds a class to the selected visit row', async () => {
     const wrapper = mount(VisitList, {
       // selectedVisitId is null by default
-      props: { visits: visits, personId: 1234 }
+      props: { visits: visits, configuration: visitsConfiguration, personId: 1234 }
     });
 
     // nothing selected yet

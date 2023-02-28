@@ -15,6 +15,7 @@
     <VisitList
       class="mb-4"
       :visits="visits"
+      :configuration="getConfigurationForEntity('Visit')"
       :show-header="false"
       :person-id="personId"
       :selected-visit-id="selectedVisitId"

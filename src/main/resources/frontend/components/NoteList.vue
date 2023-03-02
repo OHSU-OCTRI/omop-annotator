@@ -186,7 +186,7 @@ export default {
     }
   },
   watch: {
-    procedures() {
+    notes() {
       this.$nextTick(this.drawDataTable);
     }
   }

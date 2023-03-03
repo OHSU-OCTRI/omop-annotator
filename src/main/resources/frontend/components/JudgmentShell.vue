@@ -113,7 +113,7 @@ export default {
     },
 
     url() {
-      return `${this.contextPath}/judge/pool/${this.poolId}/topic/${this.topicId}/pool_entry_judgments`;
+      return `${this.contextPath}/data/api/pool/${this.poolId}/topic/${this.topicId}/pool_entry_judgments`;
     },
     filterNames() {
       return Object.keys(this.filters);

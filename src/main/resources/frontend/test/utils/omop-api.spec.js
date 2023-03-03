@@ -3,7 +3,7 @@ import OmopApi from '@/utils/omop-api';
 import { mockFetchResponse } from '../helpers';
 
 describe('OMOP API', () => {
-  const expectedPersonPrefix = '/data/person/summary';
+  const expectedPersonPrefix = '/data/api/person/summary';
   const api = new OmopApi();
 
   it('defaults to a blank URL prefix', () => {

@@ -14,10 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/judge")
@@ -57,16 +53,6 @@ public class JudgeController {
 		model.put("mainClasses", "container-fluid");
 		model.put("pageScripts", new String[] { "vendor.js", "judge.js" });
 		return "judge/show_pool_entries";
-	}
-
-	@GetMapping(value = "/pool/{poolId}/topic/{topicId}/pool_entry_judgments", produces = "application/json")
-	@ResponseBody
-	public String getPoolEntryJudgments(@PathVariable Long poolId, @PathVariable Long topicId)
-			throws JsonProcessingException {
-		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(customViewRepository.summarizePoolEntryJudgments(poolId, topicId,
-				securityHelper.authenticationUserDetails().getUserId()));
 	}
 
 }

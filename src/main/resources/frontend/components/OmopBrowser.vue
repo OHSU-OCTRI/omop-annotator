@@ -342,7 +342,7 @@ export default {
     },
 
     async getDisplayConfig() {
-      const res = await fetch(`${this.contextPath}/display/`);
+      const res = await fetch(`${this.contextPath}/data/api/omop_display_configuration`);
       const finalRes = await res.json();
       this.configuration = finalRes;
     },

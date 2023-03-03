@@ -141,7 +141,7 @@ export default {
       return this.schemaId === null;
     },
     url() {
-      return this.contextPath + '/admin/annotation_label/schema/' + this.schemaId;
+      return this.contextPath + '/admin/api/annotation_label/schema/' + this.schemaId;
     }
   }
 };

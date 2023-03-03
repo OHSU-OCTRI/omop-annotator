@@ -3,7 +3,6 @@ package org.octri.omop_annotator.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.domain.omop.Person;
@@ -30,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Controller for {@link Person} objects
  */
 @Controller
-@RequestMapping("/data/person")
+@RequestMapping("/data/api/person")
 public class PersonController {
 
 	private ObjectMapper mapper = new ObjectMapper();
@@ -61,14 +60,6 @@ public class PersonController {
 		this.procedureOccurrenceService = procedureOccurrenceService;
 		this.noteService = noteService;
 		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
-	}
-
-	@GetMapping("/{id}")
-	public String show(Map<String, Object> model, @PathVariable Integer id) {
-		model.put("pageScripts", new String[] { "vendor.js", "person.js" });
-		model.put("entity", personService.findById(id).get());
-
-		return "person/show";
 	}
 
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")

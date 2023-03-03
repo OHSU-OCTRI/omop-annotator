@@ -2,7 +2,9 @@ package org.octri.omop_annotator.controller;
 
 import java.util.List;
 
+import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.TopicSet;
+import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
 import org.octri.omop_annotator.view.TopicSetSummary;
@@ -21,10 +23,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminApiController {
 
     @Autowired
+    private AnnotationLabelRepository repository;
+
+    @Autowired
     TopicSetRepository topicSetRepository;
 
     @Autowired
     CustomViewRepository customViewRepository;
+
+    /**
+     * Get the annotation labels for the given schema
+     * 
+     * @param schemaId
+     * @return
+     */
+    @GetMapping(value = "annotation_label/schema/{schemaId}", produces = "application/json")
+    public List<AnnotationLabel> labelsForSchema(@PathVariable Long schemaId) {
+        return repository.findByAnnotationSchemaId(schemaId);
+    }
 
     /**
      * Return all topic sets

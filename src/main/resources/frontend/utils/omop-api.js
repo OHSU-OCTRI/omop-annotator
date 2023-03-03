@@ -19,7 +19,7 @@ export default class OmopApi {
    * URL prefix of OMOP data related to a person entity.
    */
   get personPrefix() {
-    return this.contextPath + '/data/person/summary';
+    return this.contextPath + '/data/api/person/summary';
   }
 
   /**

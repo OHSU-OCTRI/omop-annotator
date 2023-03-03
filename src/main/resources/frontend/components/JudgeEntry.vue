@@ -54,10 +54,10 @@ export default {
   },
   computed: {
     judgmentUrl() {
-      return `${this.contextPath}/data/judgment/pool_entry/${this.poolEntryId}`;
+      return `${this.contextPath}/data/api/judgment/pool_entry/${this.poolEntryId}`;
     },
     saveUrl() {
-      return `${this.contextPath}/data/judgment/save_judgment`;
+      return `${this.contextPath}/data/api/judgment/save_judgment`;
     },
     title() {
       return `Judge Entry ${this.poolEntryId}`;

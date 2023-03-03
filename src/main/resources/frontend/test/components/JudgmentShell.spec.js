@@ -31,7 +31,7 @@ describe('JudgmentShell.vue', () => {
   });
 
   it('loads pool entry judgments on mount', async () => {
-    const expectedUrl = '/judge/pool/6/topic/2/pool_entry_judgments';
+    const expectedUrl = '/data/api/pool/6/topic/2/pool_entry_judgments';
     const mockResponse = mockFetchResponse(poolEntryJudgments);
     spyOn(window, 'fetch').and.callFake((url, _options) => {
       if (url.endsWith('pool_entry_judgments')) {

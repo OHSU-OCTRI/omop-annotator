@@ -96,9 +96,7 @@ export default {
   },
   mounted() {
     this.showFullText = new Array(this.notes.length);
-    for (let i = 0; i < this.notes.length; i++) {
-      this.showFullText[i] = false;
-    }
+    this.showFullText.fill(false);
     this.$nextTick(this.drawDataTable);
   },
   computed: {

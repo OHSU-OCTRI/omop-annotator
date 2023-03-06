@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/dashboard")
 public class AdminDashboardController {
 
-    @GetMapping("")
+    @GetMapping("/")
     public String show(Map<String, Object> model) {
         model.put("pageScripts", new String[] { "vendor.js", "admin-dashboard.js" });
         return "/admin/dashboard/show";

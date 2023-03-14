@@ -14,4 +14,6 @@ public interface JudgmentRepository extends PagingAndSortingRepository<Judgment,
     Long countByPoolEntryId(Long id);
 
     List<Judgment> findAllByUserIdAndPoolEntryPoolId(Long userId, Long poolId);
+
+    List<Judgment> findAllByPoolEntryPoolId(Long poolId);
 }

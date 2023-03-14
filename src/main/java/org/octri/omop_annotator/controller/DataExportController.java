@@ -53,8 +53,6 @@ public class DataExportController {
     @GetMapping("judgments")
     public String exportJudgmentsForm(Map<String, Object> model) {
         model.put("poolOptions", OptionList.fromSearch(poolRepository.findAll(), null));
-        model.put("userOptions",
-                org.octri.authentication.server.view.OptionList.fromSearch(userRepository.findAll(), null));
         return "export/judgments";
     }
 
@@ -66,13 +64,13 @@ public class DataExportController {
             throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
         List<ExportedJudgmentRow> results = judgmentRepository
-                .findAllByUserIdAndPoolEntryPoolId(params.getUserId(), params.getPoolId())
+                .findAllByPoolEntryPoolId(params.getPoolId())
                 .stream()
                 .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment))
                 .collect(Collectors.toList());
 
         LocalDate today = LocalDate.now();
-        String filename = "judgments_pool_" + params.getPoolId() + "_user_" + params.getUserId() + "_"
+        String filename = "judgments_pool_" + params.getPoolId() + "_"
                 + today.toString() + ".csv";
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
@@ -87,17 +85,7 @@ public class DataExportController {
     class JudgmentExportParams {
 
         @NotNull
-        private Long userId;
-        @NotNull
         private Long poolId;
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
 
         public Long getPoolId() {
             return poolId;

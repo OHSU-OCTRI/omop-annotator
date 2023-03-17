@@ -14,12 +14,16 @@
   <div v-else>
     <VisitList
       class="mb-4"
+      :poolEntryId="this.poolEntryId"
       :visits="visits"
+      :pins="pins"
       :configuration="getConfigurationForEntity('Visit')"
       :show-header="false"
       :person-id="personId"
       :selected-visit-id="selectedVisitId"
       @visit-selected="setSelectedVisit"
+      @pin-saved="handleSavePin"
+      @pin-deleted="handleDeletePin"
     />
     <div class="visit-data card">
       <div class="card-header">
@@ -261,7 +265,7 @@ import PersonSummary from './PersonSummary';
 import PlaceholderMessage from './PlaceholderMessage';
 import VisitList from './VisitList';
 
-import { contextPath } from '../utils/injection-keys';
+import { contextPath, csrfToken, csrfHeader } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
 
 export default {
@@ -278,6 +282,12 @@ export default {
   inject: {
     [contextPath]: {
       default: ''
+    },
+    [csrfToken]: {
+      default: ''
+    },
+    [csrfHeader]: {
+      default: 'X-CSRF-TOKEN'
     }
   },
   components: {
@@ -294,6 +304,7 @@ export default {
   data() {
     return {
       configuration: null,
+      pins: [],
       omopApi: null,
       person: {},
       visits: [],
@@ -320,6 +331,12 @@ export default {
   methods: {
     handleJudgment(...data) {
       this.$emit('judgment-saved', ...data);
+    },
+    handleSavePin(data) {
+      this.savePin(data);
+    },
+    handleDeletePin(data) {
+      this.deletePin(data);
     },
     resetState() {
       this.person = {};
@@ -351,16 +368,26 @@ export default {
       return this.configuration.filter(f => f.entityName === entityName);
     },
 
+    async getPins() {
+      const res = await fetch(
+        `${this.contextPath}/data/api/pin/pool_entry/${this.poolEntryId}`
+      );
+      const finalRes = await res.json();
+      return finalRes;
+    },
+
     async loadPerson() {
       const { omopApi } = this;
       this.resetState();
       this.resetTabs();
 
-      const [person, visits] = await Promise.all([
+      const [pins, person, visits] = await Promise.all([
+        this.getPins(),
         omopApi.getPerson(this.personId),
         omopApi.getVisitsForPerson(this.personId)
       ]);
 
+      this.pins = pins;
       this.person = person;
       this.visits = visits;
       this.visitsLoading = false;
@@ -393,6 +420,38 @@ export default {
       this.notes = notes;
       this.drugs = drugs;
       this.loadingVisitData = false;
+    },
+
+    async savePin(pin) {
+      const { csrfHeader } = this;
+      const res = await fetch(this.savePinUrl, {
+        method: 'post',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          [csrfHeader]: this.csrfToken
+        },
+        body: JSON.stringify(pin)
+      });
+      this.pins.push(await res.json());
+    },
+
+    async deletePin(pin) {
+      const { csrfHeader } = this;
+      const res = await fetch(this.deletePinUrl, {
+        method: 'post',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          [csrfHeader]: this.csrfToken
+        },
+        body: JSON.stringify(pin)
+      });
+      const deleted = await res.json();
+      const i = this.pins.findIndex(pin => pin.id === deleted.id);
+      this.pins.splice(i, 1);
     }
   },
   computed: {
@@ -402,6 +461,14 @@ export default {
 
     noVisitSelected() {
       return !this.visitSelected;
+    },
+
+    savePinUrl() {
+      return `${this.contextPath}/data/api/pin/save_pin`;
+    },
+
+    deletePinUrl() {
+      return `${this.contextPath}/data/api/pin/delete_pin`;
     }
   },
   watch: {

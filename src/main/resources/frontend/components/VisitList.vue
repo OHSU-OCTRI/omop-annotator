@@ -49,11 +49,13 @@
       <table class="table table-striped table-bordered table-sm" ref="table">
         <thead>
           <tr>
+            <th>Pin</th>
             <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col">
               {{ field.columnDisplay }}
             </th>
           </tr>
           <tr v-if="indexesToFilter.length > 0" class="search-row">
+            <th></th>
             <th v-for="field in fieldsToShow" :key="field.fieldName" scope="col"></th>
           </tr>
         </thead>
@@ -64,6 +66,12 @@
             @click="$emit('visit-selected', visitOccurrence.id)"
             :class="{ 'table-active': isSelectedVisit(visitOccurrence.id) }"
           >
+            <td
+              :class="isPinned(visitOccurrence.id) ? 'text-primary' : 'text-unpinned'"
+              @click="togglePin(visitOccurrence.id)"
+            >
+              <i class="fas fa-thumbtack"></i>
+            </td>
             <td
               v-for="field in fieldsToShow"
               :key="field.fieldName"
@@ -96,6 +104,10 @@ import VisitTimeline from './VisitTimeline';
 
 export default {
   props: {
+    poolEntryId: {
+      type: Number,
+      required: true
+    },
     personId: {
       type: Number,
       required: true
@@ -108,13 +120,17 @@ export default {
       type: Array,
       required: true
     },
+    pins: {
+      type: Array,
+      required: true
+    },
     selectedVisitId: {
       type: Number,
       default: null
     },
     sortColumn: {
       type: Number,
-      default: 2
+      default: 1
     },
     sortOrder: {
       type: String,
@@ -149,6 +165,7 @@ export default {
     LoadingSpinner,
     VisitTimeline
   },
+  emits: ['visit-selected', 'pin-saved', 'pin-deleted'],
   data() {
     return {
       dataTable: null,
@@ -189,8 +206,11 @@ export default {
       const b = this.fieldsToShow
         .map((item, index) => ({ index, ...item }))
         .filter(f => f.filter === true)
-        .map(f => f.index);
+        .map(f => f.index + 1); // Add 1 to account for Pin column
       return b;
+    },
+    pinnedVisits() {
+      return this.pins.filter(pin => pin.entity === 'Visit').map(pin => pin.entityId);
     }
   },
   methods: {
@@ -201,6 +221,12 @@ export default {
         }
         const indexesToFilter = this.indexesToFilter;
         this.dataTable = $(this.$refs.table).DataTable({
+          columnDefs: [
+            {
+              targets: 0,
+              orderable: false
+            }
+          ],
           order: [[this.sortColumn, this.sortOrder]],
           paging: true,
           pageLength: this.pageLength,
@@ -288,10 +314,33 @@ export default {
     },
     setSelectedDate(date) {
       // TODO: filter visits with the given date
+    },
+    isPinned(visitId) {
+      return this.pinnedVisits.includes(visitId);
+    },
+    togglePin(visitId) {
+      if (this.isPinned(visitId)) {
+        this.$emit(
+          'pin-deleted',
+          this.pins.find(p => p.entity === 'Visit' && p.entityId === visitId)
+        );
+      } else {
+        const obj = {
+          userId: null,
+          poolEntryId: this.poolEntryId,
+          entityId: visitId,
+          entity: 'Visit',
+          visitId: null
+        };
+        this.$emit('pin-saved', obj);
+      }
     }
   },
   watch: {
     visits() {
+      this.$nextTick(this.drawDataTable);
+    },
+    pins() {
       this.$nextTick(this.drawDataTable);
     }
   }

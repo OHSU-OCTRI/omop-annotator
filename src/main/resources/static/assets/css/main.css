@@ -31,6 +31,10 @@ main.container-fluid {
 	color:#a94442;
 }
 
+.text-unpinned {
+	color: #b4d8f4 !important;
+}
+
 .footer>.container {
 	padding-right: 15px;
 	padding-left: 15px;

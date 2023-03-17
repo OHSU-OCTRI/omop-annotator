@@ -1,19 +1,24 @@
 package org.octri.omop_annotator.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.octri.authentication.server.security.SecurityHelper;
 import org.octri.authentication.server.security.repository.UserRepository;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.Judgment;
 import org.octri.omop_annotator.domain.app.OmopDisplayConfiguration;
+import org.octri.omop_annotator.domain.app.Pin;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.OmopDisplayConfigurationRepository;
+import org.octri.omop_annotator.repository.app.PinRepository;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.view.JudgmentDTO;
+import org.octri.omop_annotator.view.PinDTO;
 import org.octri.omop_annotator.view.PoolEntryJudgmentSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +56,9 @@ public class DataApiController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PinRepository pinRepository;
 
     /**
      * Get all display configuration for OMOP entities
@@ -127,6 +135,54 @@ public class DataApiController {
 
         var saved = judgmentRepository.save(judgment);
         dto.setId(saved.getId());
+        return dto;
+    }
+
+    /**
+     * API endpoint for getting the user's existing {@link Pin} information for the given {@link PoolEntry}
+     *
+     * @param poolEntryId
+     *            - id of the {@link PoolEntry} to be judged
+     * @return the list of Pins for the PoolEntry and User
+     * @throws JsonProcessingException
+     */
+    @GetMapping(value = "pin/pool_entry/{poolEntryId}")
+    @ResponseBody
+    public List<PinDTO> getPinsForPoolEntry(@PathVariable Long poolEntryId) {
+        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+        var userId = securityHelper.authenticationUserDetails().getUserId();
+        var pins = pinRepository.findByUserIdAndPoolEntryId(userId, poolEntryId);
+        return pins.stream().map(pin -> {
+            var dto = new PinDTO();
+            dto.initialize(pin);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    @PostMapping(value = "pin/save_pin", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public PinDTO savePin(@RequestBody PinDTO dto) {
+        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+        var userId = securityHelper.authenticationUserDetails().getUserId();
+        var pin = new Pin();
+        pin.setUser(userRepository.findById(userId).get());
+        pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
+        pin.setEntity(dto.getEntity());
+        pin.setEntityId(dto.getEntityId());
+        pin.setVisitId(dto.getVisitId());
+        var saved = pinRepository.save(pin);
+        dto.setId(pin.getId());
+        dto.setUserId(userId);
+        return dto;
+    }
+
+    @PostMapping(value = "pin/delete_pin", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public PinDTO deletePin(@RequestBody PinDTO dto) {
+        Optional<Pin> pin = pinRepository.findById(dto.getId());
+        if (pin.isPresent()) {
+            pinRepository.delete(pin.get());
+        }
         return dto;
     }
 

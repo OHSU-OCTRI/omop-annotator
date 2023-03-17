@@ -1,0 +1,50 @@
+{{>layout/header}}
+<div class="container">
+  <h1>Search Indexing</h1>
+  {{>components/messages}}
+
+  <p class="instructions"><i class="fas fa-info-circle"></i>
+    The OMOP Database must be indexed prior to performing full text searches. Only the
+    subset of the OMOP data used by the application is indexed. The database should be
+    re-indexed after adding a new Pool or if the OMOP data has changed.
+  </p>
+  <p class="instructions">
+    The table below lists any previous indexing attempts. Indexing can take a long time
+    and the duration value can give you an idea of what to expect. When an indexing
+    operation is initiated the current index is first deleted. Indexing should be done at
+    times when users will not be affected.
+  </p>
+  {{#showStartButton}}
+  <a href="{{req.contextPath}}{{baseRoute}}/start" class="new-entity btn btn-success"
+    >Index OMOP Data</a
+  >
+  {{/showStartButton}}
+  <h3>Indexing Jobs</h3>
+  <table class="table table-striped table-bordered sorted">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Started at</th>
+        <th>Ended at</th>
+        <th>Duration</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>Patient Ids</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#entity_list}}
+      <tr>
+        <td>{{#user}}{{label}}{{/user}}</td>
+        <td>{{#startedAt}}{{.}}{{/startedAt}}</td>
+        <td>{{#endedAt}}{{.}}{{/endedAt}}</td>
+        <td>{{#duration}}{{.}}{{/duration}}</td>
+        <td>{{#status}}{{.}}{{/status}}</td>
+        <td>{{#description}}{{.}}{{/description}}</td>
+        <td>{{#patientIdCount}}{{.}}{{/patientIdCount}}</td>
+      </tr>
+      {{/entity_list}}
+    </tbody>
+  </table>
+</div>
+{{>layout/footer}}

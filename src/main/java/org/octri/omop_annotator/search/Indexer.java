@@ -15,7 +15,9 @@ import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.octri.omop_annotator.config.SearchIndexingConfig;
+import org.octri.omop_annotator.domain.app.SearchIndexJob;
 import org.octri.omop_annotator.domain.omop.VisitOccurrence;
+import org.octri.omop_annotator.repository.app.SearchIndexJobRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -30,6 +32,7 @@ public class Indexer {
     private static final Log log = LogFactory.getLog(Indexer.class);
     private EntityManager entityManager;
     private SearchIndexingConfig config;
+    private SearchIndexJobRepository jobRepository;
 
     /**
      * Constructor
@@ -37,9 +40,11 @@ public class Indexer {
      * @param entityManager
      *            - entity manager associated with the OMOP Database.
      */
-    public Indexer(@Qualifier("omopEntityManagerFactory") EntityManager entityManager, SearchIndexingConfig config) {
+    public Indexer(@Qualifier("omopEntityManagerFactory") EntityManager entityManager, SearchIndexingConfig config,
+            SearchIndexJobRepository jobRepository) {
         this.entityManager = entityManager;
         this.config = config;
+        this.jobRepository = jobRepository;
     }
 
     /**
@@ -50,16 +55,20 @@ public class Indexer {
      * https://docs.jboss.org/hibernate/search/6.1/reference/en-US/html_single/#mapper-orm-indexing-massindexer
      * for details and configuration options.
      *
+     * @param job
+     *            - associated SearchIndexJob that will be updated.
      * @param personIds
-     *            - if provided, indexing will only be created for visits
+     *            - indexing will only be created for visits
      *            associated with the given person ids.
      * @throws IndexException
      */
     @Transactional
-    public void indexPersistedData(List<Integer> personIds) throws IndexException {
+    public void indexPersistedData(SearchIndexJob job, List<Integer> personIds) throws IndexException {
         List<List<Integer>> batches = ListUtils.partition(personIds, config.getBatchSize());
-        log.info("Starting OMOP data mass indexing. Batch count: " + batches.size()
-                + "; max batch size: " + config.getBatchSize());
+        String description = "Item count: " + personIds.size() + "; batches: " + batches.size();
+        log.info("Starting OMOP data mass indexing. " + description);
+
+        job = jobRepository.save(job.start(description));
 
         List<MassIndexer> indexers = new ArrayList<MassIndexer>();
         var purge = true;
@@ -67,8 +76,7 @@ public class Indexer {
             indexers.add(createIndexer(ids, purge));
             purge = false;
         }
-
-        runIndexers(indexers.iterator(), 1);
+        runIndexers(job, indexers.iterator(), 1);
     }
 
     /**
@@ -78,8 +86,9 @@ public class Indexer {
      *
      * @param indexers
      * @param counter
+     * @param job
      */
-    private void runIndexers(Iterator<MassIndexer> indexers, Integer counter) {
+    private void runIndexers(SearchIndexJob job, Iterator<MassIndexer> indexers, Integer counter) {
         if (indexers.hasNext()) {
             log.info("Running indexer batch " + counter);
 
@@ -87,13 +96,15 @@ public class Indexer {
                     .start()
                     .thenRun(() -> {
                         log.info("Indexer " + counter + " completed!");
-                        runIndexers(indexers, counter + 1);
+                        runIndexers(job, indexers, counter + 1);
                     })
                     .exceptionally(throwable -> {
+                        jobRepository.save(job.fail());
                         log.error("Mass indexing failed!", throwable);
                         return null;
                     });
         } else {
+            jobRepository.save(job.complete());
             log.info("Indexing complete.");
         }
     }

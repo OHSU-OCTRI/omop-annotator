@@ -10,6 +10,7 @@ CREATE TABLE `search_index_job` (
 	`ended_at` datetime DEFAULT NULL,
 	`description` TEXT,
 	`status` varchar(255) DEFAULT NULL,
+	`patient_id_count` int(11) DEFAULT NULL,
 	primary key(`id`),
 	CONSTRAINT search_index_job_user_fk FOREIGN KEY (`user`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

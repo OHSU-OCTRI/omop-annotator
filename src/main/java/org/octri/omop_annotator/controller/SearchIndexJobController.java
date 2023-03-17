@@ -73,7 +73,7 @@ public class SearchIndexJobController extends AbstractBaseEntityController<Searc
 					.map(PoolEntry::getDocumentId)
 					.distinct()
 					.collect(Collectors.toList());
-
+			job.setPatientIdCount(ids.size());
 			// Starts the asynchronous process
 			indexer.indexPersistedData(job, ids);
 			msg = "Indexing initiated. Refresh this page to check the status.";

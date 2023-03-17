@@ -42,6 +42,8 @@ public class SearchIndexJob extends AbstractEntity {
     @Enumerated(value = EnumType.STRING)
     private JobStatus status;
 
+    private Integer patientIdCount;
+
     /**
      * Empty Constructor
      */
@@ -152,6 +154,14 @@ public class SearchIndexJob extends AbstractEntity {
 
     public void setStatus(JobStatus status) {
         this.status = status;
+    }
+
+    public Integer getPatientIdCount() {
+        return patientIdCount;
+    }
+
+    public void setPatientIdCount(Integer patientIdCount) {
+        this.patientIdCount = patientIdCount;
     }
 
 }

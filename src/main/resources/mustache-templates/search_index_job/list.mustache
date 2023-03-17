@@ -29,6 +29,7 @@
         <th>Duration</th>
         <th>Status</th>
         <th>Description</th>
+        <th>Patient Ids</th>
       </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
         <td>{{#duration}}{{.}}{{/duration}}</td>
         <td>{{#status}}{{.}}{{/status}}</td>
         <td>{{#description}}{{.}}{{/description}}</td>
+        <td>{{#patientIdCount}}{{.}}{{/patientIdCount}}</td>
       </tr>
       {{/entity_list}}
     </tbody>

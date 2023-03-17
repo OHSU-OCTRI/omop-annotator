@@ -1,6 +1,8 @@
 package org.octri.omop_annotator.domain.app;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -21,8 +23,8 @@ public class Pin extends AbstractEntity {
 	@NotNull
 	private PoolEntry poolEntry;
 
-	// TODO: We should probably introduce an enum and use it for both this and display configuration
-	private String entity;
+	@Enumerated(value = EnumType.STRING)
+	private OmopEntity entity;
 
 	private Long entityId;
 
@@ -44,11 +46,11 @@ public class Pin extends AbstractEntity {
 		this.poolEntry = poolEntry;
 	}
 
-	public String getEntity() {
+	public OmopEntity getEntity() {
 		return entity;
 	}
 
-	public void setEntity(String entity) {
+	public void setEntity(OmopEntity entity) {
 		this.entity = entity;
 	}
 

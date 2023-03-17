@@ -28,7 +28,7 @@ public class PinDTO {
         this.id = pin.getId();
         this.userId = pin.getUser().getId();
         this.poolEntryId = pin.getPoolEntry().getId();
-        this.entity = pin.getEntity();
+        this.entity = pin.getEntity().name();
         this.entityId = pin.getEntityId();
         this.visitId = pin.getVisitId();
     }

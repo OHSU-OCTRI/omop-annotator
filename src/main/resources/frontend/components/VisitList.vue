@@ -210,7 +210,7 @@ export default {
       return b;
     },
     pinnedVisits() {
-      return this.pins.filter(pin => pin.entity === 'Visit').map(pin => pin.entityId);
+      return this.pins.filter(pin => pin.entity === 'VISIT').map(pin => pin.entityId);
     }
   },
   methods: {
@@ -322,14 +322,14 @@ export default {
       if (this.isPinned(visitId)) {
         this.$emit(
           'pin-deleted',
-          this.pins.find(p => p.entity === 'Visit' && p.entityId === visitId)
+          this.pins.find(p => p.entity === 'VISIT' && p.entityId === visitId)
         );
       } else {
         const obj = {
           userId: null,
           poolEntryId: this.poolEntryId,
           entityId: visitId,
-          entity: 'Visit',
+          entity: 'VISIT',
           visitId: null
         };
         this.$emit('pin-saved', obj);

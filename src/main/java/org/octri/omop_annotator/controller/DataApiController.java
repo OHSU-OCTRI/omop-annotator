@@ -9,6 +9,7 @@ import org.octri.authentication.server.security.repository.UserRepository;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.Judgment;
 import org.octri.omop_annotator.domain.app.OmopDisplayConfiguration;
+import org.octri.omop_annotator.domain.app.OmopEntity;
 import org.octri.omop_annotator.domain.app.Pin;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
@@ -167,7 +168,7 @@ public class DataApiController {
         var pin = new Pin();
         pin.setUser(userRepository.findById(userId).get());
         pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
-        pin.setEntity(dto.getEntity());
+        pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
         pin.setEntityId(dto.getEntityId());
         pin.setVisitId(dto.getVisitId());
         var saved = pinRepository.save(pin);

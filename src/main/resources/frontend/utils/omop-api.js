@@ -16,6 +16,17 @@ export default class OmopApi {
   }
 
   /**
+   * Get pinned data for the PoolEntryId. This is not really part of the OMOP API, but
+   * allows easier mocking for tests.
+   * @param {*} poolEntryId
+   * @returns
+   */
+  async getPins(poolEntryId) {
+    const url = `${this.contextPath}/data/api/pin/pool_entry/${poolEntryId}`;
+    return await this.getJson(url);
+  }
+
+  /**
    * URL prefix of OMOP data related to a person entity.
    */
   get personPrefix() {

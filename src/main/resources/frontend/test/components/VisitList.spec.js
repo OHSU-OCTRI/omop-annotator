@@ -7,7 +7,9 @@ describe('VisitList.vue', () => {
   it('renders', () => {
     const wrapper = mount(VisitList, {
       props: {
+        poolEntryId: 1,
         visits: visits.slice(0, 1),
+        pins: [],
         configuration: visitsConfiguration,
         personId: 1234
       }
@@ -22,7 +24,13 @@ describe('VisitList.vue', () => {
 
   it('emits an event when a visit row is clicked', async () => {
     const wrapper = mount(VisitList, {
-      props: { visits: visits, configuration: visitsConfiguration, personId: 1234 }
+      props: {
+        poolEntryId: 1,
+        visits: visits,
+        pins: [],
+        configuration: visitsConfiguration,
+        personId: 1234
+      }
     });
 
     const visitRows = wrapper.findAll('tbody tr');
@@ -36,7 +44,13 @@ describe('VisitList.vue', () => {
   it('adds a class to the selected visit row', async () => {
     const wrapper = mount(VisitList, {
       // selectedVisitId is null by default
-      props: { visits: visits, configuration: visitsConfiguration, personId: 1234 }
+      props: {
+        poolEntryId: 1,
+        visits: visits,
+        pins: [],
+        configuration: visitsConfiguration,
+        personId: 1234
+      }
     });
 
     // nothing selected yet

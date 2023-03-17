@@ -368,21 +368,13 @@ export default {
       return this.configuration.filter(f => f.entityName === entityName);
     },
 
-    async getPins() {
-      const res = await fetch(
-        `${this.contextPath}/data/api/pin/pool_entry/${this.poolEntryId}`
-      );
-      const finalRes = await res.json();
-      return finalRes;
-    },
-
     async loadPerson() {
       const { omopApi } = this;
       this.resetState();
       this.resetTabs();
 
       const [pins, person, visits] = await Promise.all([
-        this.getPins(),
+        omopApi.getPins(this.poolEntryId),
         omopApi.getPerson(this.personId),
         omopApi.getVisitsForPerson(this.personId)
       ]);

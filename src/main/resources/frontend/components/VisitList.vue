@@ -326,11 +326,9 @@ export default {
         );
       } else {
         const obj = {
-          userId: null,
           poolEntryId: this.poolEntryId,
           entityId: visitId,
-          entity: 'VISIT',
-          visitId: null
+          entity: 'VISIT'
         };
         this.$emit('pin-saved', obj);
       }

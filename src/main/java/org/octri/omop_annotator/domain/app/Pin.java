@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.octri.authentication.server.security.entity.User;
 
 /**
- * An piece of data that is pinned by the User on the PoolEntry.
+ * A piece of data that is pinned by the User on the PoolEntry.
  *
  */
 @Entity
@@ -73,8 +73,7 @@ public class Pin extends AbstractEntity {
 	@Override
 	public String toString() {
 		return "Pin [user=" + user.getId() + ", poolEntry=" + poolEntry.getId() + ", entity=" + entity + ", entityId="
-				+ entityId
-				+ ", visitId=" + visitId + "]";
+			+ entityId + ", visitId=" + visitId + "]";
 	}
 
 }

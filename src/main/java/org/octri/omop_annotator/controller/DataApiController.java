@@ -160,23 +160,38 @@ public class DataApiController {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Save a Pin for the User and Pool Entry
+     * 
+     * @param dto
+     * @return
+     */
     @PostMapping(value = "pin/save_pin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public PinDTO savePin(@RequestBody PinDTO dto) {
-        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        var userId = securityHelper.authenticationUserDetails().getUserId();
         var pin = new Pin();
-        pin.setUser(userRepository.findById(userId).get());
         pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
         pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
         pin.setEntityId(dto.getEntityId());
         pin.setVisitId(dto.getVisitId());
+
+        // Fill in the logged in user
+        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+        var userId = securityHelper.authenticationUserDetails().getUserId();
+        pin.setUser(userRepository.findById(userId).get());
         var saved = pinRepository.save(pin);
+
         dto.setId(pin.getId());
         dto.setUserId(userId);
         return dto;
     }
 
+    /**
+     * Delete the given Pin from the database
+     * 
+     * @param dto
+     * @return
+     */
     @PostMapping(value = "pin/delete_pin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public PinDTO deletePin(@RequestBody PinDTO dto) {

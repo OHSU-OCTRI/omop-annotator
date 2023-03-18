@@ -1,4 +1,4 @@
-import Api from './Api.js';
+import Api from './api.js';
 /**
  * A simple wrapper for accessing Annotator endpoints.
  */

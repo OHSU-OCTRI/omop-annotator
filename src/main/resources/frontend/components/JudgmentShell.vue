@@ -50,6 +50,7 @@
 import EntryJudgment from './EntryJudgment';
 import LoadingSpinner from './LoadingSpinner';
 import OmopBrowser from './OmopBrowser';
+import AnnotatorApi from '../utils/annotator-api';
 
 import { contextPath } from '../utils/injection-keys';
 
@@ -81,6 +82,7 @@ export default {
   data() {
     return {
       loading: true,
+      annotatorApi: null,
       entryJudgments: [],
       selectedEntryJudgment: null,
       filters: {
@@ -92,10 +94,16 @@ export default {
     };
   },
   async mounted() {
+    if (this.annotatorApi === null) {
+      this.annotatorApi = new AnnotatorApi(this.contextPath);
+    }
+
     if (this.noEntryJudgments) {
       this.loading = true;
-      const response = await fetch(this.url, { credentials: 'same-origin' });
-      this.entryJudgments = await response.json();
+      this.entryJudgments = await this.annotatorApi.getPoolEntryJudgments(
+        this.poolId,
+        this.topicId
+      );
       this.loading = false;
     }
 
@@ -112,9 +120,6 @@ export default {
       return !this.hasEntryJudgments;
     },
 
-    url() {
-      return `${this.contextPath}/data/api/pool/${this.poolId}/topic/${this.topicId}/pool_entry_judgments`;
-    },
     filterNames() {
       return Object.keys(this.filters);
     },

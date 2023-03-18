@@ -267,6 +267,7 @@ import VisitList from './VisitList';
 
 import { contextPath, csrfToken, csrfHeader } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
+import AnnotatorApi from '../utils/annotator-api';
 
 export default {
   props: {
@@ -303,9 +304,10 @@ export default {
   emits: ['judgment-saved'],
   data() {
     return {
-      configuration: null,
+      configuration: [],
       pins: [],
       omopApi: null,
+      annotatorApi: null,
       person: {},
       visits: [],
       visitsLoading: true,
@@ -323,9 +325,14 @@ export default {
     if (this.omopApi === null) {
       this.omopApi = new OmopApi(this.contextPath);
     }
-    if (this.configuration === null) {
-      await this.getDisplayConfig();
+    if (this.annotatorApi === null) {
+      this.annotatorApi = new AnnotatorApi(
+        this.contextPath,
+        this.csrfHeader,
+        this.csrfToken
+      );
     }
+    this.configuration = await this.annotatorApi.getDisplayConfig();
     await this.loadPerson();
   },
   methods: {
@@ -358,23 +365,17 @@ export default {
       }
     },
 
-    async getDisplayConfig() {
-      const res = await fetch(`${this.contextPath}/data/api/omop_display_configuration`);
-      const finalRes = await res.json();
-      this.configuration = finalRes;
-    },
-
     getConfigurationForEntity(entityName) {
       return this.configuration.filter(f => f.entityName === entityName);
     },
 
     async loadPerson() {
-      const { omopApi } = this;
+      const { omopApi, annotatorApi } = this;
       this.resetState();
       this.resetTabs();
 
       const [pins, person, visits] = await Promise.all([
-        omopApi.getPins(this.poolEntryId),
+        annotatorApi.getPins(this.poolEntryId),
         omopApi.getPerson(this.personId),
         omopApi.getVisitsForPerson(this.personId)
       ]);
@@ -415,35 +416,13 @@ export default {
     },
 
     async savePin(pin) {
-      const { csrfHeader } = this;
-      const res = await fetch(this.savePinUrl, {
-        method: 'post',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          [csrfHeader]: this.csrfToken
-        },
-        body: JSON.stringify(pin)
-      });
-      this.pins.push(await res.json());
+      this.pins.push(await this.annotatorApi.savePin(pin));
     },
 
     async deletePin(pin) {
-      const { csrfHeader } = this;
-      const res = await fetch(this.deletePinUrl, {
-        method: 'post',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          [csrfHeader]: this.csrfToken
-        },
-        body: JSON.stringify(pin)
-      });
-      if (res.ok) {
-        const deleted = await res.json();
-        const i = this.pins.findIndex(pin => pin.id === deleted.id);
+      const ok = await this.annotatorApi.deletePin(pin);
+      if (ok) {
+        const i = this.pins.findIndex(p => p.id === pin.id);
         this.pins.splice(i, 1);
       }
     }
@@ -455,14 +434,6 @@ export default {
 
     noVisitSelected() {
       return !this.visitSelected;
-    },
-
-    savePinUrl() {
-      return `${this.contextPath}/data/api/pin/save_pin`;
-    },
-
-    deletePinUrl() {
-      return `${this.contextPath}/data/api/pin/delete_pin`;
     }
   },
   watch: {

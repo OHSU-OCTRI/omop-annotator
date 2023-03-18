@@ -1,6 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 
 import OmopApi from '@/utils/omop-api';
+import AnnotatorApi from '@/utils/annotator-api';
 import OmopBrowser from '@/components/OmopBrowser';
 
 import { mockFetchResponse } from '../helpers';
@@ -8,6 +9,7 @@ import exampleData from '../example-data';
 
 describe('OmopBrowser.vue', () => {
   let mockApi;
+  let mockAnnotatorApi;
   let defaultOptions;
   let visitApiMocks;
 
@@ -15,14 +17,18 @@ describe('OmopBrowser.vue', () => {
     const { person, visits } = exampleData;
 
     mockApi = new OmopApi();
+    mockAnnotatorApi = new AnnotatorApi();
 
     // pool entry requests
     spyOn(window, 'fetch').and.resolveTo(mockFetchResponse(exampleData.judgmentDto));
 
+    // annotator state
+    spyOn(mockAnnotatorApi, 'getPins').and.resolveTo([]);
+    spyOn(mockAnnotatorApi, 'getDisplayConfig').and.resolveTo([]);
+
     // person requests
     spyOn(mockApi, 'getPerson').and.resolveTo(person);
     spyOn(mockApi, 'getVisitsForPerson').and.resolveTo(visits);
-    spyOn(mockApi, 'getPins').and.resolveTo([]);
 
     // visit data requests
     const visitApiCalls = [
@@ -39,7 +45,10 @@ describe('OmopBrowser.vue', () => {
 
     defaultOptions = {
       props: { personId: person.id, poolEntryId: 12 },
-      data: () => ({ omopApi: mockApi, configuration: [] })
+      data: () => ({
+        omopApi: mockApi,
+        annotatorApi: mockAnnotatorApi
+      })
     };
   });
 

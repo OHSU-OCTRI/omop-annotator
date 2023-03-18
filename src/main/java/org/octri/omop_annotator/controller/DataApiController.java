@@ -12,6 +12,7 @@ import org.octri.omop_annotator.domain.app.OmopDisplayConfiguration;
 import org.octri.omop_annotator.domain.app.OmopEntity;
 import org.octri.omop_annotator.domain.app.Pin;
 import org.octri.omop_annotator.domain.app.PoolEntry;
+import org.octri.omop_annotator.exception.ForbiddenException;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
@@ -194,7 +195,12 @@ public class DataApiController {
      */
     @PostMapping(value = "pin/delete_pin", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public PinDTO deletePin(@RequestBody PinDTO dto) {
+    public PinDTO deletePin(@RequestBody PinDTO dto) throws ForbiddenException {
+        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+        var userId = securityHelper.authenticationUserDetails().getUserId();
+        if (userId != dto.getUserId()) {
+            throw new ForbiddenException("Cannot delete pin for a different user.");
+        }
         Optional<Pin> pin = pinRepository.findById(dto.getId());
         if (pin.isPresent()) {
             pinRepository.delete(pin.get());

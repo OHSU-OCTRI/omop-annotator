@@ -441,9 +441,11 @@ export default {
         },
         body: JSON.stringify(pin)
       });
-      const deleted = await res.json();
-      const i = this.pins.findIndex(pin => pin.id === deleted.id);
-      this.pins.splice(i, 1);
+      if (res.ok) {
+        const deleted = await res.json();
+        const i = this.pins.findIndex(pin => pin.id === deleted.id);
+        this.pins.splice(i, 1);
+      }
     }
   },
   computed: {

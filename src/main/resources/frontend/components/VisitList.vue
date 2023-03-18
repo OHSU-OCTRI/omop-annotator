@@ -276,7 +276,7 @@ export default {
           // search the datatable
           this.searchResults = null;
           // clear previous search
-          this.dataTable.column(0).search('');
+          this.dataTable.column(1).search('');
           this.dataTable.search(this.searchTerm).draw();
         } else if (this.searchTerm.length > 0) {
           // clear previous visit search
@@ -290,7 +290,7 @@ export default {
           // The returned visit ids are converted to a regex so we can use the
           // datatables functionality for filtering the rows.
           const re = `^(${this.searchResults.join('|')})$`;
-          this.dataTable.column(0).search(re, true, false).draw();
+          this.dataTable.column(1).search(re, true, false).draw();
         }
         this.searching = false;
       }
@@ -303,7 +303,7 @@ export default {
       if (this.dataTable) {
         // Clear the filter, sort by visitStart, and goto the selectedVisit page.
         const startDateColumn = 2;
-        this.dataTable.column(0).search('');
+        this.dataTable.column(1).search('');
         this.dataTable
           .search('')
           .order([startDateColumn, 'asc'])

@@ -17,7 +17,7 @@
       :poolEntryId="this.poolEntryId"
       :visits="visits"
       :pins="pins"
-      :configuration="getConfigurationForEntity('Visit')"
+      :configuration="getConfigurationForEntity('VISIT')"
       :show-header="false"
       :person-id="personId"
       :selected-visit-id="selectedVisitId"
@@ -140,7 +140,7 @@
             <VisitRelatedList
               v-else
               :items="conditions"
-              :configuration="getConfigurationForEntity('Condition')"
+              :configuration="getConfigurationForEntity('CONDITION')"
               itemType="Condition"
               :show-header="false"
             />
@@ -161,7 +161,7 @@
             <VisitRelatedList
               v-else
               :items="observations"
-              :configuration="getConfigurationForEntity('Observation')"
+              :configuration="getConfigurationForEntity('OBSERVATION')"
               itemType="Observation"
               :show-header="false"
             />
@@ -182,7 +182,7 @@
             <VisitRelatedList
               v-else
               :items="procedures"
-              :configuration="getConfigurationForEntity('Procedure')"
+              :configuration="getConfigurationForEntity('PROCEDURE')"
               itemType="Procedure"
               :show-header="false"
             />
@@ -203,7 +203,7 @@
             <GroupedList
               v-else
               :items="measurements"
-              :configuration="getConfigurationForEntity('Measurement')"
+              :configuration="getConfigurationForEntity('MEASUREMENT')"
               itemType="Measurement"
               :show-header="false"
             />
@@ -224,7 +224,7 @@
             <NoteList
               v-else
               :notes="notes"
-              :configuration="getConfigurationForEntity('Note')"
+              :configuration="getConfigurationForEntity('NOTE')"
               :show-header="false"
             />
           </div>
@@ -244,7 +244,7 @@
             <GroupedList
               v-else
               :items="drugs"
-              :configuration="getConfigurationForEntity('Drug')"
+              :configuration="getConfigurationForEntity('DRUG')"
               itemType="Drug"
               :show-header="false"
             />
@@ -365,8 +365,8 @@ export default {
       }
     },
 
-    getConfigurationForEntity(entityName) {
-      return this.configuration.filter(f => f.entityName === entityName);
+    getConfigurationForEntity(entity) {
+      return this.configuration.filter(f => f.entity === entity);
     },
 
     async loadPerson() {

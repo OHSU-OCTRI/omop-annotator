@@ -2,6 +2,8 @@ package org.octri.omop_annotator.domain.app;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * Configure the displays for the Omop Entities. The fieldName corresponds to the getters
@@ -10,7 +12,9 @@ import javax.persistence.Entity;
 @Entity
 public class OmopDisplayConfiguration extends AbstractEntity {
 
-    private String entityName;
+    @Enumerated(value = EnumType.STRING)
+    private OmopEntity entity;
+
     private String fieldName;
     private String columnDisplay;
 
@@ -28,12 +32,12 @@ public class OmopDisplayConfiguration extends AbstractEntity {
     @Column(columnDefinition = "bit default 1")
     private boolean filterable;
 
-    public String getEntityName() {
-        return entityName;
+    public OmopEntity getEntity() {
+        return entity;
     }
 
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
+    public void setEntity(OmopEntity entity) {
+        this.entity = entity;
     }
 
     public String getFieldName() {

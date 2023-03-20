@@ -9,5 +9,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(path = "omop_display_configuration")
 public interface OmopDisplayConfigurationRepository extends PagingAndSortingRepository<OmopDisplayConfiguration, Long> {
 
-    List<OmopDisplayConfiguration> findAllByEntityName(String entityName);
 }

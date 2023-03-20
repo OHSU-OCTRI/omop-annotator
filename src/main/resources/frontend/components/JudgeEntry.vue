@@ -14,6 +14,7 @@
 
 <script>
 import JudgeButton from './JudgeButton.vue';
+import AnnotatorApi from '../utils/annotator-api';
 
 import { contextPath, csrfToken, csrfHeader } from '../utils/injection-keys';
 
@@ -39,6 +40,7 @@ export default {
   emits: ['judgment-saved'],
   data() {
     return {
+      annotatorApi: null,
       // JudgmentDTO
       judgment: {
         id: null,
@@ -50,15 +52,16 @@ export default {
     };
   },
   async mounted() {
+    if (this.annotatorApi === null) {
+      this.annotatorApi = new AnnotatorApi(
+        this.contextPath,
+        this.csrfHeader,
+        this.csrfToken
+      );
+    }
     await this.loadJudgment();
   },
   computed: {
-    judgmentUrl() {
-      return `${this.contextPath}/data/api/judgment/pool_entry/${this.poolEntryId}`;
-    },
-    saveUrl() {
-      return `${this.contextPath}/data/api/judgment/save_judgment`;
-    },
     title() {
       return `Judge Entry ${this.poolEntryId}`;
     },
@@ -78,24 +81,11 @@ export default {
       this.saveJudgment();
     },
     async loadJudgment() {
-      const response = await fetch(this.judgmentUrl, { credentials: 'same-origin' });
-      this.judgment = await response.json();
+      this.judgment = await this.annotatorApi.loadJudgment(this.poolEntryId);
       await this.$nextTick();
     },
     async saveJudgment() {
-      const { csrfHeader } = this;
-      const res = await fetch(this.saveUrl, {
-        method: 'post',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          [csrfHeader]: this.csrfToken
-        },
-        body: JSON.stringify(this.judgment)
-      });
-      // On the initial save this will provide us with an id for future updates.
-      this.judgment = await res.json();
+      this.judgment = await this.annotatorApi.saveJudgment(this.judgment);
       this.$emit('judgment-saved', this.judgment);
     }
   },

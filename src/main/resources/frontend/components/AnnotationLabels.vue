@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import AnnotatorApi from '../utils/annotator-api';
 export default {
   props: {
     contextPath: {
@@ -88,17 +89,16 @@ export default {
   },
   data() {
     return {
+      annotatorApi: null,
       labels: []
     };
   },
-  mounted() {
+  async mounted() {
+    if (this.annotatorApi === null) {
+      this.annotatorApi = new AnnotatorApi(this.contextPath);
+    }
     if (!this.isNew) {
-      // Specify same-origin credentials for compatibility with older browsers
-      fetch(this.url, { credentials: 'same-origin' })
-        .then(response => response.json())
-        .then(jsonObj => {
-          this.labels = jsonObj;
-        });
+      this.labels = await this.annotatorApi.getLabelsForAnnotationSchema(this.schemaId);
     }
   },
   methods: {
@@ -139,9 +139,6 @@ export default {
   computed: {
     isNew() {
       return this.schemaId === null;
-    },
-    url() {
-      return this.contextPath + '/admin/api/annotation_label/schema/' + this.schemaId;
     }
   }
 };

@@ -25,6 +25,7 @@
 <script>
 import TopicSetSummary from './TopicSetSummary';
 import LoadingSpinner from './LoadingSpinner';
+import AnnotatorApi from '../utils/annotator-api';
 import { contextPath } from '../utils/injection-keys';
 export default {
   inject: {
@@ -38,6 +39,7 @@ export default {
   },
   data() {
     return {
+      annotatorApi: null,
       topicSets: [],
       selectedTopicSetId: null,
       summary: [],
@@ -45,9 +47,12 @@ export default {
     };
   },
   async mounted() {
+    if (this.annotatorApi === null) {
+      this.annotatorApi = new AnnotatorApi(this.contextPath);
+    }
+
     if (!this.topicSets.length > 0) {
-      const response = await fetch(this.topicSetUrl, { credentials: 'same-origin' });
-      this.topicSets = await response.json();
+      this.topicSets = await this.annotatorApi.getTopicSets();
     }
 
     if (this.topicSets.length > 0 && !this.selectedTopicSet) {
@@ -55,14 +60,6 @@ export default {
     }
 
     await this.loadTopicSet();
-  },
-  computed: {
-    topicSetUrl() {
-      return `${this.contextPath}/admin/api/topic_sets`;
-    },
-    summaryUrl() {
-      return `${this.contextPath}/admin/api/topic_set/${this.selectedTopicSetId}/summary`;
-    }
   },
   methods: {
     async changeTopicSet(event) {
@@ -76,8 +73,7 @@ export default {
     async loadTopicSet() {
       this.resetState();
       this.loadingSummary = true;
-      const response = await fetch(this.summaryUrl, { credentials: 'same-origin' });
-      this.summary = await response.json();
+      this.summary = await this.annotatorApi.getTopicSetSummary(this.selectedTopicSetId);
       this.loadingSummary = false;
     }
   }

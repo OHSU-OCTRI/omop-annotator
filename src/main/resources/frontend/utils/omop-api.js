@@ -1,31 +1,9 @@
-const defaultFetchOptions = Object.freeze({ credentials: 'same-origin' });
+import Api from './api.js';
 
 /**
  * A simple wrapper for accessing OMOP endpoints.
  */
-export default class OmopApi {
-  /**
-   * @param {string} contextPath - the application's context path. Used as the prefix for
-   *  URLs. Defaults to an empty string.
-   * @param {Object} fetchOptions - default options to pass to fetch requests. Defaults to
-   *  `{ credentials: 'same-origin' }` for compatibility with older browsers.
-   */
-  constructor(contextPath = '', fetchOptions = defaultFetchOptions) {
-    this.contextPath = contextPath;
-    this.fetchOptions = fetchOptions;
-  }
-
-  /**
-   * Get pinned data for the PoolEntryId. This is not really part of the OMOP API, but
-   * allows easier mocking for tests.
-   * @param {*} poolEntryId
-   * @returns
-   */
-  async getPins(poolEntryId) {
-    const url = `${this.contextPath}/data/api/pin/pool_entry/${poolEntryId}`;
-    return await this.getJson(url);
-  }
-
+export default class OmopApi extends Api {
   /**
    * URL prefix of OMOP data related to a person entity.
    */
@@ -216,20 +194,5 @@ export default class OmopApi {
   async searchPersonData(personId, entity, term) {
     const url = `${this.personPrefix}/${personId}/visits/filter/${entity}?name=${term}`;
     return await this.getJson(url);
-  }
-
-  /**
-   * Makes a `fetch` request to the given URL, expecting a JSON response. Returns parsed
-   * JSON data.
-   *
-   * @param {string} url
-   * @returns {Promise}
-   */
-  async getJson(url) {
-    const response = await fetch(url, this.fetchOptions);
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    return await response.json();
   }
 }

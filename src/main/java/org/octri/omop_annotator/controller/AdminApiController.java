@@ -3,11 +3,13 @@ package org.octri.omop_annotator.controller;
 import java.util.List;
 
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
+import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
+import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
-import org.octri.omop_annotator.view.TopicSetSummary;
+import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,9 @@ public class AdminApiController {
 
     @Autowired
     TopicSetRepository topicSetRepository;
+
+    @Autowired
+    PoolRepository poolRepository;
 
     @Autowired
     CustomViewRepository customViewRepository;
@@ -54,16 +59,29 @@ public class AdminApiController {
     }
 
     /**
-     * Get a summary of all the pools and topics in the topic set and counts of user judgments
+     * Get the pools for the given topic set
      * 
      * @param id
      *            the topic set id
      * @return
      */
-    @GetMapping(value = "/topic_set/{id}/summary")
+    @GetMapping(value = "/pool/topic_set/{id}")
     @ResponseBody
-    public List<TopicSetSummary> topicSetSummary(@PathVariable Long id) {
-        return customViewRepository.summarizeTopicSet(id);
+    public List<Pool> poolsForTopicSet(@PathVariable Long id) {
+        return poolRepository.findByTopicSetId(id);
+    }
+
+    /**
+     * Get a summary of all the topics in the given pool and counts of user judgments
+     * 
+     * @param id
+     *            the pool id
+     * @return
+     */
+    @GetMapping(value = "/pool/{id}/summary")
+    @ResponseBody
+    public List<PoolSummary> poolSummary(@PathVariable Long id) {
+        return customViewRepository.summarizePool(id);
     }
 
 }

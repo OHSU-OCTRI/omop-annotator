@@ -3,17 +3,13 @@
     <table class="table table-striped table-bordered table-sm w-100" ref="table">
       <thead>
         <tr>
-          <th>Pool Name</th>
           <th>Topic Number</th>
           <th>Topic Narrative</th>
-          <th>Pool Size</th>
+          <th>Completed Judgments</th>
           <th>Judge</th>
-          <th>Percent Complete</th>
           <th class="d-none" scope="col">Full Narrative</th>
         </tr>
         <tr class="search-row">
-          <th></th>
-          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -23,16 +19,14 @@
       </thead>
       <tbody>
         <tr v-for="(row, index) in summary" :key="index">
-          <td>{{ row.poolName }}</td>
           <td>{{ row.topicNumber }}</td>
           <td
             class="col-md-8"
             @click="toggleNarrative(index)"
             v-html="narrativeText(index)"
           ></td>
-          <td>{{ row.poolSize }}</td>
+          <td>{{ fractionComplete(row) }}</td>
           <td>{{ judgeName(row.judge) }}</td>
-          <td>{{ percentComplete(row) }}</td>
           <!-- Add a hidden column for the full narrative so it can be searched -->
           <td class="d-none" data-field="fullNarrative">
             {{ row.topicNarrative }}
@@ -89,7 +83,7 @@ export default {
           orderCellsTop: true,
           initComplete: function () {
             this.api()
-              .columns([0, 1, 4])
+              .columns([0, 3])
               .every(function () {
                 const column = this;
                 let select = $('<select><option value=""></option></select>')
@@ -112,8 +106,8 @@ export default {
         });
       }
     },
-    percentComplete(row) {
-      return ((row.completed / row.poolSize) * 100).toFixed(2);
+    fractionComplete(row) {
+      return `${row.completed ? row.completed : 0} / ${row.poolSize}`;
     },
     judgeName(judge) {
       return judge ? judge : '--';

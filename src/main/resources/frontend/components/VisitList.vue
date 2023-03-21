@@ -130,7 +130,7 @@ export default {
     },
     sortColumn: {
       type: Number,
-      default: 1
+      default: 3 // This is the start date column
     },
     sortOrder: {
       type: String,

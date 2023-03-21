@@ -360,9 +360,9 @@ export default {
       this.$nextTick(() => {
         let v = this.visits;
         if (this.pinsOnly) {
-          v = this.visits.filter(v => this.visitsWithPins.includes(v.id));
+          v = this.visits.filter(v => this.visitsWithPins.has(v.id));
           // Reset visit selected if it's not in the visits being shown
-          if (this.visitSelected && !this.visitsWithPins.includes(this.selectedVisitId)) {
+          if (this.visitSelected && !this.visitsWithPins.has(this.selectedVisitId)) {
             this.selectedVisitId = null;
           }
         }
@@ -480,7 +480,7 @@ export default {
         .filter(pin => pin.entity === 'VISIT')
         .map(pin => pin.entityId)
         .concat(this.pins.filter(pin => pin.visitId !== null).map(pin => pin.visitId));
-      return Array.from(new Set(pinList));
+      return new Set(pinList);
     }
   },
   watch: {

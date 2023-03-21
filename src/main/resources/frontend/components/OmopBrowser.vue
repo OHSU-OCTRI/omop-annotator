@@ -7,7 +7,22 @@
     />
     <PersonSummary :person="person" />
   </div>
-  <h2 class="fs-4">Visits</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-4 fs-4 fw-bolder">Visits</div>
+      <div class="col-8 text-end" v-if="hasPins">
+        <input
+          type="checkbox"
+          value="true"
+          id="pins-only"
+          v-model="pinsOnly"
+          @change="togglePinsOnly"
+        />
+        <label class="p-2" for="pins-only"> Show pinned data only</label>
+      </div>
+      <div class="col-8 text-end fw-lighter" v-else>(No Pinned Data)</div>
+    </div>
+  </div>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
     <LoadingSpinner />
   </div>
@@ -15,7 +30,7 @@
     <VisitList
       class="mb-4"
       :poolEntryId="this.poolEntryId"
-      :visits="visits"
+      :visits="visitsToShow"
       :pins="pins"
       :configuration="getConfigurationForEntity('VISIT')"
       :show-header="false"
@@ -306,6 +321,7 @@ export default {
     return {
       configuration: [],
       pins: [],
+      pinsOnly: false,
       omopApi: null,
       annotatorApi: null,
       person: {},
@@ -339,6 +355,21 @@ export default {
     handleJudgment(...data) {
       this.$emit('judgment-saved', ...data);
     },
+    togglePinsOnly() {
+      this.visitsLoading = true;
+      this.$nextTick(() => {
+        let v = this.visits;
+        if (this.pinsOnly) {
+          v = this.visits.filter(v => this.visitsWithPins.includes(v.id));
+          // Reset visit selected if it's not in the visits being shown
+          if (this.visitSelected && !this.visitsWithPins.includes(this.selectedVisitId)) {
+            this.selectedVisitId = null;
+          }
+        }
+        this.visitsToShow = v;
+        this.visitsLoading = false;
+      });
+    },
     handleSavePin(data) {
       this.savePin(data);
     },
@@ -348,6 +379,8 @@ export default {
     resetState() {
       this.person = {};
       this.visits = [];
+      this.visitsToShow = [];
+      this.pinsOnly = false;
       this.visitsLoading = true;
       this.selectedVisitId = null;
       this.conditions = [];
@@ -383,6 +416,7 @@ export default {
       this.pins = pins;
       this.person = person;
       this.visits = visits;
+      this.visitsToShow = visits; // Load all visits by default
       this.visitsLoading = false;
     },
 
@@ -434,6 +468,19 @@ export default {
 
     noVisitSelected() {
       return !this.visitSelected;
+    },
+
+    hasPins() {
+      return this.pins.length > 0;
+    },
+
+    visitsWithPins() {
+      // This includes all visits directly and indirectly pinned
+      const pinList = this.pins
+        .filter(pin => pin.entity === 'VISIT')
+        .map(pin => pin.entityId)
+        .concat(this.pins.filter(pin => pin.visitId !== null).map(pin => pin.visitId));
+      return Array.from(new Set(pinList));
     }
   },
   watch: {

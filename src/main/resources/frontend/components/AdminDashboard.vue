@@ -15,15 +15,34 @@
       </select>
     </div>
   </div>
-  <h2>Judgment Progress Dashboard</h2>
-  <div class="d-flex justify-content-center" v-if="loadingSummary">
-    <LoadingSpinner />
+  <div class="row">
+    <div class="form-group">
+      <label for="pool" class="form-label required-field">Pool</label>
+      <select
+        class="form-select"
+        id="pool"
+        name="pool"
+        @change="loadPool($event)"
+        required
+      >
+        <option key="none" value="">--</option>
+        <option v-for="pool in pools" :key="pool.id" :value="pool.id">
+          {{ pool.name }}
+        </option>
+      </select>
+    </div>
   </div>
-  <TopicSetSummary v-else :summary="summary" />
+  <div v-if="selectedPool">
+    <h2>Judgment Progress Dashboard</h2>
+    <div class="d-flex justify-content-center" v-if="loadingSummary">
+      <LoadingSpinner />
+    </div>
+    <PoolSummary v-else :summary="summary" />
+  </div>
 </template>
 
 <script>
-import TopicSetSummary from './TopicSetSummary';
+import PoolSummary from './PoolSummary';
 import LoadingSpinner from './LoadingSpinner';
 import AnnotatorApi from '../utils/annotator-api';
 import { contextPath } from '../utils/injection-keys';
@@ -34,7 +53,7 @@ export default {
     }
   },
   components: {
-    TopicSetSummary,
+    PoolSummary,
     LoadingSpinner
   },
   data() {
@@ -42,6 +61,8 @@ export default {
       annotatorApi: null,
       topicSets: [],
       selectedTopicSetId: null,
+      pools: [],
+      selectedPool: null,
       summary: [],
       loadingSummary: false
     };
@@ -59,21 +80,25 @@ export default {
       this.selectedTopicSetId = this.topicSets[0].id;
     }
 
-    await this.loadTopicSet();
+    this.pools = await this.annotatorApi.getPoolsForTopicSet(this.selectedTopicSetId);
   },
   methods: {
     async changeTopicSet(event) {
       this.selectedTopicSetId = event.target.value;
-      this.loadTopicSet();
+      this.resetState();
+      this.pools = await this.annotatorApi.getPoolsForTopicSet(this.selectedTopicSetId);
     },
     resetState() {
+      this.selectedPool = null;
       this.summary = [];
-      this.loadingSummary = false;
-    },
-    async loadTopicSet() {
-      this.resetState();
       this.loadingSummary = true;
-      this.summary = await this.annotatorApi.getTopicSetSummary(this.selectedTopicSetId);
+    },
+    async loadPool(event) {
+      this.resetState();
+      this.selectedPool = event.target.value;
+      if (this.selectedPool) {
+        this.summary = await this.annotatorApi.getPoolSummary(this.selectedPool);
+      }
       this.loadingSummary = false;
     }
   }

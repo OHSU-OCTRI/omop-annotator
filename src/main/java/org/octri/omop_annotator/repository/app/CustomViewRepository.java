@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.octri.authentication.server.security.entity.User;
 import org.octri.omop_annotator.view.PoolEntryJudgmentSummary;
+import org.octri.omop_annotator.view.PoolSummary;
 import org.octri.omop_annotator.view.TopicJudgmentSummary;
-import org.octri.omop_annotator.view.TopicSetSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,7 +31,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 			+ " left join annotation_label al on al.id = j.annotation_label"
 			+ " where pe.pool = ?1 and pe.topic = ?2";
 
-	static final String topicSetSummaryQuery = "select p.id as 'poolId', p.`name` as 'poolName', t.id as 'topicId', t.topic_number as 'topicNumber',"
+	static final String poolSummaryQuery = "select p.id as 'poolId', p.`name` as 'poolName', t.id as 'topicId', t.topic_number as 'topicNumber',"
 			+ " t.narrative as 'topicNarrative', count(pe.id) as 'poolSize', j.username as 'judge', j.completed as 'completed'"
 			+ " from pool p"
 			+ " join pool_entry pe on pe.pool = p.id"
@@ -42,7 +42,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 			+ " join topic t on pe.topic = t.id"
 			+ " join user u on u.id = j.user"
 			+ " group by p.id, t.id, u.id, u.username) j on j.pool_id = p.id and j.topic_id = t.id"
-			+ " where p.topic_set = ?1"
+			+ " where p.id = ?1"
 			+ " group by p.id, p.`name`, t.id, t.topic_number, t.narrative, j.username, j.completed";
 
 	/**
@@ -71,11 +71,11 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 	/**
 	 * Return a summary of the topics for the given pool and count of judgments by each user
 	 * 
-	 * @param topicSetId
-	 *            the topic set to summarize judgments for
+	 * @param poolId
+	 *            the pool to summarize judgments for
 	 * @return
 	 */
-	@Query(value = topicSetSummaryQuery, nativeQuery = true)
-	List<TopicSetSummary> summarizeTopicSet(Long topicSetId);
+	@Query(value = poolSummaryQuery, nativeQuery = true)
+	List<PoolSummary> summarizePool(Long poolId);
 
 }

@@ -1,9 +1,9 @@
 package org.octri.omop_annotator.view;
 
 /**
- * A summary of the pools in a topic set and the judgments completed per user
+ * A summary of the pool and the judgments completed per user
  */
-public interface TopicSetSummary {
+public interface PoolSummary {
 
     public Long getPoolId();
 

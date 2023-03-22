@@ -37,12 +37,21 @@ export default class AnnotatorApi extends Api {
   }
 
   /**
-   * Get the summary for the given topic set
-   * @param {Long} topicSetId
+   * Get all pools for the given topic set
    * @returns
    */
-  async getTopicSetSummary(topicSetId) {
-    const url = `${this.contextPath}/admin/api/topic_set/${topicSetId}/summary`;
+  async getPoolsForTopicSet(topicSetId) {
+    const url = `${this.contextPath}/admin/api/pool/topic_set/${topicSetId}`;
+    return await this.getJson(url);
+  }
+
+  /**
+   * Get the summary for the given topic set
+   * @param {Long} poolId
+   * @returns
+   */
+  async getPoolSummary(poolId) {
+    const url = `${this.contextPath}/admin/api/pool/${poolId}/summary`;
     return await this.getJson(url);
   }
 

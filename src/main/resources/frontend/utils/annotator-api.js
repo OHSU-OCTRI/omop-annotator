@@ -134,6 +134,11 @@ export default class AnnotatorApi extends Api {
     return await res.json();
   }
 
+  /**
+   * Delete a pin
+   * @param {*} pin
+   * @returns
+   */
   async deletePin(pin) {
     const { csrfHeader } = this;
     const res = await fetch(`${this.contextPath}/data/api/pin/delete_pin`, {
@@ -147,5 +152,23 @@ export default class AnnotatorApi extends Api {
       body: JSON.stringify(pin)
     });
     return res.ok;
+  }
+
+  /**
+   * Get the csv data for the selected pool
+   * @param {Long} selectedPoolId
+   * @returns
+   */
+  async exportDashboard(selectedPoolId) {
+    const res = await fetch(
+      `${this.contextPath}/admin/export/dashboard/${selectedPoolId}`,
+      {
+        method: 'get',
+        headers: {
+          'content-type': 'text/csv'
+        }
+      }
+    );
+    return await res.text();
   }
 }

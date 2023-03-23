@@ -10,16 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.octri.authentication.server.security.repository.UserRepository;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
+import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.view.ExportedJudgmentRow;
 import org.octri.omop_annotator.view.OptionList;
+import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,9 +39,9 @@ public class DataExportController {
     @Autowired
     private PoolRepository poolRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private JudgmentRepository judgmentRepository;
+    @Autowired
+    private CustomViewRepository customViewRepository;
 
     @Autowired
     private OmopDataConfiguration dataConfig;
@@ -76,8 +78,27 @@ public class DataExportController {
 
         var writer = new CSVWriter(response.getWriter());
         writer.writeNext(ExportedJudgmentRow.FIELDS);
-        for (ExportedJudgmentRow record : results) {
-            writer.writeNext(record.toCsvRow());
+        for (ExportedJudgmentRow row : results) {
+            writer.writeNext(row.toCsvRow());
+        }
+        writer.close();
+    }
+
+    /**
+     * Generates and streams a CSV file summarizing the admin dashboard data for the pool
+     * 
+     * @param response
+     * @param poolId
+     * @throws IOException
+     */
+    @GetMapping(path = "dashboard/{poolId}")
+    public void exportDashboardCsv(HttpServletResponse response, @PathVariable Long poolId)
+            throws IOException {
+        List<PoolSummary> results = customViewRepository.summarizePool(poolId);
+        var writer = new CSVWriter(response.getWriter());
+        writer.writeNext(PoolSummary.CSV_FIELDS);
+        for (var row : results) {
+            writer.writeNext(row.toCsvRow());
         }
         writer.close();
     }

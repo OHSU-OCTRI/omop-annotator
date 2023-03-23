@@ -65,7 +65,7 @@ public class Pool extends AbstractEntity implements Labelled {
 
 	@Override
 	public String getLabel() {
-		return getName();
+		return getTopicSet().getName() + " - " + getName();
 	}
 
 }

@@ -21,4 +21,16 @@ public interface PoolSummary {
 
     public Integer getCompleted();
 
+    public static String[] CSV_FIELDS = new String[] { "topic_number", "topic_narrative", "judge", "completed",
+            "pool_size" };
+
+    public default String[] toCsvRow() {
+        return new String[] {
+                getTopicNumber().toString(),
+                getTopicNarrative(),
+                getJudge(),
+                getCompleted() == null ? "0" : getCompleted().toString(),
+                getPoolSize().toString() };
+    }
+
 }

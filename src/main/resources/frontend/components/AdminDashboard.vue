@@ -32,8 +32,16 @@
       </select>
     </div>
   </div>
-  <div v-if="selectedPool">
-    <h2>Judgment Progress Dashboard</h2>
+  <div v-if="selectedPoolId">
+    <div class="container p-3">
+      <div class="row">
+        <div class="col-6 fs-3 fw-bold">Judgment Progress Dashboard</div>
+        <div class="col-6 text-end">
+          <button class="btn btn-primary" @click="exportDashboard">Export</button>
+        </div>
+      </div>
+    </div>
+
     <div class="d-flex justify-content-center" v-if="loadingSummary">
       <LoadingSpinner />
     </div>
@@ -62,7 +70,7 @@ export default {
       topicSets: [],
       selectedTopicSetId: null,
       pools: [],
-      selectedPool: null,
+      selectedPoolId: null,
       summary: [],
       loadingSummary: false
     };
@@ -89,17 +97,26 @@ export default {
       this.pools = await this.annotatorApi.getPoolsForTopicSet(this.selectedTopicSetId);
     },
     resetState() {
-      this.selectedPool = null;
+      this.selectedPoolId = null;
       this.summary = [];
       this.loadingSummary = true;
     },
     async loadPool(event) {
       this.resetState();
-      this.selectedPool = event.target.value;
-      if (this.selectedPool) {
-        this.summary = await this.annotatorApi.getPoolSummary(this.selectedPool);
+      this.selectedPoolId = event.target.value;
+      if (this.selectedPoolId) {
+        this.summary = await this.annotatorApi.getPoolSummary(this.selectedPoolId);
       }
       this.loadingSummary = false;
+    },
+    async exportDashboard() {
+      const csv = await this.annotatorApi.exportDashboard(this.selectedPoolId);
+      const dateString = new Date().toJSON().slice(0, 10);
+      const anchor = document.createElement('a');
+      anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+      anchor.target = '_blank';
+      anchor.download = `dashboard_pool_${this.selectedPoolId}_${dateString}.csv`;
+      anchor.click();
     }
   }
 };

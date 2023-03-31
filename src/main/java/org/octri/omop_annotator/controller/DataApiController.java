@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.octri.authentication.server.security.SecurityHelper;
 import org.octri.authentication.server.security.repository.UserRepository;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
@@ -166,24 +167,44 @@ public class DataApiController {
      * 
      * @param dto
      * @return
+     * @throws ForbiddenException
      */
     @PostMapping(value = "pin/save_pin", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public PinDTO savePin(@RequestBody PinDTO dto) {
-        var pin = new Pin();
-        pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
-        pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
-        pin.setEntityId(dto.getEntityId());
-        pin.setVisitId(dto.getVisitId());
+    public PinDTO savePin(@RequestBody PinDTO dto) throws ForbiddenException {
 
-        // Fill in the logged in user
         var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
         var userId = securityHelper.authenticationUserDetails().getUserId();
-        pin.setUser(userRepository.findById(userId).get());
+
+        Pin pin = null;
+
+        if (dto.getId() != null) {
+            var pinOpt = pinRepository.findById(dto.getId());
+            if (!pinOpt.isPresent() || userId != dto.getUserId()) {
+                throw new ForbiddenException("Cannot update pin for nonexistent id or different user.");
+            }
+            pin = pinOpt.get();
+            if (!StringUtils.isAllBlank(dto.getComment())) {
+                pin.setComment(dto.getComment());
+            }
+        } else {
+            pin = new Pin();
+            pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
+            pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
+            pin.setEntityId(dto.getEntityId());
+            pin.setVisitId(dto.getVisitId());
+            if (!StringUtils.isAllBlank(dto.getComment())) {
+                pin.setComment(dto.getComment());
+            }
+
+            // Fill in the logged in user
+            pin.setUser(userRepository.findById(userId).get());
+        }
+
         var saved = pinRepository.save(pin);
 
-        dto.setId(pin.getId());
-        dto.setUserId(userId);
+        dto.setId(saved.getId());
+        dto.setUserId(saved.getUser().getId());
         return dto;
     }
 

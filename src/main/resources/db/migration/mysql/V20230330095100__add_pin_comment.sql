@@ -1,0 +1,1 @@
+ALTER TABLE pin ADD COLUMN comment varchar(500);

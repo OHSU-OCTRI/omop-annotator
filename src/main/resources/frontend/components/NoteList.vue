@@ -182,11 +182,6 @@ export default {
     isNoteTextField(field) {
       return field === 'text';
     }
-  },
-  watch: {
-    notes() {
-      this.$nextTick(this.drawDataTable);
-    }
   }
 };
 </script>

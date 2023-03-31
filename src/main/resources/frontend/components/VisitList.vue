@@ -66,11 +66,12 @@
             @click="$emit('visit-selected', visitOccurrence.id)"
             :class="{ 'table-active': isSelectedVisit(visitOccurrence.id) }"
           >
-            <td
-              :class="isPinned(visitOccurrence.id) ? 'text-primary' : 'text-unpinned'"
-              @click="togglePin(visitOccurrence.id)"
-            >
-              <i class="fas fa-thumbtack"></i>
+            <td>
+              <PinControl
+                :pin="getPin(visitOccurrence.id)"
+                @pin-saved="handleSavePin"
+                @pin-deleted="handleDeletePin"
+              />
             </td>
             <td
               v-for="field in fieldsToShow"
@@ -101,6 +102,7 @@ import { contextPath } from '../utils/injection-keys';
 import OmopApi from '../utils/omop-api';
 import LoadingSpinner from './LoadingSpinner';
 import VisitTimeline from './VisitTimeline';
+import PinControl from './PinControl';
 
 export default {
   props: {
@@ -163,7 +165,8 @@ export default {
   },
   components: {
     LoadingSpinner,
-    VisitTimeline
+    VisitTimeline,
+    PinControl
   },
   emits: ['visit-selected', 'pin-saved', 'pin-deleted'],
   data() {
@@ -318,28 +321,25 @@ export default {
     isPinned(visitId) {
       return this.pinnedVisits.includes(visitId);
     },
-    togglePin(visitId) {
+    getPin(visitId) {
+      // Return the pin from the database or an unpersisted pin object
       if (this.isPinned(visitId)) {
-        this.$emit(
-          'pin-deleted',
-          this.pins.find(p => p.entity === 'VISIT' && p.entityId === visitId)
-        );
-      } else {
-        const obj = {
-          poolEntryId: this.poolEntryId,
-          entityId: visitId,
-          entity: 'VISIT'
-        };
-        this.$emit('pin-saved', obj);
+        return this.pins.find(p => p.entity === 'VISIT' && p.entityId === visitId);
       }
-    }
-  },
-  watch: {
-    visits() {
-      this.$nextTick(this.drawDataTable);
+      return {
+        id: null,
+        userId: null,
+        poolEntryId: this.poolEntryId,
+        entityId: visitId,
+        entity: 'VISIT',
+        comment: null
+      };
     },
-    pins() {
-      this.$nextTick(this.drawDataTable);
+    handleSavePin(pin) {
+      this.$emit('pin-saved', pin);
+    },
+    handleDeletePin(pin) {
+      this.$emit('pin-deleted', pin);
     }
   }
 };

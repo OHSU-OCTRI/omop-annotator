@@ -14,6 +14,7 @@ public class PinDTO {
     private String entity;
     private Long entityId;
     private Long visitId;
+    private String comment;
 
     public PinDTO() {
     }
@@ -31,6 +32,7 @@ public class PinDTO {
         this.entity = pin.getEntity().name();
         this.entityId = pin.getEntityId();
         this.visitId = pin.getVisitId();
+        this.comment = pin.getComment();
     }
 
     public Long getId() {
@@ -81,4 +83,11 @@ public class PinDTO {
         this.visitId = visitId;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

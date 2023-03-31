@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 
 import EntryJudgment from '@/components/EntryJudgment';
 
-const undjudgedEntry = {
+const unjudgedEntry = {
   judgmentId: null,
   poolEntryId: 12,
   sortOrder: 1,
@@ -20,10 +20,10 @@ const judgedEntry = {
 
 describe('EntryJudgment.vue', () => {
   it('displays the document ID', () => {
-    const expectedText = undjudgedEntry.documentId.toString();
+    const expectedText = unjudgedEntry.documentId.toString();
     const wrapper = mount(EntryJudgment, {
       props: {
-        entryJudgment: undjudgedEntry
+        entryJudgment: unjudgedEntry
       }
     });
     expect(wrapper.text().trim()).toEqual(expectedText);

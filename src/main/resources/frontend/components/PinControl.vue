@@ -59,8 +59,9 @@ export default {
   },
   mounted() {
     const { modalSelector } = this;
-    if (bootstrap && bootstrap.Modal) {
-      this.modal = new bootstrap.Modal(modalSelector);
+    // Prefix global bootstrap with window to make explicit for running command line tests
+    if (window.bootstrap && window.bootstrap.Modal) {
+      this.modal = new window.bootstrap.Modal(modalSelector);
     } else {
       console.error('Bootstrap JS has not been loaded.');
     }

@@ -1,10 +1,12 @@
 package org.octri.omop_annotator.domain.app;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.octri.authentication.server.security.entity.User;
 
@@ -29,6 +31,10 @@ public class Pin extends AbstractEntity {
 	private Long entityId;
 
 	private Long visitId;
+
+	@Column(length = 500)
+	@Size(max = 500)
+	private String comment;
 
 	public User getUser() {
 		return user;
@@ -70,10 +76,18 @@ public class Pin extends AbstractEntity {
 		this.visitId = visitId;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@Override
 	public String toString() {
-		return "Pin [user=" + user.getId() + ", poolEntry=" + poolEntry.getId() + ", entity=" + entity + ", entityId="
-			+ entityId + ", visitId=" + visitId + "]";
+		return "Pin [user=" + user + ", poolEntry=" + poolEntry + ", entity=" + entity + ", entityId=" + entityId
+				+ ", visitId=" + visitId + ", comment=" + comment + "]";
 	}
 
 }

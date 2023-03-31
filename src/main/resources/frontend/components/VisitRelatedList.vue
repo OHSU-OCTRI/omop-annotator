@@ -137,14 +137,6 @@ export default {
         });
       }
     }
-  },
-  watch: {
-    items() {
-      this.$nextTick(this.drawDataTable);
-    },
-    configuration() {
-      this.$nextTick(this.drawDataTable);
-    }
   }
 };
 </script>

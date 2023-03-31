@@ -192,11 +192,6 @@ export default {
     count(item) {
       return this.items.get(item).length;
     }
-  },
-  watch: {
-    items() {
-      this.$nextTick(this.drawDataTable);
-    }
   }
 };
 </script>

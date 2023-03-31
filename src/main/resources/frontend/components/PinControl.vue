@@ -25,6 +25,7 @@
           name="comment"
           :value="pin.comment"
           ref="comment"
+          maxlength="500"
         />
       </div>
 

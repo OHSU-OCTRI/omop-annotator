@@ -76,6 +76,19 @@ public class PersonController {
 		return mapper.writeValueAsString(visitOccurrenceService.findAllByPersonId(personId));
 	}
 
+	/**
+	 * Ids of visits with associated data.
+	 *
+	 * @param personId
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@GetMapping(value = "/summary/{personId}/visits_with_data", produces = "application/json")
+	@ResponseBody
+	public String getVisitsWithData(@PathVariable Integer personId) throws JsonProcessingException {
+		return mapper.writeValueAsString(visitOccurrenceService.findAllWithData(personId));
+	}
+
 	enum FilterEntity {
 		condition, procedure, observation, measurement, note, medication, any
 	}

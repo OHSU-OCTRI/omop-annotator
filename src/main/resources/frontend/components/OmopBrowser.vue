@@ -9,18 +9,30 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-4 fs-4 fw-bolder">Visits</div>
-      <div class="col-8 text-end" v-if="hasPins">
-        <input
-          type="checkbox"
-          value="true"
-          id="pins-only"
-          v-model="pinsOnly"
-          @change="togglePinsOnly"
-        />
-        <label class="p-2" for="pins-only"> Show pinned data only</label>
+      <div class="col-8 fs-4 fw-bolder">Visits</div>
+      <div class="col-4">
+        <div class="">
+          <input
+            type="checkbox"
+            value="true"
+            id="visits-with-data-only"
+            v-model="visitsWithDataOnly"
+            @change="toggleVisitsWithData"
+          />
+          <label class="ps-2" for="pins-only">Show visits with data</label>
+        </div>
+
+        <div class="" v-if="hasPins">
+          <input
+            type="checkbox"
+            value="true"
+            id="pins-only"
+            v-model="pinsOnly"
+            @change="togglePinsOnly"
+          />
+          <label class="ps-2" for="pins-only">Show pinned data</label>
+        </div>
       </div>
-      <div class="col-8 text-end fw-lighter" v-else>(No Pinned Data)</div>
     </div>
   </div>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
@@ -322,10 +334,12 @@ export default {
       configuration: [],
       pins: [],
       pinsOnly: false,
+      visitsWithDataOnly: false,
       omopApi: null,
       annotatorApi: null,
       person: {},
       visits: [],
+      visitIdsWithData: [],
       visitsLoading: true,
       selectedVisitId: null,
       conditions: [],
@@ -370,6 +384,26 @@ export default {
         this.visitsLoading = false;
       });
     },
+    toggleVisitsWithData() {
+      this.visitsLoading = true;
+      this.$nextTick(() => {
+        this.visitsToShow = this.visits;
+        if (this.visitsWithDataOnly) {
+          // TODO: something for performance.
+          this.visitsToShow = this.visits.filter(v =>
+            this.visitIdsWithData.includes(v.id)
+          );
+          // Reset visit selected if it's not in the visits being shown
+          if (
+            this.visitSelected &&
+            !this.visitIdsWithData.includes(this.selectedVisitId)
+          ) {
+            this.selectedVisitId = null;
+          }
+        }
+        this.visitsLoading = false;
+      });
+    },
     handleSavePin(data) {
       this.savePin(data);
     },
@@ -379,8 +413,10 @@ export default {
     resetState() {
       this.person = {};
       this.visits = [];
+      this.visitIdsWithData = [];
       this.visitsToShow = [];
       this.pinsOnly = false;
+      this.visitsWithDataOnly = false;
       this.visitsLoading = true;
       this.selectedVisitId = null;
       this.conditions = [];
@@ -407,15 +443,17 @@ export default {
       this.resetState();
       this.resetTabs();
 
-      const [pins, person, visits] = await Promise.all([
+      const [pins, person, visits, visitIdsWithData] = await Promise.all([
         annotatorApi.getPins(this.poolEntryId),
         omopApi.getPerson(this.personId),
-        omopApi.getVisitsForPerson(this.personId)
+        omopApi.getVisitsForPerson(this.personId),
+        omopApi.getVisitIdsWithData(this.personId)
       ]);
 
       this.pins = pins;
       this.person = person;
       this.visits = visits;
+      this.visitIdsWithData = visitIdsWithData;
       this.visitsToShow = visits; // Load all visits by default
       this.visitsLoading = false;
     },

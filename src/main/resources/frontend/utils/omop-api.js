@@ -195,4 +195,15 @@ export default class OmopApi extends Api {
     const url = `${this.personPrefix}/${personId}/visits/filter/${entity}?name=${term}`;
     return await this.getJson(url);
   }
+
+  /**
+   * Gets ids of `VisitOccurrence`s with related data for the given person ID.
+   *
+   * @param {number} personId
+   * @returns {Promise<Array<Number>>}
+   */
+  async getVisitIdsWithData(personId) {
+    const url = `${this.personPrefix}/${personId}/visits_with_data`;
+    return await this.getJson(url);
+  }
 }

@@ -10,4 +10,6 @@ import org.octri.omop_annotator.domain.omop.VisitOccurrence;
 public interface CustomVisitOccurrenceRepository {
 
     public List<VisitOccurrence> search(Integer personId, String term);
+
+    public List<VisitOccurrence> findAllWithData(Integer personId);
 }

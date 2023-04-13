@@ -10,12 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
+import org.octri.omop_annotator.repository.app.PinRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.view.ExportedJudgmentRow;
 import org.octri.omop_annotator.view.OptionList;
+import org.octri.omop_annotator.view.PinExportSerializer;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -40,6 +44,8 @@ public class DataExportController {
     private PoolRepository poolRepository;
     @Autowired
     private JudgmentRepository judgmentRepository;
+    @Autowired
+    private PinRepository pinRepository;
     @Autowired
     private CustomViewRepository customViewRepository;
 
@@ -65,10 +71,20 @@ public class DataExportController {
     public void exportJudgmentsCsv(HttpServletResponse response, @Valid @ModelAttribute JudgmentExportParams params)
             throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
+        // Map of pins keyed by pool entry id and user id for matching with judgments
+        var pins = pinRepository.findAllByPoolEntryPoolId(params.getPoolId())
+                .stream()
+                .collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
+
+        // Get the mapper for pin exporting
+        ObjectMapper pinExportMapper = PinExportSerializer.getMapper();
+
         List<ExportedJudgmentRow> results = judgmentRepository
                 .findAllByPoolEntryPoolId(params.getPoolId())
                 .stream()
-                .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment))
+                .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
+                        pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())),
+                        pinExportMapper))
                 .collect(Collectors.toList());
 
         LocalDate today = LocalDate.now();

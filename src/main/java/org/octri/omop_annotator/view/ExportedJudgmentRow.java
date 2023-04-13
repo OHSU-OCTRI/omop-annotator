@@ -1,9 +1,15 @@
 package org.octri.omop_annotator.view;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.octri.omop_annotator.domain.app.Judgment;
+import org.octri.omop_annotator.domain.app.Pin;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Row for exporting judgments from the system.
@@ -18,6 +24,7 @@ public class ExportedJudgmentRow {
     private Integer documentId;
     private String annotationLabel;
     private String outputLabel;
+    private String pins;
 
     private ExportedJudgmentRow() {
     }
@@ -28,8 +35,10 @@ public class ExportedJudgmentRow {
      * @param refreshDate
      * @param judgment
      * @return
+     * @throws JsonProcessingException
      */
-    public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment) {
+    public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment, @Nullable List<Pin> pins,
+            ObjectMapper pinExportMapper) {
         Assert.notNull(refreshDate, "Refresh date is required");
         Assert.notNull(judgment, "Judgment is required");
 
@@ -45,6 +54,13 @@ public class ExportedJudgmentRow {
         row.documentId = judgment.getPoolEntry().getDocumentId();
         row.annotationLabel = judgment.getAnnotationLabel().getDisplayLabel();
         row.outputLabel = judgment.getAnnotationLabel().getOutputLabel();
+        if (pins != null) {
+            try {
+                row.pins = pinExportMapper.writeValueAsString(pins);
+            } catch (JsonProcessingException e) {
+                row.pins = "Error serializing pins";
+            }
+        }
         return row;
     }
 
@@ -55,7 +71,8 @@ public class ExportedJudgmentRow {
             "topicNumber",
             "documentId",
             "annotationLabel",
-            "outputLabel" };
+            "outputLabel",
+            "pins" };
 
     public String[] toCsvRow() {
         String[] row = { getRefreshDate().toString(),
@@ -65,7 +82,8 @@ public class ExportedJudgmentRow {
                 getTopicNumber().toString(),
                 getDocumentId().toString(),
                 getAnnotationLabel(),
-                getOutputLabel() };
+                getOutputLabel(),
+                getPins() };
         return row;
     }
 
@@ -99,6 +117,10 @@ public class ExportedJudgmentRow {
 
     public String getOutputLabel() {
         return outputLabel;
+    }
+
+    public String getPins() {
+        return pins;
     }
 
 }

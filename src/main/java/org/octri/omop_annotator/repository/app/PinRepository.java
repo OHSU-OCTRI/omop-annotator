@@ -11,4 +11,5 @@ public interface PinRepository extends PagingAndSortingRepository<Pin, Long> {
 
     List<Pin> findByUserIdAndPoolEntryId(Long userId, Long poolEntryId);
 
+    List<Pin> findAllByPoolEntryPoolId(Long poolId);
 }

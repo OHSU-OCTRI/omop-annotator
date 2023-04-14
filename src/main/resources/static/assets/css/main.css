@@ -243,3 +243,7 @@ div.timeline-tooltip {
 .timeline-circle-selected {
 	fill: rgba(13, 110, 253, 0.25)
 }
+
+.nav-link {
+	cursor: pointer;
+}

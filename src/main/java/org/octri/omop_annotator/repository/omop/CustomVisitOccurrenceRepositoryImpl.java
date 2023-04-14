@@ -19,44 +19,73 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CustomVisitOccurrenceRepositoryImpl implements CustomVisitOccurrenceRepository {
 
-    private static final Log log = LogFactory.getLog(CustomVisitOccurrenceRepositoryImpl.class);
+        private static final Log log = LogFactory.getLog(CustomVisitOccurrenceRepositoryImpl.class);
 
-    private EntityManager entityManager;
+        private EntityManager entityManager;
 
-    /**
-     * Constructor
-     *
-     * @param entityManager
-     *            - entity manager for the OMOP database.
-     */
-    public CustomVisitOccurrenceRepositoryImpl(@Qualifier("omopEntityManagerFactory") EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+        /**
+         * Constructor
+         *
+         * @param entityManager
+         *                - entity manager for the OMOP database.
+         */
+        public CustomVisitOccurrenceRepositoryImpl(@Qualifier("omopEntityManagerFactory") EntityManager entityManager) {
+                this.entityManager = entityManager;
+        }
 
-    /**
-     * Perform a full text search on a visit and its related entities.
-     *
-     * @param personId
-     *            - searching is limited to visits for the given Person.
-     * @param term
-     *            - term on which to search.
-     */
-    @Override
-    public List<VisitOccurrence> search(Integer personId, String term) {
-        log.debug("Running full text search for personId: " + personId);
-        SearchSession searchSession = Search.session(entityManager);
-        var result = searchSession.search(VisitOccurrence.class)
-                .where(f -> f.bool()
-                        .must(f.match().field("person.id")
-                                .matching(personId))
-                        // and one of the targeted fields must match the term.
-                        .must(f.match()
-                                .fields("visitSourceValue", "careSite.careSiteName", "provider.providerName",
-                                        "conditionOccurrences.condition.name", "observations.observation.name",
-                                        "procedureOccurrences.procedure.name", "measurements.measurement.name",
-                                        "notes.text", "drugExposures.drug.name")
-                                .matching(term)));
-        return result.fetchAllHits();
-    }
+        /**
+         * Perform a full text search on a visit and its related entities.
+         *
+         * @param personId
+         *                - searching is limited to visits for the given Person.
+         * @param term
+         *                - term on which to search.
+         */
+        @Override
+        public List<VisitOccurrence> search(Integer personId, String term) {
+                log.debug("Running full text search for personId: " + personId);
+                SearchSession searchSession = Search.session(entityManager);
+                var result = searchSession.search(VisitOccurrence.class)
+                                .where(f -> f.bool()
+                                                .must(f.match().field("person.id")
+                                                                .matching(personId))
+                                                // and one of the targeted fields must match the term.
+                                                .must(f.match()
+                                                                .fields("visitSourceValue",
+                                                                                "careSite.careSiteName",
+                                                                                "provider.providerName",
+                                                                                "conditionOccurrences.condition.name",
+                                                                                "observations.observation.name",
+                                                                                "procedureOccurrences.procedure.name",
+                                                                                "measurements.measurement.name",
+                                                                                "notes.text", "drugExposures.drug.name")
+                                                                .matching(term)));
+                return result.fetchAllHits();
+        }
 
+        @Override
+        public List<VisitOccurrence> findAllWithData(Integer personId) {
+                log.debug("Searching for visits with data.");
+                SearchSession searchSession = Search.session(entityManager);
+                var result = searchSession.search(VisitOccurrence.class)
+                                .where(f -> f.bool()
+                                                .must(f.match().field("person.id")
+                                                                .matching(personId))
+                                                // and at least one of the related fields must have data.
+                                                .must(f.bool()
+                                                                .should(f.exists().field(
+                                                                                "conditionOccurrences.condition.name"))
+                                                                .should(f.exists()
+                                                                                .field("observations.observation.name"))
+                                                                .should(f.exists().field(
+                                                                                "procedureOccurrences.procedure.name"))
+                                                                .should(f.exists()
+                                                                                .field("measurements.measurement.name"))
+                                                                .should(f.exists().field("notes.text"))
+                                                                .should(f.exists().field("drugExposures.drug.name"))));
+
+                var hits = result.fetchAllHits();
+                log.debug("Matched hits: " + hits.size());
+                return hits;
+        }
 }

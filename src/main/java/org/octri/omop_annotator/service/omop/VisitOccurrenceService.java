@@ -54,4 +54,15 @@ public class VisitOccurrenceService {
 		return repository.search(personId, text).stream().map(VisitOccurrence::getId).sorted()
 				.collect(Collectors.toList());
 	}
+
+	/**
+	 * Returns the ids of the visit occurrences for a given person that have associated data.
+	 *
+	 * @param personId
+	 * @return
+	 */
+	public List<Integer> findAllWithData(Integer personId) {
+		return repository.findAllWithData(personId).stream().map(VisitOccurrence::getId).sorted()
+				.collect(Collectors.toList());
+	}
 }

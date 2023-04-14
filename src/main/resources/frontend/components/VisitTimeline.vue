@@ -17,7 +17,7 @@
         <text
           class="timeline-label"
           text-anchor="middle"
-          :x="xScale(this.firstItem.date)"
+          :x="xScale(this.firstItemDate)"
           :y="labelY"
         >
           {{ firstItemLabel }}
@@ -25,7 +25,7 @@
         <text
           class="timeline-label"
           text-anchor="middle"
-          :x="xScale(this.lastItem.date)"
+          :x="xScale(this.lastItemDate)"
           :y="labelY"
         >
           {{ lastItemLabel }}
@@ -97,10 +97,16 @@ export default {
       return dateCounts;
     },
     firstItem() {
-      return this.visitDateCounts[0];
+      if (this.visitDateCounts.length > 0) {
+        return this.visitDateCounts[0];
+      }
+      return null;
     },
     lastItem() {
-      return this.visitDateCounts[this.visitDateCounts.length - 1];
+      if (this.visitDateCounts.length > 0) {
+        return this.visitDateCounts[this.visitDateCounts.length - 1];
+      }
+      return null;
     },
     dataCount() {
       return this.visits.length;
@@ -117,11 +123,17 @@ export default {
         .domain([0, d3.max(this.visitDateCounts.map(entry => entry.count))])
         .range([2, 6]);
     },
+    firstItemDate() {
+      return this.firstItem ? this.firstItem.date : null;
+    },
+    lastItemDate() {
+      return this.lastItem ? this.lastItem.date : null;
+    },
     firstItemLabel() {
-      return format(this.firstItem.date, 'MM-yyyy');
+      return this.firstItemDate ? format(this.firstItemDate, 'MM-yyyy') : '';
     },
     lastItemLabel() {
-      return format(this.lastItem.date, 'MM-yyyy');
+      return this.lastItemDate ? format(this.lastItemDate, 'MM-yyyy') : '';
     },
     tooltipPrefix() {
       if (this.tooltipItem) {

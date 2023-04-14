@@ -8,31 +8,19 @@
     <PersonSummary :person="person" />
   </div>
   <div class="container">
-    <div class="row">
-      <div class="col-8 fs-4 fw-bolder">Visits</div>
-      <div class="col-4">
-        <div class="">
-          <input
-            type="checkbox"
-            value="true"
-            id="visits-with-data-only"
-            v-model="visitsWithDataOnly"
-            @change="toggleVisitsWithData"
-          />
-          <label class="ps-2" for="pins-only">Show visits with data</label>
-        </div>
-
-        <div class="" v-if="hasPins">
-          <input
-            type="checkbox"
-            value="true"
-            id="pins-only"
-            v-model="pinsOnly"
-            @change="togglePinsOnly"
-          />
-          <label class="ps-2" for="pins-only">Show pinned data</label>
-        </div>
-      </div>
+    <div class="fs-4 fw-bolder">Visits</div>
+    <div class="">
+      <nav class="nav nav-sm nav-pills mb-2" role="group">
+        <a
+          v-for="filter in filterNames"
+          :key="filter"
+          class="nav-link text-capitalize"
+          :class="{ active: filter === activeFilter }"
+          @click.prevent="selectFilter(filter)"
+        >
+          {{ filter }}
+        </a>
+      </nav>
     </div>
   </div>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
@@ -333,8 +321,6 @@ export default {
     return {
       configuration: [],
       pins: [],
-      pinsOnly: false,
-      visitsWithDataOnly: false,
       omopApi: null,
       annotatorApi: null,
       person: {},
@@ -348,7 +334,13 @@ export default {
       measurements: {},
       notes: [],
       drugs: {},
-      loadingVisitData: false
+      loadingVisitData: false,
+      activeFilter: 'all',
+      filters: {
+        all: () => true,
+        'with data': visit => this.visitIdsWithData.includes(visit.id),
+        pinned: visit => this.visitsWithPins.has(visit.id)
+      }
     };
   },
   async mounted() {
@@ -369,35 +361,13 @@ export default {
     handleJudgment(...data) {
       this.$emit('judgment-saved', ...data);
     },
-    togglePinsOnly() {
+    selectFilter(name) {
       this.visitsLoading = true;
       this.$nextTick(() => {
-        let v = this.visits;
-        if (this.pinsOnly) {
-          v = this.visits.filter(v => this.visitsWithPins.has(v.id));
-          // Reset visit selected if it's not in the visits being shown
-          if (this.visitSelected && !this.visitsWithPins.has(this.selectedVisitId)) {
-            this.selectedVisitId = null;
-          }
-        }
-        this.visitsToShow = v;
-        this.visitsLoading = false;
-      });
-    },
-    toggleVisitsWithData() {
-      this.visitsLoading = true;
-      this.$nextTick(() => {
-        this.visitsToShow = this.visits;
-        if (this.visitsWithDataOnly) {
-          // TODO: something for performance.
-          this.visitsToShow = this.visits.filter(v =>
-            this.visitIdsWithData.includes(v.id)
-          );
-          // Reset visit selected if it's not in the visits being shown
-          if (
-            this.visitSelected &&
-            !this.visitIdsWithData.includes(this.selectedVisitId)
-          ) {
+        if (name in this.filters) {
+          this.activeFilter = name;
+          this.visitsToShow = this.visits.filter(this.filters[this.activeFilter]);
+          if (this.visitSelected && !this.visitsToShow.includes(this.selectedVisitId)) {
             this.selectedVisitId = null;
           }
         }
@@ -415,8 +385,6 @@ export default {
       this.visits = [];
       this.visitIdsWithData = [];
       this.visitsToShow = [];
-      this.pinsOnly = false;
-      this.visitsWithDataOnly = false;
       this.visitsLoading = true;
       this.selectedVisitId = null;
       this.conditions = [];
@@ -426,6 +394,7 @@ export default {
       this.notes = [];
       this.drugs = {};
       this.loadingVisitData = false;
+      this.activeFilter = 'all';
     },
 
     resetTabs() {
@@ -519,6 +488,9 @@ export default {
         .map(pin => pin.entityId)
         .concat(this.pins.filter(pin => pin.visitId !== null).map(pin => pin.visitId));
       return new Set(pinList);
+    },
+    filterNames() {
+      return Object.keys(this.filters);
     }
   },
   watch: {

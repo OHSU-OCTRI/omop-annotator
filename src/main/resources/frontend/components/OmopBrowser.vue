@@ -9,18 +9,12 @@
   </div>
   <div class="container">
     <div class="fs-4 fw-bolder">Visits</div>
-    <div class="">
-      <nav class="nav nav-sm nav-pills mb-2" role="group">
-        <a
-          v-for="filter in filterNames"
-          :key="filter"
-          class="nav-link text-capitalize"
-          :class="{ active: filter === activeFilter }"
-          @click.prevent="selectFilter(filter)"
-        >
+    <div class="mt-2 mb-2">
+      <select v-model="activeFilter" @change="selectFilter($event.target.value)">
+        <option v-for="(filter, index) in filterNames" :value="filter" :key="index">
           {{ filter }}
-        </a>
-      </nav>
+        </option>
+      </select>
     </div>
   </div>
   <div class="d-flex justify-content-center" v-if="visitsLoading">
@@ -335,11 +329,11 @@ export default {
       notes: [],
       drugs: {},
       loadingVisitData: false,
-      activeFilter: 'all',
+      activeFilter: 'All',
       filters: {
-        all: () => true,
-        'with data': visit => this.visitIdsWithData.includes(visit.id),
-        pinned: visit => this.visitsWithPins.has(visit.id)
+        All: () => true,
+        'With Data': visit => this.visitIdsWithDataSet.has(visit.id),
+        Pinned: visit => this.visitsWithPins.has(visit.id)
       }
     };
   },
@@ -394,7 +388,7 @@ export default {
       this.notes = [];
       this.drugs = {};
       this.loadingVisitData = false;
-      this.activeFilter = 'all';
+      this.activeFilter = 'All';
     },
 
     resetTabs() {
@@ -488,6 +482,9 @@ export default {
         .map(pin => pin.entityId)
         .concat(this.pins.filter(pin => pin.visitId !== null).map(pin => pin.visitId));
       return new Set(pinList);
+    },
+    visitIdsWithDataSet() {
+      return new Set(this.visitIdsWithData);
     },
     filterNames() {
       return Object.keys(this.filters);

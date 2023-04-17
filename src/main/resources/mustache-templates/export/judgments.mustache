@@ -4,7 +4,7 @@
 <div>
     <form name="entityForm" method="POST" action="{{req.contextPath}}/admin/export/judgments" class="needs-validation" novalidate>
         {{ >authlib_fragments/forms/csrf_input }}
-        <p class="instructions"><i class="fas fa-info-circle"></i> Export judgments for a given user</p>
+        <p class="instructions"><i class="fas fa-info-circle"></i> Export judgments for a given pool along with pins for each user.</p>
         <div class="form-group">
             <label for="pool_id" class="form-label required-field">Pool</label>
             <select class="form-select" id="pool_id" name="poolId" required>

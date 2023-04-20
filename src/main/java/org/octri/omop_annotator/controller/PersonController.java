@@ -114,7 +114,7 @@ public class PersonController {
 		} else if (entity == FilterEntity.medication) {
 			visitIds = visitOccurrenceService.findAllByPersonIdAndDrugNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.any) {
-			visitIds = visitOccurrenceService.findAllByPersonIdAndAnyEntityContains(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndAnyEntityContains(personId, name.toLowerCase());
 		}
 		return mapper.writeValueAsString(visitIds);
 	}

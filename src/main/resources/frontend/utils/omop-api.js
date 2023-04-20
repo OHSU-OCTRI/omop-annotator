@@ -192,7 +192,9 @@ export default class OmopApi extends Api {
    * @returns {Promise<Array<number>>}
    */
   async searchPersonData(personId, entity, term) {
-    const url = `${this.personPrefix}/${personId}/visits/filter/${entity}?name=${term}`;
+    const url = `${
+      this.personPrefix
+    }/${personId}/visits/filter/${entity}?name=${encodeURIComponent(term)}`;
     return await this.getJson(url);
   }
 

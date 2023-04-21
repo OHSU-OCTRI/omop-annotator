@@ -34,7 +34,11 @@ public class CustomVisitOccurrenceRepositoryImpl implements CustomVisitOccurrenc
         }
 
         /**
-         * Perform a full text search on a visit and its related entities.
+         * Perform a full text search on a visit and its related entities. Search terms
+         * can be a user-provided query string.
+         *
+         * See:
+         * https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-dsl-predicate-simple-query-string
          *
          * @param personId
          *                - searching is limited to visits for the given Person.
@@ -50,7 +54,7 @@ public class CustomVisitOccurrenceRepositoryImpl implements CustomVisitOccurrenc
                                                 .must(f.match().field("person.id")
                                                                 .matching(personId))
                                                 // and one of the targeted fields must match the term.
-                                                .must(f.match()
+                                                .must(f.simpleQueryString()
                                                                 .fields("visitSourceValue",
                                                                                 "careSite.careSiteName",
                                                                                 "provider.providerName",

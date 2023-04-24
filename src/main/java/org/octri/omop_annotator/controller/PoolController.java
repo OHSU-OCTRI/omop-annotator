@@ -11,6 +11,7 @@ import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +79,12 @@ public class PoolController extends AbstractEntityController<Pool, PoolRepositor
 		}
 
 		return super.update(model, id, entity, bindingResult, redirectAttributes);
+	}
+
+	@GetMapping("/merge")
+	public String merge(Map<String, Object> model) {
+		model.put("pageScripts", new String[] { "vendor.js", "pool-merge.js" });
+		return "pool/merge";
 	}
 
 	@Override

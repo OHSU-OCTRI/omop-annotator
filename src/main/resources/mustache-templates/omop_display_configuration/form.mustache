@@ -1,11 +1,11 @@
 {{>components/form_start}}
 {{#entity}}
-<input type="hidden" name="editable" value="{{entity.editable}}" readonly/>
-<input type="hidden" name="filterable" value="{{entity.filterable}}" readonly/>
+<input type="hidden" name="editable" value="{{editable}}" readonly/>
+<input type="hidden" name="filterable" value="{{filterable}}" readonly/>
 
 <div class="form-group">
-    <label for="entity_name" class="form-label">Entity name</label>
-    <input type="text" class="read-only-form-input form-control" id="entity_name" name="entityName" value="{{#entityName}}{{.}}{{/entityName}}" readonly >
+    <label for="omop_entity" class="form-label">Entity name</label>
+    <input type="text" class="read-only-form-input form-control" id="omop_entity" name="omopEntity" value="{{#omopEntity}}{{.}}{{/omopEntity}}" readonly >
 </div>
 
 <div class="form-group">

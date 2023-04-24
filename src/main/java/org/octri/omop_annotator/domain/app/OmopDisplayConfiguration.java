@@ -13,7 +13,8 @@ import javax.persistence.Enumerated;
 public class OmopDisplayConfiguration extends AbstractEntity {
 
     @Enumerated(value = EnumType.STRING)
-    private OmopEntity entity;
+    @Column(name = "entity")
+    private OmopEntity omopEntity;
 
     private String fieldName;
     private String columnDisplay;
@@ -32,12 +33,12 @@ public class OmopDisplayConfiguration extends AbstractEntity {
     @Column(columnDefinition = "bit default 1")
     private boolean filterable;
 
-    public OmopEntity getEntity() {
-        return entity;
+    public OmopEntity getOmopEntity() {
+        return omopEntity;
     }
 
-    public void setEntity(OmopEntity entity) {
-        this.entity = entity;
+    public void setOmopEntity(OmopEntity omopEntity) {
+        this.omopEntity = omopEntity;
     }
 
     public String getFieldName() {

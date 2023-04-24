@@ -54,10 +54,10 @@ public class OmopDisplayConfigurationController
 		if (oldConfiguration.isPresent() && oldConfiguration.get().getEditable()) {
 			this.getRepository().save(entity);
 			redirectAttributes.addFlashAttribute("infoMessage",
-					entity.getEntity().toString() + "." + entity.getFieldName() + " updated.");
+					entity.getOmopEntity().toString() + "." + entity.getFieldName() + " updated.");
 		} else {
 			redirectAttributes.addFlashAttribute("errorMessage",
-					entity.getEntity().toString() + "." + entity.getFieldName() + " is not editable.");
+					entity.getOmopEntity().toString() + "." + entity.getFieldName() + " is not editable.");
 		}
 		return listingRedirect();
 	}

@@ -397,8 +397,8 @@ export default {
       }
     },
 
-    getConfigurationForEntity(entity) {
-      return this.configuration.filter(f => f.entity === entity);
+    getConfigurationForEntity(omopEntity) {
+      return this.configuration.filter(f => f.omopEntity === omopEntity);
     },
 
     async loadPerson() {

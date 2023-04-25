@@ -10,6 +10,4 @@ public interface MergeValidationSummary {
 
 	public Long getTopicNumber();
 
-	public Integer getDocumentId();
-
 }

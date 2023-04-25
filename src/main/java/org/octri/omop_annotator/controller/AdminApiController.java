@@ -133,10 +133,7 @@ public class AdminApiController {
                     mergePoolsDTO.getMergePoolId(),
                     mergePoolsDTO.getDestinationPoolId());
             for (var validationResult : validationResults) {
-                // Note that we could potentially allow this as long as there aren't duplicate judgments, but let's keep
-                // it simple for now
-                result.addError("Both pools contain the Patient " + validationResult.getDocumentId()
-                        + " for Topic Number " + validationResult.getTopicNumber());
+                result.addError("Both pools contain the Topic Number " + validationResult.getTopicNumber());
             }
         }
 

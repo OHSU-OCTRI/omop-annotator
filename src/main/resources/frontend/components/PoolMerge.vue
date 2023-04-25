@@ -25,6 +25,7 @@
         name="destination_pool"
         @change="changeDestinationPool($event)"
         required
+        ref="destinationPool"
       >
         <option key="none" value="-1">--</option>
         <option v-for="pool in relatedPools" :key="pool.id" :value="pool.id">
@@ -41,7 +42,7 @@
     </div>
   </div>
   <button
-    v-if="poolsAreSelected && mergeResult == null"
+    v-if="readyForMerge"
     type="submit"
     class="btn btn-primary mt-2"
     @click="mergePools()"
@@ -112,8 +113,12 @@ export default {
         this.selectedDestinationPoolId !== null && this.selectedDestinationPoolId !== -1
       );
     },
-    poolsAreSelected() {
-      return this.mergePoolIsSelected && this.destinationPoolIsSelected;
+    readyForMerge() {
+      return (
+        this.mergeResult === null &&
+        this.mergePoolIsSelected &&
+        this.destinationPoolIsSelected
+      );
     },
     selectedMergePool() {
       return this.mergePoolIsSelected
@@ -138,7 +143,7 @@ export default {
   methods: {
     changeMergePool(event) {
       this.selectedMergePoolId = Number(event.target.value);
-      // TODO: This hides the button but the second dropdown still appears and is selected
+      if (this.$refs.destinationPool) this.$refs.destinationPool.value = -1;
       this.selectedDestinationPoolId = null;
       this.mergeResult = null;
     },
@@ -154,7 +159,7 @@ export default {
       if (this.mergeResult.successful) {
         this.selectedMergePoolId = null;
         this.selectedDestinationPoolId = null;
-        // Get the pools again
+        // Refresh the pools after merge
         this.pools = await this.annotatorApi.getPools();
       }
     }

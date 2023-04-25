@@ -24,7 +24,8 @@ module.exports = {
     judge: entrypointPath('judge.js'),
     person: entrypointPath('person.js'),
     'judge-control': entrypointPath('judge-control.js'),
-    'admin-dashboard': entrypointPath('admin-dashboard.js')
+    'admin-dashboard': entrypointPath('admin-dashboard.js'),
+    'pool-merge': entrypointPath('pool-merge.js')
   },
   resolve: {
     alias: {

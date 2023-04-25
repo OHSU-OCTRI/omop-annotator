@@ -37,11 +37,38 @@ export default class AnnotatorApi extends Api {
   }
 
   /**
+   * Get all pools
+   * @returns
+   */
+  async getPools() {
+    const url = `${this.contextPath}/admin/api/pools`;
+    return await this.getJson(url);
+  }
+
+  async mergePools(mergePoolId, destinationPoolId) {
+    const { csrfHeader } = this;
+    const res = await fetch(`${this.contextPath}/admin/api/pools/merge_pools`, {
+      method: 'post',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        [csrfHeader]: this.csrfToken
+      },
+      body: JSON.stringify({
+        mergePoolId: mergePoolId,
+        destinationPoolId: destinationPoolId
+      })
+    });
+    return await res.json();
+  }
+
+  /**
    * Get all pools for the given topic set
    * @returns
    */
   async getPoolsForTopicSet(topicSetId) {
-    const url = `${this.contextPath}/admin/api/pool/topic_set/${topicSetId}`;
+    const url = `${this.contextPath}/admin/api/pools/topic_set/${topicSetId}`;
     return await this.getJson(url);
   }
 
@@ -51,7 +78,7 @@ export default class AnnotatorApi extends Api {
    * @returns
    */
   async getPoolSummary(poolId) {
-    const url = `${this.contextPath}/admin/api/pool/${poolId}/summary`;
+    const url = `${this.contextPath}/admin/api/pools/${poolId}/summary`;
     return await this.getJson(url);
   }
 

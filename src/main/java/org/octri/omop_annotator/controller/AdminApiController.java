@@ -1,18 +1,27 @@
 package org.octri.omop_annotator.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
+import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
+import org.octri.omop_annotator.view.MergePoolsDTO;
+import org.octri.omop_annotator.view.MergePoolsResult;
+import org.octri.omop_annotator.view.MergeValidationSummary;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/api")
 public class AdminApiController {
 
+    private static final Log log = LogFactory.getLog(AdminApiController.class);
+
     @Autowired
     private AnnotationLabelRepository repository;
 
@@ -32,6 +43,9 @@ public class AdminApiController {
 
     @Autowired
     PoolRepository poolRepository;
+
+    @Autowired
+    PoolEntryRepository poolEntryRepository;
 
     @Autowired
     CustomViewRepository customViewRepository;
@@ -59,13 +73,24 @@ public class AdminApiController {
     }
 
     /**
+     * Return all pools
+     * 
+     * @return
+     */
+    @GetMapping(value = "/pools")
+    @ResponseBody
+    public Iterable<Pool> pools() {
+        return poolRepository.findAll();
+    }
+
+    /**
      * Get the pools for the given topic set
      * 
      * @param id
      *            the topic set id
      * @return
      */
-    @GetMapping(value = "/pool/topic_set/{id}")
+    @GetMapping(value = "/pools/topic_set/{id}")
     @ResponseBody
     public List<Pool> poolsForTopicSet(@PathVariable Long id) {
         return poolRepository.findByTopicSetId(id);
@@ -78,10 +103,52 @@ public class AdminApiController {
      *            the pool id
      * @return
      */
-    @GetMapping(value = "/pool/{id}/summary")
+    @GetMapping(value = "/pools/{id}/summary")
     @ResponseBody
     public List<PoolSummary> poolSummary(@PathVariable Long id) {
         return customViewRepository.summarizePool(id);
+    }
+
+    @PostMapping(value = "pools/merge_pools", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public MergePoolsResult mergePools(@RequestBody MergePoolsDTO mergePoolsDTO) {
+        MergePoolsResult result = new MergePoolsResult(mergePoolsDTO);
+        Optional<Pool> mergePool = poolRepository.findById(mergePoolsDTO.getMergePoolId());
+        Optional<Pool> destinationPool = poolRepository.findById(mergePoolsDTO.getDestinationPoolId());
+
+        if (!mergePool.isPresent()) {
+            result.addError("The pool to merge does not exist.");
+        }
+        if (!destinationPool.isPresent()) {
+            result.addError("The destination pool does not exist.");
+        }
+        if (mergePool.isPresent() && destinationPool.isPresent()) {
+            if (!mergePool.get().getTopicSet().equals(destinationPool.get().getTopicSet())) {
+                result.addError("The two pools have different topics sets.");
+            }
+            if (!mergePool.get().getAnnotationSchema().equals(destinationPool.get().getAnnotationSchema())) {
+                result.addError("The two pools have different annotation schemas.");
+            }
+            List<MergeValidationSummary> validationResults = poolEntryRepository.validatePoolMerge(
+                    mergePoolsDTO.getMergePoolId(),
+                    mergePoolsDTO.getDestinationPoolId());
+            for (var validationResult : validationResults) {
+                result.addError("Both pools contain the Topic Number " + validationResult.getTopicNumber());
+            }
+        }
+
+        // The merge should update pool id on all the pool entries for the merge pool, then delete the merge pool
+        if (result.getSuccessful()) {
+            try {
+                poolEntryRepository.mergePools(mergePoolsDTO.getMergePoolId(), mergePoolsDTO.getDestinationPoolId());
+                poolRepository.deleteById(mergePoolsDTO.getMergePoolId());
+            } catch (Exception e) {
+                result.addError("A database error occurred. Check server logs or contact an admin.");
+                log.error(e.getMessage());
+            }
+        }
+        return result;
+
     }
 
 }

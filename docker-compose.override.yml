@@ -9,7 +9,7 @@ services:
     environment:
       - APP_DATASOURCE_URL=jdbc:mysql://mysql/omop_annotator?serverTimezone=America/Los_Angeles
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
     volumes:
       - ./docker_data/mysql:/var/lib/mysql
     ports:

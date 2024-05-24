@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+
 /**
  * Abstract class that provides methods for performing CRUD tasks for AbstractEntity objects. However, this class does
  * not define the route mappings for these operations. Separating the mappings from the functions gives us more

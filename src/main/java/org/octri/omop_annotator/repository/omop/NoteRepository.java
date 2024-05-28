@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.Note;
 import org.octri.omop_annotator.view.NoteRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "note")
-public interface NoteRepository extends PagingAndSortingRepository<Note, Integer> {
+public interface NoteRepository extends ListCrudRepository<Note, Integer> {
 
 	static final String query = "select note.id as id, note.person.id as person,"
 			+ " noteTypeConcept.name as type, note.noteDatetime as date, noteClassConcept.name as noteClass,"

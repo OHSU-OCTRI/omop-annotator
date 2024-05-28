@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.VisitOccurrence;
 import org.octri.omop_annotator.view.VisitOccurrenceRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  */
 @RepositoryRestResource(path = "visit_occurrence")
 public interface VisitOccurrenceRepository
-		extends PagingAndSortingRepository<VisitOccurrence, Integer>, CustomVisitOccurrenceRepository {
+		extends ListCrudRepository<VisitOccurrence, Integer>, CustomVisitOccurrenceRepository {
 
 	static final String visitOccurrenceQuery = "select v.id as id, v.person.id as person, visitType.name as visitType,"
 			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName,"

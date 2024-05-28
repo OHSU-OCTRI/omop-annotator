@@ -120,7 +120,6 @@ public class HibernateProperties {
 		propertyMap.put(AvailableSettings.SHOW_SQL, getShowSql());
 		propertyMap.put(AvailableSettings.IMPLICIT_NAMING_STRATEGY, getImplicitNamingStrategy());
 		propertyMap.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, getPhysicalNamingStrategy());
-		propertyMap.put(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, getUseNewIdGeneratorMappings());
 		return propertyMap;
 	}
 

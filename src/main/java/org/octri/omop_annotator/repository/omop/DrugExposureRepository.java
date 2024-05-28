@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.DrugExposure;
 import org.octri.omop_annotator.view.DrugExposureRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "drug_exposure")
-public interface DrugExposureRepository extends PagingAndSortingRepository<DrugExposure, Integer> {
+public interface DrugExposureRepository extends ListCrudRepository<DrugExposure, Integer> {
 
     static final String query = "select de.id as id, de.person.id as personId, drug.name as drug,"
             + " drugType.name as drugType, de.drugStart as drugStart, de.drugEnd as drugEnd,"

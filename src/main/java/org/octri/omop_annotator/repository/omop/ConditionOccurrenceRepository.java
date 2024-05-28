@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.ConditionOccurrence;
 import org.octri.omop_annotator.view.ConditionOccurrenceRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "condition_occurrence")
-public interface ConditionOccurrenceRepository extends PagingAndSortingRepository<ConditionOccurrence, Integer> {
+public interface ConditionOccurrenceRepository extends ListCrudRepository<ConditionOccurrence, Integer> {
 
 	static final String query = "select co.id as id, co.person.id as personId, condition.name as condition,"
 			+ " conditionType.name as conditionType, co.conditionStart as conditionStart,"

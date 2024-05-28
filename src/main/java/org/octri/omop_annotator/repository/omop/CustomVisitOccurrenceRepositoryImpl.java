@@ -2,8 +2,6 @@ package org.octri.omop_annotator.repository.omop;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.search.mapper.orm.Search;
@@ -11,6 +9,8 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.octri.omop_annotator.domain.omop.VisitOccurrence;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
 
 /**
  * Implementation of the full text search functionality for VisitOccurrences.

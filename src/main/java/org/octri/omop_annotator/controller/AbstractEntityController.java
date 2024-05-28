@@ -3,7 +3,7 @@ package org.octri.omop_annotator.controller;
 import java.util.Map;
 
 import org.octri.omop_annotator.domain.app.AbstractEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @param <T>
  * @param <U>
  */
-public abstract class AbstractEntityController<T extends AbstractEntity, U extends PagingAndSortingRepository<T, Long>>
+public abstract class AbstractEntityController<T extends AbstractEntity, U extends CrudRepository<T, Long>>
 		extends AbstractBaseEntityController<T, U> {
 
 	@GetMapping("/")

@@ -1,10 +1,10 @@
 package org.octri.omop_annotator.domain.app;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
-
 import org.octri.omop_annotator.view.Labelled;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents a collection of {@link Topic}s.

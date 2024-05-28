@@ -1,11 +1,11 @@
 package org.octri.omop_annotator.domain.omop;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.octri.omop_annotator.view.Named;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 /**
  * OMOP 5.3 Definition of a Concept

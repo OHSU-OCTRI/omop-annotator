@@ -3,18 +3,18 @@ package org.octri.omop_annotator.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.octri.omop_annotator.domain.app.AbstractEntity;
 import org.octri.omop_annotator.view.Labelled;
 import org.octri.omop_annotator.view.ViewUtils;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * Abstract controller with common functionality for child entities. RequestMapping routes should be defined in the
@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @param <U>
  *            - child repository
  */
-public abstract class AbstractRelatedEntityController<P extends AbstractEntity & Labelled, T extends AbstractEntity, U extends PagingAndSortingRepository<T, Long>>
+public abstract class AbstractRelatedEntityController<P extends AbstractEntity & Labelled, T extends AbstractEntity, U extends CrudRepository<T, Long>>
 		extends AbstractBaseEntityController<T, U> {
 
 	public abstract P findParent(Long parentId);
@@ -56,7 +56,7 @@ public abstract class AbstractRelatedEntityController<P extends AbstractEntity &
 	public String tabName() {
 		return null;
 	};
-	
+
 	/**
 	 * Adds common view attributes to the Model passed to the view template.
 	 *
@@ -232,7 +232,7 @@ public abstract class AbstractRelatedEntityController<P extends AbstractEntity &
 	protected String listingRedirect(Long parentId) {
 		return "redirect:" + listRoute(parentId);
 	}
-	
+
 	/**
 	 * Parent name displayed to the user in the UI.
 	 *

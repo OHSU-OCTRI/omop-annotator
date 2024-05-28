@@ -3,14 +3,14 @@ package org.octri.omop_annotator.controller;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.octri.authentication.server.controller.TemplateAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Additional advice beyond what is offered in the authentication library

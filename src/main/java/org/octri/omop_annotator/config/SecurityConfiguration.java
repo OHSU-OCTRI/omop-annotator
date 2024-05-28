@@ -1,5 +1,7 @@
 package org.octri.omop_annotator.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.octri.authentication.DefaultSecurityConfigurer;
 import org.octri.authentication.config.AuthenticationRouteProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 /**
  * Custom security configuration.
@@ -34,10 +37,9 @@ public class SecurityConfiguration {
 		AuthenticationManager authManager = authBuilder.build();
 
 		http.authenticationManager(authManager)
-				.exceptionHandling()
-				// .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(routes.getLoginUrl()))
-				.and()
-				.csrf();
+				.exceptionHandling(exceptionHandling -> exceptionHandling
+						.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(routes.getLoginUrl())))
+				.csrf(withDefaults());
 
 		securityConfigurer.configureContentSecurityPolicy(http);
 		securityConfigurer.configureFormLoginWithDefaults(http);
@@ -45,14 +47,13 @@ public class SecurityConfiguration {
 		securityConfigurer.configureSamlWithDefaults(http, authManager);
 
 		http.authorizeRequests()
-				.antMatchers(routes.getPublicRoutesWithDefaults())
+				.requestMatchers(routes.getPublicRoutesWithDefaults())
 				.permitAll()
-				.antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER')") // Basic users can't do admin
-																							 // functions
-				.antMatchers(HttpMethod.POST).authenticated()
-				.antMatchers(HttpMethod.PUT).authenticated()
-				.antMatchers(HttpMethod.PATCH).authenticated()
-				.antMatchers(HttpMethod.DELETE).denyAll()
+				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER")
+				.requestMatchers(HttpMethod.POST).authenticated()
+				.requestMatchers(HttpMethod.PUT).authenticated()
+				.requestMatchers(HttpMethod.PATCH).authenticated()
+				.requestMatchers(HttpMethod.DELETE).denyAll()
 				.anyRequest()
 				.authenticated();
 

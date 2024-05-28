@@ -4,12 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
-
 import org.octri.omop_annotator.domain.app.Topic;
 import org.octri.omop_annotator.domain.app.TopicSet;
 import org.octri.omop_annotator.repository.app.TopicRepository;
@@ -28,6 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller for {@link Topic} objects.

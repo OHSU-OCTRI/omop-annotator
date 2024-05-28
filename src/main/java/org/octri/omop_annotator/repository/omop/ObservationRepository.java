@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.Observation;
 import org.octri.omop_annotator.view.ObservationRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "observation")
-public interface ObservationRepository extends PagingAndSortingRepository<Observation, Integer> {
+public interface ObservationRepository extends ListCrudRepository<Observation, Integer> {
 
 	static final String query = "select obs.id as id, obs.person.id as person, obsConcept.name as observation,"
 			+ " obsSourceConcept.name as observationSource, obs.observationSourceValue as observationSourceValue, "

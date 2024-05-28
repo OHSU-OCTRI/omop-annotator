@@ -1,10 +1,10 @@
 package org.octri.omop_annotator.domain.app;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 import org.octri.authentication.server.security.entity.User;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents a User's judgment of a {@link PoolEntry}. The entry annotated by the User with an {@link AnnotationLabel}.

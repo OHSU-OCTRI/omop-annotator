@@ -3,11 +3,11 @@ package org.octri.omop_annotator.repository.app;
 import java.util.List;
 
 import org.octri.omop_annotator.domain.app.Judgment;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "judgment")
-public interface JudgmentRepository extends PagingAndSortingRepository<Judgment, Long> {
+public interface JudgmentRepository extends ListCrudRepository<Judgment, Long> {
 
     Judgment findByUserIdAndPoolEntryId(Long userId, Long poolEntryId);
 

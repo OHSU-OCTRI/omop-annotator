@@ -1,7 +1,9 @@
 package org.octri.omop_annotator.hibernate;
 
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
-import org.hibernate.type.descriptor.sql.NumericTypeDescriptor;
+import org.hibernate.type.descriptor.java.FloatJavaType;
+import org.hibernate.type.descriptor.jdbc.FloatJdbcType;
+import org.hibernate.type.descriptor.jdbc.NumericJdbcType;
 
 /**
  * This custom type builder can be used to convert a field in the database to a Java Float. If the sql field is a
@@ -43,8 +45,9 @@ public class ToFloatTypeBuilder {
         }
 
         public DefaultFloatType() {
-            super(org.hibernate.type.descriptor.sql.FloatTypeDescriptor.INSTANCE,
-                    org.hibernate.type.descriptor.java.FloatTypeDescriptor.INSTANCE);
+            // super(org.hibernate.type.descriptor.sql.FloatTypeDescriptor.INSTANCE,
+            // org.hibernate.type.descriptor.java.FloatTypeDescriptor.INSTANCE);
+            super(FloatJdbcType.INSTANCE, FloatJavaType.INSTANCE);
         }
 
     }
@@ -58,7 +61,8 @@ public class ToFloatTypeBuilder {
         }
 
         public PostgresFloatType() {
-            super(NumericTypeDescriptor.INSTANCE, NumericFloatJavaDescriptor.INSTANCE);
+            // super(NumericTypeDescriptor.INSTANCE, NumericFloatJavaDescriptor.INSTANCE);
+            super(NumericJdbcType.INSTANCE, FloatJavaType.INSTANCE);
         }
 
     }

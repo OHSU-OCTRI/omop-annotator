@@ -1,9 +1,9 @@
 package org.octri.omop_annotator.hibernate;
 
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
-import org.hibernate.type.descriptor.java.StringTypeDescriptor;
-import org.hibernate.type.descriptor.sql.ClobTypeDescriptor;
-import org.hibernate.type.descriptor.sql.LongVarcharTypeDescriptor;
+import org.hibernate.type.descriptor.java.StringJavaType;
+import org.hibernate.type.descriptor.jdbc.ClobJdbcType;
+import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
 
 /**
  * This custom type builder can be used to convert a field in the database to a Java String. If the sql field is a
@@ -47,7 +47,8 @@ public class ToTextTypeBuilder {
         }
 
         public DefaultTextType() {
-            super(LongVarcharTypeDescriptor.INSTANCE, StringTypeDescriptor.INSTANCE);
+            // super(LongVarcharTypeDescriptor.INSTANCE, StringTypeDescriptor.INSTANCE);
+            super(LongVarcharJdbcType.INSTANCE, StringJavaType.INSTANCE);
         }
     }
 
@@ -60,7 +61,8 @@ public class ToTextTypeBuilder {
         }
 
         public OracleTextType() {
-            super(ClobTypeDescriptor.DEFAULT, StringTypeDescriptor.INSTANCE);
+            // super(ClobTypeDescriptor.DEFAULT, StringTypeDescriptor.INSTANCE);
+            super(ClobJdbcType.DEFAULT, StringJavaType.INSTANCE);
         }
 
     }

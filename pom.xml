@@ -23,6 +23,7 @@
 		<java.version>17</java.version>
 		<node.version>v16.17.0</node.version>
 		<authlib.version>1.0.0</authlib.version>
+		<hibernate.version>6.4.4.Final</hibernate.version>
 	</properties>
 
 	<profiles>

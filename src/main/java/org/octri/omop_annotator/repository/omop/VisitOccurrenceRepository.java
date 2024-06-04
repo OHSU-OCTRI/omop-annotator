@@ -66,7 +66,7 @@ public interface VisitOccurrenceRepository
 	@Query(value = "select distinct note.visitOccurrence.id"
 			+ " from Note note"
 			+ " where note.person.id = ?1"
-			+ " and lower(note.text) like ?2"
+			+ " and lower(cast(note.text as string)) like ?2"
 			+ " order by note.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText);
 
@@ -78,6 +78,7 @@ public interface VisitOccurrenceRepository
 			+ " order by d.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName);
 
+	// TODO: Fix
 	static final String fullTextQuery = "select distinct v.id"
 			+ " from VisitOccurrence v"
 			+ " left join v.visitType visitType"
@@ -102,7 +103,7 @@ public interface VisitOccurrenceRepository
 			+ " or lower(observation.name) like ?2"
 			+ " or lower(procedure.name) like ?2"
 			+ " or lower(measurement.name) like ?2"
-			+ " or lower(note.text) like ?2"
+			+ " or lower(cast(note.text as string)) like ?2"
 			+ " or lower(drug.name) like ?2"
 			+ ")"
 			+ "order by v.id asc";

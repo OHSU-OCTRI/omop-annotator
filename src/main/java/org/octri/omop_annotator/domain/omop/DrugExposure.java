@@ -2,10 +2,11 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JavaTypeRegistration;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+import org.hibernate.type.descriptor.java.BigDecimalJavaType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +32,7 @@ import jakarta.validation.constraints.NotNull;
  * visit_detail_id - always null
  */
 @Entity
+@JavaTypeRegistration(javaType = Float.class, descriptorClass = BigDecimalJavaType.class)
 public class DrugExposure {
 
 	@Column(name = "drug_exposure_id")
@@ -63,7 +65,6 @@ public class DrugExposure {
 	private Integer refills;
 
 	@Column(name = "quantity")
-	@Type(type = "ToFloat")
 	private Float quantity;
 
 	@Column(name = "days_supply")

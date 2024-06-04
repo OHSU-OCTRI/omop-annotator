@@ -2,10 +2,11 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JavaTypeRegistration;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+import org.hibernate.type.descriptor.java.BigDecimalJavaType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +28,7 @@ import jakarta.validation.constraints.NotNull;
  * visit_detail_id - Null at OHSU
  */
 @Entity
+@JavaTypeRegistration(javaType = Float.class, descriptorClass = BigDecimalJavaType.class)
 public class Measurement {
 
 	@Column(name = "measurement_id")
@@ -60,7 +62,6 @@ public class Measurement {
 	private String valueSourceValue;
 
 	@Column(name = "value_as_number")
-	@Type(type = "ToFloat")
 	private Float valueAsNumber;
 
 	@ManyToOne
@@ -75,11 +76,9 @@ public class Measurement {
 	private String unitSourceValue;
 
 	@Column(name = "range_low")
-	@Type(type = "ToFloat")
 	private Float rangeLow;
 
 	@Column(name = "range_high")
-	@Type(type = "ToFloat")
 	private Float rangeHigh;
 
 	@ManyToOne

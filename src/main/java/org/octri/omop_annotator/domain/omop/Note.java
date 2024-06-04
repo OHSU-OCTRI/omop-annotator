@@ -2,7 +2,6 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import jakarta.persistence.Column;
@@ -54,7 +53,9 @@ public class Note {
 
 	@FullTextField
 	@Column(name = "note_text")
-	@Type(type = "ToText")
+	// TODO: Fix
+	// @Type(type = "ToText")
+	// @Lob (only works for Oracle?)
 	private String text;
 
 	@Column(name = "note_source_value")

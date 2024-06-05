@@ -69,7 +69,7 @@ public class OmopDataSourceConfiguration {
 	}
 
 	@Bean(name = "omopEntityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean omopEntityMangerFactory(EntityManagerFactoryBuilder builder) {
+	public LocalContainerEntityManagerFactoryBean omopEntityManagerFactory(EntityManagerFactoryBuilder builder) {
 		log.info("Creating OMOP entity manager");
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(omopDataSource());

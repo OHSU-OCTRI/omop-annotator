@@ -37,5 +37,8 @@
  * 
  * https://github.com/OHDSI/CommonDataModel/tree/master/inst/csv
  */
-@org.octri.omop_annotator.hibernate.annotation.PostgresFloat
+// @JavaTypeRegistration(javaType = Float.class, descriptorClass = BigDecimalJavaType.class)
 package org.octri.omop_annotator.domain.omop;
+
+// import org.hibernate.annotations.JavaTypeRegistration;
+// import org.hibernate.type.descriptor.java.BigDecimalJavaType;

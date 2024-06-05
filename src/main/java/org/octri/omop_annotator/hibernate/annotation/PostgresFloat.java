@@ -12,6 +12,7 @@ import org.hibernate.type.descriptor.java.BigDecimalJavaType;
 
 /**
  * A conditional conversion of Jdbc Big Decimal to Java Float for Postgres databases.
+ * TODO: Make this work or remove.
  */
 @Target({ PACKAGE, TYPE })
 @Retention(RUNTIME)

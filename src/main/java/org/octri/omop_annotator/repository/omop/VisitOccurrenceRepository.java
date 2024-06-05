@@ -78,7 +78,6 @@ public interface VisitOccurrenceRepository
 			+ " order by d.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName);
 
-	// TODO: Fix
 	static final String fullTextQuery = "select distinct v.id"
 			+ " from VisitOccurrence v"
 			+ " left join v.visitType visitType"

@@ -8,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -53,11 +52,7 @@ public class Note {
 	private String title;
 
 	@FullTextField
-	@Column(name = "note_text")
-	// TODO: Fix
-	// @Type(type = "ToText")
-	// Annotation required for Oracle
-	@Lob
+	@Column(name = "note_text", length = Integer.MAX_VALUE)
 	private String text;
 
 	@Column(name = "note_source_value")

@@ -28,7 +28,7 @@ public class SecurityConfiguration {
 
 	/**
 	 * Set up basic authentication and restrict requests based on HTTP methods,
-	 * URSL, and roles.
+	 * URLs, and roles.
 	 */
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {

@@ -2,7 +2,6 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
@@ -59,7 +58,6 @@ public class Observation {
 	private String observationSourceValue;
 
 	@Column(name = "value_as_number")
-	@Type(type = "ToFloat")
 	private Float valueAsNumber;
 
 	@Column(name = "value_as_string")

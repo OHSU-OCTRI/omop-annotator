@@ -2,7 +2,6 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
@@ -63,7 +62,6 @@ public class DrugExposure {
 	private Integer refills;
 
 	@Column(name = "quantity")
-	@Type(type = "ToFloat")
 	private Float quantity;
 
 	@Column(name = "days_supply")

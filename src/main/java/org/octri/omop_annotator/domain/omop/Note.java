@@ -2,7 +2,6 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import jakarta.persistence.Column;
@@ -53,8 +52,7 @@ public class Note {
 	private String title;
 
 	@FullTextField
-	@Column(name = "note_text")
-	@Type(type = "ToText")
+	@Column(name = "note_text", length = Integer.MAX_VALUE)
 	private String text;
 
 	@Column(name = "note_source_value")

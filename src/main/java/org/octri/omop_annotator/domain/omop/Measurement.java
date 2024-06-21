@@ -2,7 +2,6 @@ package org.octri.omop_annotator.domain.omop;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
@@ -60,7 +59,6 @@ public class Measurement {
 	private String valueSourceValue;
 
 	@Column(name = "value_as_number")
-	@Type(type = "ToFloat")
 	private Float valueAsNumber;
 
 	@ManyToOne
@@ -75,11 +73,9 @@ public class Measurement {
 	private String unitSourceValue;
 
 	@Column(name = "range_low")
-	@Type(type = "ToFloat")
 	private Float rangeLow;
 
 	@Column(name = "range_high")
-	@Type(type = "ToFloat")
 	private Float rangeHigh;
 
 	@ManyToOne

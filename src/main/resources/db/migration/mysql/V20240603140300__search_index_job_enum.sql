@@ -1,0 +1,2 @@
+ALTER TABLE search_index_job
+MODIFY COLUMN status ENUM('STARTED', 'COMPLETED', 'FAILED');

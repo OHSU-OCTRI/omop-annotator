@@ -40,7 +40,7 @@ omop.datasource.url=jdbc:oracle:thin:@host:port:SID
 omop.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
 omop.datasource.username=your_username
 omop.datasource.password=your_password
-omop.hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+omop.hibernate.dialect=org.hibernate.dialect.OracleDialect
 ```
 
 Postgres:

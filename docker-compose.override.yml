@@ -1,5 +1,4 @@
 # Local default environment overrides, useful for development environments
-version: "2"
 services:
   app:
     ports:

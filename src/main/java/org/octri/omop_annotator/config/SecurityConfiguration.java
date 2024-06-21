@@ -46,8 +46,7 @@ public class SecurityConfiguration {
 		securityConfigurer.configureLogoutWithDefaults(http);
 		securityConfigurer.configureSamlWithDefaults(http, authManager);
 
-		http.authorizeRequests()
-				.requestMatchers(routes.getPublicRoutesWithDefaults())
+		http.authorizeHttpRequests(authRequests -> authRequests.requestMatchers(routes.getPublicRoutesWithDefaults())
 				.permitAll()
 				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER")
 				.requestMatchers(HttpMethod.POST).authenticated()
@@ -55,7 +54,7 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.PATCH).authenticated()
 				.requestMatchers(HttpMethod.DELETE).denyAll()
 				.anyRequest()
-				.authenticated();
+				.authenticated());
 
 		return http.build();
 	}

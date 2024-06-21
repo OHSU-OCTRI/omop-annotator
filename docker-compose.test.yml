@@ -1,5 +1,4 @@
 # MySQL service for unit tests
-version: "2"
 services:
   mysql_test:
     image: mysql:8.0

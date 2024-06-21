@@ -18,7 +18,7 @@ pipeline {
     string(name: 'DESCRIPTION', description: 'A brief description of the release for external collaborators.')
   }
   tools {
-    maven '3.5.0'
+    maven '3.8.2'
     jdk 'JDK17'
   }
   stages {

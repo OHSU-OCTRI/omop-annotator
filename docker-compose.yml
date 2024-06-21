@@ -1,7 +1,6 @@
 # Base configuration
 # Keys without a value are passed into the config via a .env file in the same
 # directory as the `docker-compose` command was run from
-version: "2"
 services:
   app:
     image: octri.ohsu.edu/omop_annotator

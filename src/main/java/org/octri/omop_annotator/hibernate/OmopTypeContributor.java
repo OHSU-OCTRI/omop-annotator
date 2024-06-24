@@ -12,7 +12,7 @@ import org.hibernate.type.descriptor.java.BigDecimalJavaType;
 
 /**
  * Overrides the Hibernate Java type descriptor registered for Java {@link Float} fields when the dialect of the OMOP
- * database is PostgreSQL. Fixes a schema validation exception cause by PostgreSQL sing a {@link SqlTypes.NUMERIC}
+ * database is PostgreSQL. Fixes a schema validation exception cause by PostgreSQL using a {@link SqlTypes.NUMERIC}
  * column for OMOP columns where other databases use {@link SqlTypes.FLOAT}.
  */
 public class OmopTypeContributor implements TypeContributor {

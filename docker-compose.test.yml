@@ -1,8 +1,7 @@
 # MySQL service for unit tests
-version: "2"
 services:
   mysql_test:
-    image: mysql:5.7
+    image: mysql:8.0
     volumes:
       - ./docker_data/mysql_test:/var/lib/mysql
     ports:

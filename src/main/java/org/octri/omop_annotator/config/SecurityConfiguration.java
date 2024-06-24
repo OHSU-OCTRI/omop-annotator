@@ -1,66 +1,62 @@
 package org.octri.omop_annotator.config;
 
-import org.octri.authentication.FormSecurityConfiguration;
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import org.octri.authentication.DefaultSecurityConfigurer;
+import org.octri.authentication.config.AuthenticationRouteProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Custom security configuration.
  */
 @Configuration
-public class SecurityConfiguration extends FormSecurityConfiguration {
+public class SecurityConfiguration {
 
-	@Override
-	protected String defaultSuccessUrl() {
-		return "/";
-	}
+	@Autowired
+	private AuthenticationRouteProperties routes;
 
-	@Override
-	protected String logoutSuccessUrl() {
-		return "/";
-	}
+	@Autowired
+	private DefaultSecurityConfigurer securityConfigurer;
 
-	@Override
-	protected String[] customPublicRoutes() {
-		return new String[] {};
-	}
-	
 	/**
-	 * Override security configuration to prevent basic users from accessing admin functions
+	 * Set up basic authentication and restrict requests based on HTTP methods,
+	 * URLs, and roles.
 	 */
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		formAuthSuccessHandler.setDefaultTargetUrl(defaultSuccessUrl());
-		formAuthFailureHandler.setDefaultFailureUrl(loginFailureRedirectUrl());
-		http.exceptionHandling()
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-				.and()
-				.csrf()
-				.and()
-				.formLogin()
-				.permitAll()
-				.successHandler(formAuthSuccessHandler)
-				.failureHandler(formAuthFailureHandler)
-				.and()
-				.logout()
-				.permitAll()
-				.logoutRequestMatcher(new AntPathRequestMatcher(logoutUrl()))
-				.logoutSuccessUrl(logoutSuccessUrl())
-				.and()
-				.authorizeRequests()
-				.antMatchers(publicRoutes())
-				.permitAll()
-				.antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER')") // Basic users can't do admin functions
-				.antMatchers(HttpMethod.POST).authenticated()
-				.antMatchers(HttpMethod.PUT).authenticated()
-				.antMatchers(HttpMethod.PATCH).authenticated()
-				.antMatchers(HttpMethod.DELETE).denyAll()
-				.anyRequest()
-				.authenticated();
-	}
+	@Bean
+	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+		AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+		securityConfigurer.configureAuthenticationManager(authBuilder);
+		AuthenticationManager authManager = authBuilder.build();
 
+		http.authenticationManager(authManager)
+				.exceptionHandling(exceptionHandling -> exceptionHandling
+						.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(routes.getLoginUrl())))
+				.csrf(withDefaults());
+
+		securityConfigurer.configureContentSecurityPolicy(http);
+		securityConfigurer.configureFormLoginWithDefaults(http);
+		securityConfigurer.configureLogoutWithDefaults(http);
+		securityConfigurer.configureSamlWithDefaults(http, authManager);
+
+		http.authorizeHttpRequests(authRequests -> authRequests.requestMatchers(routes.getPublicRoutesWithDefaults())
+				.permitAll()
+				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER")
+				.requestMatchers(HttpMethod.POST).authenticated()
+				.requestMatchers(HttpMethod.PUT).authenticated()
+				.requestMatchers(HttpMethod.PATCH).authenticated()
+				.requestMatchers(HttpMethod.DELETE).denyAll()
+				.anyRequest()
+				.authenticated());
+
+		return http.build();
+	}
 
 }

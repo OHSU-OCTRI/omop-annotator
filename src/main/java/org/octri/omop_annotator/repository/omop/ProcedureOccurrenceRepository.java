@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.ProcedureOccurrence;
 import org.octri.omop_annotator.view.ProcedureOccurrenceRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "procedure_occurrence")
-public interface ProcedureOccurrenceRepository extends PagingAndSortingRepository<ProcedureOccurrence, Integer> {
+public interface ProcedureOccurrenceRepository extends ListCrudRepository<ProcedureOccurrence, Integer> {
 
 	static final String query = "select po.id as id, po.person.id as personId, procedure.name as procedure,"
 			+ " procedureType.name as procedureType, procedureSource.name as procedureSource, po.procedureSourceValue as procedureSourceValue,"

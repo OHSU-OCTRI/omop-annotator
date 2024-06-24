@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.omop.VisitOccurrence;
 import org.octri.omop_annotator.view.VisitOccurrenceRow;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  */
 @RepositoryRestResource(path = "visit_occurrence")
 public interface VisitOccurrenceRepository
-		extends PagingAndSortingRepository<VisitOccurrence, Integer>, CustomVisitOccurrenceRepository {
+		extends ListCrudRepository<VisitOccurrence, Integer>, CustomVisitOccurrenceRepository {
 
 	static final String visitOccurrenceQuery = "select v.id as id, v.person.id as person, visitType.name as visitType,"
 			+ " v.visitStart as visitStart, v.visitEnd as visitEnd, provider.providerName as providerName,"
@@ -66,7 +66,7 @@ public interface VisitOccurrenceRepository
 	@Query(value = "select distinct note.visitOccurrence.id"
 			+ " from Note note"
 			+ " where note.person.id = ?1"
-			+ " and lower(note.text) like ?2"
+			+ " and lower(cast(note.text as string)) like ?2"
 			+ " order by note.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText);
 
@@ -102,7 +102,7 @@ public interface VisitOccurrenceRepository
 			+ " or lower(observation.name) like ?2"
 			+ " or lower(procedure.name) like ?2"
 			+ " or lower(measurement.name) like ?2"
-			+ " or lower(note.text) like ?2"
+			+ " or lower(cast(note.text as string)) like ?2"
 			+ " or lower(drug.name) like ?2"
 			+ ")"
 			+ "order by v.id asc";

@@ -1,10 +1,10 @@
 package org.octri.omop_annotator.domain.app;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 import org.octri.omop_annotator.view.Labelled;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Item in a {@link Pool} to be judged/annotated. Each entry has a given {@link Topic}, as well as an ordering for
@@ -73,7 +73,7 @@ public class PoolEntry extends AbstractEntity implements Labelled {
 
 	@Override
 	public String getLabel() {
-		return getPool().getTopicSet().getLabel() + "/" +  getPool().getLabel() + 
+		return getPool().getTopicSet().getLabel() + "/" + getPool().getLabel() +
 				"/Topic " + getTopic().getTopicNumber() + "/" + getDocumentId();
 	}
 

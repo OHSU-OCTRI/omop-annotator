@@ -2,17 +2,17 @@ package org.octri.omop_annotator.repository.app;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.view.MergeValidationSummary;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import jakarta.transaction.Transactional;
+
 @RepositoryRestResource(path = "pool_entry")
-public interface PoolEntryRepository extends PagingAndSortingRepository<PoolEntry, Long> {
+public interface PoolEntryRepository extends CrudRepository<PoolEntry, Long> {
 
 	static final String mergeValidationQuery = "select topic_number as 'topicNumber' from pool_entry pe"
 			+ " join topic t on pe.topic = t.id"

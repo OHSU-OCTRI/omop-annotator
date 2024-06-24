@@ -4,13 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.octri.omop_annotator.domain.app.AbstractEntity;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 /**
  * Abstract class that provides methods for performing CRUD tasks for AbstractEntity objects. However, this class does
@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @param <T>
  * @param <U>
  */
-public abstract class AbstractBaseEntityController<T extends AbstractEntity, U extends PagingAndSortingRepository<T, Long>> {
+public abstract class AbstractBaseEntityController<T extends AbstractEntity, U extends CrudRepository<T, Long>> {
 
 	// cached values
 	private String templateFolder;

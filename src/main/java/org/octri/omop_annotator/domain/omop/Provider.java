@@ -1,12 +1,12 @@
 package org.octri.omop_annotator.domain.omop;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * OMOP 5.3 Definition of a Provider

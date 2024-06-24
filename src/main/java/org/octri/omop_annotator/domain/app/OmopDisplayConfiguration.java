@@ -1,9 +1,9 @@
 package org.octri.omop_annotator.domain.app;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 /**
  * Configure the displays for the Omop Entities. The fieldName corresponds to the getters

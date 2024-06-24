@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.repository.omop;
 
 import org.octri.omop_annotator.domain.omop.Person;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * instead.
  */
 @RepositoryRestResource(path = "person")
-public interface PersonRepository extends PagingAndSortingRepository<Person, Integer> {
+public interface PersonRepository extends CrudRepository<Person, Integer> {
 }

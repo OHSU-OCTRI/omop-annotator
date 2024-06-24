@@ -1,18 +1,11 @@
 package org.octri.omop_annotator.config;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.boot.model.TypeContributor;
-import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.hibernate.jpa.boot.spi.TypeContributorList;
-import org.octri.omop_annotator.hibernate.ToFloatTypeContributor;
-import org.octri.omop_annotator.hibernate.ToTextTypeContributor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -69,7 +62,7 @@ public class OmopDataSourceConfiguration {
 	}
 
 	@Bean(name = "omopEntityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean omopEntityMangerFactory(EntityManagerFactoryBuilder builder) {
+	public LocalContainerEntityManagerFactoryBean omopEntityManagerFactory(EntityManagerFactoryBuilder builder) {
 		log.info("Creating OMOP entity manager");
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(omopDataSource());
@@ -81,15 +74,6 @@ public class OmopDataSourceConfiguration {
 		factory.setJpaVendorAdapter(vendorAdapter);
 
 		Map<String, Object> jpaProperties = hibernateProps.toPropertyMap();
-		// Add TypeContributors needed to resolve dialect typing conflicts for OMOP
-		jpaProperties.put(EntityManagerFactoryBuilderImpl.TYPE_CONTRIBUTORS, new TypeContributorList() {
-
-			@Override
-			public List<TypeContributor> getTypeContributors() {
-				return Arrays.asList(new ToFloatTypeContributor(omopHibernateProperties().getDialect()),
-						new ToTextTypeContributor(omopHibernateProperties().getDialect()));
-			}
-		});
 
 		// Add Search properties
 		jpaProperties.putAll(searchConfig.toPropertyMap());

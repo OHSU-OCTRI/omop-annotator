@@ -5,9 +5,8 @@
 
 	<a class='pb-4 upload-link' href="{{req.contextPath}}/admin/topic/upload_template" download><i class="fas fa-file-download"></i>
 	 Get template</a>
-	<form method="POST" enctype="multipart/form-data"
-		action="{{req.contextPath}}/admin/topic/upload/">
-		
+	<form method="POST" enctype="multipart/form-data" action="{{req.contextPath}}/admin/topic/upload">
+
 		<div class="form-group">
 			<label for="topicSet" class="form-label required-field">Topic Set</label>
 			<select class="form-select" name="topicSet" required>
@@ -22,8 +21,8 @@
 			<label for="file" class="form-label">File to Upload</label> <input class="form-control-file"
 				type="file" name="file" required>
 		</div>
-	
-		<div class="form-group">		
+
+		<div class="form-group">
 			{{>authlib_fragments/forms/csrf_input}}
 			<button type="submit" class="btn btn-primary">Submit</button>
 			<a href="{{req.contextPath}}{{baseRoute}}/" class="btn btn-link">Cancel</a>

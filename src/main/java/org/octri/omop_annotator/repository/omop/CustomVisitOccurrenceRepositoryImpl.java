@@ -92,4 +92,18 @@ public class CustomVisitOccurrenceRepositoryImpl implements CustomVisitOccurrenc
                 log.debug("Matched hits: " + hits.size());
                 return hits;
         }
+
+        @Override
+        public List<VisitOccurrence> searchNotes(Integer personId, String term) {
+                log.debug("Running note search for personId: " + personId);
+                SearchSession searchSession = Search.session(entityManager);
+                var result = searchSession.search(VisitOccurrence.class)
+                                .where(f -> f.bool()
+                                                .must(f.match().field("person.id")
+                                                                .matching(personId))
+                                                .must(f.simpleQueryString()
+                                                                .fields("notes.text")
+                                                                .matching(term)));
+                return result.fetchAllHits();
+        }
 }

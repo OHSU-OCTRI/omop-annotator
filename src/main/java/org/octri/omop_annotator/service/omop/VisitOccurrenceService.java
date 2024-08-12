@@ -35,8 +35,17 @@ public class VisitOccurrenceService {
 		return repository.findAllByPersonIdAndMeasurementNameLike(personId, measurementName);
 	}
 
-	public List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText) {
-		return repository.findAllByPersonIdAndNoteTextLike(personId, noteText);
+	/**
+	 * Perform a text search on notes. This uses Hibernate search instead of a direct query to circumvent Hibernate
+	 * validation errors on text fields not explicitly defined as Clob in Oracle. https://jirabp.ohsu.edu/browse/OA-187
+	 * 
+	 * @param personId
+	 * @param noteText
+	 * @return
+	 */
+	public List<Integer> findAllByPersonIdAndNoteContains(Integer personId, String noteText) {
+		return repository.searchNotes(personId, noteText).stream().map(VisitOccurrence::getId).sorted()
+				.collect(Collectors.toList());
 	}
 
 	public List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName) {

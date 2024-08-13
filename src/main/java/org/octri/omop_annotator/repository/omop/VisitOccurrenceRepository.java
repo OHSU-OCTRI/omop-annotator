@@ -63,13 +63,6 @@ public interface VisitOccurrenceRepository
 			+ " order by m.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndMeasurementNameLike(Integer personId, String measurementName);
 
-	@Query(value = "select distinct note.visitOccurrence.id"
-			+ " from Note note"
-			+ " where note.person.id = ?1"
-			+ " and note.text like ?2"
-			+ " order by note.visitOccurrence.id asc")
-	List<Integer> findAllByPersonIdAndNoteTextLike(Integer personId, String noteText);
-
 	@Query(value = "select distinct d.visitOccurrence.id"
 			+ " from DrugExposure d"
 			+ " join d.drug drug"
@@ -78,43 +71,4 @@ public interface VisitOccurrenceRepository
 			+ " order by d.visitOccurrence.id asc")
 	List<Integer> findAllByPersonIdAndDrugNameLike(Integer personId, String drugName);
 
-	static final String fullTextQuery = "select distinct v.id"
-			+ " from VisitOccurrence v"
-			+ " left join v.visitType visitType"
-			+ " left join v.provider provider"
-			+ " left join v.careSite careSite"
-			+ " left join ConditionOccurrence co on co.visitOccurrence.id = v.id"
-			+ " left join co.condition condition"
-			+ " left join Observation obs on obs.visitOccurrence.id = v.id"
-			+ " left join obs.observation observation"
-			+ " left join ProcedureOccurrence po on po.visitOccurrence.id = v.id"
-			+ " left join po.procedure procedure"
-			+ " left join Measurement m on m.visitOccurrence.id = v.id"
-			+ " left join m.measurement measurement"
-			+ " left join Note note on note.visitOccurrence.id = v.id"
-			+ " left join DrugExposure d on d.visitOccurrence.id = v.id"
-			+ " left join d.drug drug"
-			+ " where v.person.id = ?1 and ("
-			+ " lower(provider.providerName) like ?2"
-			+ " or lower(careSite.careSiteName) like ?2"
-			+ " or lower(v.visitSourceValue) like ?2"
-			+ " or lower(condition.name) like ?2"
-			+ " or lower(observation.name) like ?2"
-			+ " or lower(procedure.name) like ?2"
-			+ " or lower(measurement.name) like ?2"
-			+ " or note.text like ?2"
-			+ " or lower(drug.name) like ?2"
-			+ ")"
-			+ "order by v.id asc";
-
-	/**
-	 * Finds all visit ids for a given person where all of the visits either contain the given text or have a child
-	 * entity with the given text.
-	 *
-	 * @param personId
-	 * @param searchTerm
-	 * @return
-	 */
-	@Query(value = fullTextQuery)
-	List<Integer> findAllByPersonIdAndAnyEntityContains(Integer personId, String searchTerm);
 }

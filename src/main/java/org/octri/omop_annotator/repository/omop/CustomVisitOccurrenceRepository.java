@@ -11,5 +11,7 @@ public interface CustomVisitOccurrenceRepository {
 
     public List<VisitOccurrence> search(Integer personId, String term);
 
+    public List<VisitOccurrence> searchNotes(Integer personId, String term);
+
     public List<VisitOccurrence> findAllWithData(Integer personId);
 }

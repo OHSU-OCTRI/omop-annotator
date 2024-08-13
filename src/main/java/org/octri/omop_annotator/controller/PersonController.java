@@ -110,11 +110,12 @@ public class PersonController {
 		} else if (entity == FilterEntity.measurement) {
 			visitIds = visitOccurrenceService.findAllByPersonIdAndMeasurementNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.note) {
-			visitIds = visitOccurrenceService.findAllByPersonIdAndNoteTextLike(personId, searchTerm);
+			visitIds = visitOccurrenceService.findAllByPersonIdAndNoteContains(personId, wildcardQueryValue(name));
 		} else if (entity == FilterEntity.medication) {
 			visitIds = visitOccurrenceService.findAllByPersonIdAndDrugNameLike(personId, searchTerm);
 		} else if (entity == FilterEntity.any) {
-			visitIds = visitOccurrenceService.findAllByPersonIdAndAnyEntityContains(personId, name.toLowerCase());
+			visitIds = visitOccurrenceService.findAllByPersonIdAndAnyEntityContains(personId,
+					wildcardQueryValue(searchTerm));
 		}
 		return mapper.writeValueAsString(visitIds);
 	}
@@ -128,6 +129,20 @@ public class PersonController {
 		String prefix = searchTerm.startsWith("%") ? "" : "%";
 		String suffix = searchTerm.endsWith("%") ? "" : "%";
 		return prefix + searchTerm.toLowerCase() + suffix;
+	}
+
+	/**
+	 * Converts a search term that would be used in a SQL Like Query to a wildcard
+	 * used in Hibernate search. The first % is removed if it exists. The last is converted
+	 * to a splat.
+	 * 
+	 * @param searchTerm
+	 * @return
+	 */
+	private String wildcardQueryValue(String searchTerm) {
+		Assert.notNull(searchTerm, "Search term is required");
+		searchTerm = searchTerm.startsWith("%") ? searchTerm.replaceFirst("%", "") : searchTerm;
+		return searchTerm.toLowerCase().replaceAll("%$", "*");
 	}
 
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")

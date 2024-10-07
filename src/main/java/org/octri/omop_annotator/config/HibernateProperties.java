@@ -65,6 +65,8 @@ public class HibernateProperties {
 	 */
 	private String physicalNamingStrategy = DEFAULT_PHYSICAL_NAMING_STRATEGY;
 
+	private String defaultSchema;
+
 	public String getDialect() {
 		return dialect;
 	}
@@ -113,6 +115,14 @@ public class HibernateProperties {
 		this.physicalNamingStrategy = physicalNamingStrategy;
 	}
 
+	public String getDefaultSchema() {
+		return defaultSchema;
+	}
+
+	public void setDefaultSchema(String defaultSchema) {
+		this.defaultSchema = defaultSchema;
+	}
+
 	public Map<String, Object> toPropertyMap() {
 		Map<String, Object> propertyMap = new HashMap<>();
 		propertyMap.put(AvailableSettings.DIALECT, getDialect());
@@ -120,6 +130,7 @@ public class HibernateProperties {
 		propertyMap.put(AvailableSettings.SHOW_SQL, getShowSql());
 		propertyMap.put(AvailableSettings.IMPLICIT_NAMING_STRATEGY, getImplicitNamingStrategy());
 		propertyMap.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, getPhysicalNamingStrategy());
+		propertyMap.put(AvailableSettings.DEFAULT_SCHEMA, getDefaultSchema());
 		return propertyMap;
 	}
 

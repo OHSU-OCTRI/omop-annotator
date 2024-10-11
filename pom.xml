@@ -21,7 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
-		<node.version>v16.17.0</node.version>
+		<node.version>v20.18.0</node.version>
 		<authlib.version>2.1.1</authlib.version>
 		<hibernate.version>6.4.4.Final</hibernate.version>
 	</properties>

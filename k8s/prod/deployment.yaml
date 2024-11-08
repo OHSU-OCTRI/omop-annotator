@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: omop-annotator
-        image: octri.ohsu.edu/omop_annotator:1.4.0
+        image: octri.ohsu.edu/omop_annotator:2.0.0
         imagePullPolicy: Always
         resources:
           requests:

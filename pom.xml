@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.7</version>
+		<version>3.2.12</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -24,6 +24,7 @@
 		<node.version>v20.18.0</node.version>
 		<authlib.version>2.1.1</authlib.version>
 		<hibernate.version>6.4.4.Final</hibernate.version>
+		<tomcat.version>10.1.39</tomcat.version>
 	</properties>
 
 	<profiles>

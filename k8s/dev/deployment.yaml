@@ -18,7 +18,7 @@ spec:
         co.elastic.logs/multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
         co.elastic.logs/multiline.negate: 'true'
         co.elastic.logs/multiline.match: after
-        co.elastic.logs/processors.dissect.tokenizer: '%{+@timestamp} %{log.level} %{process.pid|long} --- [%{process.thread.name}] %{log.logger} : %{}'
+        co.elastic.logs/processors.dissect.tokenizer: '%{+@timestamp->} %{log.level} %{process.pid|long} --- [%{process.thread.name}] %{log.logger} : %{}'
         co.elastic.logs/processors.dissect.ignore_failure: 'true'
         co.elastic.logs/processors.dissect.trim_values: all
         co.elastic.logs/processors.dissect.target_prefix: ''

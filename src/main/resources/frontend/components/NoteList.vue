@@ -166,13 +166,13 @@ export default {
     preview(text) {
       let sub = text.substring(0, this.previewSize);
       if (sub.length === this.previewSize) {
-        sub = sub.concat('... <i class="fas fa-angle-double-right text-primary"></i>');
+        sub = sub.concat('... <i class="fas fa-angles-right text-primary"></i>');
       }
       return sub;
     },
     expand(text) {
       if (text.length > this.previewSize) {
-        text = text.concat(' <i class="fas fa-angle-double-left text-primary"></i>');
+        text = text.concat(' <i class="fas fa-angles-left text-primary"></i>');
       }
       return text;
     },

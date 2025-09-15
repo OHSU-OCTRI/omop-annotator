@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix filebeat tokenizer pattern
 - Fix icons broken by the upgrade to AuthLib 2.2 (CRIOPS-248)
 
+### Removed
+
+- Remove useless test of application context loading (CRIOPS-248)
+
 ## [2.0.2] - 2025-04-02
 
 ### Changed

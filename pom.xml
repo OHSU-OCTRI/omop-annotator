@@ -9,6 +9,7 @@
 
 	<name>omop_annotator</name>
 	<description>OMOP Annotator</description>
+	<url>https://github.com/OHSU-OCTRI/omop-annotator</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -16,6 +17,29 @@
 		<version>3.2.12</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
+	<licenses>
+		<license>
+			<name>The 3-Clause BSD License</name>
+			<url>https://opensource.org/license/bsd-3-clause</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>OCTRI Innovation Core</name>
+			<email>octri-devops@ohsu.edu</email>
+			<organization>Oregon Clinical &amp; Translational Research Institute (OCTRI)</organization>
+			<organizationUrl>https://www.ohsu.edu/octri</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/OHSU-OCTRI/omop-annotator.git</connection>
+		<developerConnection>scm:git:https://github.com/OHSU-OCTRI/omop-annotator.git</developerConnection>
+		<url>https://github.com/OHSU-OCTRI/omop-annotator/tree/main</url>
+		<tag>HEAD</tag>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,6 +50,14 @@
 		<hibernate.version>6.4.4.Final</hibernate.version>
 		<tomcat.version>10.1.39</tomcat.version>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/OHSU-OCTRI/omop-annotator</url>
+		</repository>
+	</distributionManagement>
 
 	<profiles>
 		<profile>
@@ -42,6 +74,33 @@
 			<properties>
 				<webpack.args>--mode=development</webpack.args>
 			</properties>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.8</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 

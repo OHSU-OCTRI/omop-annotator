@@ -3,8 +3,8 @@
 <head>
 	<title>{{displayName}}</title>
 	<meta charset="utf-8">
-	<meta name="ctx" content="{{req.contextPath}}/">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	{{>authlib_fragments/meta_tags}}
 
 	{{>authlib_fragments/css}}
 	<link rel="stylesheet" href="{{req.contextPath}}/webjars/datatables/css/dataTables.bootstrap5.min.css">
@@ -39,7 +39,7 @@
 							<div class="dropdown-menu" aria-labelledby="data_menu">
 								{{>components/data_items}}
 							</div>
-						</li> 
+						</li>
 						-->
 						{{#isAdminOrSuper}}
 						<li class="nav-item dropdown">

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add CHANGELOG.md
 - Update URLs after move to GitHub Enterprise Cloud (CRIOPS-248)
 - Use GitHub Actions for continuous integration (CRIOPS-248)
+- Upgrade to AuthLib 2.2.1 (CRIOPS-248)
 
 ### Fixed
 

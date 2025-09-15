@@ -46,7 +46,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
 		<node.version>v20.18.0</node.version>
-		<authlib.version>2.1.1</authlib.version>
+		<authlib.version>2.2.1</authlib.version>
 		<hibernate.version>6.4.4.Final</hibernate.version>
 		<tomcat.version>10.1.39</tomcat.version>
 	</properties>

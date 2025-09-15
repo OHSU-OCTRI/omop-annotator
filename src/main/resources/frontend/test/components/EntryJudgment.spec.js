@@ -59,7 +59,7 @@ describe('EntryJudgment.vue', () => {
         showJudgment: false
       }
     });
-    expect(wrapper.find('.fa-check-circle').exists()).toBe(true);
+    expect(wrapper.find('.fa-circle-check').exists()).toBe(true);
   });
 
   it('adapts the icon classes when item is selected', async () => {
@@ -70,7 +70,7 @@ describe('EntryJudgment.vue', () => {
       }
     });
 
-    const iconWrapper = wrapper.find('.fa-check-circle');
+    const iconWrapper = wrapper.find('.fa-circle-check');
     expect(iconWrapper.exists()).toBe(true);
 
     // classList seems to be mutated in place, so capture the original values
@@ -79,7 +79,7 @@ describe('EntryJudgment.vue', () => {
 
     await wrapper.setProps({ selected: true });
 
-    const updatedWrapper = wrapper.find('.fa-check-circle');
+    const updatedWrapper = wrapper.find('.fa-circle-check');
     const updatedClasses = [...updatedWrapper.element.classList];
     expect(updatedClasses).not.toEqual(iconClasses);
   });

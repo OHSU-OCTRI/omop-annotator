@@ -37,7 +37,7 @@ export default {
         'lh-base',
         // icon
         'far',
-        'fa-check-circle'
+        'fa-circle-check'
       ];
 
       if (!this.selected) {

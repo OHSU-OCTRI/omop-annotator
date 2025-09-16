@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update URLs after move to GitHub Enterprise Cloud (CRIOPS-248)
 - Use GitHub Actions for continuous integration (CRIOPS-248)
 - Upgrade to AuthLib 2.2.1 (CRIOPS-248)
+- Upgrade to Spring Boot 3.5 (CRIOPS-248)
+- Upgrade OpenCSV to 5.12.1 (CRIOPS-248)
+- Upgrade maven-frontend-plugin to 1.15.1 (CRIOPS-248)
+- Use Node.js 22 to build front end assets (CRIOPS-248)
+- Run `npm audit fix` (CRIOPS-248)
 
 ### Fixed
 

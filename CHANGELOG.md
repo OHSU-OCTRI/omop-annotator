@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade maven-frontend-plugin to 1.15.1 (CRIOPS-248)
 - Use Node.js 22 to build front end assets (CRIOPS-248)
 - Run `npm audit fix` (CRIOPS-248)
+- Attach application JAR and `RUNNING.md` to releases (CRIOPS-248)
 
 ### Fixed
 

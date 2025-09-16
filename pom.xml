@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.12</version>
+		<version>3.5.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -45,10 +45,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
-		<node.version>v20.18.0</node.version>
+		<node.version>v22.19.0</node.version>
 		<authlib.version>2.2.1</authlib.version>
-		<hibernate.version>6.4.4.Final</hibernate.version>
-		<tomcat.version>10.1.39</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -184,7 +182,7 @@
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>5.6</version>
+			<version>5.12.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -247,7 +245,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.12.1</version>
+				<version>1.15.1</version>
 				<executions>
 					<execution>
 						<id>install-node-and-npm</id>

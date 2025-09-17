@@ -4,7 +4,7 @@
 
 	<groupId>org.octri</groupId>
 	<artifactId>omop_annotator</artifactId>
-	<version>2.0.3</version>
+	<version>2.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>omop_annotator</name>
@@ -38,7 +38,7 @@
 		<connection>scm:git:https://github.com/OHSU-OCTRI/omop-annotator.git</connection>
 		<developerConnection>scm:git:https://github.com/OHSU-OCTRI/omop-annotator.git</developerConnection>
 		<url>https://github.com/OHSU-OCTRI/omop-annotator/tree/main</url>
-		<tag>v2.0.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<properties>

@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Remove useless test of application context loading (CRIOPS-248)
+- Remove site-specific deployment manifests (CRIOPS-248)
 
 ## [2.0.2] - 2025-04-02
 

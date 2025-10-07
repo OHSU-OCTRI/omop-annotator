@@ -1,12 +1,16 @@
-# Running the OMOP Annotator Jar
+# Running the OMOP Annotator
+
+In addition to running the OMOP Annotator with [Docker Compose](https://docs.docker.com/compose/) as described in [README.md](./README.md), you can also run the jar file attached to each release, or using an IDE.
 
 ## Prerequisites
 
-The Annotator is a Java application and requires the Java 11 Runtime Environment for running the provided jar.
+The Annotator is a Java application and requires the Java 17 Runtime Environment for running the provided application.
 
-The application requires two data sources - the read-only OMOP database and a writeable database to store application users and their annotations. Both data sources are configurable, but the writeable data source has only been tested with MySQL, and the OMOP data source has been tested with Oracle and Postgres.
+The application requires two data sources - the read-only [OMOP](https://www.ohdsi.org/data-standardization/) database and a writable database to store application users and their annotations. Both data sources are configurable, but the writable data source has only been tested with MySQL, and the OMOP data source has been tested with Oracle and PostgreSQL.
 
 ## Configuration
+
+Like all Spring Boot applications, the OMOP Annotator supports [externalized configuration](https://docs.spring.io/spring-boot/reference/features/external-config.html) via YAML files, properties files, environment variables, and command line parameters.
 
 The simplest way to set up data sources and other configuration for the application is to create a properties file to override expected properties defined in `application.properties` on the classpath. For example, create a file called `override.properties` in the same location as the jar. Once this is filled out with the required information, run the jar providing the override location:
 
@@ -18,7 +22,7 @@ After the jar is running, the app can be found at the context path provided. For
 http://localhost:8080/omop_annotator/
 ```
 
-### Properties for the Writeable Data Source
+### Properties for the Writable Data Source
 
 The following properties must be provided in the override file if they differ from the default values shown below:
 
@@ -27,7 +31,6 @@ app.datasource.url=jdbc:mysql://localhost:3306/omop_annotator?serverTimezone=Ame
 app.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 app.datasource.username=omop_annotator
 app.datasource.password=omop_annotator
-app.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
 ### Properties for the OMOP Data Source
@@ -106,24 +109,23 @@ octri.authentication.enable-table-based=true
 
 ## Spring Mail (Table-Based Authentication)
 
-Spring Mail is used to communicate with table-based users when setting or resetting passwords. If the application will have table-based users, the settings should be configured for your organization. At a minimum, the 'from' address should be changed below:
+Spring Mail is used to communicate with table-based users when setting or resetting passwords. If the application will have table-based users, the settings should be configured for your organization.
 
 ```
-spring.mail.enabled=false
-spring.mail.from=octrihlp@ohsu.edu
+spring.mail.from=
 spring.mail.default-encoding=UTF-8
-spring.mail.host=smtpout.ohsu.edu
-spring.mail.port=25
-spring.mail.protocol=smtp
-spring.mail.test-connection=false
-spring.mail.username=octrihlp@ohsu.edu
-spring.mail.password=secret
-spring.mail.properties.mail.smtp.auth=false
-spring.mail.properties.mail.smtp.starttls.enable=false
-spring.mail.properties.mail.smtp.starttls.required=false
+spring.mail.host=
+spring.mail.port=
+spring.mail.protocol=
+spring.mail.test-connection=
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.smtp.auth=
+spring.mail.properties.mail.smtp.starttls.enable=
+spring.mail.properties.mail.smtp.starttls.required=
 ```
 
-This should be all the configuration needed. When you run the jar for the first time, the writeable database schema will be initialized and the database will be empty.
+This should be all the configuration needed. When you run the jar for the first time, the writable database schema will be initialized and the database will be empty.
 
 ## Add a User
 
@@ -132,8 +134,8 @@ To log into the application, the first user needs to be created directly in the 
 If your organization is using LDAP, you can amend the following SQL statements to create the first user:
 
 ```
-INSERT INTO `omop_annotator`.`user` (`account_expired`, `account_locked`, `consecutive_login_failures`, `credentials_expired`, `email`, `enabled`, `first_name`, `institution`, `last_name`, `username`)
-VALUES (0, 0, 0, 0, '<org_email>', 1, '<first_name>', '<institution_name>', '<last_name>', '<username>');
+INSERT INTO `omop_annotator`.`user` (`authentication_method`, `account_locked`, `consecutive_login_failures`, `email`, `enabled`, `first_name`, `last_name`, `username`)
+VALUES ('LDAP', 0, 0, '<org_email>', 1, '<first_name>', '<last_name>', '<username>');
 
 SET @userid = (SELECT last_insert_id());
 SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);
@@ -144,8 +146,8 @@ VALUES (@suserid, @admin);
 If your organization will have table-based users only, start by creating the first user and role, setting the credentials to expired, and providing an email that will be used for confirmation of password reset:
 
 ```
-INSERT INTO `omop_annotator`.`user` (`account_expired`, `account_locked`, `consecutive_login_failures`, `credentials_expired`, `email`, `enabled`, `first_name`, `institution`, `last_name`, `username`)
-VALUES (0, 0, 0, 1, '<email>', 1, '<first_name>', '<institution_name>', '<last_name>', '<username>');
+INSERT INTO `omop_annotator`.`user` (`authentication_method`, `account_locked`, `consecutive_login_failures`, `credentials_expiration_date`, `email`, `enabled`, `first_name`, `last_name`, `username`)
+VALUES ('TABLE_BASED', 0, 0, NOW(), '<email>', 1, '<first_name>', '<last_name>', '<username>');
 
 SET @userid = (SELECT last_insert_id());
 SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);

@@ -1,10 +1,10 @@
 # Running the OMOP Annotator
 
-In addition to running the OMOP Annotator with [Docker Compose](https://docs.docker.com/compose/) as described in [README.md](./README.md), you can also run the jar file attached to each release, or using an IDE.
+In addition to running the OMOP Annotator with [Docker Compose](https://docs.docker.com/compose/) as described in [README.md](./README.md), you can also run the jar file attached to the [GitHub release](https://github.com/OHSU-OCTRI/omop-annotator/releases).
 
 ## Prerequisites
 
-The Annotator is a Java application and requires the Java 17 Runtime Environment for running the provided application.
+The Annotator is a Java application and requires the Java 17 Runtime Environment to execute.
 
 The application requires two data sources - the read-only [OMOP](https://www.ohdsi.org/data-standardization/) database and a writable database to store application users and their annotations. Both data sources are configurable, but the writable data source has only been tested with MySQL, and the OMOP data source has been tested with Oracle and PostgreSQL.
 
@@ -140,7 +140,7 @@ VALUES ('LDAP', 0, 0, '<org_email>', 1, '<first_name>', '<last_name>', '<usernam
 SET @userid = (SELECT last_insert_id());
 SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);
 INSERT INTO user_user_role (user, user_role)
-VALUES (@suserid, @admin);
+VALUES (@userid, @admin);
 ````
 
 If your organization will have table-based users only, start by creating the first user and role, setting the credentials to expired, and providing an email that will be used for confirmation of password reset:

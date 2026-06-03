@@ -1,6 +1,6 @@
 # omop_annotator
 #
-# docker build --rm -t octri.ohsu.edu/omop_annotator --pull .
+# docker build --rm -t ghcr.io/ohsu-octri/omop-annotator --pull .
 
 FROM octri.ohsu.edu/jarrunner:17
 EXPOSE 8080

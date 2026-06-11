@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use shared GitHub Actions workflows (OA-195)
 - Build container image (OA-195)
 
+### Dependencies
+
+- Bump `org.webjars:font-awesome` from 6.7.2 to 7.2.0 ([#183](https://github.com/OHSU-OCTRI/omop-annotator/pull/183))
+
 ## [2.0.3] - 2025-09-17
 
 ### Changed

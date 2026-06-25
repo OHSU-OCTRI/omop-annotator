@@ -4,10 +4,12 @@ on:
   push:
     branches-ignore:
       - 'main'
+      - 'dependabot/**'
   pull_request:
     types:
       - opened
-      - edited # Only catches changes to PR title, body, or base branch
+      - reopened
+      - synchronize
   workflow_dispatch:
 
 concurrency:

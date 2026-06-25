@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use Node.js 24.x for front end tooling and run `npm audit fix` (OA-195)
 - Use shared GitHub Actions workflows (OA-195)
 - Build container image (OA-195)
+- Create a test build workflow to handle PRs (CIS-3773)
 
 ## [2.0.3] - 2025-09-17
 

@@ -7,8 +7,12 @@ on:
   pull_request:
     types:
       - opened
-      - edited
+      - edited # Only catches changes to PR title, body, or base branch
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-java-source:

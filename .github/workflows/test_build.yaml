@@ -16,7 +16,6 @@ jobs:
     uses: OHSU-OCTRI/shared-workflows/.github/workflows/java-test-build.yaml@main
     with:
       java_version: '17'
-      publish_to_github_packages: ${{ github.ref == 'refs/heads/main' || github.ref_type == 'tag' }}
 
   run-node-tests:
     name: Run Node.js tests

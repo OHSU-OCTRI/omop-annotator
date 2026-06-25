@@ -1,15 +1,14 @@
 name: Add Dependabot updates to CHANGELOG.md
 
 on:
-  workflow_dispatch:
-  # pull_request:
-  #   types:
-  #     - opened
-  #     - synchronize
-  #     - reopened
-  #     - ready_for_review
-  #     - labeled
-  #     - unlabeled
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - labeled
+      - unlabeled
 
 jobs:
   update_changelog:

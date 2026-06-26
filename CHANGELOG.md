@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Dependencies
+
+- Bumps `org.webjars:webjars-locator` from 0.42 to 0.52 (#173)
+
 ## [2.0.4] - 2026-06-11
 
 ### Changed

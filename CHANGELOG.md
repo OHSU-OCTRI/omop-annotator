@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added 
+
+- New actions workflow to update Node.js dependencies on a schedule (CIS-3820)
+
 ### Dependencies
 
 - Bumps `org.webjars:webjars-locator` from 0.42 to 0.52 (#173)

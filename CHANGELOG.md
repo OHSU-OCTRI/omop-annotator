@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bumps `org.webjars:webjars-locator` from 0.42 to 0.52 (#173)
 - Run npm audit fix to resolve Node.js vulnerabilities (CIS-3790)
+- Run `npm audit fix` to resolve Node.js vulnerabilities (CIS-3824)
+- Removed unused `uuid` dependency (CIS-3824)
 
 ## [2.0.4] - 2026-06-11
 

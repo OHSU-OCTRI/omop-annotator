@@ -2,7 +2,7 @@
 name: Update Node.js dependencies
 on:
   schedule:
-    - cron: "0 8,12,16 * * *"
+    - cron: "0 4 * * 4"
       timezone: "America/Los_Angeles"
   workflow_dispatch:
 

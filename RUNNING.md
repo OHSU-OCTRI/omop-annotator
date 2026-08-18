@@ -112,7 +112,8 @@ octri.authentication.enable-table-based=true
 Spring Mail is used to communicate with table-based users when setting or resetting passwords. If the application will have table-based users, the settings should be configured for your organization.
 
 ```
-spring.mail.from=
+octri.authentication.account-message-email=
+octri.messaging.email-delivery-strategy=
 spring.mail.default-encoding=UTF-8
 spring.mail.host=
 spring.mail.port=

@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.7</version>
+		<version>3.5.13</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -46,7 +46,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
 		<node.version>v24.16.0</node.version>
-		<authlib.version>2.2.1</authlib.version>
+		<authlib.version>2.3.0</authlib.version>
 	</properties>
 
 	<distributionManagement>

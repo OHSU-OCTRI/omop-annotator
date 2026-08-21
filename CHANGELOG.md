@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added 
+## [2.0.5] - 2026-08-21
+
+### Added
 
 - New actions workflow to update Node.js dependencies on a schedule (CIS-3820)
 
@@ -627,7 +629,8 @@ Upgrade to Spring Boot 3.
 
 - Fix Stage Deployment MySQL Trust Store (OA-44)
 
-[unreleased]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.4...HEAD
+[unreleased]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.5...HEAD
+[2.0.5]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.4...v2.0.5
 [2.0.4]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/OHSU-OCTRI/omop-annotator/compare/v2.0.1...v2.0.2

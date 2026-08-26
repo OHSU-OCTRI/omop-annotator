@@ -2,12 +2,13 @@ package org.octri.omop_annotator.controller;
 
 import java.util.Map;
 
+import org.octri.common.controller.AbstractEntityController;
+import org.octri.common.view.OptionList;
 import org.octri.omop_annotator.domain.app.Pool;
 import org.octri.omop_annotator.repository.app.AnnotationSchemaRepository;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
-import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

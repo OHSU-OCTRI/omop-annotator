@@ -3,9 +3,10 @@ package org.octri.omop_annotator.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.octri.omop_annotator.domain.app.AbstractEntity;
-import org.octri.omop_annotator.view.Labelled;
-import org.octri.omop_annotator.view.ViewUtils;
+import org.octri.common.controller.AbstractBaseEntityController;
+import org.octri.common.domain.AbstractEntity;
+import org.octri.common.view.Labelled;
+import org.octri.common.view.ViewUtils;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

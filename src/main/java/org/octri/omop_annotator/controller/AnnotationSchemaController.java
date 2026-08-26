@@ -3,6 +3,7 @@ package org.octri.omop_annotator.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.octri.common.controller.AbstractEntityController;
 import org.octri.omop_annotator.domain.app.AnnotationLabel;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.repository.app.AnnotationLabelRepository;

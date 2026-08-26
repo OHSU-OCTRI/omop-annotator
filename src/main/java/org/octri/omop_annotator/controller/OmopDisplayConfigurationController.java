@@ -3,6 +3,7 @@ package org.octri.omop_annotator.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import org.octri.common.controller.AbstractEntityController;
 import org.octri.omop_annotator.domain.app.OmopDisplayConfiguration;
 import org.octri.omop_annotator.repository.app.OmopDisplayConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

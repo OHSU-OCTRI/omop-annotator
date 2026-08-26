@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.octri.common.controller.AbstractEntityController;
+import org.octri.common.view.OptionList;
 import org.octri.omop_annotator.domain.app.AnnotationSchema;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.domain.app.TopicSet;
@@ -15,7 +17,6 @@ import org.octri.omop_annotator.repository.app.TopicRepository;
 import org.octri.omop_annotator.repository.app.TopicSetRepository;
 import org.octri.omop_annotator.service.app.PoolEntryUploadService;
 import org.octri.omop_annotator.service.app.PoolEntryUploadService.UploadResult;
-import org.octri.omop_annotator.view.OptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;

@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Date;
 
 import org.octri.authentication.server.security.entity.User;
+import org.octri.common.domain.AbstractEntity;
 import org.springframework.util.Assert;
 
 import jakarta.persistence.Column;

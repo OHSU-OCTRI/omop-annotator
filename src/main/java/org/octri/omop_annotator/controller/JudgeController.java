@@ -3,6 +3,7 @@ package org.octri.omop_annotator.controller;
 import java.util.Map;
 
 import org.octri.authentication.server.security.SecurityHelper;
+import org.octri.common.view.ViewUtils;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;
@@ -38,6 +39,9 @@ public class JudgeController {
 	public String showTopicsForPool(Map<String, Object> model, @PathVariable Long id) {
 		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
 
+		ViewUtils.addPageWebjar(model, "datatables/js/dataTables.min.js");
+		ViewUtils.addPageWebjar(model, "datatables/js/dataTables.bootstrap5.min.js");
+		ViewUtils.addPageScript(model, "table-sorting.js");
 		model.put("pool", poolRepository.findById(id).get());
 		model.put("topicJudgments", customViewRepository.summarizeTopicJudgments(id,
 				securityHelper.authenticationUserDetails().getUserId()));
@@ -47,6 +51,9 @@ public class JudgeController {
 	@GetMapping("/pool/{poolId}/topic/{topicId}")
 	public String showPoolEntriesForTopic(Map<String, Object> model, @PathVariable Long poolId,
 			@PathVariable Long topicId) {
+		ViewUtils.addPageWebjar(model, "datatables/js/dataTables.min.js");
+		ViewUtils.addPageWebjar(model, "datatables/js/dataTables.bootstrap5.min.js");
+		ViewUtils.addPageScript(model, "table-sorting.js");
 		model.put("pool", poolRepository.findById(poolId).get());
 		model.put("topic", topicRepository.findById(topicId).get());
 		model.put("poolEntryCount", poolEntryRepository.countByPoolIdAndTopicId(poolId, topicId));

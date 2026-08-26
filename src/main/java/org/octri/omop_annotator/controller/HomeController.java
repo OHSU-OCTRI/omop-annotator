@@ -3,6 +3,7 @@ package org.octri.omop_annotator.controller;
 import java.util.Map;
 
 import org.octri.authentication.server.security.SecurityHelper;
+import org.octri.common.view.ViewUtils;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,9 @@ public class HomeController {
 
 		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
 		if (securityHelper.isLoggedIn()) {
+			ViewUtils.addPageWebjar(model, "datatables/js/dataTables.min.js");
+			ViewUtils.addPageWebjar(model, "datatables/js/dataTables.bootstrap5.min.js");
+			ViewUtils.addPageScript(model, "table-sorting.js");
 			model.put("page_title", "OMOP Annotator");
 			model.put("pools", poolRepository.findAll());
 			return new ModelAndView("home", model);

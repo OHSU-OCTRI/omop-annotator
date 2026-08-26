@@ -1,6 +1,7 @@
 package org.octri.omop_annotator.domain.app;
 
 import org.octri.authentication.server.security.entity.User;
+import org.octri.common.domain.AbstractEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

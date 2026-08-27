@@ -88,6 +88,11 @@ div.parent-summary strong {
 	opacity: 1;
 }
 
+/** DataTables customization **/
+.dt-column-order::before, .dt-column-order::after{
+	font-size: 0.45em !important;
+}
+
 /** Vertically scrollable table with fixed header **/
 .tableFixHead {
 	overflow: auto;

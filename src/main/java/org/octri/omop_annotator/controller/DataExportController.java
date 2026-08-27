@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.octri.common.view.OptionList;
 import org.octri.omop_annotator.config.OmopDataConfiguration;
 import org.octri.omop_annotator.repository.app.CustomViewRepository;
 import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PinRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.view.ExportedJudgmentRow;
-import org.octri.omop_annotator.view.OptionList;
 import org.octri.omop_annotator.view.PinExportSerializer;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;

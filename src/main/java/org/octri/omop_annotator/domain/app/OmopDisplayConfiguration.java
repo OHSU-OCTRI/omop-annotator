@@ -1,5 +1,7 @@
 package org.octri.omop_annotator.domain.app;
 
+import org.octri.common.domain.AbstractEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

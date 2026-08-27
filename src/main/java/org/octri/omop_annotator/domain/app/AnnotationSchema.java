@@ -1,6 +1,7 @@
 package org.octri.omop_annotator.domain.app;
 
-import org.octri.omop_annotator.view.Labelled;
+import org.octri.common.domain.AbstractEntity;
+import org.octri.common.view.Labelled;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;

@@ -228,6 +228,10 @@ export default {
             {
               targets: 0,
               orderable: false
+            },
+            {
+              className: 'dt-left',
+              targets: '_all'
             }
           ],
           order: [[this.sortColumn, this.sortOrder]],
@@ -235,7 +239,9 @@ export default {
           pageLength: this.pageLength,
           searching: true, // this must be true to use the api call
           info: true,
-          dom: 'lrtip', // exclude default search controls from the dom
+          layout: {
+            topEnd: null
+          },
           orderCellsTop: true,
           initComplete: function () {
             if (indexesToFilter.length > 0) {

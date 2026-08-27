@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 
 import org.octri.authentication.server.security.AuthenticationUserDetailsService;
 import org.octri.authentication.server.security.service.UserService;
+import org.octri.common.controller.AbstractBaseEntityController;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.domain.app.SearchIndexJob;
 import org.octri.omop_annotator.repository.app.PoolEntryRepository;

@@ -7,7 +7,7 @@
     :class="isPinned ? 'text-primary' : 'text-unpinned'"
   >
     <i class="fas fa-thumbtack"></i>
-    <span class="sr-only">{{ infoMessage }}</span>
+    <span class="visually-hidden">{{ infoMessage }}</span>
   </a>
   <Teleport to="body">
     <BootstrapModal

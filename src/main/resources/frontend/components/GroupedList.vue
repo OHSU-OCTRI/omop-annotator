@@ -115,6 +115,10 @@ export default {
             {
               orderable: false,
               targets: 'no-sort'
+            },
+            {
+              className: 'dt-left',
+              targets: '_all'
             }
           ],
           fnDrawCallback: function (settings) {

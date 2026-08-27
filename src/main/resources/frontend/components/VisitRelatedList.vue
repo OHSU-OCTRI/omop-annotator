@@ -109,6 +109,12 @@ export default {
           paging: true,
           searching: true,
           info: true,
+          columnDefs: [
+            {
+              className: 'dt-left',
+              targets: '_all'
+            }
+          ],
           orderCellsTop: true,
           initComplete: function () {
             if (indexesToFilter.length > 0) {

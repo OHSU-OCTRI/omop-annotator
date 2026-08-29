@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Notify omop-annotator-devops repository when new images are pushed (CIS-3850)
+
 ### Dependencies
 
 - Added common-lib (v2.1.3) and refactored affected code (OA-199)

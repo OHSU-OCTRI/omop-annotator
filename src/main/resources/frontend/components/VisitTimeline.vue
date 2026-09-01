@@ -3,10 +3,13 @@
     <svg class="timeline" :width="timelineWidth" :height="height">
       <g class="timeline-container" transform="translate(40, 10)">
         <circle
-          v-for="visitDateCount in visitDateCounts"
+          v-for="visitDateCount in visitDateCountsRenderSorted"
           :key="visitDateCount.date"
           class="timeline-circle"
-          :class="{ 'timeline-circle-selected': isSelectedDate(visitDateCount.date) }"
+          :data-date="visitDateCount.date"
+          :class="{
+            'timeline-circle-selected': isSelectedDate(visitDateCount.visitStartIsoDate)
+          }"
           :r="circleScale(visitDateCount.count)"
           :cy="circleY"
           :cx="xScale(visitDateCount.date)"
@@ -96,6 +99,22 @@ export default {
       dateCounts.sort((a, b) => a.date - b.date);
       return dateCounts;
     },
+    /**
+     * visitDateCounts sorted to ensure that selected values are drawn last, so
+     * they are not obscured by neighboring circles.
+     */
+    visitDateCountsRenderSorted() {
+      if (!this.selectedDate) {
+        return this.visitDateCounts;
+      }
+      // Move the selected item to the end
+      const selected = [];
+      const rest = [];
+      for (const item of this.visitDateCounts) {
+        (item.visitStartIsoDate === this.selectedDate ? selected : rest).push(item);
+      }
+      return [...rest, ...selected];
+    },
     firstItem() {
       if (this.visitDateCounts.length > 0) {
         return this.visitDateCounts[0];
@@ -181,8 +200,8 @@ export default {
     hideTooltip() {
       this.tooltipItem = null;
     },
-    isSelectedDate(date) {
-      return this.selectedDate && this.selectedDate === date;
+    isSelectedDate(isoDateStr) {
+      return this.selectedDate && this.selectedDate === isoDateStr;
     }
   }
 };

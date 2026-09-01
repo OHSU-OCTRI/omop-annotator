@@ -5,9 +5,9 @@
     @click.prevent="editPin()"
     :title="infoMessage"
     :class="isPinned ? 'text-primary' : 'text-unpinned'"
+    :aria-label="infoMessage"
   >
-    <i class="fas fa-thumbtack"></i>
-    <span class="visually-hidden">{{ infoMessage }}</span>
+    <i class="fas fa-thumbtack fa-fw"></i>
   </a>
   <Teleport to="body">
     <BootstrapModal

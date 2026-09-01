@@ -177,7 +177,8 @@ export default {
       searchEntity: 'visit',
       searchTerm: '',
       searchResults: null,
-      searching: false
+      searching: false,
+      selectedDate: null
     };
   },
   mounted() {
@@ -214,6 +215,14 @@ export default {
     },
     pinnedVisits() {
       return this.pins.filter(pin => pin.entity === 'VISIT').map(pin => pin.entityId);
+    },
+    selectedDateVisitIds() {
+      if (this.selectedDate === null) {
+        return null;
+      }
+      return this.visits
+        .filter(visit => visit.visitStartIsoDate === this.selectedDate)
+        .map(visit => visit.id);
     }
   },
   methods: {
@@ -284,8 +293,8 @@ export default {
         if (this.searchEntity === 'visit') {
           // search the datatable
           this.searchResults = null;
-          // clear previous search
-          this.dataTable.column(1).search('');
+          // clear previous search, then reapply any active date filter
+          this.applyDataFilters();
           this.dataTable.search(this.searchTerm).draw();
         } else if (this.searchTerm.length > 0) {
           // clear previous visit search
@@ -296,10 +305,8 @@ export default {
             this.searchEntity,
             this.searchTerm
           );
-          // The returned visit ids are converted to a regex so we can use the
-          // datatables functionality for filtering the rows.
-          const re = `^(${this.searchResults.join('|')})$`;
-          this.dataTable.column(1).search(re, true, false).draw();
+          // Combine with any active date filter.
+          this.applyDataFilters();
         }
         this.searching = false;
       }
@@ -310,9 +317,10 @@ export default {
       this.searchResults = null;
 
       if (this.dataTable) {
-        // Clear the filter, sort by visitStart, and goto the selectedVisit page.
+        // Clear the entity/text filter (but keep any active date filter),
+        // sort by visitStart, and goto the selectedVisit page.
         const startDateColumn = 2;
-        this.dataTable.column(1).search('');
+        this.applyDataFilters();
         this.dataTable
           .search('')
           .order([startDateColumn, 'asc'])
@@ -322,7 +330,38 @@ export default {
       }
     },
     setSelectedDate(date) {
-      // TODO: filter visits with the given date
+      this.selectedDate = date;
+      this.applyDataFilters();
+    },
+
+    /**
+     * Filters datatable rows based on API search results, date selection (from visit timeline),
+     * or both. Clears the search if no matching records are found.
+     */
+    applyDataFilters() {
+      if (!this.dataTable) {
+        return;
+      }
+
+      let ids = null;
+      if (this.searchResults !== null && this.selectedDateVisitIds !== null) {
+        const dateIds = new Set(this.selectedDateVisitIds);
+        ids = this.searchResults.filter(id => dateIds.has(id));
+      } else if (this.searchResults !== null) {
+        ids = this.searchResults;
+      } else if (this.selectedDateVisitIds !== null) {
+        ids = this.selectedDateVisitIds;
+      }
+
+      const idColumn = 1;
+      if (ids === null) {
+        this.dataTable.column(idColumn).search('').draw();
+      } else {
+        // Converts visit ids to a regex so we can use the datatables functionality
+        // for filtering.
+        const re = `^(${ids.join('|')})$`;
+        this.dataTable.column(idColumn).search(re, true, false).draw();
+      }
     },
     isPinned(visitId) {
       return this.pinnedVisits.includes(visitId);

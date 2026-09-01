@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added filtering on VisitList rows based on the selected date in the VisitTimeline (OA-149)
+
+### Fixed
+
+- Fixed regressions in UI behavior for visit lists (OA-200)
 - Notify omop-annotator-devops repository when new images are pushed (CIS-3850)
 
 ### Dependencies

@@ -294,7 +294,7 @@ export default {
           // search the datatable
           this.searchResults = null;
           // clear previous search, then reapply any active date filter
-          this.filterData();
+          this.applyDataFilters();
           this.dataTable.search(this.searchTerm).draw();
         } else if (this.searchTerm.length > 0) {
           // clear previous visit search
@@ -305,9 +305,8 @@ export default {
             this.searchEntity,
             this.searchTerm
           );
-          // Combine with any active date filter so the two don't clobber
-          // each other, since both filter via the id column.
-          this.filterData();
+          // Combine with any active date filter.
+          this.applyDataFilters();
         }
         this.searching = false;
       }
@@ -321,7 +320,7 @@ export default {
         // Clear the entity/text filter (but keep any active date filter),
         // sort by visitStart, and goto the selectedVisit page.
         const startDateColumn = 2;
-        this.filterData();
+        this.applyDataFilters();
         this.dataTable
           .search('')
           .order([startDateColumn, 'asc'])
@@ -332,14 +331,14 @@ export default {
     },
     setSelectedDate(date) {
       this.selectedDate = date;
-      this.filterData();
+      this.applyDataFilters();
     },
 
     /**
-     * Filters datatable rows based on search results, date selection (from visit timeline),
+     * Filters datatable rows based on API search results, date selection (from visit timeline),
      * or both. Clears the search if no matching records are found.
      */
-    filterData() {
+    applyDataFilters() {
       if (!this.dataTable) {
         return;
       }
@@ -359,7 +358,7 @@ export default {
         this.dataTable.column(idColumn).search('').draw();
       } else {
         // Converts visit ids to a regex so we can use the datatables functionality
-        // for filtering the rows.
+        // for filtering.
         const re = `^(${ids.join('|')})$`;
         this.dataTable.column(idColumn).search(re, true, false).draw();
       }

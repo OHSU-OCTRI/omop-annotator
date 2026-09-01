@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added filtering on VisitList rows based on the selected date in the VisitTimeline (OA-149)
+
+### Fixed
+
+- Fixed regressions in UI behavior for visit lists (OA-200)
+
 ### Dependencies
 
 - Added common-lib (v2.1.3) and refactored affected code (OA-199)

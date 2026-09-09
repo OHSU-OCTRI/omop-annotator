@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added common-lib (v2.1.3) and refactored affected code (OA-199)
 - Bumped authentication-lib from v2.2.1 to v4.2.2 (OA-199)
+- Run `npm audit fix`
+- Bump `com.github.eirslett:frontend-maven-plugin` from 1.15.1 to 2.0.2 (#211)
 
 ## [2.0.5] - 2026-08-21
 

@@ -1,11 +1,9 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 /**
@@ -50,9 +46,8 @@ public class Person {
 	public Integer id;
 
 	@Column(name = "birth_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date birthDatetime;
+	private LocalDateTime birthDatetime;
 
 	@Column(name = "gender_source_value")
 	private String gender;
@@ -71,11 +66,11 @@ public class Person {
 		this.id = id;
 	}
 
-	public Date getBirthDatetime() {
+	public LocalDateTime getBirthDatetime() {
 		return birthDatetime;
 	}
 
-	public void setBirthDatetime(Date birthDatetime) {
+	public void setBirthDatetime(LocalDateTime birthDatetime) {
 		this.birthDatetime = birthDatetime;
 	}
 
@@ -112,9 +107,7 @@ public class Person {
 		if (this.getBirthDatetime() == null) {
 			return null;
 		}
-		LocalDate birthDate = Instant.ofEpochMilli(this.getBirthDatetime().getTime())
-				.atZone(ZoneId.systemDefault())
-				.toLocalDate();
+		LocalDate birthDate = this.getBirthDatetime().toLocalDate();
 
 		return Period.between(birthDate, this.ageCalculationDate).getYears();
 	}

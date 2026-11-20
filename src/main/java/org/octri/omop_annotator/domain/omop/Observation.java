@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -43,8 +41,7 @@ public class Observation {
 	private Concept observation;
 
 	@Column(name = "observation_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date observationDatetime;
+	private LocalDateTime observationDatetime;
 
 	@ManyToOne
 	@JoinColumn(name = "observation_type_concept_id")
@@ -109,11 +106,11 @@ public class Observation {
 		this.observation = observation;
 	}
 
-	public Date getObservationDatetime() {
+	public LocalDateTime getObservationDatetime() {
 		return observationDatetime;
 	}
 
-	public void setObservationDatetime(Date observationDatetime) {
+	public void setObservationDatetime(LocalDateTime observationDatetime) {
 		this.observationDatetime = observationDatetime;
 	}
 

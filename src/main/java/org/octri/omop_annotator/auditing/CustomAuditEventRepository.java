@@ -1,7 +1,8 @@
 package org.octri.omop_annotator.auditing;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.octri.authentication.server.security.entity.LoginAttempt;
 import org.octri.omop_annotator.auditing.RequestAuditEvent.RequestType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Component;
@@ -33,15 +35,11 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
 	private static final Log log = LogFactory.getLog(CustomAuditEventRepository.class);
 
-	private final JsonMapper mapper;
+	@Autowired
+	private JsonMapper mapper;
 
 	@Resource
 	private RequestAuditEventRepository repository;
-
-	public CustomAuditEventRepository(JsonMapper mapper, RequestAuditEventRepository repository) {
-		this.mapper = mapper;
-		this.repository = repository;
-	}
 
 	@Override
 	public void add(AuditEvent event) {
@@ -51,7 +49,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
 			RequestAuditEvent audit = new RequestAuditEvent();
 			audit.setUsername(event.getPrincipal());
-			audit.setRequestedAt(Date.from(event.getTimestamp()));
+			audit.setRequestedAt(LocalDateTime.ofInstant(event.getTimestamp(), ZoneId.systemDefault()));
 
 			Map<String, Object> data = event.getData();
 			Assert.notNull(data, "data may not be null");

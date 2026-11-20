@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -44,12 +42,10 @@ public class ConditionOccurrence {
 	private Concept condition;
 
 	@Column(name = "condition_start_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date conditionStart;
+	private LocalDateTime conditionStart;
 
 	@Column(name = "condition_end_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date conditionEnd;
+	private LocalDateTime conditionEnd;
 
 	@ManyToOne
 	@JoinColumn(name = "condition_type_concept_id")
@@ -100,19 +96,19 @@ public class ConditionOccurrence {
 		this.condition = condition;
 	}
 
-	public Date getConditionStart() {
+	public LocalDateTime getConditionStart() {
 		return conditionStart;
 	}
 
-	public void setConditionStart(Date conditionStart) {
+	public void setConditionStart(LocalDateTime conditionStart) {
 		this.conditionStart = conditionStart;
 	}
 
-	public Date getConditionEnd() {
+	public LocalDateTime getConditionEnd() {
 		return conditionEnd;
 	}
 
-	public void setConditionEnd(Date conditionEnd) {
+	public void setConditionEnd(LocalDateTime conditionEnd) {
 		this.conditionEnd = conditionEnd;
 	}
 

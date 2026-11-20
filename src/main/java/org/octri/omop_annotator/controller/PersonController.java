@@ -1,6 +1,5 @@
 package org.octri.omop_annotator.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +31,6 @@ import tools.jackson.databind.json.JsonMapper;
 @RequestMapping("/data/api/person")
 public class PersonController {
 
-	private JsonMapper mapper = new JsonMapper();
-
 	private OmopDataConfiguration omopDataConfig;
 	private PersonService personService;
 	private VisitOccurrenceService visitOccurrenceService;
@@ -43,12 +40,13 @@ public class PersonController {
 	private MeasurementService measurementService;
 	private NoteService noteService;
 	private DrugExposureService drugExposureService;
+	private JsonMapper mapper;
 
 	public PersonController(OmopDataConfiguration omopDataConfig, PersonService personService,
 			VisitOccurrenceService visitOccurrenceService, ConditionOccurrenceService conditionOccurrenceService,
 			DrugExposureService drugExposureService, MeasurementService measurementService,
 			ObservationService observationService, ProcedureOccurrenceService procedureOccurrenceService,
-			NoteService noteService) {
+			NoteService noteService, JsonMapper mapper) {
 		super();
 		this.omopDataConfig = omopDataConfig;
 		this.personService = personService;
@@ -59,7 +57,7 @@ public class PersonController {
 		this.observationService = observationService;
 		this.procedureOccurrenceService = procedureOccurrenceService;
 		this.noteService = noteService;
-		mapper.setDateFormat(new SimpleDateFormat(omopDataConfig.getDateFormat()));
+		this.mapper = mapper;
 	}
 
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")

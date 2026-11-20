@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -43,8 +41,7 @@ public class ProcedureOccurrence {
 	private Concept procedure;
 
 	@Column(name = "procedure_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date procedureDatetime;
+	private LocalDateTime procedureDatetime;
 
 	@ManyToOne
 	@JoinColumn(name = "procedure_type_concept_id")
@@ -95,11 +92,11 @@ public class ProcedureOccurrence {
 		this.procedure = procedure;
 	}
 
-	public Date getProcedureDatetime() {
+	public LocalDateTime getProcedureDatetime() {
 		return procedureDatetime;
 	}
 
-	public void setProcedureDatetime(Date procedureDatetime) {
+	public void setProcedureDatetime(LocalDateTime procedureDatetime) {
 		this.procedureDatetime = procedureDatetime;
 	}
 

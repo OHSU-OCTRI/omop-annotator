@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
@@ -15,8 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -58,12 +56,10 @@ public class VisitOccurrence {
 	private String visitSourceValue;
 
 	@Column(name = "visit_start_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date visitStart;
+	private LocalDateTime visitStart;
 
 	@Column(name = "visit_end_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date visitEnd;
+	private LocalDateTime visitEnd;
 
 	@IndexedEmbedded
 	@IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
@@ -157,19 +153,19 @@ public class VisitOccurrence {
 		this.visitSourceValue = visitSourceValue;
 	}
 
-	public Date getVisitStart() {
+	public LocalDateTime getVisitStart() {
 		return visitStart;
 	}
 
-	public void setVisitStart(Date visitStart) {
+	public void setVisitStart(LocalDateTime visitStart) {
 		this.visitStart = visitStart;
 	}
 
-	public Date getVisitEnd() {
+	public LocalDateTime getVisitEnd() {
 		return visitEnd;
 	}
 
-	public void setVisitEnd(Date visitEnd) {
+	public void setVisitEnd(LocalDateTime visitEnd) {
 		this.visitEnd = visitEnd;
 	}
 

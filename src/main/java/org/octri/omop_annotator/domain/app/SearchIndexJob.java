@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.domain.app;
 
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.octri.authentication.server.security.entity.User;
 import org.octri.common.domain.AbstractEntity;
@@ -12,8 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -31,11 +29,9 @@ public class SearchIndexJob extends AbstractEntity {
     @NotNull
     private User user;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startedAt;
+    private LocalDateTime startedAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endedAt;
+    private LocalDateTime endedAt;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -67,7 +63,7 @@ public class SearchIndexJob extends AbstractEntity {
      */
     public SearchIndexJob start(String description) {
         Assert.isNull(this.startedAt, "Job has already started");
-        this.startedAt = new Date();
+        this.startedAt = LocalDateTime.now();
         this.status = JobStatus.STARTED;
         this.description = description;
         return this;
@@ -81,7 +77,7 @@ public class SearchIndexJob extends AbstractEntity {
     public SearchIndexJob fail() {
         Assert.notNull(this.startedAt, "Job has not started");
         Assert.isNull(this.endedAt, "Job has already ended.");
-        this.endedAt = new Date();
+        this.endedAt = LocalDateTime.now();
         this.status = JobStatus.FAILED;
         return this;
     }
@@ -94,7 +90,7 @@ public class SearchIndexJob extends AbstractEntity {
     public SearchIndexJob complete() {
         Assert.notNull(this.startedAt, "Job has not started");
         Assert.isNull(this.endedAt, "Job has already ended");
-        this.endedAt = new Date();
+        this.endedAt = LocalDateTime.now();
         this.status = JobStatus.COMPLETED;
         return this;
     }
@@ -106,8 +102,7 @@ public class SearchIndexJob extends AbstractEntity {
      */
     public String getDuration() {
         if (startedAt != null && endedAt != null) {
-            long ms = Math.abs(endedAt.getTime() - startedAt.getTime());
-            Duration duration = Duration.ofMillis(ms);
+            Duration duration = Duration.between(startedAt, endedAt);
 
             long hours = duration.toHours();
             int minutes = duration.toMinutesPart();
@@ -125,19 +120,19 @@ public class SearchIndexJob extends AbstractEntity {
         this.user = user;
     }
 
-    public Date getStartedAt() {
+    public LocalDateTime getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(Date startedAt) {
+    public void setStartedAt(LocalDateTime startedAt) {
         this.startedAt = startedAt;
     }
 
-    public Date getEndedAt() {
+    public LocalDateTime getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(Date endedAt) {
+    public void setEndedAt(LocalDateTime endedAt) {
         this.endedAt = endedAt;
     }
 

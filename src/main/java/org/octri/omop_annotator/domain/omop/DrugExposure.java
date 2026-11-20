@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -48,12 +46,10 @@ public class DrugExposure {
 	private Concept drug;
 
 	@Column(name = "drug_exposure_start_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date drugStart;
+	private LocalDate drugStart;
 
 	@Column(name = "drug_exposure_end_datetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date drugEnd;
+	private LocalDate drugEnd;
 
 	@Column(name = "stop_reason")
 	private String stopReason;
@@ -112,19 +108,19 @@ public class DrugExposure {
 		this.drug = drug;
 	}
 
-	public Date getDrugStart() {
+	public LocalDate getDrugStart() {
 		return drugStart;
 	}
 
-	public void setDrugStart(Date drugStart) {
+	public void setDrugStart(LocalDate drugStart) {
 		this.drugStart = drugStart;
 	}
 
-	public Date getDrugEnd() {
+	public LocalDate getDrugEnd() {
 		return drugEnd;
 	}
 
-	public void setDrugEnd(Date drugEnd) {
+	public void setDrugEnd(LocalDate drugEnd) {
 		this.drugEnd = drugEnd;
 	}
 

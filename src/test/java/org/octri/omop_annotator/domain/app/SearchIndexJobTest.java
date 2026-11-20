@@ -6,21 +6,28 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
+import org.octri.omop_annotator.SpringConfiguredJsonMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Unit tests for {@link SearchIndexJob}
  */
+@SpringConfiguredJsonMapper
 public class SearchIndexJobTest {
+
+    @Autowired
+    private JsonMapper mapper;
 
     @Test
     void testGetDuration() throws ParseException {
         var job = new SearchIndexJob();
-        var format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-        var started = format.parse("2023-03-16 17:54:35");
-        var ended = format.parse("2023-03-16 17:56:26");
+        var started = mapper.convertValue("2023-03-16 17:54:35", LocalDateTime.class);
+        var ended = mapper.convertValue("2023-03-16 17:56:26", LocalDateTime.class);
 
         assertNull(job.getDuration());
 

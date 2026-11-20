@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import tools.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -32,6 +31,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Data Export controller
@@ -77,7 +77,7 @@ public class DataExportController {
                 .collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
 
         // Get the mapper for pin exporting
-        ObjectMapper pinExportMapper = PinExportSerializer.getMapper();
+        JsonMapper pinExportMapper = PinExportSerializer.getMapper();
 
         List<ExportedJudgmentRow> results = judgmentRepository
                 .findAllByPoolEntryPoolId(params.getPoolId())

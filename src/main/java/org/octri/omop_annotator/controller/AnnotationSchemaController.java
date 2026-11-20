@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import tools.jackson.core.JacksonException;
-
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.json.JsonMapper;
 
 import jakarta.validation.Valid;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Controller for {@link AnnotationSchema} objects.
@@ -40,7 +38,7 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 	@Autowired
 	private PoolRepository poolRepository;
-	private ObjectMapper mapper = new JsonMapper();
+	private JsonMapper mapper = new JsonMapper();
 
 	/**
 	 * Form model class used by the new and edit forms.

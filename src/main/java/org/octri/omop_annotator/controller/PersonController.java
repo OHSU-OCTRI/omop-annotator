@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
@@ -33,7 +32,7 @@ import tools.jackson.databind.json.JsonMapper;
 @RequestMapping("/data/api/person")
 public class PersonController {
 
-	private ObjectMapper mapper = new JsonMapper();
+	private JsonMapper mapper = new JsonMapper();
 
 	private OmopDataConfiguration omopDataConfig;
 	private PersonService personService;

@@ -4,7 +4,6 @@ import org.octri.omop_annotator.domain.app.Pin;
 import tools.jackson.databind.SerializationContext;
 
 import tools.jackson.core.JsonGenerator;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.std.StdSerializer;
@@ -32,11 +31,11 @@ public class PinExportSerializer extends StdSerializer<Pin> {
     }
 
     /**
-     * Provide an ObjectMapper that can serialize the Pin in the desired format for export
+     * Provide an JsonMapper that can serialize the Pin in the desired format for export
      * 
      * @return
      */
-    public static ObjectMapper getMapper() {
+    public static JsonMapper getMapper() {
         SimpleModule module = new SimpleModule("PinExportSerializer");
         module.addSerializer(Pin.class, new PinExportSerializer());
         return JsonMapper.builder()

@@ -9,7 +9,7 @@ import org.octri.omop_annotator.domain.app.Pin;
 import org.springframework.util.Assert;
 
 import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Row for exporting judgments from the system.
@@ -37,7 +37,7 @@ public class ExportedJudgmentRow {
      * @return
      */
     public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment, @Nullable List<Pin> pins,
-            ObjectMapper pinExportMapper) {
+            JsonMapper pinExportMapper) {
         Assert.notNull(refreshDate, "Refresh date is required");
         Assert.notNull(judgment, "Judgment is required");
 

@@ -4,7 +4,7 @@ In addition to running the OMOP Annotator with [Docker Compose](https://docs.doc
 
 ## Prerequisites
 
-The Annotator is a Java application and requires the Java 17 Runtime Environment to execute.
+The Annotator is a Java application and requires the Java 21 Runtime Environment to execute.
 
 The application requires two data sources - the read-only [OMOP](https://www.ohdsi.org/data-standardization/) database and a writable database to store application users and their annotations. Both data sources are configurable, but the writable data source has only been tested with MySQL, and the OMOP data source has been tested with Oracle and PostgreSQL.
 
@@ -14,7 +14,7 @@ Like all Spring Boot applications, the OMOP Annotator supports [externalized con
 
 The simplest way to set up data sources and other configuration for the application is to create a properties file to override expected properties defined in `application.properties` on the classpath. For example, create a file called `override.properties` in the same location as the jar. Once this is filled out with the required information, run the jar providing the override location:
 
-```java -jar omop_annotator.jar --spring.config.location=classpath:/application.properties,file:///Users/home/Annotator/override.properties```
+`java -jar omop_annotator.jar --spring.config.location=classpath:/application.properties,file:///Users/home/Annotator/override.properties`
 
 After the jar is running, the app can be found at the context path provided. For a local instance, this would be:
 
@@ -38,6 +38,7 @@ app.datasource.password=omop_annotator
 The OMOP Data Source has no default configuration, so these properties must be provided in the override file. Below are examples of Oracle, Postgres, and SQL Server connections:
 
 Oracle:
+
 ```
 omop.datasource.url=jdbc:oracle:thin:@host:port:SID
 omop.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
@@ -47,6 +48,7 @@ omop.hibernate.dialect=org.hibernate.dialect.OracleDialect
 ```
 
 Postgres:
+
 ```
 omop.datasource.url=jdbc:postgresql://localhost:5432/mimic_3?currentSchema=omop
 omop.datasource.driver-class-name=org.postgresql.Driver
@@ -56,6 +58,7 @@ omop.hibernate.dialect=org.hibernate.dialect.PostgreSQL81Dialect
 ```
 
 Microsoft SQL Server:
+
 ```
 omop.datasource.driverclassname=com.microsoft.sqlserver.jdbc.SQLServerDriver
 omop.datasource.url=jdbc:sqlserver://host:port;databaseName=db_name
@@ -142,7 +145,7 @@ SET @userid = (SELECT last_insert_id());
 SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);
 INSERT INTO user_user_role (user, user_role)
 VALUES (@userid, @admin);
-````
+```
 
 If your organization will have table-based users only, start by creating the first user and role, setting the credentials to expired, and providing an email that will be used for confirmation of password reset:
 
@@ -154,7 +157,7 @@ SET @userid = (SELECT last_insert_id());
 SET @admin = (SELECT id FROM user_role WHERE role_name = 'ROLE_ADMIN' limit 1);
 INSERT INTO user_user_role (user, user_role)
 VALUES (@userid, @admin);
-````
+```
 
 Now, create a password reset token for the user. The token can be any unique string up to 255 characters. This example uses '12345':
 

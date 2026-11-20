@@ -116,10 +116,10 @@ public class AdminApiController {
         Optional<Pool> mergePool = poolRepository.findById(mergePoolsDTO.getMergePoolId());
         Optional<Pool> destinationPool = poolRepository.findById(mergePoolsDTO.getDestinationPoolId());
 
-        if (!mergePool.isPresent()) {
+        if (mergePool.isEmpty()) {
             result.addError("The pool to merge does not exist.");
         }
-        if (!destinationPool.isPresent()) {
+        if (destinationPool.isEmpty()) {
             result.addError("The destination pool does not exist.");
         }
         if (mergePool.isPresent() && destinationPool.isPresent()) {

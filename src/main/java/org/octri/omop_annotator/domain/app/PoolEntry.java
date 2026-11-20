@@ -3,7 +3,10 @@ package org.octri.omop_annotator.domain.app;
 import org.octri.common.domain.AbstractEntity;
 import org.octri.common.view.Labelled;
 
+
 import jakarta.persistence.Entity;
+
+import java.io.Serial;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class PoolEntry extends AbstractEntity implements Labelled {
 
+	@Serial
 	private static final long serialVersionUID = 720834163855020712L;
 
 	@ManyToOne

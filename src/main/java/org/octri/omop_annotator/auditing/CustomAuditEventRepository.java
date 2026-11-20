@@ -13,9 +13,10 @@ import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import tools.jackson.core.JacksonException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import jakarta.annotation.Resource;
 
@@ -33,7 +34,7 @@ import jakarta.annotation.Resource;
 public class CustomAuditEventRepository implements AuditEventRepository {
 
 	private static final Log log = LogFactory.getLog(CustomAuditEventRepository.class);
-	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new JsonMapper();
 
 	@Resource
 	private RequestAuditEventRepository repository;
@@ -59,7 +60,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 			if (data.get(DataRequestAuditingAspect.PARAMS) != null) {
 				try {
 					audit.setParams(objectMapper.writeValueAsString(data.get(DataRequestAuditingAspect.PARAMS)));
-				} catch (JsonProcessingException e) {
+				} catch (JacksonException e) {
 					log.error("Error serializing audit data");
 					e.printStackTrace();
 				}

@@ -5,7 +5,7 @@ import java.util.List;
 import org.octri.omop_annotator.domain.app.PoolEntry;
 import org.octri.omop_annotator.view.MergeValidationSummary;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -33,12 +33,12 @@ public interface PoolEntryRepository extends CrudRepository<PoolEntry, Long> {
 	 *            the second pool id
 	 * @return
 	 */
-	@Query(value = mergeValidationQuery, nativeQuery = true)
+	@NativeQuery(mergeValidationQuery)
 	List<MergeValidationSummary> validatePoolMerge(Long poolId1, Long poolId2);
 
 	@Transactional
 	@Modifying
-	@Query(value = mergePoolsQuery, nativeQuery = true)
+	@NativeQuery(mergePoolsQuery)
 	void mergePools(Long mergePoolId, Long destinationPoolId);
 
 }

@@ -3,7 +3,10 @@ package org.octri.omop_annotator.domain.app;
 import org.octri.authentication.server.security.entity.User;
 import org.octri.common.domain.AbstractEntity;
 
+
 import jakarta.persistence.Entity;
+
+import java.io.Serial;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Judgment extends AbstractEntity {
 
+	@Serial
 	private static final long serialVersionUID = -7918768470025483600L;
 
 	@ManyToOne

@@ -3,7 +3,10 @@ package org.octri.omop_annotator.domain.app;
 import org.octri.common.domain.AbstractEntity;
 import org.octri.common.view.Labelled;
 
+
 import jakarta.persistence.Entity;
+
+import java.io.Serial;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +18,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class AnnotationLabel extends AbstractEntity implements Labelled {
 
+	@Serial
 	private static final long serialVersionUID = -7698547499917439272L;
 
 	@ManyToOne

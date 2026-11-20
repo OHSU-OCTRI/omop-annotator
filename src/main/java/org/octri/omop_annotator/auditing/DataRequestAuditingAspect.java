@@ -159,8 +159,8 @@ public class DataRequestAuditingAspect implements ApplicationEventPublisherAware
 	 * @return
 	 */
 	private Object mapParameter(Object param) {
-		if (param instanceof Date) {
-			return ((Date) param).toInstant().toString();
+		if (param instanceof Date date) {
+			return date.toInstant().toString();
 		} else {
 			return param;
 		}

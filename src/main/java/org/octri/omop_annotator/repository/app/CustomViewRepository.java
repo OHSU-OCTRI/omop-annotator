@@ -7,7 +7,7 @@ import org.octri.omop_annotator.view.PoolEntryJudgmentSummary;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.octri.omop_annotator.view.TopicJudgmentSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 
 /**
  * This repository calls native sql queries to build custom views that span entities.
@@ -54,7 +54,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 	 *            the user to summarize judgments for
 	 * @return
 	 */
-	@Query(value = topicJudgmentQuery, nativeQuery = true)
+	@NativeQuery(topicJudgmentQuery)
 	List<TopicJudgmentSummary> summarizeTopicJudgments(Long poolId, Long userId);
 
 	/**
@@ -65,7 +65,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 	 * @param userId
 	 * @return
 	 */
-	@Query(value = poolEntryJudgmentQuery, nativeQuery = true)
+	@NativeQuery(poolEntryJudgmentQuery)
 	List<PoolEntryJudgmentSummary> summarizePoolEntryJudgments(Long poolId, Long topicId, Long userId);
 
 	/**
@@ -75,7 +75,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 	 *            the pool to summarize judgments for
 	 * @return
 	 */
-	@Query(value = poolSummaryQuery, nativeQuery = true)
+	@NativeQuery(poolSummaryQuery)
 	List<PoolSummary> summarizePool(Long poolId);
 
 }

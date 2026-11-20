@@ -3,13 +3,13 @@ package org.octri.omop_annotator.view;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.octri.omop_annotator.domain.app.Judgment;
 import org.octri.omop_annotator.domain.app.Pin;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import tools.jackson.core.JacksonException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Row for exporting judgments from the system.
@@ -35,7 +35,7 @@ public class ExportedJudgmentRow {
      * @param refreshDate
      * @param judgment
      * @return
-     * @throws JsonProcessingException
+     * @throws JacksonException
      */
     public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment, @Nullable List<Pin> pins,
             ObjectMapper pinExportMapper) {
@@ -57,7 +57,7 @@ public class ExportedJudgmentRow {
         if (pins != null) {
             try {
                 row.pins = pinExportMapper.writeValueAsString(pins);
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 row.pins = "Error serializing pins";
             }
         }

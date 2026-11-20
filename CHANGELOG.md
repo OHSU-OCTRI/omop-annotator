@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Run `npm audit fix`
 - Bumps spring-boot-starter-parent from 3.5.13 to 3.5.16 (CIS-3854)
-- New actions workflow to update Node.js dependencies on a schedule (CIS-3955)
+- Run npm audit fix to resolve Node.js vulnerabilities (CIS-3955)
 
 ## [2.1.0] - 2026-09-09
 

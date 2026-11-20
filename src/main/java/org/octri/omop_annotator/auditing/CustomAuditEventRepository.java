@@ -32,10 +32,16 @@ import tools.jackson.databind.json.JsonMapper;
 public class CustomAuditEventRepository implements AuditEventRepository {
 
 	private static final Log log = LogFactory.getLog(CustomAuditEventRepository.class);
-	private final JsonMapper JsonMapper = new JsonMapper();
+
+	private final JsonMapper mapper;
 
 	@Resource
 	private RequestAuditEventRepository repository;
+
+	public CustomAuditEventRepository(JsonMapper mapper, RequestAuditEventRepository repository) {
+		this.mapper = mapper;
+		this.repository = repository;
+	}
 
 	@Override
 	public void add(AuditEvent event) {
@@ -57,7 +63,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
 			if (data.get(DataRequestAuditingAspect.PARAMS) != null) {
 				try {
-					audit.setParams(JsonMapper.writeValueAsString(data.get(DataRequestAuditingAspect.PARAMS)));
+					audit.setParams(mapper.writeValueAsString(data.get(DataRequestAuditingAspect.PARAMS)));
 				} catch (JacksonException e) {
 					log.error("Error serializing audit data");
 					e.printStackTrace();

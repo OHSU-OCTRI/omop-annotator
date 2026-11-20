@@ -38,7 +38,9 @@ public class AnnotationSchemaController extends AbstractEntityController<Annotat
 
 	@Autowired
 	private PoolRepository poolRepository;
-	private JsonMapper mapper = new JsonMapper();
+
+	@Autowired
+	private JsonMapper mapper;
 
 	/**
 	 * Form model class used by the new and edit forms.

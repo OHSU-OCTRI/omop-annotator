@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tools.jackson.core.JacksonException;
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -65,7 +65,7 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}", produces = "application/json")
 	@ResponseBody
-	public String getPerson(@PathVariable Integer personId) throws JacksonException {
+	public String getPerson(@PathVariable Integer personId) {
 		Person person = personService.findById(personId).get();
 		person.setAgeCalculationDate(omopDataConfig.getRefreshDate());
 		return mapper.writeValueAsString(person);
@@ -73,7 +73,7 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}/visits", produces = "application/json")
 	@ResponseBody
-	public String getVisits(@PathVariable Integer personId) throws JacksonException {
+	public String getVisits(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(visitOccurrenceService.findAllByPersonId(personId));
 	}
 
@@ -82,11 +82,10 @@ public class PersonController {
 	 *
 	 * @param personId
 	 * @return
-	 * @throws JacksonException
 	 */
 	@GetMapping(value = "/summary/{personId}/visits_with_data", produces = "application/json")
 	@ResponseBody
-	public String getVisitsWithData(@PathVariable Integer personId) throws JacksonException {
+	public String getVisitsWithData(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(visitOccurrenceService.findAllWithData(personId));
 	}
 
@@ -148,81 +147,75 @@ public class PersonController {
 
 	@GetMapping(value = "/summary/{personId}/conditions", produces = "application/json")
 	@ResponseBody
-	public String getConditions(@PathVariable Integer personId) throws JacksonException {
+	public String getConditions(@PathVariable Integer personId) {
 		var json = mapper.writeValueAsString(conditionOccurrenceService.findAllByPersonId(personId));
 		return json;
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/conditions", produces = "application/json")
 	@ResponseBody
-	public String getVisitConditions(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitConditions(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		var json = mapper.writeValueAsString(conditionOccurrenceService.findAllByVisitOccurrenceId(visitId));
 		return json;
 	}
 
 	@GetMapping(value = "/summary/{personId}/observations", produces = "application/json")
 	@ResponseBody
-	public String getObservations(@PathVariable Integer personId) throws JacksonException {
+	public String getObservations(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(observationService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/observations", produces = "application/json")
 	@ResponseBody
-	public String getVisitObservations(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitObservations(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		return mapper.writeValueAsString(observationService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/procedures", produces = "application/json")
 	@ResponseBody
-	public String getProcedures(@PathVariable Integer personId) throws JacksonException {
+	public String getProcedures(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(procedureOccurrenceService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/procedures", produces = "application/json")
 	@ResponseBody
-	public String getVisitProcedures(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitProcedures(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		return mapper.writeValueAsString(procedureOccurrenceService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/measurements", produces = "application/json")
 	@ResponseBody
-	public String getMeasurements(@PathVariable Integer personId) throws JacksonException {
+	public String getMeasurements(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(measurementService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/measurements", produces = "application/json")
 	@ResponseBody
-	public String getVisitMeasurements(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitMeasurements(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		return mapper.writeValueAsString(measurementService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/notes", produces = "application/json")
 	@ResponseBody
-	public String getNotes(@PathVariable Integer personId) throws JacksonException {
+	public String getNotes(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(noteService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/notes", produces = "application/json")
 	@ResponseBody
-	public String getVisitNotes(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitNotes(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		return mapper.writeValueAsString(noteService.findAllByVisitOccurrenceId(visitId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/drugs", produces = "application/json")
 	@ResponseBody
-	public String getDrugs(@PathVariable Integer personId) throws JacksonException {
+	public String getDrugs(@PathVariable Integer personId) {
 		return mapper.writeValueAsString(drugExposureService.findAllByPersonId(personId));
 	}
 
 	@GetMapping(value = "/summary/{personId}/visit/{visitId}/drugs", produces = "application/json")
 	@ResponseBody
-	public String getVisitDrugs(@PathVariable Integer personId, @PathVariable Integer visitId)
-			throws JacksonException {
+	public String getVisitDrugs(@PathVariable Integer personId, @PathVariable Integer visitId) {
 		return mapper.writeValueAsString(drugExposureService.findAllByVisitOccurrenceId(visitId));
 	}
 

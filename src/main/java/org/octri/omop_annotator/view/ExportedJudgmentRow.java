@@ -7,8 +7,8 @@ import org.jspecify.annotations.Nullable;
 import org.octri.omop_annotator.domain.app.Judgment;
 import org.octri.omop_annotator.domain.app.Pin;
 import org.springframework.util.Assert;
-import tools.jackson.core.JacksonException;
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 /**
@@ -35,7 +35,6 @@ public class ExportedJudgmentRow {
      * @param refreshDate
      * @param judgment
      * @return
-     * @throws JacksonException
      */
     public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment, @Nullable List<Pin> pins,
             ObjectMapper pinExportMapper) {

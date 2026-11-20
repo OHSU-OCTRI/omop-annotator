@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import tools.jackson.core.JacksonException;
 
 /**
  * The controller for API endpoints available to all authenticated users
@@ -66,12 +65,10 @@ public class DataApiController {
      * Get all display configuration for OMOP entities
      * 
      * @return
-     * @throws JacksonException
      */
     @GetMapping(value = "/omop_display_configuration")
     @ResponseBody
-    public Iterable<OmopDisplayConfiguration> getDisplayConfiguration()
-            throws JacksonException {
+    public Iterable<OmopDisplayConfiguration> getDisplayConfiguration() {
         return omopDisplayConfigurationRepository.findAll();
     }
 
@@ -81,7 +78,6 @@ public class DataApiController {
      * @param poolId
      * @param topicId
      * @return
-     * @throws JacksonException
      */
     @GetMapping(value = "/pool/{poolId}/topic/{topicId}/pool_entry_judgments")
     @ResponseBody
@@ -97,7 +93,6 @@ public class DataApiController {
      * @param poolEntryId
      *            - id of the {@link PoolEntry} to be judged
      * @return DTO with the relevant Judgment information
-     * @throws JacksonException
      */
     @GetMapping(value = "judgment/pool_entry/{poolEntryId}")
     @ResponseBody
@@ -122,7 +117,6 @@ public class DataApiController {
      *
      * @param dto
      * @return dto with updated judgment information.
-     * @throws JacksonException
      */
     @PostMapping(value = "judgment/save_judgment", consumes = "application/json", produces = "application/json")
     @ResponseBody
@@ -146,7 +140,6 @@ public class DataApiController {
      * @param poolEntryId
      *            - id of the {@link PoolEntry} to be judged
      * @return the list of Pins for the PoolEntry and User
-     * @throws JacksonException
      */
     @GetMapping(value = "pin/pool_entry/{poolEntryId}")
     @ResponseBody

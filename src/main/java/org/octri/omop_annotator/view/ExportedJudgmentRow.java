@@ -37,7 +37,7 @@ public class ExportedJudgmentRow {
      * @return
      */
     public static ExportedJudgmentRow fromJudgment(LocalDate refreshDate, Judgment judgment, @Nullable List<Pin> pins,
-            JsonMapper pinExportMapper) {
+            JsonMapper mapper) {
         Assert.notNull(refreshDate, "Refresh date is required");
         Assert.notNull(judgment, "Judgment is required");
 
@@ -55,7 +55,7 @@ public class ExportedJudgmentRow {
         row.outputLabel = judgment.getAnnotationLabel().getOutputLabel();
         if (pins != null) {
             try {
-                row.pins = pinExportMapper.writeValueAsString(pins);
+                row.pins = mapper.writeValueAsString(pins.stream().map(PinExport::from).toList());
             } catch (JacksonException e) {
                 row.pins = "Error serializing pins";
             }

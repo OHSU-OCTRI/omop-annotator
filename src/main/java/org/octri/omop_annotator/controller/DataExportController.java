@@ -14,7 +14,6 @@ import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PinRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.view.ExportedJudgmentRow;
-import org.octri.omop_annotator.view.PinExportSerializer;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +51,9 @@ public class DataExportController {
     @Autowired
     private OmopDataConfiguration dataConfig;
 
+    @Autowired
+    private JsonMapper mapper;
+
     /**
      * User interface for choosing the parameters to export judgments.
      *
@@ -76,15 +78,11 @@ public class DataExportController {
                 .stream()
                 .collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
 
-        // Get the mapper for pin exporting
-        JsonMapper pinExportMapper = PinExportSerializer.getMapper();
-
         List<ExportedJudgmentRow> results = judgmentRepository
                 .findAllByPoolEntryPoolId(params.getPoolId())
                 .stream()
                 .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
-                        pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())),
-                        pinExportMapper))
+                        pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())), mapper))
                 .collect(Collectors.toList());
 
         LocalDate today = LocalDate.now();

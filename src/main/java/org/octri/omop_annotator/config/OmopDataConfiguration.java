@@ -22,7 +22,7 @@ public class OmopDataConfiguration {
 	private String dateFormat;
 
 	@Bean
-	JsonMapperBuilderCustomizer localDateTimeFormate() {
+	JsonMapperBuilderCustomizer localDateTimeFormat() {
 		return builder -> builder.withConfigOverride(LocalDateTime.class,
 				override -> override.setFormat(JsonFormat.Value.forPattern(getDateFormat())));
 	}

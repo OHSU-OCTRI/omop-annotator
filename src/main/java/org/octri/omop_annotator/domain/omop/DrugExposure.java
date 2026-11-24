@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.domain.omop;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -46,10 +46,10 @@ public class DrugExposure {
 	private Concept drug;
 
 	@Column(name = "drug_exposure_start_datetime")
-	private LocalDate drugStart;
+	private LocalDateTime drugStart;
 
 	@Column(name = "drug_exposure_end_datetime")
-	private LocalDate drugEnd;
+	private LocalDateTime drugEnd;
 
 	@Column(name = "stop_reason")
 	private String stopReason;
@@ -108,19 +108,19 @@ public class DrugExposure {
 		this.drug = drug;
 	}
 
-	public LocalDate getDrugStart() {
+	public LocalDateTime getDrugStart() {
 		return drugStart;
 	}
 
-	public void setDrugStart(LocalDate drugStart) {
+	public void setDrugStart(LocalDateTime drugStart) {
 		this.drugStart = drugStart;
 	}
 
-	public LocalDate getDrugEnd() {
+	public LocalDateTime getDrugEnd() {
 		return drugEnd;
 	}
 
-	public void setDrugEnd(LocalDate drugEnd) {
+	public void setDrugEnd(LocalDateTime drugEnd) {
 		this.drugEnd = drugEnd;
 	}
 

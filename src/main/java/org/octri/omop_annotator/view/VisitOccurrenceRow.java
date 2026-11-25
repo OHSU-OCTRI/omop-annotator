@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.view;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Row in the Visit table.
@@ -39,8 +39,8 @@ public interface VisitOccurrenceRow {
 	 */
 	public default String getVisitStartIsoDate() {
 		if (this.getVisitStart() != null) {
-			var format = new SimpleDateFormat("yyyy-MM-dd");
-			return format.format(this.getVisitStart());
+			var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			return this.getVisitStart().format(formatter);
 		}
 		return null;
 	}

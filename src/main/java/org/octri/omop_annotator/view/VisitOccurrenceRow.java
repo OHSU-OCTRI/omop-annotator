@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.view;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the Visit table.
@@ -19,9 +19,9 @@ public interface VisitOccurrenceRow {
 
 	public String getVisitSourceValue();
 
-	public Date getVisitStart();
+	public LocalDateTime getVisitStart();
 
-	public Date getVisitEnd();
+	public LocalDateTime getVisitEnd();
 
 	public String getProviderName();
 

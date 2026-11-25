@@ -1,7 +1,8 @@
 package org.octri.omop_annotator.auditing;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.octri.authentication.server.security.AuthenticationUserDetailsService;
+import org.octri.common.domain.AbstractEntity;
 import org.octri.omop_annotator.auditing.RequestAuditEvent.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
@@ -159,8 +161,8 @@ public class DataRequestAuditingAspect implements ApplicationEventPublisherAware
 	 * @return
 	 */
 	private Object mapParameter(Object param) {
-		if (param instanceof Date date) {
-			return date.toInstant().toString();
+		if (param instanceof LocalDateTime date) {
+			return date.atZone(ZoneId.systemDefault()).toInstant().toString();
 		} else {
 			return param;
 		}

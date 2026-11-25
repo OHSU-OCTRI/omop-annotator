@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the Observations table.
@@ -17,7 +17,7 @@ public interface ObservationRow {
 
     public String getObservationSourceValue();
 
-    public Date getDate();
+    public LocalDateTime getDate();
 
     public String getObservationType();
 

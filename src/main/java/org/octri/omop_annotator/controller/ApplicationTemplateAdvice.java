@@ -1,7 +1,7 @@
 package org.octri.omop_annotator.controller;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.octri.authentication.server.controller.TemplateAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ApplicationTemplateAdvice {
 		model.addAttribute("status", 422);
 		model.addAttribute("error", "Unprocessable Entity");
 		model.addAttribute("message", "The request violates a constraint in the database: " + e.getMessage());
-		model.addAttribute("timestamp", new Date());
+		model.addAttribute("timestamp", LocalDateTime.now());
 		return "error";
 	}
 

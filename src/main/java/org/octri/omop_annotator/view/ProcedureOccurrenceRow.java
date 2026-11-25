@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the procedures table.
@@ -23,7 +23,7 @@ public interface ProcedureOccurrenceRow {
 
     public String getModifierSourceValue();
 
-    public Date getDate();
+    public LocalDateTime getDate();
 
     public Integer getQuantity();
 

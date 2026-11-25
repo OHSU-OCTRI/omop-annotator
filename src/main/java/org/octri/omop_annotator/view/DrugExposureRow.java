@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Projection Interface defining a row and details in the GroupedList component
@@ -15,9 +15,9 @@ public interface DrugExposureRow {
 
 	public String getDrugType();
 
-	public Date getDrugStart();
+	public LocalDateTime getDrugStart();
 
-	public Date getDrugEnd();
+	public LocalDateTime getDrugEnd();
 
 	public String getStopReason();
 

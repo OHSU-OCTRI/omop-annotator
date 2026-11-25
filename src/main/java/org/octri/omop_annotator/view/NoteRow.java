@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the Notes table.
@@ -11,7 +11,7 @@ public interface NoteRow {
 
     public Integer getPerson();
 
-    public Date getDate();
+    public LocalDateTime getDate();
 
     public String getType();
 

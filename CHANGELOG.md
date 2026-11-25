@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- Reindex required as part of Spring Boot 4 upgrade (OA-203)
+
 ### Dependencies
 
 - Run `npm audit fix`

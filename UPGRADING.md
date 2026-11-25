@@ -10,4 +10,4 @@ Many dependencies have been affected by the upgrade, including major version bum
 
 ### Dialects
 
-Specific dialect versions no longer exist in Hibernate 7, so any overriden properties or .env variables should be updated according to `RUNNING.md` before launching the application.
+Specific dialect versions no longer exist in Hibernate 7, so any overridden properties or .env variables should be updated according to `RUNNING.md` before launching the application.

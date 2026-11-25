@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import org.junit.jupiter.api.Test;
 public class SearchIndexJobTest {
 
 	@Test
-	void testGetDuration() throws ParseException {
+	void testGetDuration() {
 		var job = new SearchIndexJob();
 		var started = LocalDateTime.of(2023, 3, 16, 17, 54, 35);
 		var ended = LocalDateTime.of(2023, 3, 16, 17, 56, 26);

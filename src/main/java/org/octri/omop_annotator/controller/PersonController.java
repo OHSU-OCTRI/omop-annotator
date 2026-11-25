@@ -130,7 +130,7 @@ public class PersonController {
 	 * Converts a search term that would be used in a SQL Like Query to a wildcard
 	 * used in Hibernate search. The first % is removed if it exists. The last is converted
 	 * to a splat.
-	 * 
+	 *
 	 * @param searchTerm
 	 * @return
 	 */

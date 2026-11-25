@@ -40,198 +40,198 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data/api")
 public class DataApiController {
 
-    @Autowired
-    private AnnotationLabelRepository annotationLabelRepository;
+	@Autowired
+	private AnnotationLabelRepository annotationLabelRepository;
 
-    @Autowired
-    CustomViewRepository customViewRepository;
+	@Autowired
+	CustomViewRepository customViewRepository;
 
-    @Autowired
-    private JudgmentRepository judgmentRepository;
+	@Autowired
+	private JudgmentRepository judgmentRepository;
 
-    @Autowired
-    OmopDisplayConfigurationRepository omopDisplayConfigurationRepository;
+	@Autowired
+	OmopDisplayConfigurationRepository omopDisplayConfigurationRepository;
 
-    @Autowired
-    private PoolEntryRepository poolEntryRepository;
+	@Autowired
+	private PoolEntryRepository poolEntryRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private PinRepository pinRepository;
+	@Autowired
+	private PinRepository pinRepository;
 
-    /**
-     * Get all display configuration for OMOP entities
-     * 
-     * @return
-     */
-    @GetMapping(value = "/omop_display_configuration")
-    @ResponseBody
-    public Iterable<OmopDisplayConfiguration> getDisplayConfiguration() {
-        return omopDisplayConfigurationRepository.findAll();
-    }
+	/**
+	 * Get all display configuration for OMOP entities
+	 *
+	 * @return
+	 */
+	@GetMapping(value = "/omop_display_configuration")
+	@ResponseBody
+	public Iterable<OmopDisplayConfiguration> getDisplayConfiguration() {
+		return omopDisplayConfigurationRepository.findAll();
+	}
 
-    /**
-     * Get a summary of the current user's judgments and pool_entries for the pool and topic
-     * 
-     * @param poolId
-     * @param topicId
-     * @return
-     */
-    @GetMapping(value = "/pool/{poolId}/topic/{topicId}/pool_entry_judgments")
-    @ResponseBody
-    public List<PoolEntryJudgmentSummary> getPoolEntryJudgments(@PathVariable Long poolId, @PathVariable Long topicId) {
-        SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        return customViewRepository.summarizePoolEntryJudgments(poolId, topicId,
-                securityHelper.authenticationUserDetails().getUserId());
-    }
+	/**
+	 * Get a summary of the current user's judgments and pool_entries for the pool and topic
+	 *
+	 * @param poolId
+	 * @param topicId
+	 * @return
+	 */
+	@GetMapping(value = "/pool/{poolId}/topic/{topicId}/pool_entry_judgments")
+	@ResponseBody
+	public List<PoolEntryJudgmentSummary> getPoolEntryJudgments(@PathVariable Long poolId, @PathVariable Long topicId) {
+		SecurityHelper securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+		return customViewRepository.summarizePoolEntryJudgments(poolId, topicId,
+				securityHelper.authenticationUserDetails().getUserId());
+	}
 
-    /**
-     * API endpoint for getting existing {@link Judgment} information for the given {@link PoolEntry}
-     *
-     * @param poolEntryId
-     *            - id of the {@link PoolEntry} to be judged
-     * @return DTO with the relevant Judgment information
-     */
-    @GetMapping(value = "judgment/pool_entry/{poolEntryId}")
-    @ResponseBody
-    public JudgmentDTO getJudgmentForPoolEntry(@PathVariable Long poolEntryId) {
-        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        var userId = securityHelper.authenticationUserDetails().getUserId();
-        var judgment = judgmentRepository.findByUserIdAndPoolEntryId(userId, poolEntryId);
+	/**
+	 * API endpoint for getting existing {@link Judgment} information for the given {@link PoolEntry}
+	 *
+	 * @param poolEntryId
+	 *            - id of the {@link PoolEntry} to be judged
+	 * @return DTO with the relevant Judgment information
+	 */
+	@GetMapping(value = "judgment/pool_entry/{poolEntryId}")
+	@ResponseBody
+	public JudgmentDTO getJudgmentForPoolEntry(@PathVariable Long poolEntryId) {
+		var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+		var userId = securityHelper.authenticationUserDetails().getUserId();
+		var judgment = judgmentRepository.findByUserIdAndPoolEntryId(userId, poolEntryId);
 
-        var dto = new JudgmentDTO();
-        if (judgment != null) {
-            dto.initialize(judgment);
-        } else {
-            dto.setUserId(userId);
-            dto.setPoolEntryId(poolEntryId);
-        }
-        dto.setAnnotationLabels(labelsForPoolEntry(poolEntryId));
-        return dto;
-    }
+		var dto = new JudgmentDTO();
+		if (judgment != null) {
+			dto.initialize(judgment);
+		} else {
+			dto.setUserId(userId);
+			dto.setPoolEntryId(poolEntryId);
+		}
+		dto.setAnnotationLabels(labelsForPoolEntry(poolEntryId));
+		return dto;
+	}
 
-    /**
-     * API endpoint for saving and updating a judgment
-     *
-     * @param dto
-     * @return dto with updated judgment information.
-     */
-    @PostMapping(value = "judgment/save_judgment", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public JudgmentDTO saveJudgment(@RequestBody JudgmentDTO dto) {
-        var judgment = new Judgment();
-        if (dto.getId() != null) {
-            judgment = judgmentRepository.findById(dto.getId()).get();
-        }
-        judgment.setUser(userRepository.findById(dto.getUserId()).get());
-        judgment.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
-        judgment.setAnnotationLabel(annotationLabelRepository.findById(dto.getAnnotationLabelId()).get());
+	/**
+	 * API endpoint for saving and updating a judgment
+	 *
+	 * @param dto
+	 * @return dto with updated judgment information.
+	 */
+	@PostMapping(value = "judgment/save_judgment", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public JudgmentDTO saveJudgment(@RequestBody JudgmentDTO dto) {
+		var judgment = new Judgment();
+		if (dto.getId() != null) {
+			judgment = judgmentRepository.findById(dto.getId()).get();
+		}
+		judgment.setUser(userRepository.findById(dto.getUserId()).get());
+		judgment.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
+		judgment.setAnnotationLabel(annotationLabelRepository.findById(dto.getAnnotationLabelId()).get());
 
-        var saved = judgmentRepository.save(judgment);
-        dto.setId(saved.getId());
-        return dto;
-    }
+		var saved = judgmentRepository.save(judgment);
+		dto.setId(saved.getId());
+		return dto;
+	}
 
-    /**
-     * API endpoint for getting the user's existing {@link Pin} information for the given {@link PoolEntry}
-     *
-     * @param poolEntryId
-     *            - id of the {@link PoolEntry} to be judged
-     * @return the list of Pins for the PoolEntry and User
-     */
-    @GetMapping(value = "pin/pool_entry/{poolEntryId}")
-    @ResponseBody
-    public List<PinDTO> getPinsForPoolEntry(@PathVariable Long poolEntryId) {
-        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        var userId = securityHelper.authenticationUserDetails().getUserId();
-        var pins = pinRepository.findByUserIdAndPoolEntryId(userId, poolEntryId);
-        return pins.stream().map(pin -> {
-            var dto = new PinDTO();
-            dto.initialize(pin);
-            return dto;
-        }).collect(Collectors.toList());
-    }
+	/**
+	 * API endpoint for getting the user's existing {@link Pin} information for the given {@link PoolEntry}
+	 *
+	 * @param poolEntryId
+	 *            - id of the {@link PoolEntry} to be judged
+	 * @return the list of Pins for the PoolEntry and User
+	 */
+	@GetMapping(value = "pin/pool_entry/{poolEntryId}")
+	@ResponseBody
+	public List<PinDTO> getPinsForPoolEntry(@PathVariable Long poolEntryId) {
+		var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+		var userId = securityHelper.authenticationUserDetails().getUserId();
+		var pins = pinRepository.findByUserIdAndPoolEntryId(userId, poolEntryId);
+		return pins.stream().map(pin -> {
+			var dto = new PinDTO();
+			dto.initialize(pin);
+			return dto;
+		}).collect(Collectors.toList());
+	}
 
-    /**
-     * Save a Pin for the User and Pool Entry
-     * 
-     * @param dto
-     * @return
-     * @throws ForbiddenException
-     */
-    @PostMapping(value = "pin/save_pin", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public PinDTO savePin(@RequestBody PinDTO dto) throws ForbiddenException {
+	/**
+	 * Save a Pin for the User and Pool Entry
+	 *
+	 * @param dto
+	 * @return
+	 * @throws ForbiddenException
+	 */
+	@PostMapping(value = "pin/save_pin", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public PinDTO savePin(@RequestBody PinDTO dto) throws ForbiddenException {
 
-        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        var userId = securityHelper.authenticationUserDetails().getUserId();
+		var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+		var userId = securityHelper.authenticationUserDetails().getUserId();
 
-        Pin pin = null;
+		Pin pin = null;
 
-        if (dto.getId() != null) {
-            var pinOpt = pinRepository.findById(dto.getId());
-            if (pinOpt.isEmpty() || userId != dto.getUserId()) {
-                throw new ForbiddenException("Cannot update pin for nonexistent id or different user.");
-            }
-            pin = pinOpt.get();
-            if (!StringUtils.isAllBlank(dto.getComment())) {
-                pin.setComment(dto.getComment());
-            }
-        } else {
-            pin = new Pin();
-            pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
-            pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
-            pin.setEntityId(dto.getEntityId());
-            pin.setVisitId(dto.getVisitId());
-            if (!StringUtils.isAllBlank(dto.getComment())) {
-                pin.setComment(dto.getComment());
-            }
+		if (dto.getId() != null) {
+			var pinOpt = pinRepository.findById(dto.getId());
+			if (pinOpt.isEmpty() || userId != dto.getUserId()) {
+				throw new ForbiddenException("Cannot update pin for nonexistent id or different user.");
+			}
+			pin = pinOpt.get();
+			if (!StringUtils.isAllBlank(dto.getComment())) {
+				pin.setComment(dto.getComment());
+			}
+		} else {
+			pin = new Pin();
+			pin.setPoolEntry(poolEntryRepository.findById(dto.getPoolEntryId()).get());
+			pin.setEntity(OmopEntity.valueOf(dto.getEntity()));
+			pin.setEntityId(dto.getEntityId());
+			pin.setVisitId(dto.getVisitId());
+			if (!StringUtils.isAllBlank(dto.getComment())) {
+				pin.setComment(dto.getComment());
+			}
 
-            // Fill in the logged in user
-            pin.setUser(userRepository.findById(userId).get());
-        }
+			// Fill in the logged in user
+			pin.setUser(userRepository.findById(userId).get());
+		}
 
-        var saved = pinRepository.save(pin);
+		var saved = pinRepository.save(pin);
 
-        dto.setId(saved.getId());
-        dto.setUserId(saved.getUser().getId());
-        return dto;
-    }
+		dto.setId(saved.getId());
+		dto.setUserId(saved.getUser().getId());
+		return dto;
+	}
 
-    /**
-     * Delete the given Pin from the database
-     * 
-     * @param dto
-     * @return
-     */
-    @PostMapping(value = "pin/delete_pin", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public PinDTO deletePin(@RequestBody PinDTO dto) throws ForbiddenException {
-        var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
-        var userId = securityHelper.authenticationUserDetails().getUserId();
-        if (userId != dto.getUserId()) {
-            throw new ForbiddenException("Cannot delete pin for a different user.");
-        }
-        Optional<Pin> pin = pinRepository.findById(dto.getId());
-        if (pin.isPresent()) {
-            pinRepository.delete(pin.get());
-        }
-        return dto;
-    }
+	/**
+	 * Delete the given Pin from the database
+	 *
+	 * @param dto
+	 * @return
+	 */
+	@PostMapping(value = "pin/delete_pin", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public PinDTO deletePin(@RequestBody PinDTO dto) throws ForbiddenException {
+		var securityHelper = new SecurityHelper(SecurityContextHolder.getContext());
+		var userId = securityHelper.authenticationUserDetails().getUserId();
+		if (userId != dto.getUserId()) {
+			throw new ForbiddenException("Cannot delete pin for a different user.");
+		}
+		Optional<Pin> pin = pinRepository.findById(dto.getId());
+		if (pin.isPresent()) {
+			pinRepository.delete(pin.get());
+		}
+		return dto;
+	}
 
-    /**
-     * Get the {@link AnnotationLabel} options for the given {@link PoolEntry}.
-     *
-     * @param poolEntryId
-     *            - id of the pool entry to annotate
-     * @return list of applicable labels
-     */
-    private List<AnnotationLabel> labelsForPoolEntry(Long poolEntryId) {
-        var poolEntry = poolEntryRepository.findById(poolEntryId).get();
-        return annotationLabelRepository
-                .findByAnnotationSchemaId(poolEntry.getPool().getAnnotationSchema().getId());
-    }
+	/**
+	 * Get the {@link AnnotationLabel} options for the given {@link PoolEntry}.
+	 *
+	 * @param poolEntryId
+	 *            - id of the pool entry to annotate
+	 * @return list of applicable labels
+	 */
+	private List<AnnotationLabel> labelsForPoolEntry(Long poolEntryId) {
+		var poolEntry = poolEntryRepository.findById(poolEntryId).get();
+		return annotationLabelRepository
+				.findByAnnotationSchemaId(poolEntry.getPool().getAnnotationSchema().getId());
+	}
 
 }

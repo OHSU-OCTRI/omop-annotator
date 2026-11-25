@@ -14,15 +14,15 @@ import org.octri.omop_annotator.domain.app.Pin;
  */
 public record PinExport(String entity, String entityId, String comment) {
 
-    /**
-     * Create the export representation of a {@link Pin}
-     *
-     * @param pin
-     * @return the export representation
-     */
-    public static PinExport from(Pin pin) {
-        return new PinExport(pin.getEntity().name(),
-                Long.toString(pin.getEntityId()),
-                pin.getComment() == null ? "" : pin.getComment());
-    }
+	/**
+	 * Create the export representation of a {@link Pin}
+	 *
+	 * @param pin
+	 * @return the export representation
+	 */
+	public static PinExport from(Pin pin) {
+		return new PinExport(pin.getEntity().name(),
+				Long.toString(pin.getEntityId()),
+				pin.getComment() == null ? "" : pin.getComment());
+	}
 }

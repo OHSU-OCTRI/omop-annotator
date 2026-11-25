@@ -3,7 +3,6 @@ package org.octri.omop_annotator.domain.app;
 import org.octri.common.domain.AbstractEntity;
 import org.octri.common.view.Labelled;
 
-
 import jakarta.persistence.Column;
 
 import java.io.Serial;

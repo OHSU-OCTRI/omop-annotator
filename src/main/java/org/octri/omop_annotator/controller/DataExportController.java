@@ -39,96 +39,96 @@ import tools.jackson.databind.json.JsonMapper;
 @RequestMapping("/admin/export")
 public class DataExportController {
 
-    @Autowired
-    private PoolRepository poolRepository;
-    @Autowired
-    private JudgmentRepository judgmentRepository;
-    @Autowired
-    private PinRepository pinRepository;
-    @Autowired
-    private CustomViewRepository customViewRepository;
+	@Autowired
+	private PoolRepository poolRepository;
+	@Autowired
+	private JudgmentRepository judgmentRepository;
+	@Autowired
+	private PinRepository pinRepository;
+	@Autowired
+	private CustomViewRepository customViewRepository;
 
-    @Autowired
-    private OmopDataConfiguration dataConfig;
+	@Autowired
+	private OmopDataConfiguration dataConfig;
 
-    @Autowired
-    private JsonMapper mapper;
+	@Autowired
+	private JsonMapper mapper;
 
-    /**
-     * User interface for choosing the parameters to export judgments.
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping("judgments")
-    public String exportJudgmentsForm(Map<String, Object> model) {
-        model.put("poolOptions", OptionList.fromSearch(poolRepository.findAll(), null));
-        return "export/judgments";
-    }
+	/**
+	 * User interface for choosing the parameters to export judgments.
+	 *
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("judgments")
+	public String exportJudgmentsForm(Map<String, Object> model) {
+		model.put("poolOptions", OptionList.fromSearch(poolRepository.findAll(), null));
+		return "export/judgments";
+	}
 
-    /**
-     * Generates and streams a CSV file of judgments for a given pool and user.
-     */
-    @PostMapping(path = "judgments")
-    public void exportJudgmentsCsv(HttpServletResponse response, @Valid @ModelAttribute JudgmentExportParams params)
-            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+	/**
+	 * Generates and streams a CSV file of judgments for a given pool and user.
+	 */
+	@PostMapping(path = "judgments")
+	public void exportJudgmentsCsv(HttpServletResponse response, @Valid @ModelAttribute JudgmentExportParams params)
+			throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
-        // Map of pins keyed by pool entry id and user id for matching with judgments
-        var pins = pinRepository.findAllByPoolEntryPoolId(params.getPoolId())
-                .stream()
-                .collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
+		// Map of pins keyed by pool entry id and user id for matching with judgments
+		var pins = pinRepository.findAllByPoolEntryPoolId(params.getPoolId())
+				.stream()
+				.collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
 
-        List<ExportedJudgmentRow> results = judgmentRepository
-                .findAllByPoolEntryPoolId(params.getPoolId())
-                .stream()
-                .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
-                        pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())), mapper))
-                .collect(Collectors.toList());
+		List<ExportedJudgmentRow> results = judgmentRepository
+				.findAllByPoolEntryPoolId(params.getPoolId())
+				.stream()
+				.map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
+						pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())), mapper))
+				.collect(Collectors.toList());
 
-        LocalDate today = LocalDate.now();
-        String filename = "judgments_pool_" + params.getPoolId() + "_"
-                + today.toString() + ".csv";
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		LocalDate today = LocalDate.now();
+		String filename = "judgments_pool_" + params.getPoolId() + "_"
+				+ today.toString() + ".csv";
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
-        var writer = new CSVWriter(response.getWriter());
-        writer.writeNext(ExportedJudgmentRow.FIELDS);
-        for (ExportedJudgmentRow row : results) {
-            writer.writeNext(row.toCsvRow());
-        }
-        writer.close();
-    }
+		var writer = new CSVWriter(response.getWriter());
+		writer.writeNext(ExportedJudgmentRow.FIELDS);
+		for (ExportedJudgmentRow row : results) {
+			writer.writeNext(row.toCsvRow());
+		}
+		writer.close();
+	}
 
-    /**
-     * Generates and streams a CSV file summarizing the admin dashboard data for the pool
-     * 
-     * @param response
-     * @param poolId
-     * @throws IOException
-     */
-    @GetMapping(path = "dashboard/{poolId}")
-    public void exportDashboardCsv(HttpServletResponse response, @PathVariable Long poolId)
-            throws IOException {
-        List<PoolSummary> results = customViewRepository.summarizePool(poolId);
-        var writer = new CSVWriter(response.getWriter());
-        writer.writeNext(PoolSummary.CSV_FIELDS);
-        for (var row : results) {
-            writer.writeNext(row.toCsvRow());
-        }
-        writer.close();
-    }
+	/**
+	 * Generates and streams a CSV file summarizing the admin dashboard data for the pool
+	 *
+	 * @param response
+	 * @param poolId
+	 * @throws IOException
+	 */
+	@GetMapping(path = "dashboard/{poolId}")
+	public void exportDashboardCsv(HttpServletResponse response, @PathVariable Long poolId)
+			throws IOException {
+		List<PoolSummary> results = customViewRepository.summarizePool(poolId);
+		var writer = new CSVWriter(response.getWriter());
+		writer.writeNext(PoolSummary.CSV_FIELDS);
+		for (var row : results) {
+			writer.writeNext(row.toCsvRow());
+		}
+		writer.close();
+	}
 
-    class JudgmentExportParams {
+	class JudgmentExportParams {
 
-        @NotNull
-        private Long poolId;
+		@NotNull
+		private Long poolId;
 
-        public Long getPoolId() {
-            return poolId;
-        }
+		public Long getPoolId() {
+			return poolId;
+		}
 
-        public void setPoolId(Long poolId) {
-            this.poolId = poolId;
-        }
+		public void setPoolId(Long poolId) {
+			this.poolId = poolId;
+		}
 
-    }
+	}
 }

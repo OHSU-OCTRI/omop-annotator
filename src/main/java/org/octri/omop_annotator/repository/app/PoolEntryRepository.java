@@ -26,7 +26,7 @@ public interface PoolEntryRepository extends CrudRepository<PoolEntry, Long> {
 
 	/**
 	 * Return results of checking for duplicate topics in two pools
-	 * 
+	 *
 	 * @param poolId1
 	 *            the first pool id
 	 * @param poolId2

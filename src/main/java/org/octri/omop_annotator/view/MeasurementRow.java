@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 /**
  * Row in the Measurement List table.
- * 
+ *
  */
 public interface MeasurementRow {
 

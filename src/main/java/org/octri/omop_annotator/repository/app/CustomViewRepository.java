@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.NativeQuery;
  * This repository calls native sql queries to build custom views that span entities.
  * Note that the User type in the JpaRepository template is a dummy placeholder. The views can't be used here
  * because they are not managed entities.
- * 
+ *
  * @author yateam
  *
  */
@@ -47,7 +47,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 
 	/**
 	 * Return a summary of the topics for the given pool and count of judgments by the user
-	 * 
+	 *
 	 * @param poolId
 	 *            the pool to get topics for
 	 * @param userId
@@ -59,7 +59,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 
 	/**
 	 * Return a summary of the pool entries for the given pool and topics and judgments by the user
-	 * 
+	 *
 	 * @param poolId
 	 * @param topicId
 	 * @param userId
@@ -70,7 +70,7 @@ public interface CustomViewRepository extends JpaRepository<User, Long> {
 
 	/**
 	 * Return a summary of the topics for the given pool and count of judgments by each user
-	 * 
+	 *
 	 * @param poolId
 	 *            the pool to summarize judgments for
 	 * @return

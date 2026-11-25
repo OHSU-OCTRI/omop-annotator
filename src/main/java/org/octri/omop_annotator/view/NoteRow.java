@@ -7,21 +7,21 @@ import java.time.LocalDateTime;
  */
 public interface NoteRow {
 
-    public Integer getId();
+	public Integer getId();
 
-    public Integer getPerson();
+	public Integer getPerson();
 
-    public LocalDateTime getDate();
+	public LocalDateTime getDate();
 
-    public String getType();
+	public String getType();
 
-    public String getNoteClass();
+	public String getNoteClass();
 
-    public String getTitle();
+	public String getTitle();
 
-    public String getText();
+	public String getText();
 
-    public String getNoteSourceValue();
+	public String getNoteSourceValue();
 
-    public Integer getVisitOccurrence();
+	public Integer getVisitOccurrence();
 }

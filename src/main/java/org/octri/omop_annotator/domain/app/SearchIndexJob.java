@@ -21,143 +21,143 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class SearchIndexJob extends AbstractEntity {
 
-    public enum JobStatus {
-        STARTED, COMPLETED, FAILED
-    }
+	public enum JobStatus {
+		STARTED, COMPLETED, FAILED
+	}
 
-    @ManyToOne
-    @NotNull
-    private User user;
+	@ManyToOne
+	@NotNull
+	private User user;
 
-    private LocalDateTime startedAt;
+	private LocalDateTime startedAt;
 
-    private LocalDateTime endedAt;
+	private LocalDateTime endedAt;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+	@Column(columnDefinition = "TEXT")
+	private String description;
 
-    @Enumerated(value = EnumType.STRING)
-    private JobStatus status;
+	@Enumerated(value = EnumType.STRING)
+	private JobStatus status;
 
-    private Integer patientIdCount;
+	private Integer patientIdCount;
 
-    /**
-     * Empty Constructor
-     */
-    public SearchIndexJob() {
-    }
+	/**
+	 * Empty Constructor
+	 */
+	public SearchIndexJob() {
+	}
 
-    /**
-     * Constructs a new job associated with the given user that is started now.
-     */
-    public SearchIndexJob(User user) {
-        this.user = user;
-    }
+	/**
+	 * Constructs a new job associated with the given user that is started now.
+	 */
+	public SearchIndexJob(User user) {
+		this.user = user;
+	}
 
-    /**
-     * Start the job.
-     *
-     * @param description
-     *            - job description
-     * @return this
-     */
-    public SearchIndexJob start(String description) {
-        Assert.isNull(this.startedAt, "Job has already started");
-        this.startedAt = LocalDateTime.now();
-        this.status = JobStatus.STARTED;
-        this.description = description;
-        return this;
-    }
+	/**
+	 * Start the job.
+	 *
+	 * @param description
+	 *            - job description
+	 * @return this
+	 */
+	public SearchIndexJob start(String description) {
+		Assert.isNull(this.startedAt, "Job has already started");
+		this.startedAt = LocalDateTime.now();
+		this.status = JobStatus.STARTED;
+		this.description = description;
+		return this;
+	}
 
-    /**
-     * Set the this job to failed.
-     *
-     * @return
-     */
-    public SearchIndexJob fail() {
-        Assert.notNull(this.startedAt, "Job has not started");
-        Assert.isNull(this.endedAt, "Job has already ended.");
-        this.endedAt = LocalDateTime.now();
-        this.status = JobStatus.FAILED;
-        return this;
-    }
+	/**
+	 * Set the this job to failed.
+	 *
+	 * @return
+	 */
+	public SearchIndexJob fail() {
+		Assert.notNull(this.startedAt, "Job has not started");
+		Assert.isNull(this.endedAt, "Job has already ended.");
+		this.endedAt = LocalDateTime.now();
+		this.status = JobStatus.FAILED;
+		return this;
+	}
 
-    /**
-     * Set the job to completed.
-     *
-     * @return
-     */
-    public SearchIndexJob complete() {
-        Assert.notNull(this.startedAt, "Job has not started");
-        Assert.isNull(this.endedAt, "Job has already ended");
-        this.endedAt = LocalDateTime.now();
-        this.status = JobStatus.COMPLETED;
-        return this;
-    }
+	/**
+	 * Set the job to completed.
+	 *
+	 * @return
+	 */
+	public SearchIndexJob complete() {
+		Assert.notNull(this.startedAt, "Job has not started");
+		Assert.isNull(this.endedAt, "Job has already ended");
+		this.endedAt = LocalDateTime.now();
+		this.status = JobStatus.COMPLETED;
+		return this;
+	}
 
-    /**
-     * Computes the job duration.
-     *
-     * @return total time in hours, minutes, and seconds.
-     */
-    public String getDuration() {
-        if (startedAt != null && endedAt != null) {
-            Duration duration = Duration.between(startedAt, endedAt);
+	/**
+	 * Computes the job duration.
+	 *
+	 * @return total time in hours, minutes, and seconds.
+	 */
+	public String getDuration() {
+		if (startedAt != null && endedAt != null) {
+			Duration duration = Duration.between(startedAt, endedAt);
 
-            long hours = duration.toHours();
-            int minutes = duration.toMinutesPart();
-            int seconds = duration.toSecondsPart();
-            return String.format("%02d hr %02d min %02d sec", hours, minutes, seconds);
-        }
-        return null;
-    }
+			long hours = duration.toHours();
+			int minutes = duration.toMinutesPart();
+			int seconds = duration.toSecondsPart();
+			return String.format("%02d hr %02d min %02d sec", hours, minutes, seconds);
+		}
+		return null;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public LocalDateTime getStartedAt() {
-        return startedAt;
-    }
+	public LocalDateTime getStartedAt() {
+		return startedAt;
+	}
 
-    public void setStartedAt(LocalDateTime startedAt) {
-        this.startedAt = startedAt;
-    }
+	public void setStartedAt(LocalDateTime startedAt) {
+		this.startedAt = startedAt;
+	}
 
-    public LocalDateTime getEndedAt() {
-        return endedAt;
-    }
+	public LocalDateTime getEndedAt() {
+		return endedAt;
+	}
 
-    public void setEndedAt(LocalDateTime endedAt) {
-        this.endedAt = endedAt;
-    }
+	public void setEndedAt(LocalDateTime endedAt) {
+		this.endedAt = endedAt;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public JobStatus getStatus() {
-        return status;
-    }
+	public JobStatus getStatus() {
+		return status;
+	}
 
-    public void setStatus(JobStatus status) {
-        this.status = status;
-    }
+	public void setStatus(JobStatus status) {
+		this.status = status;
+	}
 
-    public Integer getPatientIdCount() {
-        return patientIdCount;
-    }
+	public Integer getPatientIdCount() {
+		return patientIdCount;
+	}
 
-    public void setPatientIdCount(Integer patientIdCount) {
-        this.patientIdCount = patientIdCount;
-    }
+	public void setPatientIdCount(Integer patientIdCount) {
+		this.patientIdCount = patientIdCount;
+	}
 
 }

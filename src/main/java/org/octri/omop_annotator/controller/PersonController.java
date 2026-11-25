@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import tools.jackson.core.JacksonException;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
@@ -93,8 +92,7 @@ public class PersonController {
 	@GetMapping(value = "/summary/{personId}/visits/filter/{entity}")
 	@ResponseBody
 	public String getFilteredVisitIds(@PathVariable Integer personId, @PathVariable FilterEntity entity,
-			@RequestParam(required = true) String name)
-			throws JacksonException {
+			@RequestParam(required = true) String name) {
 
 		List<Integer> visitIds = new ArrayList<Integer>();
 		String searchTerm = likeQueryValue(name);

@@ -54,7 +54,7 @@ omop.datasource.url=jdbc:postgresql://localhost:5432/mimic_3?currentSchema=omop
 omop.datasource.driver-class-name=org.postgresql.Driver
 omop.datasource.username=your_username
 omop.datasource.password=your_password
-omop.hibernate.dialect=org.hibernate.dialect.PostgreSQL81Dialect
+omop.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ```
 
 Microsoft SQL Server:
@@ -64,7 +64,7 @@ omop.datasource.driverclassname=com.microsoft.sqlserver.jdbc.SQLServerDriver
 omop.datasource.url=jdbc:sqlserver://host:port;databaseName=db_name
 omop.datasource.username=your_username
 omop.datasource.password=your_password
-omop.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+omop.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
 ```
 
 If the table names in your data source are in UPPER_CASE format, you may also need to set the `omop.hibernate.physical-naming-strategy` property. We provide a custom physical naming strategy for this purpose.

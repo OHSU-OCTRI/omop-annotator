@@ -1,39 +1,39 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the Observations table.
  */
 public interface ObservationRow {
 
-    public Integer getId();
+	public Integer getId();
 
-    public Integer getPerson();
+	public Integer getPerson();
 
-    public String getObservation();
+	public String getObservation();
 
-    public String getObservationSource();
+	public String getObservationSource();
 
-    public String getObservationSourceValue();
+	public String getObservationSourceValue();
 
-    public Date getDate();
+	public LocalDateTime getDate();
 
-    public String getObservationType();
+	public String getObservationType();
 
-    public String getValueAsString();
+	public String getValueAsString();
 
-    public Float getValueAsNumber();
+	public Float getValueAsNumber();
 
-    public String getValueAsConcept();
+	public String getValueAsConcept();
 
-    public String getObservationQualifier();
+	public String getObservationQualifier();
 
-    public String getQualifierSourceValue();
+	public String getQualifierSourceValue();
 
-    public String getObservationUnit();
+	public String getObservationUnit();
 
-    public String getUnitSourceValue();
+	public String getUnitSourceValue();
 
-    public Integer getVisitOccurrence();
+	public Integer getVisitOccurrence();
 }

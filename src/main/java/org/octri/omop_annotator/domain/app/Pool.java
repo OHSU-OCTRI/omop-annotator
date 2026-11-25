@@ -4,6 +4,8 @@ import org.octri.common.domain.AbstractEntity;
 import org.octri.common.view.Labelled;
 
 import jakarta.persistence.Column;
+
+import java.io.Serial;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Pool extends AbstractEntity implements Labelled {
 
+	@Serial
 	private static final long serialVersionUID = -2446082713990487107L;
 
 	@ManyToOne

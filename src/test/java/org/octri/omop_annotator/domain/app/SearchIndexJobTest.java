@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,71 +14,70 @@ import org.junit.jupiter.api.Test;
  */
 public class SearchIndexJobTest {
 
-    @Test
-    void testGetDuration() throws ParseException {
-        var job = new SearchIndexJob();
-        var format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-        var started = format.parse("2023-03-16 17:54:35");
-        var ended = format.parse("2023-03-16 17:56:26");
+	@Test
+	void testGetDuration() {
+		var job = new SearchIndexJob();
+		var started = LocalDateTime.of(2023, 3, 16, 17, 54, 35);
+		var ended = LocalDateTime.of(2023, 3, 16, 17, 56, 26);
 
-        assertNull(job.getDuration());
+		assertNull(job.getDuration());
 
-        job.setStartedAt(started);
-        job.setEndedAt(ended);
+		job.setStartedAt(started);
+		job.setEndedAt(ended);
 
-        assertEquals("00 hr 01 min 51 sec", job.getDuration());
-    }
+		assertEquals("00 hr 01 min 51 sec", job.getDuration());
+	}
 
-    @Test
-    void testStart() {
-        var job = new SearchIndexJob();
-        job.start("Testing");
-        assertNotNull(job.getStartedAt());
-        assertEquals(SearchIndexJob.JobStatus.STARTED, job.getStatus());
-    }
+	@Test
+	void testStart() {
+		var job = new SearchIndexJob();
+		job.start("Testing");
+		assertNotNull(job.getStartedAt());
+		assertEquals(SearchIndexJob.JobStatus.STARTED, job.getStatus());
+	}
 
-    @Test
-    void testComplete() {
-        var job = new SearchIndexJob();
-        job.start("Testing");
-        job.complete();
-        assertNotNull(job.getEndedAt());
-        assertEquals(SearchIndexJob.JobStatus.COMPLETED, job.getStatus());
-    }
+	@Test
+	void testComplete() {
+		var job = new SearchIndexJob();
+		job.start("Testing");
+		job.complete();
+		assertNotNull(job.getEndedAt());
+		assertEquals(SearchIndexJob.JobStatus.COMPLETED, job.getStatus());
+	}
 
-    @Test
-    void testCompleteWithoutStarting() {
-        var job = new SearchIndexJob();
-        assertThrows(IllegalArgumentException.class, () -> {
-            job.complete();
-        });
-    }
+	@Test
+	void testCompleteWithoutStarting() {
+		var job = new SearchIndexJob();
+		assertThrows(IllegalArgumentException.class, () -> {
+			job.complete();
+		});
+	}
 
-    @Test
-    void testCompleteAlreadyCompleted() {
-        var job = new SearchIndexJob();
-        job.start("Testing");
-        job.complete();
-        assertThrows(IllegalArgumentException.class, () -> {
-            job.complete();
-        });
-    }
+	@Test
+	void testCompleteAlreadyCompleted() {
+		var job = new SearchIndexJob();
+		job.start("Testing");
+		job.complete();
+		assertThrows(IllegalArgumentException.class, () -> {
+			job.complete();
+		});
+	}
 
-    @Test
-    void testFailWithoutStarting() {
-        var job = new SearchIndexJob();
-        assertThrows(IllegalArgumentException.class, () -> {
-            job.fail();
-        });
-    }
+	@Test
+	void testFailWithoutStarting() {
+		var job = new SearchIndexJob();
+		assertThrows(IllegalArgumentException.class, () -> {
+			job.fail();
+		});
+	}
 
-    @Test
-    void testFail() {
-        var job = new SearchIndexJob();
-        job.start("Testing");
-        job.fail();
-        assertNotNull(job.getEndedAt());
-        assertEquals(SearchIndexJob.JobStatus.FAILED, job.getStatus());
-    }
+	@Test
+	void testFail() {
+		var job = new SearchIndexJob();
+		job.start("Testing");
+		job.fail();
+		assertNotNull(job.getEndedAt());
+		assertEquals(SearchIndexJob.JobStatus.FAILED, job.getStatus());
+	}
 
 }

@@ -14,7 +14,6 @@ import org.octri.omop_annotator.repository.app.JudgmentRepository;
 import org.octri.omop_annotator.repository.app.PinRepository;
 import org.octri.omop_annotator.repository.app.PoolRepository;
 import org.octri.omop_annotator.view.ExportedJudgmentRow;
-import org.octri.omop_annotator.view.PinExportSerializer;
 import org.octri.omop_annotator.view.PoolSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -32,6 +30,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Data Export controller
@@ -40,97 +39,96 @@ import jakarta.validation.constraints.NotNull;
 @RequestMapping("/admin/export")
 public class DataExportController {
 
-    @Autowired
-    private PoolRepository poolRepository;
-    @Autowired
-    private JudgmentRepository judgmentRepository;
-    @Autowired
-    private PinRepository pinRepository;
-    @Autowired
-    private CustomViewRepository customViewRepository;
+	@Autowired
+	private PoolRepository poolRepository;
+	@Autowired
+	private JudgmentRepository judgmentRepository;
+	@Autowired
+	private PinRepository pinRepository;
+	@Autowired
+	private CustomViewRepository customViewRepository;
 
-    @Autowired
-    private OmopDataConfiguration dataConfig;
+	@Autowired
+	private OmopDataConfiguration dataConfig;
 
-    /**
-     * User interface for choosing the parameters to export judgments.
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping("judgments")
-    public String exportJudgmentsForm(Map<String, Object> model) {
-        model.put("poolOptions", OptionList.fromSearch(poolRepository.findAll(), null));
-        return "export/judgments";
-    }
+	@Autowired
+	private JsonMapper mapper;
 
-    /**
-     * Generates and streams a CSV file of judgments for a given pool and user.
-     */
-    @PostMapping(path = "judgments")
-    public void exportJudgmentsCsv(HttpServletResponse response, @Valid @ModelAttribute JudgmentExportParams params)
-            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+	/**
+	 * User interface for choosing the parameters to export judgments.
+	 *
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("judgments")
+	public String exportJudgmentsForm(Map<String, Object> model) {
+		model.put("poolOptions", OptionList.fromSearch(poolRepository.findAll(), null));
+		return "export/judgments";
+	}
 
-        // Map of pins keyed by pool entry id and user id for matching with judgments
-        var pins = pinRepository.findAllByPoolEntryPoolId(params.getPoolId())
-                .stream()
-                .collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
+	/**
+	 * Generates and streams a CSV file of judgments for a given pool and user.
+	 */
+	@PostMapping(path = "judgments")
+	public void exportJudgmentsCsv(HttpServletResponse response, @Valid @ModelAttribute JudgmentExportParams params)
+			throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
-        // Get the mapper for pin exporting
-        ObjectMapper pinExportMapper = PinExportSerializer.getMapper();
+		// Map of pins keyed by pool entry id and user id for matching with judgments
+		var pins = pinRepository.findAllByPoolEntryPoolId(params.getPoolId())
+				.stream()
+				.collect(Collectors.groupingBy(pin -> Pair.of(pin.getPoolEntry().getId(), pin.getUser().getId())));
 
-        List<ExportedJudgmentRow> results = judgmentRepository
-                .findAllByPoolEntryPoolId(params.getPoolId())
-                .stream()
-                .map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
-                        pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())),
-                        pinExportMapper))
-                .collect(Collectors.toList());
+		List<ExportedJudgmentRow> results = judgmentRepository
+				.findAllByPoolEntryPoolId(params.getPoolId())
+				.stream()
+				.map(judgment -> ExportedJudgmentRow.fromJudgment(dataConfig.getRefreshDate(), judgment,
+						pins.get(Pair.of(judgment.getPoolEntry().getId(), judgment.getUser().getId())), mapper))
+				.collect(Collectors.toList());
 
-        LocalDate today = LocalDate.now();
-        String filename = "judgments_pool_" + params.getPoolId() + "_"
-                + today.toString() + ".csv";
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		LocalDate today = LocalDate.now();
+		String filename = "judgments_pool_" + params.getPoolId() + "_"
+				+ today.toString() + ".csv";
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
-        var writer = new CSVWriter(response.getWriter());
-        writer.writeNext(ExportedJudgmentRow.FIELDS);
-        for (ExportedJudgmentRow row : results) {
-            writer.writeNext(row.toCsvRow());
-        }
-        writer.close();
-    }
+		var writer = new CSVWriter(response.getWriter());
+		writer.writeNext(ExportedJudgmentRow.FIELDS);
+		for (ExportedJudgmentRow row : results) {
+			writer.writeNext(row.toCsvRow());
+		}
+		writer.close();
+	}
 
-    /**
-     * Generates and streams a CSV file summarizing the admin dashboard data for the pool
-     * 
-     * @param response
-     * @param poolId
-     * @throws IOException
-     */
-    @GetMapping(path = "dashboard/{poolId}")
-    public void exportDashboardCsv(HttpServletResponse response, @PathVariable Long poolId)
-            throws IOException {
-        List<PoolSummary> results = customViewRepository.summarizePool(poolId);
-        var writer = new CSVWriter(response.getWriter());
-        writer.writeNext(PoolSummary.CSV_FIELDS);
-        for (var row : results) {
-            writer.writeNext(row.toCsvRow());
-        }
-        writer.close();
-    }
+	/**
+	 * Generates and streams a CSV file summarizing the admin dashboard data for the pool
+	 *
+	 * @param response
+	 * @param poolId
+	 * @throws IOException
+	 */
+	@GetMapping(path = "dashboard/{poolId}")
+	public void exportDashboardCsv(HttpServletResponse response, @PathVariable Long poolId)
+			throws IOException {
+		List<PoolSummary> results = customViewRepository.summarizePool(poolId);
+		var writer = new CSVWriter(response.getWriter());
+		writer.writeNext(PoolSummary.CSV_FIELDS);
+		for (var row : results) {
+			writer.writeNext(row.toCsvRow());
+		}
+		writer.close();
+	}
 
-    class JudgmentExportParams {
+	class JudgmentExportParams {
 
-        @NotNull
-        private Long poolId;
+		@NotNull
+		private Long poolId;
 
-        public Long getPoolId() {
-            return poolId;
-        }
+		public Long getPoolId() {
+			return poolId;
+		}
 
-        public void setPoolId(Long poolId) {
-            this.poolId = poolId;
-        }
+		public void setPoolId(Long poolId) {
+			this.poolId = poolId;
+		}
 
-    }
+	}
 }

@@ -1,10 +1,10 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Row in the Measurement List table.
- * 
+ *
  */
 public interface MeasurementRow {
 
@@ -12,7 +12,7 @@ public interface MeasurementRow {
 
 	public Integer getPerson();
 
-	public Date getMeasurementDatetime();
+	public LocalDateTime getMeasurementDatetime();
 
 	public String getMeasurement();
 

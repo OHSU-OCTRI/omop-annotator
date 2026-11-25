@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- Reindex required as part of Spring Boot 4 upgrade (OA-203)
+
 ### Dependencies
 
 - Run `npm audit fix`
 - Bumps spring-boot-starter-parent from 3.5.13 to 3.5.16 (CIS-3854)
 - Run npm audit fix to resolve Node.js vulnerabilities (CIS-3955)
+- Upgrade from Java 17 to Java 21 (OA-203)
+- Upgrade from Spring Boot 3 to Spring Boot 4 (OA-203)
 
 ## [2.1.0] - 2026-09-09
 

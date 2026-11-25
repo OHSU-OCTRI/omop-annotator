@@ -2,7 +2,7 @@
 #
 # docker build --rm -t ghcr.io/ohsu-octri/omop-annotator --pull .
 
-FROM octri.ohsu.edu/jarrunner:17
+FROM octri.ohsu.edu/jarrunner:21
 EXPOSE 8080
 RUN mkdir /search_indices && \
     chown svcoctrikube:octrikube /search_indices

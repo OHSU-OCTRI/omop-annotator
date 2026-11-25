@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.view;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Projection Interface defining a Condition row in the VisitRelatedList table (Vue component).
@@ -15,9 +15,9 @@ public interface ConditionOccurrenceRow {
 
 	public String getConditionType();
 
-	public Date getConditionStart();
+	public LocalDateTime getConditionStart();
 
-	public Date getConditionEnd();
+	public LocalDateTime getConditionEnd();
 
 	public String getConditionSource();
 

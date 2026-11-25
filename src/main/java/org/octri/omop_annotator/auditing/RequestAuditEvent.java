@@ -1,6 +1,6 @@
 package org.octri.omop_annotator.auditing;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 
@@ -41,9 +39,8 @@ public class RequestAuditEvent {
 	private Integer version;
 
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "S-")
-	private Date requestedAt;
+	private LocalDateTime requestedAt;
 
 	@NotNull
 	private String username;
@@ -85,11 +82,11 @@ public class RequestAuditEvent {
 		this.version = version;
 	}
 
-	public Date getRequestedAt() {
+	public LocalDateTime getRequestedAt() {
 		return requestedAt;
 	}
 
-	public void setRequestedAt(Date requestedAt) {
+	public void setRequestedAt(LocalDateTime requestedAt) {
 		this.requestedAt = requestedAt;
 	}
 

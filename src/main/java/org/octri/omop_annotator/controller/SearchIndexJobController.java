@@ -49,7 +49,7 @@ public class SearchIndexJobController extends AbstractBaseEntityController<Searc
 	@Override
 	public String list(Map<String, Object> model) {
 		var startedJob = getRepository().findByStatus(SearchIndexJob.JobStatus.STARTED);
-		model.put("showStartButton", !startedJob.isPresent());
+		model.put("showStartButton", startedJob.isEmpty());
 		return super.list(model);
 	}
 
